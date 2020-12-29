@@ -1,0 +1,110 @@
+/*
+ * Derive an interaction matrix  between two object types from an archimate model
+ *  Save to an excel sheet
+ *  2018, Michel Bénard
+*/
+
+// Load MyExcel and JSZip JS file
+// these are provided with the jarchi samples scripts
+load(__DIR__ + "lib/jszip-101.js");
+load(__DIR__ + "lib/myexcel.js");
+
+
+// example
+// Create a matrix 'sheet' where
+//  columns are business functions
+//  rows are applications
+//  sheet(i,j) = all relationships linking application(i) to business function(j)
+//  save the sheet in an excel file
+
+ sheet = prepareSheet();
+ fillSheet(sheet,"business-function","application-component","apps-functions","/");
+ outputFilename=("C:/archimate_matrices.xlsx");
+ saveSheet(sheet,outputFilename);
+
+
+//----------------------------------------------------
+ function prepareSheet()
+ {
+   var spreadsheet = $JExcel.new("Calibri 12 #333333");
+   return spreadsheet;
+ }
+
+//----------------------------------------------------
+function saveSheet(sheet,outputFilename)
+{
+// TODO add error checking
+sheet.generate(outputFilename);
+}
+//----------------------------------------------------
+function fillSheet(sheet,columnType,rowType,tabName,cellSeparator)
+// sheet : excel object
+// columntype : archimate object type used as column
+// rowttype : archimate object type used as row
+// tabName : excel sheet tabname
+// cellSeparator: characters used to separate relationships in cell
+ {
+     sheet.set( { sheet:0, value:tabName } );
+     headers = fillColumns(sheet,columnType,rowType);
+     fillRows(sheet,headers,rowType,cellSeparator);
+ }
+//----------------------------------------------------
+function fillColumns(sheet,columnType,rowType)
+// sheet : excel object
+// columntype : archimate object type used as column
+// rowttype : archimate object type used as row
+// return a list of archimate objects whose name will be used as column headers
+{
+
+  // Fill columns
+    var formatHeader = sheet.addStyle ({
+        fill: "#dddddd",
+        border: "thin, thin, thin, thin #555555",
+        font: "Calibri 12 #000000 B",
+    });
+
+    var legend = {name:rowType + "/" + columnType};
+    var headers = [legend];
+
+    $(columnType).forEach(function(e) {
+        headers.push(e);
+        });
+
+        for(var i = 0; i < headers.length; i++) {
+            sheet.set(0, i, 0, headers[i].name, formatHeader);
+            sheet.set(0, i, undefined, "auto"); // column width is auto
+        }
+  return headers;
+}
+//----------------------------------------------------
+function fillRows(sheet,headers,rowType,cellSeparator)
+// sheet : excel object
+// columntype : archimate object type used as column
+// rowttype : archimate object type used as row
+// cellSeparator: characters used to separate relationships in cell
+{
+  var current_row = 1;
+  $(rowType).forEach(function(e)
+  {
+
+      sheet.set(0, 0, current_row, e.name);
+      relations = $(e).rels();
+      for(var i = 1; i < headers.length; i++)
+      {
+        cellText = "";
+        for (var j = 0;j< relations.length;j++)
+        {
+
+            if( ( (relations[j].source.id == e.id) &&  (relations[j].target.id == headers[i].id))
+
+                )
+            {
+                cellText = relations[j].type + cellSeparator + cellText
+            }
+        }
+        sheet.set(0,i,current_row,cellText);
+      }
+      current_row++;
+  }
+  );
+}

@@ -53,7 +53,10 @@ if (filePath) {
             theObject[theDataHeaders[j]]=theData[i][j];
         }
 
+        // find the theObject in the model
         theConcept = $("#"+theObject.UID).first();
+        //
+
         if (!theConcept) {
             debug? console.log("> Missing UID, checking Name"):true;
             theConcept = $("."+theObject.Name).first();

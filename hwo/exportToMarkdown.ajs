@@ -1,10 +1,10 @@
 /*
  * Export View to Markdown
- * 
+ *
  * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
- * 
+ *
  * Markdown - https://www.markdownguide.org/
- * 
+ *
  * Version 2:   Updated to support Diagram Groups
  * Version 2.1: Add check for Selected View
  * Version 2.2: Change to regex, added date of export
@@ -17,7 +17,7 @@
  *              Quotes in documenation,
  *              Embed view (experimental)
  * Version 3.5: Added support for jArchi 4.4 (additional attributes)
- * 
+ *
  * (c) 2018 Steven Mileham
  *
  */
@@ -169,12 +169,12 @@ var theView = $(selection).filter("archimate-diagram-model").first();
 
 if (theView) {
 
-    theDocument+="# "+theView.name+"[^1]\n";
+    theDocument+="# "+theView.name+"\n";
     toc(0,theView);
 
     theDocument+="\n"+theTOC+"\n";
 
-    theDocument+="\n## Introduction\n";
+    theDocument+="\n## Introducción\n";
 
     if (embed==true){
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
@@ -203,7 +203,7 @@ if (theView) {
             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
             relativeURL = imageURL.split("\\");
             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-            $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");    
+            $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
             theDocument+="\n[embedView]: "+relativeURL[relativeURL.length-1];
         }
         theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";

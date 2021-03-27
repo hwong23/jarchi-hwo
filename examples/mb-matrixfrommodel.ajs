@@ -1,5 +1,5 @@
 /*
- * Derive an interaction matrix  between two object types from an archimate model
+ *  Derive an interaction matrix between two object types from an archimate model
  *  Save to an excel sheet
  *  2018, Michel Bénard
 */
@@ -11,7 +11,7 @@ load(__DIR__ + "lib/myexcel.js");
 
 
 // example
-// Create a matrix 'sheet' where 
+// Create a matrix 'sheet' where
 //  columns are business functions
 //  rows are applications
 //  sheet(i,j) = all relationships linking application(i) to business function(j)
@@ -19,7 +19,7 @@ load(__DIR__ + "lib/myexcel.js");
 
  sheet = prepareSheet();
  fillSheet(sheet,"business-function","application-component","apps-functions","/");
- outputFilename=("C:/archimate_matrices.xlsx");
+ outputFilename=("/Users/HWO.work/git/jarchi-hwo/archimate_matrices.xlsx");
  saveSheet(sheet,outputFilename);
 
 

@@ -19,6 +19,7 @@
  * Version 3.5: Added support for jArchi 4.4 (additional attributes)
  *
  * (c) 2018 Steven Mileham
+ * (c) 2021 Harry Wong
  *
  */
 
@@ -163,7 +164,7 @@ console.clear();
 console.log("Export to Markdown");
 
 var theDocument = "";
-var theTOC = "* [Introduction](#introduction)";
+var theTOC = "* [Introducción](#introduction)";
 
 var theView = $(selection).filter("archimate-diagram-model").first();
 
@@ -194,6 +195,7 @@ if (theView) {
     })
 
     nestedDocumentation(0, theView);
+    elementTable(0);
 
     var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
     var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
@@ -216,4 +218,45 @@ if (theView) {
 }
 else {
     console.log("> Please Select a View");
+}
+
+
+function elementTable(element) {
+    var objList = [];
+    // $(view).find("element").each(function (viewObj) {
+    //     objList.push(viewObj);
+    // });
+
+    var theView = $(selection).filter("archimate-diagram-model").first();
+
+    // objList.sort(); // ensures the output groups by object type
+
+    // For each row (element)
+    var i;
+    var outInfo = "outInfo";
+    for (i in objList) {
+        // Print each desired field under the table column for the row
+        for (var j = 0; j < columns.length; j++) {
+            // Start the cell
+            outInfo = "|";
+
+            // Check columns for special cases
+            if (columns[j].special != null) {
+                // If the special case is element properties, and we want to print properties...
+                if (columns[j].special === "properties" && settings.IncludeProperties === true) {
+                    addPropsAsItalic(objList[i]);
+                }
+            } else {
+                // Default printing of a cell's data. If it's the first column though, bold it.
+                outInfo += (j === 0) ? "**" : "";
+                outInfo += replaceNL(objList[i][columns[j].field]);
+                outInfo += (j === 0) ? "**" : "";
+            }
+        }
+
+        // Complete the last cell of the row
+        outInfo += "|\n";
+    }
+
+    console.log(outInfo);
 }

@@ -23,7 +23,7 @@
  *
  */
 
-var debug = true;
+var debug = false;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
@@ -195,10 +195,10 @@ if (theView) {
     })
 
     nestedDocumentation(0, theView);
-    elementTable(0);
+    elementTable(theView);
 
     var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
-    var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+    var exportFile = "/Users/hwong23/Documents/" + defaultFileName;
 
     if(exportFile != null) {
         if (!embed) {
@@ -227,36 +227,41 @@ function elementTable(element) {
     //     objList.push(viewObj);
     // });
 
-    var theView = $(selection).filter("archimate-diagram-model").first();
+    // var theView = $(selection).filter("archimate-diagram-model").first();
+
+    console.log("elementTable");
+    $(element).children().not("relationship").each(function(elmto) {
 
     // objList.sort(); // ensures the output groups by object type
 
     // For each row (element)
-    var i;
-    var outInfo = "outInfo";
-    for (i in objList) {
-        // Print each desired field under the table column for the row
-        for (var j = 0; j < columns.length; j++) {
-            // Start the cell
-            outInfo = "|";
+    // var i;
+    // var outInfo = "outInfo";
+    // for (i in objList) {
+    //     // Print each desired field under the table column for the row
+    //     for (var j = 0; j < columns.length; j++) {
+    //         // Start the cell
+    //         outInfo = "|";
+    //
+    //         // Check columns for special cases
+    //         if (columns[j].special != null) {
+    //             // If the special case is element properties, and we want to print properties...
+    //             if (columns[j].special === "properties" && settings.IncludeProperties === true) {
+    //                 addPropsAsItalic(objList[i]);
+    //             }
+    //         } else {
+    //             // Default printing of a cell's data. If it's the first column though, bold it.
+    //             outInfo += (j === 0) ? "**" : "";
+    //             outInfo += replaceNL(objList[i][columns[j].field]);
+    //             outInfo += (j === 0) ? "**" : "";
+    //         }
+    //     }
+    //
+    //     // Complete the last cell of the row
+    //     outInfo += "|\n";
+    // }
 
-            // Check columns for special cases
-            if (columns[j].special != null) {
-                // If the special case is element properties, and we want to print properties...
-                if (columns[j].special === "properties" && settings.IncludeProperties === true) {
-                    addPropsAsItalic(objList[i]);
-                }
-            } else {
-                // Default printing of a cell's data. If it's the first column though, bold it.
-                outInfo += (j === 0) ? "**" : "";
-                outInfo += replaceNL(objList[i][columns[j].field]);
-                outInfo += (j === 0) ? "**" : "";
-            }
-        }
-
-        // Complete the last cell of the row
-        outInfo += "|\n";
-    }
-
-    console.log(outInfo);
+    // console.log(outInfo);
+    // console.log("elementTable:" + elmto.name);
+  });
 }

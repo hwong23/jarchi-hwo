@@ -262,6 +262,6 @@ function elementTable(element) {
     // }
 
     // console.log(outInfo);
-    // console.log("elementTable:" + elmto.name);
+    console.log("elementTable:" + elmto.name);
   });
 }

@@ -95,6 +95,19 @@ function propertiesTable(element) {
     return "**Properties**\n"+theHeader+"|\n"+theLine+"|\n"+theBody+"|\n";
 }
 
+function documentTable(element) {
+    var theDocument = element.documentation;
+    var theHeader="";
+    var theLine="";
+    var theBody="";
+    //for (var i=0; i<theProperties.length;i++){
+        theHeader+="|Descripción";
+        theLine+="|---|---|";
+        theBody+=theDocument;
+    //}
+    return "\n|||"+"\n"+theLine+"\n"+theHeader+"|"+theBody+"|";
+}
+
 function documentRelationships(element) {
     var theHeader = "|From|Relationship|To|Name|Description|"
     var theLine = "|---|---|---|---|---|";
@@ -144,7 +157,7 @@ function nestedDocumentation(d, element) {
             theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) +" ("+ convertToText(e.type) +")"+linkNum+"\n";
             e.prop().length > 0 ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
             // $(e).outRels().length>0?theDocument+="\n"+escapeMD(documentRelationships(e)):true;
-            e.documentation ? theDocument+="\n"+escapeMD(e.documentation)+"\n":true;
+            e.documentation ? theDocument+="\n"+escapeMD(documentTable(e))+"\n":true;
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
                     theDocument+="\n> "+escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
@@ -196,7 +209,6 @@ if (theView) {
     })
 
     nestedDocumentation(0, theView);
-    elementTable(theView);
 
     var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
     var exportFile = userPath + defaultFileName;
@@ -219,50 +231,4 @@ if (theView) {
 }
 else {
     console.log("> Please Select a View");
-}
-
-
-function elementTable(element) {
-    var objList = [];
-    // $(view).find("element").each(function (viewObj) {
-    //     objList.push(viewObj);
-    // });
-
-    // var theView = $(selection).filter("archimate-diagram-model").first();
-
-    console.log("elementTable");
-    $(element).children().not("relationship").each(function(elmto) {
-
-    // objList.sort(); // ensures the output groups by object type
-
-    // For each row (element)
-    // var i;
-    // var outInfo = "outInfo";
-    // for (i in objList) {
-    //     // Print each desired field under the table column for the row
-    //     for (var j = 0; j < columns.length; j++) {
-    //         // Start the cell
-    //         outInfo = "|";
-    //
-    //         // Check columns for special cases
-    //         if (columns[j].special != null) {
-    //             // If the special case is element properties, and we want to print properties...
-    //             if (columns[j].special === "properties" && settings.IncludeProperties === true) {
-    //                 addPropsAsItalic(objList[i]);
-    //             }
-    //         } else {
-    //             // Default printing of a cell's data. If it's the first column though, bold it.
-    //             outInfo += (j === 0) ? "**" : "";
-    //             outInfo += replaceNL(objList[i][columns[j].field]);
-    //             outInfo += (j === 0) ? "**" : "";
-    //         }
-    //     }
-    //
-    //     // Complete the last cell of the row
-    //     outInfo += "|\n";
-    // }
-
-    // console.log(outInfo);
-    console.log("elementTable:" + elmto.name);
-  });
 }

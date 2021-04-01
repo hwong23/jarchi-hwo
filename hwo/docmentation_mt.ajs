@@ -27,6 +27,7 @@ var debug = false;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
+var userPath = "/Users/HWO.work/Documents";
 
 function convertToText(type) {
     var theString = type.replaceAll("-"," ").split(" ");
@@ -198,7 +199,7 @@ if (theView) {
     elementTable(theView);
 
     var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
-    var exportFile = "/Users/hwong23/Documents/" + defaultFileName;
+    var exportFile = userPath + defaultFileName;
 
     if(exportFile != null) {
         if (!embed) {

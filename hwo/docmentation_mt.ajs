@@ -86,13 +86,12 @@ function propertiesTable(element) {
     var theProperties = element.prop();
     var theHeader="";
     var theLine="";
-    var theBody="";
+    var theBody=theLine;
     for (var i=0; i<theProperties.length;i++){
-        theHeader+="|"+theProperties[i];
-        theLine+="|---";
-        theBody+="|"+element.prop(theProperties[i]);
+        theHeader="|"+theProperties[i]+"|";
+        theBody+=theHeader + element.prop(theProperties[i])+"|\n";
     }
-    return "**Properties**\n"+theHeader+"|\n"+theLine+"|\n"+theBody+"|\n";
+    return theBody;
 }
 
 function documentTable(element) {
@@ -103,9 +102,9 @@ function documentTable(element) {
     //for (var i=0; i<theProperties.length;i++){
         theHeader+="|Descripción";
         theLine+="|---|---|";
-        theBody+=theDocument;
+        theBody+="|"+theDocument+"|";
     //}
-    return "\n|||"+"\n"+theLine+"\n"+theHeader+"|"+theBody+"|";
+    return "|||"+"\n"+theLine+"\n"+theHeader+theBody;
 }
 
 function documentRelationships(element) {
@@ -155,9 +154,11 @@ function nestedDocumentation(d, element) {
             }
 
             theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) +" ("+ convertToText(e.type) +")"+linkNum+"\n";
-            e.prop().length > 0 ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
+
             // $(e).outRels().length>0?theDocument+="\n"+escapeMD(documentRelationships(e)):true;
-            e.documentation ? theDocument+="\n"+escapeMD(documentTable(e))+"\n":true;
+            e.documentation ? theDocument+="\n"+escapeMD(documentTable(e)):true;
+            e.prop().length > 0 ? theDocument+=escapeMD(propertiesTable(e)):theDocument+="\n";
+
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
                     theDocument+="\n> "+escapeMD(r.text).replaceAll("\n","\n> ")+"\n";

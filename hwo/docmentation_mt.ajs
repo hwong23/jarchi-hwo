@@ -84,28 +84,35 @@ function toc(d, element){
 
 function propertiesTable(element) {
     var theProperties = element.prop();
-    var theHeader="";
-    var theLine="";
-    var theBody=theLine;
+    var theLine="|---|---|";
+    var theHeader="|Propiedades||"+(element.documentation ? "":"\n"+theLine);
+    var theBody="";
     for (var i=0; i<theProperties.length;i++){
-        theHeader="|"+theProperties[i]+"|";
-        theBody+=theHeader + element.prop(theProperties[i])+"|\n";
+        theBody+="|"+theProperties[i]+"|"+element.prop(theProperties[i])+"|\n";
     }
-    return theBody;
+    return theHeader+"\n"+theBody;
 }
 
 function documentTable(element) {
     var theDocument = element.documentation;
-    var theHeader="";
-    var theLine="";
-    var theBody="";
+
     //for (var i=0; i<theProperties.length;i++){
-        theHeader+="|Descripción";
-        theLine+="|---|---|";
-        theBody+="|"+theDocument+"|";
+        var theLine="|---|---|";
+        var theHeader="|Descripción";
+
+        var theBody="|"+theDocument+"|\n";
     //}
-    return "|||"+"\n"+theLine+"\n"+theHeader+theBody;
+    return theHeader+theBody;
 }
+
+/*
+|T||
+|---|---|
+|Descripción|LinkedIn es una red social que|
+|Propiedades||
+|Tamaño_GB|3.6|
+|Periodo|2 años|
+*/
 
 function documentRelationships(element) {
     var theHeader = "|From|Relationship|To|Name|Description|"
@@ -156,7 +163,7 @@ function nestedDocumentation(d, element) {
             theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) +" ("+ convertToText(e.type) +")"+linkNum+"\n";
 
             // $(e).outRels().length>0?theDocument+="\n"+escapeMD(documentRelationships(e)):true;
-            e.documentation ? theDocument+="\n"+escapeMD(documentTable(e)):true;
+            e.documentation ? theDocument+="|||\n|---|---|\n"+escapeMD(documentTable(e)):true;
             e.prop().length > 0 ? theDocument+=escapeMD(propertiesTable(e)):theDocument+="\n";
 
             $(e).rels().ends().each(function(r) {

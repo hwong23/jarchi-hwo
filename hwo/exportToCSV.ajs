@@ -157,8 +157,10 @@ if (theView) {
         debug? console.log("> TheCSV"):true;
         debug? console.log(theCSV):true;
 
-        $.fs.writeFile(exportFile, theCSV);
-        $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", theRelationshipsCSV);
+        // codificacion de caracteres ISO-8859-1: alfabeto latino. Preferido para aplicaciones (ej. Excel). https://es.wikipedia.org/wiki/ISO/IEC_8859-1
+        // codificacion de caracteres UTF-8: Unicode variable. Preferido para Web. https://es.wikipedia.org/wiki/UTF-8
+        $.fs.writeFile(exportFile, theCSV, "ISO-8859-1");
+        $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", theRelationshipsCSV, "ISO-8859-1");
         console.log("> Export done");
     }
     else {

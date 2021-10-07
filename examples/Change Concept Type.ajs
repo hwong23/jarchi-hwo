@@ -17,10 +17,10 @@
 
 // Get all Business Actors in the current selection and change the type to Business Role
 // If changing the type breaks any relationship rules an exception is thrown
-selection.filter("requirement").each(function(e) {
+selection.filter("work-package").each(function(e) {
     // e.concept.type = "business-role";
 
     console.log (e.name);
-    e.concept.type = "outcome";
-    e.name = "EPC. "+e.name;
+    e.concept.type = "deliverable";
+    // e.name = "EPC. "+e.name;
 });

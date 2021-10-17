@@ -141,7 +141,9 @@ if (theView) {
 
     // Open a dialog to let the user choose where to save the generated file
     var defaultFileName = model.name ? model.name + "-" + theView.name + ".csv" : "Exported Model.csv"; // Default file name
-    var exportFile = userPath + "/" + defaultFileName;
+    // var exportFile = userPath + "/" + defaultFileName;
+    var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+
 
     debug? console.log("> conceptHeaders"+conceptHeaders):true;
 

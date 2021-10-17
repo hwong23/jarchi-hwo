@@ -111,7 +111,7 @@ function printViewElements(view, level, settings) {
     objList.sort(); // ensures the output groups by object type
 
     // Print heading
-    outputHdr(level + 1, "Element Catalogue", false);
+    outputHdr(level + 1, "Catálogo de Elementos", false);
     outInfo += "\n";
 
     // Define which columns should be included in the catalogue
@@ -270,7 +270,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
         tocIndent = tocIndent + "\t";
     }
 
-    if (Name != "Element Catalogue") {
+    if (Name != "Catálogo de Elementos") {
         console.log(addSpace(Level - 1), Name);
     }
 

@@ -231,7 +231,9 @@ function getViews(Level, Levelobj, settings) {
                     thisPath = path + myView.name;
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
-                    imageURL = thisPath.replaceAll(" ", "%20");
+                    // imageURL = thisPath.replaceAll(" ", "%20");
+                    imageURL = myView.name.replaceAll(" ", "%20");
+
                     outInfo += "\n![Diagram: " + myView.name + "][" + myView.name + "]\n";
                     outInfo += "\n[" + myView.name + "]: " + imageURL + ".png\n";
                 }

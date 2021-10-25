@@ -95,7 +95,7 @@ function nestedDocumentation(d, element) {
                 }
             });
 
-            debug && !e.documentation? console.log("no doc: "+e.name):true;
+            debug && !e.documentation? console.log("no doc: "+e.name+"."+e.type):true;
 
             if ($(e).children().length>0) {
                 d++;
@@ -132,7 +132,7 @@ if (theView) {
 
     theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
     if (theView.documentation=="") {
-       console.log("no doc: "+theView.name);
+       console.log("no doc: "+theView.name+"."+theView.type);
     }
 
     // Notes with no relationships

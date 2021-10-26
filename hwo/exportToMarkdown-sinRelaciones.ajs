@@ -175,7 +175,7 @@ console.clear();
 console.log("Export to Markdown");
 
 var theDocument = "";
-var theTOC = "* [Introduction](#introduction)";
+var theTOC = ""; 
 
 var theView = $(selection).filter("archimate-diagram-model").first();
 
@@ -186,7 +186,7 @@ if (theView) {
 
     theDocument+="\n"+theTOC+"\n";
 
-    theDocument+="\n## Introducción\n";
+    theDocument+="\n\n";
 
     if (embed==true){
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});

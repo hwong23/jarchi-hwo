@@ -37,8 +37,10 @@ function convertToText(type) {
 }
 
 function escapeMD(theString){
-    var newString = theString.replaceAll("<","&lt;").replaceAll("\n>","\n~QUOTE~");
-    return newString.substring(0,1)+newString.substring(1).replaceAll(">","&gt;").replaceAll("~QUOTE~",">");
+    // var newString = theString.replaceAll("<","&lt;").replaceAll("\n>","\n~QUOTE~");
+    var newString = theString.replaceAll("\n>","\n~QUOTE~");
+    // return newString.substring(0,1)+newString.substring(1).replaceAll(">","&gt;").replaceAll("~QUOTE~",">");
+    return newString.substring(0,1)+newString.substring(1).replaceAll("~QUOTE~",">");
 }
 
 function generateLink(theString) {

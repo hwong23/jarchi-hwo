@@ -43,6 +43,11 @@ function escapeMD(theString){
     return newString.substring(0,1)+newString.substring(1).replaceAll("~QUOTE~",">");
 }
 
+function alineacionMD(theString){
+    var newString = theString.replaceAll(":just",'<div style="text-align: justify">').replaceAll("::", "</div>");
+    return newString;
+}
+
 function generateLink(theString) {
     var regex = /[\[\]\(\)\#\\\/\"]/gi;
     return "#"+theString.toLowerCase().replace(regex,"")
@@ -156,7 +161,7 @@ function nestedDocumentation(d, element) {
 
             e.prop().length > 0 ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
             $(e).outRels().length>0?theDocument+="\n"+escapeMD(documentRelationships(e)):true;
-            e.documentation ? theDocument+="\n"+escapeMD(e.documentation)+"\n":true;
+            e.documentation ? theDocument+="\n"+ alineacionMD(escapeMD(e.documentation)) +"\n":true;
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
                     theDocument+="\n> "+escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
@@ -194,7 +199,7 @@ if (theView) {
     }
     else {theDocument+="\n!["+theView.name+"][embedView]\n";}
 
-    theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
+    theView.documentation ? theDocument+="\n"+theView.documentation+"\n":true;
 
     // Notes with no relationships
     $(selection).find().not("element").not("relationship").each(function(c){

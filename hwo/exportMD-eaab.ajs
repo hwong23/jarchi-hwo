@@ -26,6 +26,7 @@ var debug = true;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
+var conTOC = true;
 
 function convertToText(type) {
     var theString = type.replaceAll("-"," ").split(" ");
@@ -78,9 +79,6 @@ function toc(d, element){
             if (tocMap[theHash]>1) {
                 linkNum = "-"+tocMap[theHash];
             }
-
-            // theTOC+= "\n"+headerDepth +"* ["+ escapeMD(e.name)  +" ("+ convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
-            // theTOC+="\n"+headerDepth +"* ["+ escapeMD(e.name)  + linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
 
             theTOC += (e.type=="grouping") ?
               "\n"+headerDepth +"* ["+ escapeMD(e.name) + linkNum.replace("-"," ")+"]("+theHash+linkNum+")" :
@@ -191,7 +189,7 @@ if (theView) {
     theDocument+="# "+theView.name+"\n";
     toc(0,theView);
 
-    theDocument+="\n\n";
+    theDocument+="\n"+theTOC+"\n";
 
     if (embed==true){
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});

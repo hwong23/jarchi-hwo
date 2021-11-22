@@ -462,6 +462,15 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
     return settings;
 }
 
+
+// Alineación del texto
+// :just = justify
+function alineacionMD(theString){
+    var newString = theString.replaceAll(":just",'<div style="text-align: justify">').replaceAll("::", "</div>");
+    return newString;
+}
+
+
 // Main Code
 
 var docGen = "";
@@ -494,7 +503,7 @@ if (useDrivingView()) {
         docGen = "# " + drivingView.name + "\n"
         // docGen += "\n ___ \n";
         // docGen += theToc + "\n";
-        docGen += outInfo;
+        docGen += alineacionMD(outInfo);
         docGen += "\n\n``Generated on: " + currentDate + "``";
 
         $.fs.writeFile(exportFile, docGen);

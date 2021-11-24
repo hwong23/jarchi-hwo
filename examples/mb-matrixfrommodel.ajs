@@ -11,15 +11,22 @@ load(__DIR__ + "lib/myexcel.js");
 
 
 // example
-// Create a matrix 'sheet' where
+//  Create a matrix 'sheet' where
 //  columns are business functions
 //  rows are applications
 //  sheet(i,j) = all relationships linking application(i) to business function(j)
 //  save the sheet in an excel file
 
  sheet = prepareSheet();
- fillSheet(sheet,"business-function","application-component","apps-functions","/");
- outputFilename=("/Users/HWO.work/git/jarchi-hwo/archimate_matrices.xlsx");
+ fillSheet(sheet,"business-process","application-component","apps-functions","/");
+ outputFilename = window.promptSaveFile({
+        title: "Export to File",
+        filterExtensions: ["*.xlsx"],
+        fileName: "matriz.xlsx"
+    });
+
+
+ ("/Users/HWO.work/git/jarchi-hwo/archimate_matrices.xlsx");
  saveSheet(sheet,outputFilename);
 
 
@@ -37,7 +44,7 @@ function saveSheet(sheet,outputFilename)
 sheet.generate(outputFilename);
 }
 //----------------------------------------------------
-function fillSheet(sheet,columnType,rowType,tabName,cellSeparator)
+function fillSheet(sheet, columnType, rowType, tabName, cellSeparator)
 // sheet : excel object
 // columntype : archimate object type used as column
 // rowttype : archimate object type used as row

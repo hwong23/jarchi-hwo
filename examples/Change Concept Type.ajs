@@ -17,10 +17,10 @@
 
 // Get all Business Actors in the current selection and change the type to Business Role
 // If changing the type breaks any relationship rules an exception is thrown
-selection.filter("application-process").each(function(e) {
+selection.filter("gap").each(function(e) {
     // e.concept.type = "business-role";
 
     console.log (e.name);
-    e.concept.type = "application-function";
+    e.concept.type = "course-of-action";
     // e.name = "EPC. "+e.name;
 });

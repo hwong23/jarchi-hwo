@@ -1,0 +1,95 @@
+/*
+ * Export To CSV
+ *
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ * Requires PapaParse - https://www.papaparse.com/
+ * Works with Import from CSV script - https://gist.github.com/smileham/1e57a5946235e780dee5a824f664aa3d
+ *
+ * Version 1: Export to CSV
+ * Version 1.1: Avoid duplicate concepts exported from diagram
+ * Version 1.2: Fix missing properties
+ * Version 2: Updated to export Relationships to additional CSV
+ * Version 2.1: Added error check for View.
+ *
+ * (c) 2018 Steven Mileham
+ *
+ */
+
+var debug = true;
+var userPath = "/Users/HWO.work/Documents";
+
+// Show output in the console
+console.show();
+console.clear();
+console.log("> Starting CSV Export");
+
+
+var propertiesList = [];
+
+var conceptHashMap = [];
+
+// Set up some conceptHeaders
+var conceptHeaders = [
+    "Name",
+    "Documentation",
+    "UID",
+    "Type"
+];
+
+
+
+
+var current_row = 1;
+
+var theData = new Array();
+var theRelationshipData = new Array();
+
+var theView = $(selection).filter("archimate-diagram-model").first();
+debug? console.log(theView):true;
+
+if (theView) {
+
+    // Loop through all elements and set cells to elememt info
+    $(theView).find().not("relationship").each(function(e) {
+
+        var theConcept = e.concept;
+        try {
+        
+            debug? console.log ("theConcept:"+theConcept):true;
+
+            if (e.name!="") {
+
+                if (!conceptHashMap[theConcept.id]) {
+                    conceptHashMap[theConcept.id]=true;
+
+                    var theProperties = theConcept.prop();
+
+                    for (var i=0; i<theProperties.length; i++){
+                        var found = false;
+                        for (var j=0; j<propertiesList.length; j++) {
+                            if (propertiesList[j]==theProperties[i]) {
+                                found=true;
+                            }
+                        }
+                        if (!found) {
+                            propertiesList.push(theProperties[i]);
+                            conceptHeaders.push(theProperties[i]);
+                        }
+                    }
+                }
+
+            }
+
+        } // try
+        catch (error) {
+            console.log("> Ignoring: "+e);
+        }
+
+    });
+    
+    debug? console.log("> conceptHeaders"+conceptHeaders):true;
+}
+else {
+    console.log("> Please Select a View");
+}
+

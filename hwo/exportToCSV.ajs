@@ -39,9 +39,11 @@ var conceptHeaders = [
 
 var relationshipHeaders = [
     "Relationship ID",
+    "From ID",
     "From Name",
     "From Type",
     "Relationship Type",
+    "To ID",
     "To Name",
     "To Type",
     "Relationship Name",
@@ -51,11 +53,11 @@ var relationshipHeaders = [
 var typeMappings = {
     "access-relationship":"Accesses",
     "composition-relationship":"Comprises",
-    "flow-relationship":"Flows to",
+    "flow-relationship":"Flows",
     "realization-relationship":"Realises",
-    "assignment-relationship":"Assigned to",
-    "serving-relationship":"Serves/Used By",
-    "association-relationship":"Associated to",
+    "assignment-relationship":"Assigned",
+    "serving-relationship":"Serves/Used",
+    "association-relationship":"Associated",
     "aggregation-relationship":"Aggregates"
 }
 
@@ -101,11 +103,13 @@ if (theView) {
                     theObject["UID"]=theConcept.id;
                     theObject["Type"]=theConcept.type;
 
+                    // Lista de propiedades (prop)
                     for (var i=0; i<propertiesList.length; i++){
                         if (theConcept.prop(propertiesList[i])) {
                             theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);
                         }
                     }
+                    
                     debug? console.log("> theObject"):true;
                     debug? console.log(theObject):true;
 
@@ -116,9 +120,11 @@ if (theView) {
                     $(e).outRels().each(function (r) {
                         var theRelationshipRow = new Object;
                         theRelationshipRow["Relationship ID"]=r.id;
+                        theRelationshipRow["From ID"]=r.source.id;
                         theRelationshipRow["From Name"]=r.source.name;
                         theRelationshipRow["From Type"]=r.source.type;
                         theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
+                        theRelationshipRow["To ID"]=r.target.id;
                         theRelationshipRow["To Name"]=r.target.name;
                         theRelationshipRow["To Type"]=r.target.type;
                         theRelationshipRow["Relationship Name"]=r.name;

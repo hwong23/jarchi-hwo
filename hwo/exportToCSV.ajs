@@ -84,6 +84,7 @@ if (theView) {
 
                     var theProperties = theConcept.prop();
 
+                    // Lista de propiedades (prop)
                     for (var i=0; i<theProperties.length; i++){
                         var found = false;
                         for (var j=0; j<propertiesList.length; j++) {
@@ -103,7 +104,7 @@ if (theView) {
                     theObject["UID"]=theConcept.id;
                     theObject["Type"]=theConcept.type;
 
-                    // Lista de propiedades (prop)
+                    // Valores de las propiedades (prop)
                     for (var i=0; i<propertiesList.length; i++){
                         if (theConcept.prop(propertiesList[i])) {
                             theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);

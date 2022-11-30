@@ -17,6 +17,10 @@
  * 
  */
 
+ var debug = true;
+ var propertiesList = [];
+
+
 // Load MyExcel and JSZip JS file
 load(__DIR__ + "lib/jszip-101.js");
 load(__DIR__ + "lib/myexcel.js");
@@ -47,11 +51,6 @@ var formatHeader = excel.addStyle ({
 	font: "Calibri 12 #000000 B",
 });
 
-// Set the headers
-for(var i = 0; i < headers.length; i++) {
-    excel.set(0, i, 0, headers[i], formatHeader);
-    excel.set(0, i, undefined, "auto"); // column width is auto
-}
 
 var current_row = 1;
 
@@ -62,8 +61,28 @@ $("element").each( function(e) {
 	excel.set(0, 2, current_row, e.id);
 	excel.set(0, 3, current_row, e.type);
 
+    if (e.name!="") {
+        getPropiedades(e, headers)
+    }
+
+    // Valores de las propiedades (prop)
+    for (var i=0; i<propertiesList.length; i++){
+        if (e.prop(propertiesList[i])) {
+            debug? console.log( "prop: "+propertiesList[i]+","+e.prop(propertiesList[i]) ):true;
+            excel.set( 0, 4+i, current_row, e.prop(propertiesList[i]) );
+        }
+    }
+
 	current_row++;
 });
+
+
+// Set the headers
+for(var i = 0; i < headers.length; i++) {
+    excel.set(0, i, 0, headers[i], formatHeader);
+    excel.set(0, i, undefined, "auto"); // column width is auto
+}
+
 
 // Open a dialog to let the user choose where to save the generated file
 var defaultFileName = model.name ? model.name + ".xlsx" : "Exported Model.xlsx"; // Default file name
@@ -75,4 +94,31 @@ if(exportFile != null) {
 }
 else {
 	console.log("> Export cancelled");
+}
+
+
+// Helper function
+function getPropiedades(e, conceptHeaders) {
+
+    if (e.name!="") {
+        var theProperties = e.prop();  
+
+        for (var i=0; i<theProperties.length; i++){
+            var found = false;
+            for (var j=0; j<propertiesList.length; j++) {
+                if (propertiesList[j]==theProperties[i]) {
+                    found=true;
+                }
+            }
+            if (!found) {
+                propertiesList.push(theProperties[i]);
+                conceptHeaders.push(theProperties[i]);
+            }
+        }
+
+        // debug? console.log("prop: "+theProperties):true;
+
+    }
+    
+    return theProperties;
 }

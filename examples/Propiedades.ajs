@@ -75,7 +75,7 @@ else {
 }
 
 
-// Helper function - convert a value to a color between red and green.
+// Helper function
 function getPropiedades(theConcept, e, conceptHeaders) {
     var propertiesList = [];
     var theProperties = theConcept.prop();

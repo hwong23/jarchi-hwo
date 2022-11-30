@@ -31,7 +31,8 @@ var conceptHeaders = [
     "Name",
     "Documentation",
     "UID",
-    "Type"
+    "Type",
+    "Prop"
 ];
 
 
@@ -84,7 +85,12 @@ function getPropiedades(theConcept, e, conceptHeaders) {
         if (!conceptHashMap[theConcept.id]) {
             conceptHashMap[theConcept.id]=true;
 
-            var theProperties = theConcept.prop();
+            var theProperties = theConcept.prop();  
+
+            var p = "";
+            theProperties.forEach(function(el) {
+                p = p+el+",";
+            });
 
             for (var i=0; i<theProperties.length; i++){
                 var found = false;
@@ -98,6 +104,9 @@ function getPropiedades(theConcept, e, conceptHeaders) {
                     conceptHeaders.push(theProperties[i]);
                 }
             }
+
+            debug? console.log("prop: "+p):true;
+
         }
 
     }

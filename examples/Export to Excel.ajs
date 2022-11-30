@@ -37,8 +37,8 @@ var headers = [
 	"Name",
 	"Documentation",
 	"ID",
-	"Type"
-
+	"Type",
+	"Prop"
 ];        
 
 // Format the header with a style
@@ -62,6 +62,13 @@ $("element").each( function(e) {
 	excel.set(0, 1, current_row, e.documentation);
 	excel.set(0, 2, current_row, e.id);
 	excel.set(0, 3, current_row, e.type);
+	
+ 	var p = "";
+    e.prop().forEach(function(el) {
+    	p = p+el+",";
+    });
+
+	excel.set(0, 4, current_row, p);
 
 	current_row++;
 });

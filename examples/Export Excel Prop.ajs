@@ -68,7 +68,7 @@ $("element").each( function(e) {
     // Valores de las propiedades (prop)
     for (var i=0; i<propertiesList.length; i++){
         if (e.prop(propertiesList[i])) {
-            debug? console.log( "prop: "+propertiesList[i]+","+e.prop(propertiesList[i]) ):true;
+            // debug? console.log( "prop: "+propertiesList[i]+","+e.prop(propertiesList[i]) ):true;
             excel.set( 0, 4+i, current_row, e.prop(propertiesList[i]) );
         }
     }

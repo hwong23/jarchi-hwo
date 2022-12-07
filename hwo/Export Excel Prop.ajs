@@ -99,7 +99,6 @@ else {
 
 // Helper function
 function getPropiedades(e, conceptHeaders) {
-
     if (e.name!="") {
         var theProperties = e.prop();  
 

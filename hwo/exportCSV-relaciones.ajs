@@ -15,7 +15,7 @@
  *
  */
 
-var debug = true;
+var debug = false;
 var userPath = "/Users/HWO.work/Documents";
 
 // Show output in the console
@@ -77,7 +77,7 @@ $("element").each( function(e) {
         !debug? console.log("> Nombre "+e.name):true;
 
         // Get Relationships
-        if (e.name.equals("Fase 2.1 SOA Objetivo")) {
+        
         $(e).outRels().each(function (r) {
             var theRelationshipRow = new Object;
             theRelationshipRow["Relationship ID"]=r.id;
@@ -113,7 +113,7 @@ $("element").each( function(e) {
 
             theRelationshipData.push(theRelationshipRow);
         });
-        }
+        
     }
     catch (error) {
         console.log("> Ignoring: "+e);

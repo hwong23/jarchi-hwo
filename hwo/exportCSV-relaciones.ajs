@@ -15,7 +15,7 @@
  *
  */
 
-var debug = false;
+var debug = true;
 var userPath = "/Users/HWO.work/Documents";
 
 // Show output in the console
@@ -67,7 +67,6 @@ var theData = new Array();
 var theRelationshipData = new Array();
 
 var theView = $(selection).filter("archimate-diagram-model").first();
-debug? console.log(theView):true;
 
 $("element").each( function(e) {
     if (e.name!="") {
@@ -75,12 +74,16 @@ $("element").each( function(e) {
     }
 
     try {
+        !debug? console.log("> Nombre "+e.name):true;
+
         // Get Relationships
+        if (e.name.equals("Fase 2.1 SOA Objetivo")) {
         $(e).outRels().each(function (r) {
             var theRelationshipRow = new Object;
             theRelationshipRow["Relationship ID"]=r.id;
             theRelationshipRow["From ID"]=r.source.id;
             theRelationshipRow["From Name"]=r.source.name;
+                debug? console.log( "> out "+r.source.name+" --> "+r.target.name ):false;
             theRelationshipRow["From Type"]=r.source.type;
             theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
             theRelationshipRow["To ID"]=r.target.id;
@@ -88,9 +91,29 @@ $("element").each( function(e) {
             theRelationshipRow["To Type"]=r.target.type;
             theRelationshipRow["Relationship Name"]=r.name;
             theRelationshipRow["Relationship Documentation"]=r.documentation;
+        
+            theRelationshipData.push(theRelationshipRow);
+        });
+
+        debug? console.log("> "):false;
+
+        $(e).inRels().each(function (r) {
+            var theRelationshipRow = new Object;
+            theRelationshipRow["Relationship ID"]=r.id;
+            theRelationshipRow["From ID"]=r.target.id;
+            theRelationshipRow["From Name"]=r.target.name;
+                debug? console.log( "> in "+r.target.name+" --> "+r.target.name ):false;
+            theRelationshipRow["From Type"]=r.target.type;
+            theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
+            theRelationshipRow["To ID"]=r.source.id;
+            theRelationshipRow["To Name"]=r.source.name;
+            theRelationshipRow["To Type"]=r.source.type;
+            theRelationshipRow["Relationship Name"]=r.name;
+            theRelationshipRow["Relationship Documentation"]=r.documentation;
 
             theRelationshipData.push(theRelationshipRow);
         });
+        }
     }
     catch (error) {
         console.log("> Ignoring: "+e);
@@ -98,14 +121,14 @@ $("element").each( function(e) {
 });
 
     // Open a dialog to let the user choose where to save the generated file
-    var defaultFileName = model.name ? model.name + "-" + theView.name + ".csv" : "Exported Model.csv"; // Default file name
+    var defaultFileName = model.name ? model.name + ".csv" : "Exported Model.csv"; // Default file name
     // var exportFile = userPath + "/" + defaultFileName;
     var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
 
-    debug? console.log("> conceptHeaders"+conceptHeaders):true;
-    debug? console.log("> TheData"+theData.length):true;
-    debug? console.log(theData):true;
-    debug? console.log(theRelationshipData):true;
+    // debug? console.log("> conceptHeaders "+conceptHeaders):true;
+    debug? console.log("> TheData "+theRelationshipData.length):true;
+    // debug? console.log(theData):true;
+    // debug? console.log(theRelationshipData):true;
 
     var theCSV = Papa.unparse({fields:conceptHeaders, data:theData});
     var theRelationshipsCSV = Papa.unparse({fields:relationshipHeaders, data:theRelationshipData});

@@ -53,8 +53,30 @@ var formatHeader = excel.addStyle ({
 
 
 var current_row = 1;
+var prop_col = 1;
 
 // Loop through all elements and set cells to elememt info
+// $("view").each( function(e) {
+	// excel.set(0, 0, current_row, e.name);
+	// excel.set(0, 1, current_row, e.documentation);
+	// excel.set(0, 2, current_row, e.id);
+	// excel.set(0, 3, current_row, e.type);
+
+    // if (e.name!="") {
+        // getPropiedades(e, headers)
+    // }
+
+    // // Valores de las propiedades (prop)
+    // for (var i=0; i<propertiesList.length; i++){
+        // if (e.prop(propertiesList[i])) {
+            // // debug? console.log( "prop: "+propertiesList[i]+","+e.prop(propertiesList[i]) ):true;
+            // excel.set( 0, 4+i, current_row, e.prop(propertiesList[i]) );
+            // prop_col++;
+        // }
+    // }
+// 
+//  current_row++;
+// });
 $("element").each( function(e) {
 	excel.set(0, 0, current_row, e.name);
 	excel.set(0, 1, current_row, e.documentation);

@@ -4,4 +4,6 @@
 
 console.log("> Agregar/Cambiar propiedad alcanceSOA");
 
-$(selection).prop("alcanceSOA", "Fase 1.1");
+var valorP = window.prompt("alcanceSOA", "Fase 1.1");
+
+$(selection).prop("alcanceSOA", valorP);

@@ -74,16 +74,13 @@ $("element").each( function(e) {
     }
 
     try {
-        !debug? console.log("> Nombre "+e.name):true;
-
-        // Get Relationships
-        
+        // Get Relationships (out)
         $(e).outRels().each(function (r) {
             var theRelationshipRow = new Object;
             theRelationshipRow["Relationship ID"]=r.id;
             theRelationshipRow["From ID"]=r.source.id;
             theRelationshipRow["From Name"]=r.source.name;
-                debug? console.log( "> out "+r.source.name+" --> "+r.target.name ):false;
+                debug? console.log( "> out "+r.source.name+" --> "+r.target.name ):true;
             theRelationshipRow["From Type"]=r.source.type;
             theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
             theRelationshipRow["To ID"]=r.target.id;
@@ -97,12 +94,13 @@ $("element").each( function(e) {
 
         debug? console.log("> "):false;
 
+        // Get Relationships (in)
         $(e).inRels().each(function (r) {
             var theRelationshipRow = new Object;
             theRelationshipRow["Relationship ID"]=r.id;
             theRelationshipRow["From ID"]=r.target.id;
             theRelationshipRow["From Name"]=r.target.name;
-                debug? console.log( "> in "+r.target.name+" --> "+r.target.name ):false;
+                debug? console.log( "> in "+r.target.name+" --> "+r.target.name ):true;
             theRelationshipRow["From Type"]=r.target.type;
             theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
             theRelationshipRow["To ID"]=r.source.id;

@@ -1,0 +1,16 @@
+/*
+ * New Archi Script
+ */
+
+
+// If you value and use Archi please consider making a donation !
+
+// $(selection).each(function(element) {
+//     element.type = "business-role";
+//      // element.name += " (changed)";
+//      // $(element).objectRefs().attr("fillColor", "#ff0000");
+
+//      console.log (element.name, ", ", element.type);
+//});
+
+$(selection).prop("alcanceSOA", "Fase 1.1");

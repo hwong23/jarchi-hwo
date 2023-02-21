@@ -1,5 +1,5 @@
 /*
- * New Archi Script
+ * Cambio de propiedades de elementos seleccionados
  */
 
 console.log("> Agregar/Cambiar propiedad alcanceSOA");

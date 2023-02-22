@@ -159,7 +159,7 @@ if (theView) {
 
     debug? console.log(theRelationshipData):true;
 
-    var theCSV = Papa.unparse({fields:conceptHeaders, data:theData});
+    var theCSV = Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: ";"});
     var theRelationshipsCSV = Papa.unparse({fields:relationshipHeaders, data:theRelationshipData});
 
     if(exportFile != null) {

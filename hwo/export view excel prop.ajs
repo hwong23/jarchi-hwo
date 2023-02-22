@@ -38,10 +38,10 @@ excel.set( { sheet:0, value:"Elements" } );
 
 // Set up some headers
 var headers = [
-   "Name",
-   "Documentation",
-   "ID",
-   "Type"
+   "nombre",
+   "documentación",
+   "id",
+   "tipo"
 ];        
 
 // Format the header with a style

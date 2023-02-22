@@ -1,5 +1,5 @@
 /*
- * Derive an interaction matrix  between two object types from an archimate model
+ * Derive an interaction matrix between two object types from an archimate model
  *  Save to an excel sheet
  *  2018, Michel Bénard
 */
@@ -18,8 +18,8 @@ load(__DIR__ + "lib/myexcel.js");
 //  save the sheet in an excel file
 
  sheet = prepareSheet();
- fillSheet(sheet,"business-function","application-component","apps-functions","/");
- outputFilename=("C:/archimate_matrices.xlsx");
+ fillSheet(sheet,"application-component","application-service","apps-functions","/");
+ outputFilename=("/Users/hwong23/git/jarchi-hwo/archimate_matrices.xlsx");
  saveSheet(sheet,outputFilename);
 
 
@@ -34,6 +34,7 @@ load(__DIR__ + "lib/myexcel.js");
 function saveSheet(sheet,outputFilename)
 {
 // TODO add error checking
+console.log ("save the sheet in an excel file "+outputFilename);
 sheet.generate(outputFilename);
 }
 //----------------------------------------------------

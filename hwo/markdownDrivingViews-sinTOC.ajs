@@ -117,7 +117,7 @@ function printViewElements(view, level, settings) {
     // Define which columns should be included in the catalogue
     var columns = [];
     columns.push({
-        "name": "Name",
+        "name": "Nombre",
         "field": "name"
     });
     columns.push({

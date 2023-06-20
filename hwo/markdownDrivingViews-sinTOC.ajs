@@ -121,16 +121,16 @@ function printViewElements(view, level, settings) {
         "field": "name"
     });
     columns.push({
-        "name": "Type",
+        "name": "Tipo",
         "field": "type"
     });
     columns.push({
-        "name": "Description",
+        "name": "Descripción",
         "field": "documentation"
     });
     if (settings.IncludeProperties === true) {
         columns.push({
-            "name": "Properties",
+            "name": "Propds.",
             "special": "properties"
         });
     }

@@ -272,53 +272,6 @@ function addSpace(numSpaces) {
     return rtnText;
 }
 
-function outputHdr2(Level, Name, AddLink, Doc, outDoc) {
-
-    var indent = "";
-    var tocIndent = "";
-
-    for (var i = 0; i < Level; i++) {
-        indent = indent + "#";
-    }
-    for (var j = 0; j < Level - 1; j++) { // ToC needs one less indent tab.
-        tocIndent = tocIndent + "\t";
-    }
-
-    if (Name != "Catálogo de Elementos") {
-        console.log(addSpace(Level - 1), Name);
-    }
-
-    var outHdr = indent + " " + Name;
-
-    // Quiebre de página
-    if (Level === 1) {
-        outDoc += '<div style="page-break-before: always;"></div>';
-        outDoc += "\n\\newpage";
-        outDoc += "\n ___ \n"; // horiz line before level 1's
-    }
-    
-    // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
-    if (hardNewpage) {
-        if (listofNewpageheaders.indexOf(Level) != -1) {
-            outDoc += "\n\\newpage\n";
-        }
-    }
-    
-    outDoc += "\n" + outHdr;
-    (bDebug) ? console.log("outHdr:" + outDoc):false;
-    
-    // Add a link to table of contents (TOC), if requested
-    if (AddLink) {
-        var thisLink = generateLink(Name);
-        outDoc += "\n" + "[](" + thisLink + ")";
-        theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
-    }
-    
-    if (Doc) {
-        outDoc += "\n" + Doc;
-    }
-}
-
 function outputHdr(Level, Name, AddLink, Doc) {
 
     var indent = "";
@@ -363,6 +316,55 @@ function outputHdr(Level, Name, AddLink, Doc) {
     if (Doc) {
         outInfo_vista += "\n" + Doc;
     }
+}
+
+function salidaEncabezado(Level, Name, AddLink, Doc) {
+
+    var outDoc = "";
+    var indent = "";
+    var tocIndent = "";
+
+    for (var i = 0; i < Level; i++) {
+        indent = indent + "#";
+    }
+    for (var j = 0; j < Level - 1; j++) { // ToC needs one less indent tab.
+        tocIndent = tocIndent + "\t";
+    }
+
+    if (Name != "Catálogo de Elementos") {
+        console.log(addSpace(Level - 1), Name);
+    }
+
+    var outHdr = indent + " " + Name;
+
+    // Quiebre de página
+    if (Level === 1) {
+        outDoc += '<div style="page-break-before: always;"></div>';
+        outDoc += "\n\\newpage";
+        outDoc += "\n ___ \n"; // horiz line before level 1's
+    }
+    
+    // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
+    if (hardNewpage) {
+        if (listofNewpageheaders.indexOf(Level) != -1) {
+            outDoc += "\n\\newpage\n";
+        }
+    }
+    
+    outDoc += "\n" + outHdr;
+    
+    // Add a link to table of contents (TOC), if requested
+    if (AddLink) {
+        var thisLink = generateLink(Name);
+        outDoc += "\n" + "[](" + thisLink + ")";
+        theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
+    }
+    
+    if (Doc) {
+        outDoc += "\n" + Doc;
+    }
+
+    return outDoc;
 }
 
 // Finds the group's sub-group, if any
@@ -550,7 +552,8 @@ if (useDrivingView()) {
 
         // go through the array, and output.
         for (var i = 0; i < Sections.length; i++) {
-            // outputHdr(Sections[i].level, Sections[i].group.name, true, Sections[i].group.documentation);
+            outInfo += salidaEncabezado(Sections[i].level, Sections[i].group.name, true, Sections[i].group.documentation);
+            (bDebug) ? console.log("outDoc:" + outInfo):false;
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
         }
         docGen = "# " + drivingView.name + "\n"

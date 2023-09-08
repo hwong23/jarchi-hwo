@@ -553,7 +553,6 @@ if (useDrivingView()) {
         // go through the array, and output.
         for (var i = 0; i < Sections.length; i++) {
             outInfo += salidaEncabezado(Sections[i].level, Sections[i].group.name, true, Sections[i].group.documentation);
-            (bDebug) ? console.log("outDoc:" + outInfo):false;
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
         }
         docGen = "# " + drivingView.name + "\n"

@@ -40,9 +40,11 @@ var Sections = [];
 var Errors = [];
 var nextOne = null;
 var outInfo = "";
+var outInfo_vista = "";
 var theToc = "";
 var path = "";
 var fileName = "";
+var bDebug = true;
 var embed = false; // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false; // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
@@ -94,7 +96,7 @@ function addPropsAsItalic(thisObj) {
     if (theProperties) {
         for (key in theProperties) {
             if ((theProperties[key] != 'label') && (theProperties[key] != "drill down")) {
-                outInfo += "*" + theProperties[key] + ":* " + thisObj.prop(theProperties[key]) + "<br>";
+                outInfo_vista += "*" + theProperties[key] + ":* " + thisObj.prop(theProperties[key]) + "<br>";
             }
         }
     }
@@ -110,8 +112,8 @@ function printViewElements(view, level, settings) {
     objList.sort(); // ensures the output groups by object type
 
     // Print heading
-    outputHdr(level + 1, "Element Catalogue", false);
-    outInfo += "\n";
+    outputHdr(level + 1, "Catálogo de Elementos", false);
+    outInfo_vista += "\n";
 
     // Define which columns should be included in the catalogue
     var columns = [];
@@ -141,8 +143,8 @@ function printViewElements(view, level, settings) {
         columnString += "| " + columns[c].name;
         columnBorder += "|:--------";
     }
-    outInfo += columnString += "\n";
-    outInfo += columnBorder += "|\n";
+    outInfo_vista += columnString += "\n";
+    outInfo_vista += columnBorder += "|\n";
 
     // For each row (element)
     var i;
@@ -150,7 +152,7 @@ function printViewElements(view, level, settings) {
         // Print each desired field under the table column for the row
         for (var j = 0; j < columns.length; j++) {
             // Start the cell
-            outInfo += "|";
+            outInfo_vista += "|";
 
             // Check columns for special cases
             if (columns[j].special != null) {
@@ -160,14 +162,14 @@ function printViewElements(view, level, settings) {
                 }
             } else {
                 // Default printing of a cell's data. If it's the first column though, bold it.
-                outInfo += (j === 0) ? "**" : "";
-                outInfo += replaceNL(objList[i][columns[j].field]);
-                outInfo += (j === 0) ? "**" : "";
+                outInfo_vista += (j === 0) ? "**" : "";
+                outInfo_vista += replaceNL(objList[i][columns[j].field]);
+                outInfo_vista += (j === 0) ? "**" : "";
             }
         }
 
         // Complete the last cell of the row
-        outInfo += "|\n";
+        outInfo_vista += "|\n";
     }
 }
 
@@ -208,11 +210,16 @@ function getViews(Level, Levelobj, settings) {
         });
 
         // now go through the sorted viewList
+        // outInfo_view: documentación singular de cada vista
+        // outInfo: acumula documentación entre todas las vistas
         for (var k = 0; k < viewList.length; k++) {
+
+            // No borrar el contenido de outInfo_vista
+            // outInfo_vista = "";
 
             var myView = viewList[k][0];
             var myRef = viewList[k][1];
-
+            
             outputHdr(Level + 1, myView.name, true);
 
             // Include the view's diagram (if desired)
@@ -224,18 +231,18 @@ function getViews(Level, Levelobj, settings) {
                 });
 
                 if (embed) {
-                    outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
+                    outInfo_vista += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
                     thisPath = path + myView.name;
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
                     imageURL = thisPath.replaceAll(" ", "%20");
-                    outInfo += "\n![Diagram: " + myView.name + "][" + myView.name + "]\n";
-                    outInfo += "\n[" + myView.name + "]: " + imageURL + ".png\n";
+                    outInfo_vista += "\n![Diagram: " + myView.name + "][" + myView.name + "]\n";
+                    outInfo_vista += "\n[" + myView.name + "]: " + imageURL + ".png\n";
                 }
             }
             if (settings.IncludeDocumentation === true) {
-                myView.documentation != "" ? outInfo += "\n" + myView.documentation + "\n" : true;
+                outInfo_vista += (myView.documentation != "") ? "\n" + myView.documentation + "\n" : "";
             }
 
             // Now document the view details (if desired)
@@ -243,6 +250,15 @@ function getViews(Level, Levelobj, settings) {
                 printViewElements(myRef, Level + 1, settings);
             }
 
+            // escribe un md por cada vista
+            thisPath = path + myView.name;
+            $.fs.writeFile(thisPath + ".md", outInfo_vista);
+
+            // agregar vista actual al documento acumulado
+            outInfo += outInfo_vista;
+
+            // Reiniciar contenido de la vista actual
+            outInfo_vista = "";
         }
     }
 }
@@ -268,37 +284,39 @@ function outputHdr(Level, Name, AddLink, Doc) {
         tocIndent = tocIndent + "\t";
     }
 
-    if (Name != "Element Catalogue") {
+    if (Name != "Catálogo de Elementos") {
         console.log(addSpace(Level - 1), Name);
     }
 
     var outHdr = indent + " " + Name;
 
+    // Quiebre de página
     if (Level === 1) {
-        outInfo += '<div style="page-break-before: always;"></div>';
-        outInfo += "\n ___ \n"; // horiz line before level 1's
+        outInfo_vista += '<div style="page-break-before: always;"></div>';
+        outInfo_vista += "\n\\newpage";
+        outInfo_vista += "\n ___ \n"; // horiz line before level 1's
     }
-
+    
     // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
     if (hardNewpage) {
         if (listofNewpageheaders.indexOf(Level) != -1) {
-            outInfo += '\nNEWPAGE\n';
+            outInfo_vista += "\n\\newpage\n";
         }
     }
-
-    outInfo += "\n" + outHdr;
-
+    
+    outInfo_vista += "\n" + outHdr;
+    (bDebug) ? console.log("outHdr:" + outHdr):false;
+    
     // Add a link to table of contents (TOC), if requested
     if (AddLink) {
         var thisLink = generateLink(Name);
-        outInfo += "\n" + "[](" + thisLink + ")";
+        outInfo_vista += "\n" + "[](" + thisLink + ")";
         theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
     }
-
+    
     if (Doc) {
-        outInfo += "\n" + Doc;
+        outInfo_vista += "\n" + Doc;
     }
-
 }
 
 // Finds the group's sub-group, if any
@@ -458,6 +476,7 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
 
     return settings;
 }
+
 
 // Main Code
 

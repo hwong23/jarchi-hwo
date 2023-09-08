@@ -77,11 +77,16 @@ function shallowClone(obj) {
 
 function generateLink(theString) {
     // this function thanks to Steven Mileham
+
+    if (theString === null) theString="";
+
     var regex = /[\[\]\(\)\#\\\/\"]/gi;
-    return "#" + theString.toLowerCase().replace(regex, "")
+    return "#" + (theString)?
+        theString.toLowerCase().replace(regex, "")
         .replaceAll(" [ -]*", "-") // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
         .replaceAll("\<", "lt")
-        .replaceAll("\>", "gt");
+        .replaceAll("\>", "gt")
+        :"";
 }
 
 function replaceNL(strIn) {
@@ -129,6 +134,13 @@ function printViewElements(view, level, settings) {
         "name": "Description",
         "field": "documentation"
     });
+
+    // Etiqueta de presentación
+    // columns.push({
+    //     "name": "Entrada",
+    //     "field": "label"
+    // });
+    
     if (settings.IncludeProperties === true) {
         columns.push({
             "name": "Properties",
@@ -318,7 +330,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     }
 }
 
-function salidaEncabezado(Level, Name, AddLink, Doc) {
+function salidaEncbzdo(Level, Name, AddLink, Doc) {
 
     var outDoc = "";
     var indent = "";
@@ -552,7 +564,9 @@ if (useDrivingView()) {
 
         // go through the array, and output.
         for (var i = 0; i < Sections.length; i++) {
-            outInfo += salidaEncabezado(Sections[i].level, Sections[i].group.name, true, Sections[i].group.documentation);
+            var nombreitem = (Sections[i].group.labelExpression)?Sections[i].group.labelExpression:Sections[i].group.name;
+
+            outInfo += salidaEncbzdo(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
         }
         docGen = "# " + drivingView.name + "\n"

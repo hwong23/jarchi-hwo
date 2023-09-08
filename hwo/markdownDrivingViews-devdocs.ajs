@@ -76,11 +76,18 @@ function shallowClone(obj) {
 
 function generateLink(theString) {
     // this function thanks to Steven Mileham
+
+    
     var regex = /[\[\]\(\)\#\\\/\"]/gi;
-    return "#" + theString.toLowerCase().replace(regex, "")
-        .replaceAll(" [ -]*", "-") // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
-        .replaceAll("\<", "lt")
-        .replaceAll("\>", "gt");
+    var theString2 = "#" + theString.toLowerCase().replace(regex, "")
+    // .replaceAll(" [ - ]*", "-") 
+    // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
+    .replaceAll(" ","-")
+    .replaceAll("\<", "lt")
+    .replaceAll("\>", "gt");
+
+    console.log("theString2:" + theString2);
+    return theString2;
 }
 
 function replaceNL(strIn) {

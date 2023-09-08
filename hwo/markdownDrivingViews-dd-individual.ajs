@@ -80,7 +80,8 @@ function generateLink(theString) {
     var regex = /[\[\]\(\)\#\\\/\"]/gi;
     return "#" + 
         theString.toLowerCase().replace(regex, "")
-        .replaceAll(" [ -]*", "-") // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
+        // .replaceAll(" [ -]*", "-") // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
+        .replaceAll(" ", "-")
         .replaceAll("\<", "lt")
         .replaceAll("\>", "gt")
         ;

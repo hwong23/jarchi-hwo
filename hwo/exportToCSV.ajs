@@ -149,7 +149,7 @@ if (theView) {
     // Open a dialog to let the user choose where to save the generated file
     var defaultFileName = model.name ? model.name + "-" + theView.name + ".csv" : "Exported Model.csv"; // Default file name
     // var exportFile = userPath + "/" + defaultFileName;
-    var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+    var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
 
 
     debug? console.log("> conceptHeaders"+conceptHeaders):true;
@@ -159,7 +159,7 @@ if (theView) {
 
     debug? console.log(theRelationshipData):true;
 
-    var theCSV = Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: ";"});
+    var theCSV = Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: ","});
     var theRelationshipsCSV = Papa.unparse({fields:relationshipHeaders, data:theRelationshipData});
 
     if(exportFile != null) {
@@ -168,8 +168,8 @@ if (theView) {
 
         // codificacion de caracteres ISO-8859-1: alfabeto latino. Preferido para aplicaciones (ej. Excel). https://es.wikipedia.org/wiki/ISO/IEC_8859-1
         // codificacion de caracteres UTF-8: Unicode variable. Preferido para Web. https://es.wikipedia.org/wiki/UTF-8
-        $.fs.writeFile(exportFile, theCSV, "ISO-8859-1");
-        $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", theRelationshipsCSV, "ISO-8859-1");
+        $.fs.writeFile(exportFile, theCSV, "UTF-8");
+        $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", theRelationshipsCSV, "UTF-8");
         console.log("> Export done");
     }
     else {

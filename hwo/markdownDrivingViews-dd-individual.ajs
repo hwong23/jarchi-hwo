@@ -325,7 +325,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     // Add a link to table of contents (TOC), if requested
     if (AddLink) {
         var thisLink = generateLink(Name);
-        outInfo_vista += "\n" + "[](" + thisLink + ")\n";
+        // outInfo_vista += "\n" + "[](" + thisLink + ")\n";
         theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
     }
     
@@ -372,7 +372,7 @@ function salidaEncbzdo(Level, Name, AddLink, Doc) {
     // Add a link to table of contents (TOC), if requested
     if (AddLink) {
         var thisLink = generateLink(Name);
-        outDoc += "\n" + "[](" + thisLink + ")\n";
+        // outDoc += "\n" + "[](" + thisLink + ")\n";
         theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
     }
     

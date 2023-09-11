@@ -250,8 +250,8 @@ function getViews(Level, Levelobj, settings) {
                     // imageURL = thisPath.replaceAll(" ", "");
                     imageURL = imageFolder + myView.name.replaceAll(" ", "");
                     
-                    outInfo_vista += "\n![Diagram: " + myView.name + "][" + myView.name + "]\n";
-                    outInfo_vista += "\n[" + myView.name + "]: " + imageURL + ".png\n";
+                    outInfo_vista += "\n![Diagram: " + myView.name + "](" + imageURL + ".png" + "){#fig: width=}\n";
+                    // outInfo_vista += "\n[" + myView.name + "]: " + imageURL + ".png\n";
                 }
             }
             if (settings.IncludeDocumentation === true) {

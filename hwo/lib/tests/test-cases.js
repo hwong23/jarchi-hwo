@@ -1450,7 +1450,7 @@ var PARSE_TESTS = [
 	{
 		description: "Parsing with skipEmptyLines set to 'greedy' with quotes and delimiters as content",
 		notes: "Must include lines with escaped delimiters and quotes",
-		input: 'a,b\n\n,\nc,d\n" , ",","\n""" """,""""""\n\n\n',
+		input: 'a,b\n\n,\nc,d\n" , ",","\n""",""""""\n\n\n',
 		config: { skipEmptyLines: 'greedy' },
 		expected: {
 			data: [['a', 'b'], ['c', 'd'], [' , ', ','], ['" "', '""']],

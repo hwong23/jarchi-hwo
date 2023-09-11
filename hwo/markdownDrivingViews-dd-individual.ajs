@@ -254,7 +254,7 @@ function getViews(Level, Levelobj, settings) {
                     
                     // alternativa 1: acorde a devdocs
                     outInfo_vista += "\n![Diagram: " + myView.name + "](" + imageURL + 
-                        ".png" + "){#fig:" + imageURL + "width=}\n"";
+                        ".png" + "){#fig:" + imageURL + "width=}\n";
                 }
             }
             if (settings.IncludeDocumentation === true) {

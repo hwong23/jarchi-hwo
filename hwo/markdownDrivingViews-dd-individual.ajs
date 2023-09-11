@@ -49,6 +49,7 @@ var embed = false; // false will store the images outside of the generated markd
 var hardNewpage = false; // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
 var drivingView = null; // will be set to the selected view that has all the groups and view references on.
+var dDebug = false;
 
 // Below is a hashtable of settings which define what to include in each section of the document. If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below, with a value of true/false, on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
@@ -231,7 +232,7 @@ function getViews(Level, Levelobj, settings) {
             var myViewAncho = myView.prop("ancho")?myView.prop("ancho"):"";
             var myRef = viewList[k][1];
 
-            console.log ("myViewAncho:" +myViewAncho);
+            (bDebug) ? console.log ("myViewAncho:" +myViewAncho):true;
             
             outputHdr(Level + 1, myView.name, true);
 

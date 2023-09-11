@@ -228,7 +228,10 @@ function getViews(Level, Levelobj, settings) {
             // outInfo_vista = "";
 
             var myView = viewList[k][0];
+            var myViewAncho = myView.prop("ancho")?myView.prop("ancho"):"";
             var myRef = viewList[k][1];
+
+            console.log ("myViewAncho:" +myViewAncho);
             
             outputHdr(Level + 1, myView.name, true);
 
@@ -255,7 +258,7 @@ function getViews(Level, Levelobj, settings) {
                     
                     // alternativa 1: acorde a devdocs
                     outInfo_vista += "\n![Diagram: " + myView.name + "](" + imageURL + 
-                        ".png" + "){#fig:" + nombreImagen + " width=}\n";
+                        ".png" + "){#fig:" + nombreImagen + " width=" + myViewAncho + "}\n";
                 }
             }
             if (settings.IncludeDocumentation === true) {

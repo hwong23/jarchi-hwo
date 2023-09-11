@@ -254,7 +254,7 @@ function getViews(Level, Levelobj, settings) {
                     
                     // alternativa 1: acorde a devdocs
                     outInfo_vista += "\n![Diagram: " + myView.name + "](" + imageURL + 
-                        ".png" + "){#fig: width=}\n";
+                        ".png" + "){#fig:" + imageURL + "width=}\n"";
                 }
             }
             if (settings.IncludeDocumentation === true) {
@@ -372,7 +372,10 @@ function salidaEncbzdo(Level, Name, AddLink, Doc) {
     // Add a link to table of contents (TOC), if requested
     if (AddLink) {
         var thisLink = generateLink(Name);
+        
+        // No es necesario repetir el vínculo (markdown ya vincula los títulos)
         // outDoc += "\n" + "[](" + thisLink + ")\n";
+        
         theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
     }
     

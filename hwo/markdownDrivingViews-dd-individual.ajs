@@ -49,6 +49,7 @@ var embed = false; // false will store the images outside of the generated markd
 var hardNewpage = false; // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
 var drivingView = null; // will be set to the selected view that has all the groups and view references on.
+var drivingView_devdoc = "";    // documento técnico automático asociado
 var bDebug = false;
 
 // Below is a hashtable of settings which define what to include in each section of the document. If not overridden by a group, these settings will apply to the entire document generated from a driving view.
@@ -468,12 +469,14 @@ function useDrivingView() {
     if (!drivingView) {
         window.alert("Please open and select a Driving View for the documentation");
     } else {
+        drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
         console.log("Driving view is: " + drivingView.name);
         var inclusionSettings = getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
+        console.log("DevDoc asociado: " + drivingView_devdoc);
 
         // Go through each immediate child group in the view, find the first group(s) in a series
         var outcome = true;
@@ -558,7 +561,7 @@ if (useDrivingView()) {
     var exportFile = window.promptSaveFile({
         title: "Export to File",
         filterExtensions: ["*.md"],
-        fileName: "02n.a1.contenido.md"
+        fileName: drivingView_devdoc
     });
 
     // where's the path. Find where the last slash delimiter is

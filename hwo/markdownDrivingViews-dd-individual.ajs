@@ -229,7 +229,7 @@ function getViews(Level, Levelobj, settings) {
             // outInfo_vista = "";
 
             var myView = viewList[k][0];
-            var myViewAncho = myView.prop("ancho")?myView.prop("ancho"):"";
+            var myViewAncho = myView.prop("ancho")?myView.prop("ancho") + "in":"";
             var myRef = viewList[k][1];
 
             (bDebug) ? console.log ("myViewAncho:" +myViewAncho):true;

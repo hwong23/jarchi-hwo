@@ -544,7 +544,7 @@ if (useDrivingView()) {
     var exportFile = window.promptSaveFile({
         title: "Export to File",
         filterExtensions: ["*.md"],
-        fileName: drivingView.name + ".md"
+        fileName: "02n.a1.contenido.md"
     });
 
     // where's the path. Find where the last slash delimiter is

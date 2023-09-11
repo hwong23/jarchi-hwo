@@ -236,11 +236,11 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    thisPath = path + myView.name;
+                    thisPath = path + myView.name.replaceAll(" ", "");
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
                     // imageURL = thisPath.replaceAll(" ", "%20");
-                    imageURL = imageFolder + myView.name.replaceAll(" ", "%20");
+                    imageURL = imageFolder + myView.name.replaceAll(" ", "");
 
                     outInfo += "\n![Diagram: " + myView.name + "][" + myView.name + "]\n";
                     outInfo += "\n[" + myView.name + "]: " + imageURL + ".png\n";

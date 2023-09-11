@@ -243,10 +243,13 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo_vista += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    thisPath = path + myView.name;
+                    thisPath = path + "/images/" + myView.name.replaceAll(" ", "");
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
+                    
 
-                    imageURL = thisPath.replaceAll(" ", "");
+                    // imageURL = thisPath.replaceAll(" ", "");
+                    imageURL = imageFolder + myView.name.replaceAll(" ", "");
+                    
                     outInfo_vista += "\n![Diagram: " + myView.name + "][" + myView.name + "]\n";
                     outInfo_vista += "\n[" + myView.name + "]: " + imageURL + ".png\n";
                 }

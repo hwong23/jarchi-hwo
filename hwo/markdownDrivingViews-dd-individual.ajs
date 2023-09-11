@@ -185,7 +185,7 @@ function printViewElements(view, level, settings) {
 
 function getViews(Level, Levelobj, settings) {
     var thisPath = "";
-    var imageURL = "";
+    var imageFolder = "images/";
     var viewList = [];
 
     if (!Levelobj) {

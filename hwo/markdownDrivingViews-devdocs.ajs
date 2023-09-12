@@ -289,7 +289,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     if (Level === 1) {
         outInfo += '<div style="page-break-before: always;"></div>';
         outInfo += "\n\\newpage";
-        outInfo += "\n ___ \n"; // horiz line before level 1's
+        // outInfo += "\n ___ \n"; // horiz line before level 1's
     }
 
     // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders

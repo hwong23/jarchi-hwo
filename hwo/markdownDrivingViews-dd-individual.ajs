@@ -316,7 +316,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     if (Level === 1) {
         outInfo_vista += '<div style="page-break-before: always;"></div>';
         outInfo_vista += "\n\\newpage";
-        outInfo_vista += "\n ___ \n"; // horiz line before level 1's
+        // outInfo_vista += "\n ___ \n"; // horiz line before level 1's
     }
     
     // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
@@ -363,7 +363,7 @@ function salidaEncbzdo(Level, Name, AddLink, Doc) {
     if (Level === 1) {
         outDoc += '<div style="page-break-before: always;"></div>';
         outDoc += "\n\\newpage";
-        outDoc += "\n ___ \n"; // horiz line before level 1's
+        // outDoc += "\n ___ \n"; // horiz line before level 1's
     }
     
     // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders

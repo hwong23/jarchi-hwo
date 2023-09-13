@@ -315,7 +315,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     // Quiebre de página
     if (Level === 1) {
         outInfo_vista += '<div style="page-break-before: always;"></div>';
-        outInfo_vista += "\n\\newpage";
+        outInfo_vista += "\n\\newpage\n";
         // outInfo_vista += "\n ___ \n"; // horiz line before level 1's
     }
     
@@ -362,7 +362,7 @@ function salidaEncbzdo(Level, Name, AddLink, Doc) {
     // Quiebre de página
     if (Level === 1) {
         outDoc += '<div style="page-break-before: always;"></div>';
-        outDoc += "\n\\newpage";
+        outDoc += "\n\\newpage\n";
         // outDoc += "\n ___ \n"; // horiz line before level 1's
     }
     

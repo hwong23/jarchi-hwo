@@ -585,7 +585,7 @@ if (useDrivingView()) {
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
         }
         docGen = "# " + drivingView.name + "\n"
-        docGen += "\n ___ \n";
+        // docGen += "\n ___ \n";
         docGen += theToc + "\n";
         docGen += outInfo;
         docGen += "\n\n``Generated on: " + currentDate + "``";

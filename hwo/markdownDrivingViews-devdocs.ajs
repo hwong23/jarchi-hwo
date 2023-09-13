@@ -48,6 +48,8 @@ var embed = false; // false will store the images outside of the generated markd
 var hardNewpage = false; // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
 var drivingView = null; // will be set to the selected view that has all the groups and view references on.
+var drivingView_devdoc = "";    // documento técnico automático asociado
+var bDebug = false;
 
 // Below is a hashtable of settings which define what to include in each section of the document. If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below, with a value of true/false, on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
@@ -221,6 +223,7 @@ function getViews(Level, Levelobj, settings) {
         for (var k = 0; k < viewList.length; k++) {
 
             var myView = viewList[k][0];
+            var myViewAncho = myView.prop("ancho")?myView.prop("ancho") + "in":"";
             var myRef = viewList[k][1];
 
             outputHdr(Level + 1, myView.name, true);
@@ -236,14 +239,15 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    thisPath = path + myView.name.replaceAll(" ", "");
+                    thisPath = path + "/images/" + myView.name.replaceAll(" ", "");
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
-                    // imageURL = thisPath.replaceAll(" ", "%20");
-                    imageURL = imageFolder + myView.name.replaceAll(" ", "");
+                    var nombreImagen = myView.name.replaceAll(" ", "");
+                    imageURL = imageFolder + nombreImagen;
 
-                    outInfo += "\n![Diagram: " + myView.name + "][" + myView.name + "]\n";
-                    outInfo += "\n[" + myView.name + "]: " + imageURL + ".png\n";
+                    outInfo += "\n![Diagram: " + myView.name + "](" + imageURL + 
+                        ".png" + "){#fig:" + nombreImagen + " width=" + myViewAncho + "}\n";
+                    
                 }
             }
             if (settings.IncludeDocumentation === true) {
@@ -288,14 +292,14 @@ function outputHdr(Level, Name, AddLink, Doc) {
 
     if (Level === 1) {
         outInfo += '<div style="page-break-before: always;"></div>';
-        outInfo += "\n\\newpage";
+        outInfo += "\n\\newpage\n";
         // outInfo += "\n ___ \n"; // horiz line before level 1's
     }
 
     // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
     if (hardNewpage) {
         if (listofNewpageheaders.indexOf(Level) != -1) {
-            outInfo += '\nNEWPAGE\n';
+            outInfo_vista += "\n\\newpage\n";
         }
     }
 
@@ -304,7 +308,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     // Add a link to table of contents (TOC), if requested
     if (AddLink) {
         var thisLink = generateLink(Name);
-        outInfo += "\n" + "[](" + thisLink + ")";
+        // outInfo += "\n" + "[](" + thisLink + ")";
         theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
     }
 
@@ -391,6 +395,7 @@ function useDrivingView() {
     if (!drivingView) {
         window.alert("Please open and select a Driving View for the documentation");
     } else {
+        drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
         console.log("Driving view is: " + drivingView.name);
         var inclusionSettings = getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
@@ -472,6 +477,7 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
     return settings;
 }
 
+
 // Main Code
 
 var docGen = "";
@@ -480,8 +486,7 @@ if (useDrivingView()) {
     var exportFile = window.promptSaveFile({
         title: "Export to File",
         filterExtensions: ["*.md"],
-        // fileName: drivingView.name + ".md"
-        fileName: "02n.a1.contenido.md"
+        fileName: drivingView_devdoc
     });
 
     // where's the path. Find where the last slash delimiter is
@@ -499,7 +504,9 @@ if (useDrivingView()) {
 
         // go through the array, and output.
         for (var i = 0; i < Sections.length; i++) {
-            outputHdr(Sections[i].level, Sections[i].group.name, true, Sections[i].group.documentation);
+            var nombreitem = (Sections[i].group.labelExpression)?Sections[i].group.labelExpression:Sections[i].group.name;
+
+            outputHdr(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
         }
         docGen = "# " + drivingView.name + "\n"

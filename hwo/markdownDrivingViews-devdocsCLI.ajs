@@ -24,6 +24,7 @@
 
  */
 
+load(__DIR__ + "lib/myargs.js");
 
 // Get current date
 var currentDate = new Date().toLocaleString("en-US", {
@@ -395,12 +396,10 @@ function useDrivingView() {
     // drivingView = selection.filter("archimate-diagram-model").first();
     
     drivingView = $("view").filter(function(o) { 
-        return (o.name === "Documento de Arquitectura Migración Funcional SUI");
-        // console.log (o.name);
+        console.log (o.name + ': ' + o.prop("alias"));
+        return (o.prop("alias")?o.prop("alias"):"" === "arqdoc");
         
     }).first();
-    
-
     
     if (!drivingView) {
         console.log("Please open and select a Driving View for the documentation");

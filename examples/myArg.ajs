@@ -1,10 +1,13 @@
 var argv = Java.type("org.eclipse.core.runtime.Platform").getApplicationArgs()
 
-console.log("arg: " + argv);
-
+// console.log("arg: " + argv);
 
 // use strict';
 for (let j = 0; j < argv.length; j++) {
     console.log(j + ' -> ' + (argv[j]));
 }
+
+// índice myArg
+const indice = argv.indexOf("-myArg");
+console.log('myArg: ' + indice + ' -> ' + argv[indice+1]);
 

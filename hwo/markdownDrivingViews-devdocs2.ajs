@@ -42,8 +42,8 @@ var Errors = [];
 var nextOne = null;
 var outInfo = "";
 var theToc = "";
-var path = "";
-var fileName = "";
+var g_path = "";
+var g_fileName = "";
 var embed = false; // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false; // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
@@ -239,7 +239,11 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    thisPath = path + "/images/" + myView.name.replaceAll(" ", "");
+                    (bDebug)?console.log (g_path):true;
+                    thisPath = g_path + "/images/" + myView.name.replaceAll(" ", "");
+
+                    console.log("vewpath: " + thisPath);
+
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
                     var nombreImagen = myView.name.replaceAll(" ", "");
@@ -391,7 +395,16 @@ function addGroup(group, level, parentInclusionSettings) {
 }
 
 function useDrivingView() {
-    drivingView = selection.filter("archimate-diagram-model").first();
+    // drivingView = selection.filter("archimate-diagram-model").first();
+    
+    drivingView = $("view").filter(function(o) { 
+        return (o.name === "Documento de Arquitectura Migración Funcional SUI");
+        // console.log (o.name);
+        
+    }).first();
+    
+
+    
     if (!drivingView) {
         console.log("Please open and select a Driving View for the documentation");
     } else {
@@ -483,20 +496,24 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
 var docGen = "";
 
 if (useDrivingView()) {
-    var exportFile = drivingView_devdoc;
+    var exportFile = "/Users/hwo/Downloads/tmpr/pgnmd/" + drivingView_devdoc;
 
     // where's the path. Find where the last slash delimiter is
     var lastSlash = "";
     if (exportFile) {
-        if (exportFile.indexOf("/") == -1) {
-            lastSlash = exportFile.lastIndexOf("\\"); // Windows
-        } else {
-            lastSlash = exportFile.lastIndexOf("/"); // Mac or Linux
-        }
-        path = exportFile.substring(0, lastSlash + 1);
-        fileName = exportFile.substring(lastSlash + 1, exportFile.length);
-        console.log("path: ", exportFile.substring(0, lastSlash + 1));
-        console.log("fileName: ", exportFile.substring(lastSlash + 1, exportFile.length));
+        // if (exportFile.indexOf("/") == -1) {
+        //     lastSlash = exportFile.lastIndexOf("\\"); // Windows
+        // } else {
+        //     lastSlash = exportFile.lastIndexOf("/"); // Mac or Linux
+        // }
+        // path = exportFile.substring(0, lastSlash + 1);
+        // fileName = exportFile.substring(lastSlash + 1, exportFile.length);
+
+        g_path = "/Users/hwo/Downloads/tmpr/pgnmd/";
+        g_fileName = drivingView_devdoc;
+
+        console.log("path: ", g_path);
+        console.log("fileName: ", g_fileName);
 
         // go through the array, and output.
         for (var i = 0; i < Sections.length; i++) {

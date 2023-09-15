@@ -1,0 +1,11 @@
+var list = $("view").filter(function(o) { 
+    return (o.name === "Documento de Arquitectura Migración Funcional SUI");
+    // console.log (o.name);
+    
+});
+
+console.log (list.length);
+var vista = list.first();
+console.log (vista.name);
+
+

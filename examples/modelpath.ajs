@@ -1,0 +1,2 @@
+var filePath = model.getPath();
+console.log (filePath);

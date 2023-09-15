@@ -42,8 +42,8 @@ var Errors = [];
 var nextOne = null;
 var outInfo = "";
 var theToc = "";
-var path = "";
-var fileName = "";
+var g_path = "";
+var g_fileName = "";
 var embed = false; // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false; // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
@@ -239,7 +239,7 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    thisPath = path + "/images/" + myView.name.replaceAll(" ", "");
+                    thisPath = g_path + "/images/" + myView.name.replaceAll(" ", "");
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
                     var nombreImagen = myView.name.replaceAll(" ", "");
@@ -497,8 +497,8 @@ if (useDrivingView()) {
         } else {
             lastSlash = exportFile.lastIndexOf("/"); // Mac or Linux
         }
-        path = exportFile.substring(0, lastSlash + 1);
-        fileName = exportFile.substring(lastSlash + 1, exportFile.length);
+        g_path = exportFile.substring(0, lastSlash + 1);
+        g_fileName = exportFile.substring(lastSlash + 1, exportFile.length);
         console.log("path: ", exportFile.substring(0, lastSlash + 1));
         console.log("fileName: ", exportFile.substring(lastSlash + 1, exportFile.length));
 

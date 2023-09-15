@@ -492,7 +492,7 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
 
 var docGen = "";
 
-if (useDrivingView("ardddqdoc")) {
+if (useDrivingView(getArgumento("vistaDocumental"))) {
     var exportFile = model.prop("rutaMac") + drivingView_devdoc;
 
     // where's the path. Find where the last slash delimiter is

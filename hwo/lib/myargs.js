@@ -9,6 +9,6 @@ function getArgumento (miArg) {
     // índice myArg
     const indice = argv.indexOf('-'+miArg);
     // console.log('myArg: ' + indice + ' -> ' + argv[indice+1]);
-    if (indice != -1) { return argv[indice+1] };
+    if (indice != -1) { return argv[indice+1]};
 }
 

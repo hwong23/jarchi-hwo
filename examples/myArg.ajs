@@ -1,3 +1,10 @@
-var args = Java.type("org.eclipse.core.runtime.Platform").getApplicationArgs()
+var argv = Java.type("org.eclipse.core.runtime.Platform").getApplicationArgs()
 
-console.log("arg: " + args);
+console.log("arg: " + argv);
+
+
+// use strict';
+for (let j = 0; j < argv.length; j++) {
+    console.log(j + ' -> ' + (argv[j]));
+}
+

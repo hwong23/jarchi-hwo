@@ -239,10 +239,7 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    (bDebug)?console.log (g_path):true;
                     thisPath = g_path + "/images/" + myView.name.replaceAll(" ", "");
-
-                    console.log("vewpath: " + thisPath);
 
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
@@ -496,7 +493,7 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
 var docGen = "";
 
 if (useDrivingView()) {
-    var exportFile = "/Users/hwo/Downloads/tmpr/pgnmd/" + drivingView_devdoc;
+    var exportFile = model.prop("rutaMac") + drivingView_devdoc;
 
     // where's the path. Find where the last slash delimiter is
     var lastSlash = "";
@@ -509,7 +506,7 @@ if (useDrivingView()) {
         // path = exportFile.substring(0, lastSlash + 1);
         // fileName = exportFile.substring(lastSlash + 1, exportFile.length);
 
-        g_path = "/Users/hwo/Downloads/tmpr/pgnmd/";
+        g_path = model.prop("rutaMac")?model.prop("rutaMac"):model.prop("rutaWindows");
         g_fileName = drivingView_devdoc;
 
         console.log("path: ", g_path);

@@ -1,0 +1,3 @@
+var args = Java.type("org.eclipse.core.runtime.Platform").getApplicationArgs()
+
+console.log("arg: " + args);

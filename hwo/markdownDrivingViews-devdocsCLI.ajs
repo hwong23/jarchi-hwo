@@ -402,6 +402,7 @@ function useDrivingView(alias) {
     
     if (!drivingView) {
         console.log("Please open and select a Driving View for the documentation");
+        return (false);
     } else {
         drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
         console.log("Driving view is: " + drivingView.name);
@@ -438,6 +439,7 @@ function useDrivingView(alias) {
         }
 
     }
+
     return (true);
 
 } // end of useDrivingView
@@ -490,7 +492,7 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
 
 var docGen = "";
 
-if (useDrivingView("arqdoc")) {
+if (useDrivingView("ardddqdoc")) {
     var exportFile = model.prop("rutaMac") + drivingView_devdoc;
 
     // where's the path. Find where the last slash delimiter is

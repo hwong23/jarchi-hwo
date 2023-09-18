@@ -24,6 +24,7 @@
 
  */
 
+load(__DIR__ + "lib/devdocslib.js");
 
 // Get current date
 var currentDate = new Date().toLocaleString("en-US", {
@@ -90,24 +91,6 @@ function generateLink(theString) {
 
     console.log("theString2:" + theString2);
     return theString2;
-}
-
-function replaceNL(strIn) {
-    if (null === strIn || "string" !== typeof strIn) return "";
-    var newStr = strIn.replace(/[\r\n]+/gm, "<br>");
-    return newStr;
-}
-
-function addPropsAsItalic(thisObj) {
-    // Bold keys take up even less space
-    var theProperties = thisObj.prop();
-    if (theProperties) {
-        for (key in theProperties) {
-            if ((theProperties[key] != 'label') && (theProperties[key] != "drill down")) {
-                outInfo += "*" + theProperties[key] + ":* " + thisObj.prop(theProperties[key]) + "<br>";
-            }
-        }
-    }
 }
 
 // Prints (documents) the elements and maybe properties (not relations) on the view

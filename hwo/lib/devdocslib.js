@@ -32,3 +32,55 @@ function addPropsAsItalic(thisObj) {
         }
     }
 }
+
+function salidaEncbzdo(Level, Name, AddLink, Doc) {
+
+    var outDoc = "";
+    var indent = "";
+    var tocIndent = "";
+
+    for (var i = 0; i < Level; i++) {
+        indent = indent + "#";
+    }
+    for (var j = 0; j < Level - 1; j++) { // ToC needs one less indent tab.
+        tocIndent = tocIndent + "\t";
+    }
+
+    if (Name != "Catálogo de Elementos") {
+        console.log(addSpace(Level - 1), Name);
+    }
+
+    var outHdr = indent + " " + Name;
+
+    // Quiebre de página
+    if (Level === 1) {
+        outDoc += '<div style="page-break-before: always;"></div>';
+        outDoc += "\n\\newpage\n";
+        // outDoc += "\n ___ \n"; // horiz line before level 1's
+    }
+    
+    // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
+    if (hardNewpage) {
+        if (listofNewpageheaders.indexOf(Level) != -1) {
+            outDoc += "\n\\newpage\n";
+        }
+    }
+    
+    outDoc += "\n" + outHdr;
+    
+    // Add a link to table of contents (TOC), if requested
+    if (AddLink) {
+        var thisLink = generateLink(Name);
+        
+        // No es necesario repetir el vínculo (markdown ya vincula los títulos)
+        // outDoc += "\n" + "[](" + thisLink + ")\n";
+        
+        theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
+    }
+    
+    if (Doc) {
+        outDoc += "\n" + Doc;
+    }
+
+    return outDoc;
+}

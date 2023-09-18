@@ -237,10 +237,6 @@ function getViews(Level, Levelobj, settings) {
                     var nombreImagen = myView.name.replaceAll(" ", "");
                     imageURL = imageFolder + nombreImagen;
                     
-                    // alternativa 2: original
-                    // outInfo_vista += "\n![Diagram: " + myView.name + "][" + imageURL + ".png" + "]\n";
-                    // outInfo_vista += "\n[" + myView.name + "]: " + imageURL + ".png\n";
-                    
                     // alternativa 1: acorde a devdocs
                     outInfo_vista += "\n![Diagram: " + myView.name + "](" + imageURL + 
                         ".png" + "){#fig:" + nombreImagen + " width=" + myViewAncho + "}\n";
@@ -321,58 +317,6 @@ function outputHdr(Level, Name, AddLink, Doc) {
     if (Doc) {
         outInfo_vista += "\n\n" + Doc;
     }
-}
-
-function salidaEncbzdo(Level, Name, AddLink, Doc) {
-
-    var outDoc = "";
-    var indent = "";
-    var tocIndent = "";
-
-    for (var i = 0; i < Level; i++) {
-        indent = indent + "#";
-    }
-    for (var j = 0; j < Level - 1; j++) { // ToC needs one less indent tab.
-        tocIndent = tocIndent + "\t";
-    }
-
-    if (Name != "Catálogo de Elementos") {
-        console.log(addSpace(Level - 1), Name);
-    }
-
-    var outHdr = indent + " " + Name;
-
-    // Quiebre de página
-    if (Level === 1) {
-        outDoc += '<div style="page-break-before: always;"></div>';
-        outDoc += "\n\\newpage\n";
-        // outDoc += "\n ___ \n"; // horiz line before level 1's
-    }
-    
-    // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
-    if (hardNewpage) {
-        if (listofNewpageheaders.indexOf(Level) != -1) {
-            outDoc += "\n\\newpage\n";
-        }
-    }
-    
-    outDoc += "\n" + outHdr;
-    
-    // Add a link to table of contents (TOC), if requested
-    if (AddLink) {
-        var thisLink = generateLink(Name);
-        
-        // No es necesario repetir el vínculo (markdown ya vincula los títulos)
-        // outDoc += "\n" + "[](" + thisLink + ")\n";
-        
-        theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
-    }
-    
-    if (Doc) {
-        outDoc += "\n" + Doc;
-    }
-
-    return outDoc;
 }
 
 // Finds the group's sub-group, if any
@@ -541,11 +485,16 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
 var docGen = "";
 
 if (useDrivingView()) {
-    var exportFile = window.promptSaveFile({
-        title: "Export to File",
-        filterExtensions: ["*.md"],
-        fileName: drivingView_devdoc
-    });
+    // Origina: nombre de archivo por ventana
+    // var exportFile = window.promptSaveFile({
+    //     title: "Export to File",
+    //     filterExtensions: ["*.md"],
+    //     fileName: drivingView_devdoc
+    // });
+
+    // Nombre de archivo por propiedad del modelo
+    let r = __DIR__.split("\/");
+    var exportFile = "/"+r[1]+"/"+r[2] + drivingView.prop("rutaMac") + drivingView_devdoc;
 
     // where's the path. Find where the last slash delimiter is
     var lastSlash = "";
@@ -557,6 +506,7 @@ if (useDrivingView()) {
         }
         path = exportFile.substring(0, lastSlash + 1);
         fileName = exportFile.substring(lastSlash + 1, exportFile.length);
+
         console.log("path: ", exportFile.substring(0, lastSlash + 1));
         console.log("fileName: ", exportFile.substring(lastSlash + 1, exportFile.length));
 

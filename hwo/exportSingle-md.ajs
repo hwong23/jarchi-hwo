@@ -152,6 +152,7 @@ function exportViews(folder) {
     //   }
     //   viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
     // });
+    
   });
 
   treeContent = tplTreeFolder({folderId: 'id-'+folder.id, folderName: _.escape(folder.name), folderContent: treeContent});
@@ -190,12 +191,12 @@ var mainReport = tplMainReport({
   inputCheckbox: inputCheckbox,
   treeContent: treeContent,
   viewTitles: viewTitles,
-  // viewDiagrams: viewDiagrams,
+  viewDiagrams: viewDiagrams,
   modelPurposeText: _.escape(model.purpose).replace(/\n/g, '<br>'),
   modelPurposeMarkdown: marked(_.escape(model.purpose), mdOptions),
-  // viewDocumentations: viewDocumentations,
-  // elements: elements,
-  // relationships: relationships,
+  viewDocumentations: viewDocumentations,
+  elements: elements,
+  relationships: relationships,
   sidebarBgColor: '#37474f',
 	sidebarColor: '#DDDDDD',
 	sidebarWidth: '350px',

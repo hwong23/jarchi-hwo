@@ -95,7 +95,14 @@ if(! folders.size()) {
   console.log("All views have been selected.");
 }
 
-var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
+// var filePath = window.promptSaveFile({ 
+//   title: "Save as HTML file", 
+//   filterExtensions : [ "*.html" , "*.*"], 
+//   fileName : model.name + ".html" });
+
+let r = __DIR__.split("\/");
+var filePath = "/"+r[1]+"/"+r[2] + model.prop("rutaMac") + model.name + ".html";
+console.log ("Exportado a: " + filePath)
 
 if(!filePath) {
   console.log('User cancelled.');

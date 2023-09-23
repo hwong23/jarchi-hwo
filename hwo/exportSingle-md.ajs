@@ -144,10 +144,7 @@ function exportViews(folder) {
     // viewDiagrams += tplViewDiagram({viewId: 'id-'+v.id, viewImage: $.model.renderViewAsBase64(v, "PNG")});
     
     viewTitles = tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
-    viewDiagrams = tplViewDiagram({
-      viewId: 'id-'+v.id, 
-      viewImage: exportaImagen(v, g_path), 
-      viewAncho: ''});
+    viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: exportaImagen(v, g_path), viewNombre: v.name.replaceAll(" ","")+'.png', viewAncho: ''});
     viewDocumentations += tplDocumentation({
       viewId: 'id-'+v.id,
       viewTitle: viewTitles,

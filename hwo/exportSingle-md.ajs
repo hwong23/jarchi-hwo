@@ -65,7 +65,7 @@ var tplTreeView = _.template(readFully(__DIR__ + 'templates/model-tree-view.tpl'
 var tplTreeFolder = _.template(readFully(__DIR__ + 'templates/model-tree-folder.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
-var tplDocumentation = _.template(readFully(__DIR__ + 'templates/documentation-md.tpl', 'UTF-8'));
+var tplDocumentation = _.template(readFully(__DIR__ + 'templates/documentation-md-dv.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/element.tpl', 'UTF-8'));
 var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));
 

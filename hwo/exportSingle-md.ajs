@@ -78,8 +78,8 @@ var viewTitles =  '';
 var viewDiagrams = '';
 var viewDocumentations = '';
 var viewsIdsByConceptId = {};
-var elements = '';
-var elementsCollection;
+// var elements = '';
+// var elementsCollection;
 var relationships = '';
 var relationshipsCollection;
 
@@ -137,12 +137,33 @@ function exportViews(folder) {
   });
 
   _.chain($(folder).children('view')).sortBy(function(v) { return v.name; }).each(function(v) {
+    // Update lists of elements and relationships
+    var elements = '';
+    var elementsCollection;
+    $(v).find('element').each(function(e) {
+      if(elementsCollection) {
+        if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
+      } else {
+        elementsCollection = $(e.concept);
+      }
+      viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
+    });
+    
+    _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
+      elements += tplElement({
+      viewsIds: viewsIdsByConceptId[e.id],
+      elementName: _.escape(e.name),
+      elementType: properCase(e.type),
+      elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '<br>'),
+      elementDocumentationMarkdown: marked(_.escape(e.documentation), mdOptions)
+      });
+    });
+    
     // Generate report's fragments
     // treeContent += tplTreeView({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
     // visibilityRulesBold += tplVisibilityRuleBold({viewId: 'id-'+v.id});
     // visibilityRulesReveal += tplVisibilityRuleReveal({viewId: 'id-'+v.id});
     // viewDiagrams += tplViewDiagram({viewId: 'id-'+v.id, viewImage: $.model.renderViewAsBase64(v, "PNG")});
-    
     viewTitles = tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
     viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: exportaImagen(v, g_path), viewNombre: v.name.replaceAll(" ","")+'.png', viewAncho: ''});
     viewDocumentations += tplDocumentation({
@@ -150,18 +171,10 @@ function exportViews(folder) {
       viewTitle: viewTitles,
       viewDiagram: viewDiagrams,
       documentationText: _.escape(v.documentation),  //.replace(/\n/g, '<br>'),
-      documentationMarkdown: marked(_.escape(v.documentation), mdOptions)
+      documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
+      elements: elements
     });
-    
-    // Update lists of elements and relationships
-    // $(v).find('element').each(function(e) {
-    //   if(elementsCollection) {
-    //     if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
-    //   } else {
-    //     elementsCollection = $(e.concept);
-    //   }
-    //   viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
-    // });
+      
     // $(v).find('relationship').each(function(r) {
     //   if(relationshipsCollection) {
     //     if(!relationshipsCollection.contains(r.concept)) relationshipsCollection.add($(r.concept));
@@ -178,16 +191,6 @@ function exportViews(folder) {
   // treeContent = tplTreeFolder({folderId: 'id-'+folder.id, folderName: _.escape(folder.name), folderContent: treeContent});
   // treeContent = previousContent + treeContent;
 }
-
-_.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
-    elements += tplElement({
-    viewsIds: viewsIdsByConceptId[e.id],
-    elementName: _.escape(e.name),
-    elementType: properCase(e.type),
-    elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '<br>'),
-    elementDocumentationMarkdown: marked(_.escape(e.documentation), mdOptions)
-    });
-});
 
 _.chain(relationshipsCollection).sortBy(function(r) { return r.name; }).each(function(r) {
     relationships += tplRelationship({
@@ -216,7 +219,7 @@ var mainReport = tplMainReport({
   modelPurposeText: _.escape(model.purpose).replace(/\n/g, '<br>'),
   modelPurposeMarkdown: marked(_.escape(model.purpose), mdOptions),
   viewDocumentations: viewDocumentations,
-  elements: elements,
+  // elements: elements,
   relationships: relationships,
 	headerHeight: '60px',
 	headerBgColor: '#0074D9',

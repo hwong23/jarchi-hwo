@@ -1,3 +1,5 @@
 {{viewTitle}}
 {{documentationText}}
 {{viewDiagram}}
+
+{{elements}}

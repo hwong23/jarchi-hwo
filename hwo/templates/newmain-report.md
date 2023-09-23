@@ -8,7 +8,6 @@ Copyright (c) 2020 Phillip Beauvoir & Jean-Baptiste Sarrodie - MIT License
 -->
 {{modelTitle}}
   
-
 {{inputCheckbox}}
 
 {{treeContent}}
@@ -19,11 +18,7 @@ Copyright (c) 2020 Phillip Beauvoir & Jean-Baptiste Sarrodie - MIT License
 {{modelTitle}}
 {{viewTitles}}
 		
-
-		
 {{viewDiagrams}}
-
-		
 
 {{modelPurposeText}}
 {{modelPurposeMarkdown}}
@@ -32,4 +27,3 @@ Copyright (c) 2020 Phillip Beauvoir & Jean-Baptiste Sarrodie - MIT License
 
 {{elements}}
 {{relationships}}
-		

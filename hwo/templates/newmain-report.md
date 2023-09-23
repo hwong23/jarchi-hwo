@@ -9,4 +9,3 @@ Copyright (c) 2020 Phillip Beauvoir & Jean-Baptiste Sarrodie - MIT License
 {{modelTitle}}
 
 {{viewDocumentations}}
-{{relationships}}

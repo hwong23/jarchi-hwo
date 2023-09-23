@@ -3,3 +3,4 @@
 {{viewDiagram}}
 
 {{elements}}
+{{relaciones}}

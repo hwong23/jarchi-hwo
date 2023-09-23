@@ -1,4 +1,3 @@
 {{viewTitle}}
-
 {{viewDiagram}}
 {{documentationText}}

@@ -129,9 +129,11 @@ function exportViews(folder) {
     // inputCheckbox += tplInputCheckbox({viewId: 'id-'+v.id});
     // viewTitles += tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
     // viewDiagrams += tplViewDiagram({viewId: 'id-'+v.id, viewImage: $.model.renderViewAsBase64(v, "PNG")});
-    viewDiagrams += tplViewDiagram({viewId: 'id-'+v.id, viewImage: _.escape(v.name), viewAncho: ''});
+    viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: _.escape(v.name), viewAncho: ''});
+
     viewDocumentations += tplDocumentation({
       viewId: 'id-'+v.id,
+      viewDiagram: viewDiagrams,
       documentationText: _.escape(v.documentation).replace(/\n/g, '<br>'),
       documentationMarkdown: marked(_.escape(v.documentation), mdOptions)
     });
@@ -184,7 +186,6 @@ _.chain(relationshipsCollection).sortBy(function(r) { return r.name; }).each(fun
     });
 });
 
-console.log ("viewDocumentations: " + viewDocumentations);
 
 var mainReport = tplMainReport({
   roboto: roboto,

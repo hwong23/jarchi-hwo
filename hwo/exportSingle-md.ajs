@@ -185,7 +185,6 @@ function exportViews(folder) {
     // visibilityRulesBold += tplVisibilityRuleBold({viewId: 'id-'+v.id});
     // visibilityRulesReveal += tplVisibilityRuleReveal({viewId: 'id-'+v.id});
     // viewDiagrams += tplViewDiagram({viewId: 'id-'+v.id, viewImage: $.model.renderViewAsBase64(v, "PNG")});
-    // var viewNota = obtNota (v);
     var nombrevista = v.name.replaceAll(" ","");
     viewTitles = tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
     viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: exportaImagen(v, g_path), viewNombre: nombrevista+'.png', viewAncho: ''});
@@ -193,7 +192,7 @@ function exportViews(folder) {
     viewDocumentations += tplDocumentation({
       viewId: 'id-'+v.id,
       viewTitle: viewTitles,
-      // viewNota: viewNota,
+      viewNota: obtNota (v),
       viewDiagram: viewDiagrams,
       documentationText: _.escape(v.documentation),  //.replace(/\n/g, '<br>'),
       documentationMarkdown: marked(_.escape(v.documentation), mdOptions),

@@ -1,4 +1,5 @@
 {{viewTitle}}
+{{viewNota}}
 {{viewDiagram}}
 {{documentationText}}
 

@@ -122,10 +122,7 @@ function exportaImagen (vv, pth) {
     margin: 10
   });
 
-  $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", 
-    bytes, 
-    "BASE64"
-    );
+  $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
 
   return _.escape(vv.name);
 }
@@ -161,7 +158,6 @@ function exportViews(folder) {
       }
       viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
     });
-    
     
     _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
       elements += tplElement({

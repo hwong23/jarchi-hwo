@@ -124,7 +124,8 @@ function exportaImagen (vv, pth) {
 
   $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
 
-  return _.escape(vv.name);
+  // return _.escape(vv.name);
+  return vv.name;
 }
 
 function exportViews(folder) {
@@ -162,23 +163,24 @@ function exportViews(folder) {
     _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
       elements += tplElement({
       viewsIds: viewsIdsByConceptId[e.id],
-      elementName: _.escape(e.name),
+      elementName: e.name,
       elementType: properCase(e.type),
-      elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '<br>'),
-      elementDocumentationMarkdown: marked(_.escape(e.documentation), mdOptions)
+      elementDocumentationText: e.documentation.replace(/\n/g, '<br>'),
+      // elementDocumentationMarkdown: marked((e.documentation), mdOptions)
+      elementDocumentationMarkdown: ''
       });
     });
-    _.chain(relacionesCollection).sortBy(function(r) { return r.name; }).each(function(r) {
-      relaciones += tplRelationship({
-      viewsIds: viewsIdsByConceptId[r.id],
-      relationshipName: _.escape(r.name),
-      relationshipType: properCase(r.type),
-      relationshipSource: _.escape(r.source.name),
-      relationshipTarget: _.escape(r.target.name),
-      relationshipDocumentationText: _.escape(r.documentation).replace(/\n/g, '<br>'),
-      relationshipDocumentationMarkdown: marked(_.escape(r.documentation), mdOptions)
-      });
-    });
+    // _.chain(relacionesCollection).sortBy(function(r) { return r.name; }).each(function(r) {
+    //   relaciones += tplRelationship({
+    //   viewsIds: viewsIdsByConceptId[r.id],
+    //   relationshipName: _.escape(r.name),
+    //   relationshipType: properCase(r.type),
+    //   relationshipSource: _.escape(r.source.name),
+    //   relationshipTarget: _.escape(r.target.name),
+    //   relationshipDocumentationText: _.escape(r.documentation).replace(/\n/g, '<br>'),
+    //   relationshipDocumentationMarkdown: marked(_.escape(r.documentation), mdOptions)
+    //   });
+    // });
     
     // Generate report's fragments
     // treeContent += tplTreeView({viewId: 'id-'+v.id, viewName: _.escape(v.name)});

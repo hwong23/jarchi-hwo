@@ -63,11 +63,6 @@ var roboto = readFully(__DIR__ + 'resources/roboto.css', 'UTF-8');
 var icon = readFully(__DIR__ + 'resources/icon.css', 'UTF-8');
 var picnic = readFully(__DIR__ + 'resources/picnic-custom.css', 'UTF-8');
 
-// var tplVisibilityRuleBold = _.template(readFully(__DIR__ + 'templates/visibility-rule-bold.tpl', 'UTF-8'));
-// var tplVisibilityRuleReveal = _.template(readFully(__DIR__ + 'templates/visibility-rule-reveal.tpl', 'UTF-8'));
-// var tplInputCheckbox = _.template(readFully(__DIR__ + 'templates/input-checkbox.tpl', 'UTF-8'));
-// var tplTreeView = _.template(readFully(__DIR__ + 'templates/model-tree-view.tpl', 'UTF-8'));
-// var tplTreeFolder = _.template(readFully(__DIR__ + 'templates/model-tree-folder.tpl', 'UTF-8'));
 var tplDocumentation;
 var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report.md', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
@@ -85,10 +80,6 @@ var viewTitles =  '';
 var viewDiagrams = '';
 var viewDocumentations = '';
 var viewsIdsByConceptId = {};
-// var elements = '';
-// var elementsCollection;
-// var relationships = '';
-// var relationshipsCollection;
 
 var allFolders = $('folder');
 var viewsFolder = $(model).children().filter('folder.Views');
@@ -104,10 +95,6 @@ if(! folders.size()) {
 
 
 // elabora el ruta+nombre archivo con base en propiedades del modelo
-// var filePath = window.promptSaveFile({ 
-//   title: "Save as HTML file", 
-//   filterExtensions : [ "*.html" , "*.*"], 
-//   fileName : model.name + ".html" });
 var r = __DIR__.split("\/");
 var g_path = "/"+r[1]+"/"+r[2] + model.prop("rutaMac");
 var g_filePath = g_path + model.name + ".md";
@@ -210,10 +197,6 @@ function exportViews(folder) {
 
     
     // Generate report's fragments
-    // treeContent += tplTreeView({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
-    // visibilityRulesBold += tplVisibilityRuleBold({viewId: 'id-'+v.id});
-    // visibilityRulesReveal += tplVisibilityRuleReveal({viewId: 'id-'+v.id});
-    // viewDiagrams += tplViewDiagram({viewId: 'id-'+v.id, viewImage: $.model.renderViewAsBase64(v, "PNG")});
     var nombrevista = v.name.replaceAll(" ","");
     viewTitles = tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
     viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: exportaImagen(v, g_path), viewNombre: nombrevista+'.png', viewAncho: ''});
@@ -228,13 +211,7 @@ function exportViews(folder) {
       elements: viewElements,
       relaciones: relaciones
     });
-
-    // console.log ("documentationMarkdown:\n   " + viewDocumentations);
-
   }); // chain
-
-  // treeContent = tplTreeFolder({folderId: 'id-'+folder.id, folderName: _.escape(folder.name), folderContent: treeContent});
-  // treeContent = previousContent + treeContent;
 }
 
 

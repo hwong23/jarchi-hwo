@@ -33,6 +33,10 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+// GHistoria versión
+// Plantillas para elementos
+// Plantillas por vista
+
 load(__DIR__ + 'libs/nashorn-polyfills.js');
 load(__DIR__ + 'libs/underscore-min.js');
 load(__DIR__ + 'libs/marked.min.js');
@@ -69,7 +73,7 @@ var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report.md'
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = function() {};
-var tplElementFila = _.template(readFully(__DIR__ + 'templates/element-md.tpl', 'UTF-8'));
+var tplElementFila = function() {};
 var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));
 
 var visibilityRulesBold = '';
@@ -137,6 +141,9 @@ function exportViews(folder) {
     exportViews(f)
   });
 
+  var elemtPlantilla = "";
+  var elemtPlantillaActual = '';
+
   _.chain($(folder).children('view')).sortBy(function(v) { return v.name; }).each(function(v) {
     // Inicializa datos de la vista
     var viewElements = '';
@@ -144,8 +151,21 @@ function exportViews(folder) {
     var elementsCollection;
     var relaciones = '';
     var relacionesCollection;
-    var elemtPlantilla = '';
+    var cambioPlnt = true;
+
+    // Carga las configuraciones de la vista
+    tplDocumentation = _.template(
+      readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8'));
+    elemtPlantillaActual = v.prop('plantillaElm') ? v.prop('plantillaElm'):'elementtabla-md,element-md';
+    cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
     
+    if (cambioPlnt) {
+      elemtPlantilla = elemtPlantillaActual;
+      console.log ('elemtPlantilla: ' + elemtPlantilla.split(',')[0] + '.tpl');
+      tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
+      tplElementFila = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
+    }
+
     // Update lists of elements and relationships
     $(v).find('element').each(function(e) {
       if(elementsCollection) {
@@ -165,14 +185,6 @@ function exportViews(folder) {
     });
     
     _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
-      // Hay cambio de plantilla elemento
-      var elemtPlantillaActual = (e.prop('plantilla') ? e.prop('plantilla'):'elementtabla-md') + '.tpl';
-      var cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
-      console.log (elemtPlantillaActual +'==='+ elemtPlantilla);
-      if (cambioPlnt) {
-        elemtPlantilla = elemtPlantillaActual;
-        tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla, 'UTF-8'));
-      }
       // Plantilla elemento
       elements += tplElementFila({
       viewsIds: viewsIdsByConceptId[e.id],
@@ -196,8 +208,6 @@ function exportViews(folder) {
       });
     });
 
-    // Carga la plantilla de la vista
-    tplDocumentation = _.template(readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8'));
     
     // Generate report's fragments
     // treeContent += tplTreeView({viewId: 'id-'+v.id, viewName: _.escape(v.name)});

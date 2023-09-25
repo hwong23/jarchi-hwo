@@ -36,6 +36,7 @@
 load(__DIR__ + 'libs/nashorn-polyfills.js');
 load(__DIR__ + 'libs/underscore-min.js');
 load(__DIR__ + 'libs/marked.min.js');
+load(__DIR__ + 'lib/devdocslib.js');
 load(__DIR__ + 'lib/myseleccion.js');
 
 console.show();
@@ -58,15 +59,15 @@ var roboto = readFully(__DIR__ + 'resources/roboto.css', 'UTF-8');
 var icon = readFully(__DIR__ + 'resources/icon.css', 'UTF-8');
 var picnic = readFully(__DIR__ + 'resources/picnic-custom.css', 'UTF-8');
 
+// var tplVisibilityRuleBold = _.template(readFully(__DIR__ + 'templates/visibility-rule-bold.tpl', 'UTF-8'));
+// var tplVisibilityRuleReveal = _.template(readFully(__DIR__ + 'templates/visibility-rule-reveal.tpl', 'UTF-8'));
+// var tplInputCheckbox = _.template(readFully(__DIR__ + 'templates/input-checkbox.tpl', 'UTF-8'));
+// var tplTreeView = _.template(readFully(__DIR__ + 'templates/model-tree-view.tpl', 'UTF-8'));
+// var tplTreeFolder = _.template(readFully(__DIR__ + 'templates/model-tree-folder.tpl', 'UTF-8'));
+var tplDocumentation;
 var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report.md', 'UTF-8'));
-var tplVisibilityRuleBold = _.template(readFully(__DIR__ + 'templates/visibility-rule-bold.tpl', 'UTF-8'));
-var tplVisibilityRuleReveal = _.template(readFully(__DIR__ + 'templates/visibility-rule-reveal.tpl', 'UTF-8'));
-var tplInputCheckbox = _.template(readFully(__DIR__ + 'templates/input-checkbox.tpl', 'UTF-8'));
-var tplTreeView = _.template(readFully(__DIR__ + 'templates/model-tree-view.tpl', 'UTF-8'));
-var tplTreeFolder = _.template(readFully(__DIR__ + 'templates/model-tree-folder.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
-var tplDocumentation = _.template(readFully(__DIR__ + 'templates/documentation-md-dv.tpl', 'UTF-8'));
 var tplElementTabla = _.template(readFully(__DIR__ + 'templates/elementtabla-md.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/element-md.tpl', 'UTF-8'));
 var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));
@@ -170,17 +171,21 @@ function exportViews(folder) {
       elementDocumentationMarkdown: ''
       });
     });
-    // _.chain(relacionesCollection).sortBy(function(r) { return r.name; }).each(function(r) {
-    //   relaciones += tplRelationship({
-    //   viewsIds: viewsIdsByConceptId[r.id],
-    //   relationshipName: _.escape(r.name),
-    //   relationshipType: properCase(r.type),
-    //   relationshipSource: _.escape(r.source.name),
-    //   relationshipTarget: _.escape(r.target.name),
-    //   relationshipDocumentationText: _.escape(r.documentation).replace(/\n/g, '<br>'),
-    //   relationshipDocumentationMarkdown: marked(_.escape(r.documentation), mdOptions)
-    //   });
-    // });
+    _.chain(relacionesCollection).sortBy(function(r) { return r.name; }).each(function(r) {
+      relaciones += tplRelationship({
+      viewsIds: viewsIdsByConceptId[r.id],
+      relationshipName: _.escape(r.name),
+      relationshipType: properCase(r.type),
+      relationshipSource: _.escape(r.source.name),
+      relationshipTarget: _.escape(r.target.name),
+      relationshipDocumentationText: _.escape(r.documentation).replace(/\n/g, '<br>'),
+      // relationshipDocumentationMarkdown: marked(_.escape(r.documentation), mdOptions)
+      relationshipDocumentationMarkdown: ''
+      });
+    });
+
+    // Carga la plantilla de la vista
+    tplDocumentation = _.template(readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8'));
     
     // Generate report's fragments
     // treeContent += tplTreeView({viewId: 'id-'+v.id, viewName: _.escape(v.name)});

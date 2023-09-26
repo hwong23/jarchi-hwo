@@ -43,8 +43,8 @@ var nextOne = null;
 var outInfo = "";
 var outInfo_vista = "";
 var theToc = "";
-var path = "";
-var fileName = "";
+var g_path = "";
+var g_fileName = "";
 var bDebug = true;
 var embed = false; // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false; // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
@@ -153,7 +153,7 @@ function printViewElements(view, level, settings) {
             if (columns[j].special != null) {
                 // If the special case is element properties, and we want to print properties...
                 if (columns[j].special === "properties" && settings.IncludeProperties === true) {
-                    addPropsAsItalic(objList[i]);
+                    outInfo += addPropsAsItalic(objList[i]);
                 }
             } else {
                 // Default printing of a cell's data. If it's the first column though, bold it.
@@ -231,7 +231,7 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo_vista += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    thisPath = path + '/images/' + myView.name.replaceAll(" ", "");
+                    thisPath = g_path + '/images/' + myView.name.replaceAll(" ", "");
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
                     
                     var nombreImagen = myView.name.replaceAll(" ", "");
@@ -252,7 +252,7 @@ function getViews(Level, Levelobj, settings) {
             }
 
             // escribe un md por cada vista
-            thisPath = path + myView.name;
+            thisPath = g_path + myView.name;
             $.fs.writeFile(thisPath + ".md", outInfo_vista);
 
             // agregar vista actual al documento acumulado
@@ -504,11 +504,11 @@ if (useDrivingView()) {
         } else {
             lastSlash = exportFile.lastIndexOf("/"); // Mac or Linux
         }
-        path = exportFile.substring(0, lastSlash + 1);
-        fileName = exportFile.substring(lastSlash + 1, exportFile.length);
+        g_path = exportFile.substring(0, lastSlash + 1);
+        g_fileName = exportFile.substring(lastSlash + 1, exportFile.length);
 
-        console.log("path: ", exportFile.substring(0, lastSlash + 1));
-        console.log("fileName: ", exportFile.substring(lastSlash + 1, exportFile.length));
+        console.log("path: ", g_path);
+        console.log("fileName: ", g_fileName);
 
         // go through the array, and output.
         for (var i = 0; i < Sections.length; i++) {

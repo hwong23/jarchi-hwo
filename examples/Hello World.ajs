@@ -21,4 +21,13 @@ text = "Hello World from Archi Scripting!\n\n";
 text += "The quick brown fox jumped over the lazy dog's back. ";
 text += "Now is the time for all good men to come to the aid of their country.";
 
-window.alert(text); 	
+function agrTexto (str) {
+    str += '##más texto nates##';
+    console.log(str);
+}
+
+agrTexto(text);
+console.log(text);
+// window.alert(text); 	
+
+

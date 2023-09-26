@@ -51,7 +51,7 @@ var hardNewpage = false; // if true, the text NEWPAGE will be put in the output 
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
 var drivingView = null; // will be set to the selected view that has all the groups and view references on.
 var drivingView_devdoc = "";    // documento técnico automático asociado
-var bDebug = false;
+var debug = true;
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
@@ -149,7 +149,8 @@ function printViewElements(view, level, settings) {
             if (columns[j].special != null) {
                 // If the special case is element properties, and we want to print properties...
                 if (columns[j].special === "properties" && settings.IncludeProperties === true) {
-                    addPropsAsItalic(objList[i]);
+                    addPropsAsItalic(objList[i], outInfo);
+                    
                 }
             } else {
                 // Default printing of a cell's data. If it's the first column though, bold it.
@@ -222,7 +223,8 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    thisPath = g_path + "/images/" + myView.name.replaceAll(" ", "");
+                    thisPath = g_path + "images/" + myView.name.replaceAll(" ", "");
+                    (debug)?console.log('imagePath: '+thisPath):true;
 
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
@@ -297,7 +299,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     }
 
     if (Doc) {
-        outInfo += "\n" + Doc;
+        outInfo += "\n\n" + Doc;
     }
 
 }
@@ -394,6 +396,7 @@ function useDrivingView(alias) {
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
+        console.log("DevDoc asociado: " + drivingView_devdoc);
 
         // Go through each immediate child group in the view, find the first group(s) in a series
         var outcome = true;
@@ -477,7 +480,9 @@ var docGen = "";
 
 if (useDrivingView(getArgumento("vistaDocumental"))) {
     // Nombre de archivo por propiedad del modelo
-    var exportFile = drivingView.prop("rutaMac") + drivingView_devdoc;
+    let r = __DIR__.split("\/");
+    var exportFile = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/') + drivingView_devdoc;
+    (debug)?console.log('exporFile: '+exportFile):true;
 
     // where's the path. Find where the last slash delimiter is
     var lastSlash = "";
@@ -490,7 +495,7 @@ if (useDrivingView(getArgumento("vistaDocumental"))) {
         // path = exportFile.substring(0, lastSlash + 1);
         // fileName = exportFile.substring(lastSlash + 1, exportFile.length);
 
-        g_path = model.prop("rutaMac")?model.prop("rutaMac"):model.prop("rutaWindows");
+        g_path = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/');
         g_fileName = drivingView_devdoc;
 
         console.log("path: ", g_path);

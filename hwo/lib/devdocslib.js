@@ -21,15 +21,19 @@ function replaceNL(strIn) {
 }
 
 function addPropsAsItalic(thisObj) {
+    var propts = '';
+
     // Bold keys take up even less space
     var theProperties = thisObj.prop();
     if (theProperties) {
         for (key in theProperties) {
             if ((theProperties[key] != 'label') && (theProperties[key] != "drill down")) {
-                outInfo_vista += "*" + theProperties[key] + ":* " + thisObj.prop(theProperties[key]) + "<br>";
+                propts += "*" + theProperties[key] + ":* " + thisObj.prop(theProperties[key]) + "<br>";
             }
         }
     }
+
+    return propts;
 }
 
 function salidaEncbzdo(Level, Name, AddLink, Doc) {

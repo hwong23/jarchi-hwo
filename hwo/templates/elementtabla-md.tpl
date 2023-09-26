@@ -1,6 +1,6 @@
 ### Catálogo de Elementos
 
-| Tema           | Tema | Tema | Tema |
+| Nombre           | Tipo | Documentación | Propiedad |
 |----------------|------|------|------|
 {{filasTabla}}
 Table: Elementos de la vista. {#tbl:tblelement-{{viewNombre}}-id}

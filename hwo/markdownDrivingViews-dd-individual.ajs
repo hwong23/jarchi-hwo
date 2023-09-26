@@ -231,7 +231,7 @@ function getViews(Level, Levelobj, settings) {
                 if (embed) {
                     outInfo_vista += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
-                    thisPath = "/images/" + myView.name.replaceAll(" ", "");
+                    thisPath = path + '/images/' + myView.name.replaceAll(" ", "");
                     $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
                     
                     var nombreImagen = myView.name.replaceAll(" ", "");
@@ -494,7 +494,7 @@ if (useDrivingView()) {
 
     // Nombre de archivo por propiedad del modelo
     let r = __DIR__.split("\/");
-    var exportFile = "/"+r[1]+"/"+r[2] + drivingView.prop("rutaMac") + drivingView_devdoc;
+    var exportFile = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/') + drivingView_devdoc;
 
     // where's the path. Find where the last slash delimiter is
     var lastSlash = "";

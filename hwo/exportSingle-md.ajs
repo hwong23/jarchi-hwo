@@ -33,7 +33,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-// GHistoria versión (más actual a anterior)
+// Historia versión (más actual a anterior)
 // Plantillas para elementos
 // Plantillas por vista
 
@@ -50,6 +50,17 @@ console.clear();
 _.templateSettings = {
   interpolate: /\{\{(.+?)\}\}/g
 };
+
+// Below is a hashtable of settings which define what to include in each section of the document. If not overridden by a group, these settings will apply to the entire document generated from a driving view.
+// A property of the same name of the settings below, with a value of true/false, on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
+var DefaultInclusionSettings = {
+  "IncludeDiagram": true, // if true, will include the view's diagram
+  "IncludeDocumentation": true, // if true, will include the view's documentation text (which itself can have markdown, by the way)
+  "IncludeViewElements": false, // if true, will include a catalogue of the view's elements
+  "IncludeProperties": true, // if true, will include the "properties" field in a catalogue of elements from a view
+  "IncluyeRelaciones": false
+};
+
 
 // Set Markdown rendering options
 var mdOptions = {
@@ -88,13 +99,15 @@ var nonViewFolders = allFolders.not(viewsFolder).not(viewFolders);
 
 var folders = selection.filter("folder").not(nonViewFolders);
 
+
+// 1. selección de carpeta de vistas
 if(! folders.size()) {
   folders = viewsFolder;
   console.log("All views have been selected.");
 }
 
 
-// elabora el ruta+nombre archivo con base en propiedades del modelo
+// 2. elabora el ruta+nombre archivo con base en propiedades del modelo
 var r = __DIR__.split("\/");
 var g_path = "/"+r[1]+"/"+r[2] + model.prop("rutaMac");
 var g_filePath = g_path + model.name + ".md";
@@ -104,6 +117,7 @@ if(!g_filePath) {
   exit();
 }
 
+// 3. recorre las vistas dentro de la carpeta
 _.chain(folders).sortBy(function(f) { return f.name; }).each(function(f) {
   exportViews(f);
 });
@@ -121,7 +135,7 @@ function exportaImagen (vv, pth) {
 }
 
 function exportViews(folder) {
-  console.log('Exporting "', folder.name, '"...');
+  console.log('Exporting folder', folder.name);
   var previousContent = treeContent;
   treeContent = '';
   _.chain($(folder).children('folder')).sortBy(function(f) { return f.name; }).each(function(f) {
@@ -148,28 +162,32 @@ function exportViews(folder) {
     
     if (cambioPlnt) {
       elemtPlantilla = elemtPlantillaActual;
-      console.log ('elemtPlantilla: ' + elemtPlantilla.split(',')[0] + '.tpl');
+      // console.log ('elemtPlantilla: ' + elemtPlantilla.split(',')[0] + '.tpl');
       tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
       tplElementFila = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
     }
 
     // Update lists of elements and relationships
-    $(v).find('element').each(function(e) {
-      if(elementsCollection) {
-        if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
-      } else {
-        elementsCollection = $(e.concept);
-      }
-      viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
-    });
-    $(v).find('relationship').each(function(r) {
-      if(relacionesCollection) {
-        if(!relacionesCollection.contains(r.concept)) relacionesCollection.add($(r.concept));
-      } else {
-        relacionesCollection = $(r.concept);
-      }
-      viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
-    });
+    if (DefaultInclusionSettings.IncludeViewElements === true) {
+      $(v).find('element').each(function(e) {
+        if(elementsCollection) {
+          if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
+        } else {
+          elementsCollection = $(e.concept);
+        }
+        viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
+      });
+    }
+    if (DefaultInclusionSettings.IncluyeRelaciones === true) {
+      $(v).find('relationship').each(function(r) {
+        if(relacionesCollection) {
+          if(!relacionesCollection.contains(r.concept)) relacionesCollection.add($(r.concept));
+        } else {
+          relacionesCollection = $(r.concept);
+        }
+        viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
+      });
+    }
     
     _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
       // Plantilla elemento
@@ -215,6 +233,7 @@ function exportViews(folder) {
 }
 
 
+// 4. escribe documento MD
 var mainReport = tplMainReport({
   roboto: roboto,
   icon: icon,

@@ -1,5 +1,5 @@
 var list = $("view").filter(function(o) { 
-    return (o.name === "Documento de Arquitectura Migración Funcional SUI");
+    return (o.name === "Doc.3.Migración Funcional SUI");
     // console.log (o.name);
     
 });

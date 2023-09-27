@@ -87,3 +87,70 @@ function salidaEncbzdo(Level, Name, AddLink, Doc) {
 
     return outDoc;
 }
+
+// Shallow clones attributes of a basic object
+function shallowClone(obj) {
+    // If the object provided is not actually an object, return null so we don't accidentally clobber some other reference
+    if (null === obj || "object" !== typeof obj) {
+        return null;
+    }
+
+    // Create a new, blank, object, then copy over the attributes
+    var copy = {};
+    for (var attr in obj) {
+        copy[attr] = obj[attr];
+    }
+    return copy;
+}
+
+// Resulta en una mezcla de configuración objeto, padre/default
+// settingsElement: reference to the driving view or a group which may have overriding settings
+// defaultSettings: settings object to use as default (required)
+// Ejemplo:
+//    var inclusionSettings = getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
+function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
+    // Check default settings
+    if (defaultSettings === null ||
+        typeof defaultSettings !== "object" ||
+        defaultSettings["IncludeDiagram"] === null ||
+        defaultSettings["IncludeDocumentation"] === null ||
+        defaultSettings["IncludeViewElements"] === null ||
+        defaultSettings["IncludeProperties"] === null
+        // defaultSettings["IncluyeRelaciones"] === null
+    ) {
+        console.log("Default settings were not correctly passed to a child node");
+        return (null);
+    }
+    var settings = shallowClone(defaultSettings);
+
+    // Check for overrides
+    var checkIncludeDiagram = settingsElement.prop("IncludeDiagram");
+    var checkIncludeDocumentation = settingsElement.prop("IncludeDocumentation");
+    var checkIncludeElements = settingsElement.prop("IncludeViewElements");
+    var checkIncludeProperties = settingsElement.prop("IncludeProperties");
+    var checkIncluyeRelaciones = settingsElement.prop("IncluyeRelaciones");
+
+    console.log('v.prop: '+settingsElement.prop("IncluyeRelaciones"));
+
+    if (checkIncludeDiagram !== null) {
+        settings["IncludeDiagram"] = checkIncludeDiagram === "true" ? true : false;
+    }
+
+    if (checkIncludeDocumentation !== null) {
+        settings["IncludeDocumentation"] = checkIncludeDocumentation === "true" ? true : false;
+    }
+
+    if (checkIncludeElements !== null) {
+        settings["IncludeViewElements"] = checkIncludeElements === "true" ? true : false;
+    }
+
+    if (checkIncludeProperties !== null) {
+        settings["IncludeProperties"] = checkIncludeProperties === "true" ? true : false;
+    }
+    if (checkIncluyeRelaciones !== null) {
+        settings["IncluyeRelaciones"] = checkIncluyeRelaciones === "true" ? true : false;
+    }
+
+
+    return settings;
+}

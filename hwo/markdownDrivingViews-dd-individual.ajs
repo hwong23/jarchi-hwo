@@ -23,7 +23,7 @@
 
  */
 
-load(__DIR__ + "lib/devdocslib.js");
+load(__DIR__ + "../hwo/lib/devdocslib.js");
 
 // Get current date
 var currentDate = new Date().toLocaleString("en-US", {
@@ -62,21 +62,6 @@ var DefaultInclusionSettings = {
     "IncludeProperties": true, // if true, will include the "properties" field in a catalogue of elements from a view
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
-
-// Shallow clones attributes of a basic object
-function shallowClone(obj) {
-    // If the object provided is not actually an object, return null so we don't accidentally clobber some other reference
-    if (null === obj || "object" !== typeof obj) {
-        return null;
-    }
-
-    // Create a new, blank, object, then copy over the attributes
-    var copy = {};
-    for (var attr in obj) {
-        copy[attr] = obj[attr];
-    }
-    return copy;
-}
 
 function generateLink(theString) {
     // this function thanks to Steven Mileham

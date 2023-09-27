@@ -159,6 +159,7 @@ function exportViews(folder) {
       readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8'));
     elemtPlantillaActual = v.prop('plantillaElm') ? v.prop('plantillaElm'):'elementtabla-md,element-md';
     cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
+    var inclusionSettings = devdoc_getGroupInclusionSettings(v, DefaultInclusionSettings);
     
     if (cambioPlnt) {
       elemtPlantilla = elemtPlantillaActual;
@@ -168,7 +169,7 @@ function exportViews(folder) {
     }
 
     // Update lists of elements and relationships
-    if (DefaultInclusionSettings.IncludeViewElements === true) {
+    if (inclusionSettings.IncludeViewElements === true) {
       $(v).find('element').each(function(e) {
         if(elementsCollection) {
           if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
@@ -178,7 +179,7 @@ function exportViews(folder) {
         viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
       });
     }
-    if (DefaultInclusionSettings.IncluyeRelaciones === true) {
+    if (inclusionSettings.IncluyeRelaciones === true) {
       $(v).find('relationship').each(function(r) {
         if(relacionesCollection) {
           if(!relacionesCollection.contains(r.concept)) relacionesCollection.add($(r.concept));

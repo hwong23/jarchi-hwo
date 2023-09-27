@@ -130,8 +130,6 @@ function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
     var checkIncludeProperties = settingsElement.prop("IncludeProperties");
     var checkIncluyeRelaciones = settingsElement.prop("IncluyeRelaciones");
 
-    console.log('v.prop: '+settingsElement.prop("IncluyeRelaciones"));
-
     if (checkIncludeDiagram !== null) {
         settings["IncludeDiagram"] = checkIncludeDiagram === "true" ? true : false;
     }

@@ -56,7 +56,7 @@ _.templateSettings = {
 var DefaultInclusionSettings = {
   "IncludeDiagram": true, // if true, will include the view's diagram
   "IncludeDocumentation": true, // if true, will include the view's documentation text (which itself can have markdown, by the way)
-  "IncludeViewElements": false, // if true, will include a catalogue of the view's elements
+  "IncludeViewElements": true, // if true, will include a catalogue of the view's elements
   "IncludeProperties": true, // if true, will include the "properties" field in a catalogue of elements from a view
   "IncluyeRelaciones": false
 };

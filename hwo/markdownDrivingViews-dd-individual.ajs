@@ -138,7 +138,7 @@ function printViewElements(view, level, settings) {
             if (columns[j].special != null) {
                 // If the special case is element properties, and we want to print properties...
                 if (columns[j].special === "properties" && settings.IncludeProperties === true) {
-                    outInfo += addPropsAsItalic(objList[i]);
+                    outInfo_vista += addPropsAsItalic(objList[i]);
                 }
             } else {
                 // Default printing of a cell's data. If it's the first column though, bold it.
@@ -351,7 +351,7 @@ function getNextGroup(group, level, parentInclusionSettings) {
 function addGroup(group, level, parentInclusionSettings) {
 
     // Get this group's updated inclusion settings
-    var settings = getGroupInclusionSettings(group, parentInclusionSettings);
+    var settings = devdoc_getGroupInclusionSettings(group, parentInclusionSettings);
     if (settings === null) {
         Errors.push({
             message: "Group is missing settings",
@@ -383,7 +383,7 @@ function useDrivingView() {
     } else {
         drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
         console.log("Driving view is: " + drivingView.name);
-        var inclusionSettings = getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
+        var inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
@@ -420,49 +420,6 @@ function useDrivingView() {
     return (true);
 
 } // end of useDrivingView
-
-// Get the settings for what to include in this branch of a document hierarchy
-// settingsElement: reference to the driving view or a group which may have overriding settings
-// defaultSettings: settings object to use as default (required)
-function getGroupInclusionSettings(settingsElement, defaultSettings) {
-    // Check default settings
-    if (defaultSettings === null ||
-        typeof defaultSettings !== "object" ||
-        defaultSettings["IncludeDiagram"] === null ||
-        defaultSettings["IncludeDocumentation"] === null ||
-        defaultSettings["IncludeViewElements"] === null ||
-        defaultSettings["IncludeProperties"] === null
-    ) {
-        window.alert("Default settings were not correctly passed to a child node");
-        return (null);
-    }
-    var settings = shallowClone(defaultSettings);
-
-    // Check for overrides
-    var checkIncludeDiagram = settingsElement.prop("IncludeDiagram");
-    var checkIncludeDocumentation = settingsElement.prop("IncludeDocumentation");
-    var checkIncludeElements = settingsElement.prop("IncludeViewElements");
-    var checkIncludeProperties = settingsElement.prop("IncludeProperties");
-
-    if (checkIncludeDiagram !== null) {
-        settings["IncludeDiagram"] = checkIncludeDiagram === "true" ? true : false;
-    }
-
-    if (checkIncludeDocumentation !== null) {
-        settings["IncludeDocumentation"] = checkIncludeDocumentation === "true" ? true : false;
-    }
-
-    if (checkIncludeElements !== null) {
-        settings["IncludeViewElements"] = checkIncludeElements === "true" ? true : false;
-    }
-
-    if (checkIncludeProperties !== null) {
-        settings["IncludeProperties"] = checkIncludeProperties === "true" ? true : false;
-    }
-
-
-    return settings;
-}
 
 
 // Main Code

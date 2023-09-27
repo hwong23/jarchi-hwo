@@ -42,7 +42,7 @@ var Verbose = false;
 var Sections = [];
 var Errors = [];
 var nextOne = null;
-var outInfo = "";
+var g_outInfo = "";
 var theToc = "";
 var g_path = "";
 var g_fileName = "";
@@ -51,7 +51,7 @@ var hardNewpage = false; // if true, the text NEWPAGE will be put in the output 
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
 var drivingView = null; // will be set to the selected view that has all the groups and view references on.
 var drivingView_devdoc = "";    // documento técnico automático asociado
-var debug = true;
+var debug = false;
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
@@ -104,7 +104,7 @@ function printViewElements(view, level, settings) {
 
     // Print heading
     outputHdr(level + 1, "Catálogo de Elementos", false);
-    outInfo += "\n";
+    g_outInfo += "\n";
 
     // Define which columns should be included in the catalogue
     var columns = [];
@@ -134,8 +134,8 @@ function printViewElements(view, level, settings) {
         columnString += "| " + columns[c].name;
         columnBorder += "|:--------";
     }
-    outInfo += columnString += "\n";
-    outInfo += columnBorder += "|\n";
+    g_outInfo += columnString += "\n";
+    g_outInfo += columnBorder += "|\n";
 
     // For each row (element)
     var i;
@@ -143,25 +143,25 @@ function printViewElements(view, level, settings) {
         // Print each desired field under the table column for the row
         for (var j = 0; j < columns.length; j++) {
             // Start the cell
-            outInfo += "|";
+            g_outInfo += "|";
 
             // Check columns for special cases
             if (columns[j].special != null) {
                 // If the special case is element properties, and we want to print properties...
                 if (columns[j].special === "properties" && settings.IncludeProperties === true) {
-                    addPropsAsItalic(objList[i], outInfo);
+                    g_outInfo += addPropsAsItalic(objList[i], g_outInfo);
                     
                 }
             } else {
                 // Default printing of a cell's data. If it's the first column though, bold it.
-                outInfo += (j === 0) ? "**" : "";
-                outInfo += replaceNL(objList[i][columns[j].field]);
-                outInfo += (j === 0) ? "**" : "";
+                g_outInfo += (j === 0) ? "**" : "";
+                g_outInfo += replaceNL(objList[i][columns[j].field]);
+                g_outInfo += (j === 0) ? "**" : "";
             }
         }
 
         // Complete the last cell of the row
-        outInfo += "|\n";
+        g_outInfo += "|\n";
     }
 }
 
@@ -221,7 +221,7 @@ function getViews(Level, Levelobj, settings) {
                 });
 
                 if (embed) {
-                    outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
+                    g_outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
                 } else {
                     thisPath = g_path + "images/" + myView.name.replaceAll(" ", "");
                     (debug)?console.log('imagePath: '+thisPath):true;
@@ -231,13 +231,13 @@ function getViews(Level, Levelobj, settings) {
                     var nombreImagen = myView.name.replaceAll(" ", "");
                     imageURL = imageFolder + nombreImagen;
 
-                    outInfo += "\n![Diagram: " + myView.name + "](" + imageURL + 
+                    g_outInfo += "\n![Diagram: " + myView.name + "](" + imageURL + 
                         ".png" + "){#fig:" + nombreImagen + " width=" + myViewAncho + "}\n";
                     
                 }
             }
             if (settings.IncludeDocumentation === true) {
-                myView.documentation != "" ? outInfo += "\n" + myView.documentation + "\n" : true;
+                myView.documentation != "" ? g_outInfo += "\n" + myView.documentation + "\n" : true;
             }
 
             // Now document the view details (if desired)
@@ -277,8 +277,8 @@ function outputHdr(Level, Name, AddLink, Doc) {
     var outHdr = indent + " " + Name;
 
     if (Level === 1) {
-        outInfo += '<div style="page-break-before: always;"></div>';
-        outInfo += "\n\\newpage\n";
+        g_outInfo += '<div style="page-break-before: always;"></div>';
+        g_outInfo += "\n\\newpage\n";
         // outInfo += "\n ___ \n"; // horiz line before level 1's
     }
 
@@ -289,7 +289,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
         }
     }
 
-    outInfo += "\n" + outHdr;
+    g_outInfo += "\n" + outHdr;
 
     // Add a link to table of contents (TOC), if requested
     if (AddLink) {
@@ -299,7 +299,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     }
 
     if (Doc) {
-        outInfo += "\n\n" + Doc;
+        g_outInfo += "\n\n" + Doc;
     }
 
 }
@@ -351,7 +351,7 @@ function getNextGroup(group, level, parentInclusionSettings) {
 function addGroup(group, level, parentInclusionSettings) {
 
     // Get this group's updated inclusion settings
-    var settings = getGroupInclusionSettings(group, parentInclusionSettings);
+    var settings = devdoc_getGroupInclusionSettings(group, parentInclusionSettings);
     if (settings === null) {
         Errors.push({
             message: "Group is missing settings",
@@ -391,7 +391,7 @@ function useDrivingView(alias) {
     } else {
         drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
         console.log("Driving view is: " + drivingView.name);
-        var inclusionSettings = getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
+        var inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
@@ -429,49 +429,6 @@ function useDrivingView(alias) {
     return (true);
 
 } // end of useDrivingView
-
-// Get the settings for what to include in this branch of a document hierarchy
-// settingsElement: reference to the driving view or a group which may have overriding settings
-// defaultSettings: settings object to use as default (required)
-function getGroupInclusionSettings(settingsElement, defaultSettings) {
-    // Check default settings
-    if (defaultSettings === null ||
-        typeof defaultSettings !== "object" ||
-        defaultSettings["IncludeDiagram"] === null ||
-        defaultSettings["IncludeDocumentation"] === null ||
-        defaultSettings["IncludeViewElements"] === null ||
-        defaultSettings["IncludeProperties"] === null
-    ) {
-        window.alert("Default settings were not correctly passed to a child node");
-        return (null);
-    }
-    var settings = shallowClone(defaultSettings);
-
-    // Check for overrides
-    var checkIncludeDiagram = settingsElement.prop("IncludeDiagram");
-    var checkIncludeDocumentation = settingsElement.prop("IncludeDocumentation");
-    var checkIncludeElements = settingsElement.prop("IncludeViewElements");
-    var checkIncludeProperties = settingsElement.prop("IncludeProperties");
-
-    if (checkIncludeDiagram !== null) {
-        settings["IncludeDiagram"] = checkIncludeDiagram === "true" ? true : false;
-    }
-
-    if (checkIncludeDocumentation !== null) {
-        settings["IncludeDocumentation"] = checkIncludeDocumentation === "true" ? true : false;
-    }
-
-    if (checkIncludeElements !== null) {
-        settings["IncludeViewElements"] = checkIncludeElements === "true" ? true : false;
-    }
-
-    if (checkIncludeProperties !== null) {
-        settings["IncludeProperties"] = checkIncludeProperties === "true" ? true : false;
-    }
-
-
-    return settings;
-}
 
 
 // Main Code
@@ -511,7 +468,7 @@ if (useDrivingView(getArgumento("vistaDocumental"))) {
         docGen = "# " + drivingView.name + "\n"
         // docGen += "\n ___ \n";
         docGen += theToc + "\n";
-        docGen += outInfo;
+        docGen += g_outInfo;
         docGen += "\n\n``Generated on: " + currentDate + "``";
 
         $.fs.writeFile(exportFile, docGen);

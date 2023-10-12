@@ -36,7 +36,7 @@
 // Historia versión (más actual a anterior)
 // Plantillas para elementos
 // Plantillas por vista
-// Propiedades: vista.plantilla, elemento.plantillaELm, model.rutamac
+// Propiedades: vista.plantilla, elemento.plantillaELm, model.rutamacMD
 
 
 load(__DIR__ + 'libs/nashorn-polyfills.js');
@@ -111,7 +111,7 @@ if(! folders.size()) {
 
 // 2. elabora el ruta+nombre archivo con base en propiedades del modelo
 var r = __DIR__.split("\/");
-var g_path = "/"+r[1]+"/"+r[2] + model.prop("rutaMac");
+var g_path = "/"+r[1]+"/"+r[2] + model.prop("rutaMacMD");
 var g_filePath = g_path + 
   (model.prop("devdoc")? model.prop("devdoc"):model.name + ".md");
 console.log ("Exportado a: " + g_filePath)

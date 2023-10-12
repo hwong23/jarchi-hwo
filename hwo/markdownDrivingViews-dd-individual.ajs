@@ -427,14 +427,14 @@ function useDrivingView() {
 var docGen = "";
 
 if (useDrivingView()) {
-    // Origina: nombre de archivo por ventana
+    // Original: nombre de archivo por ventana
     // var exportFile = window.promptSaveFile({
     //     title: "Export to File",
     //     filterExtensions: ["*.md"],
     //     fileName: drivingView_devdoc
     // });
 
-    // Nombre de archivo por propiedad del modelo
+    // Nombre de archivo por propiedad de la vista documental (drivingView)
     let r = __DIR__.split("\/");
     var exportFile = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/') + drivingView_devdoc;
 

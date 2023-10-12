@@ -113,7 +113,7 @@ if(! folders.size()) {
 var r = __DIR__.split("\/");
 var g_path = "/"+r[1]+"/"+r[2] + model.prop("rutaMac");
 var g_filePath = g_path + 
-  model.prop("devdoc")? model.prop("devdoc"):model.name + ".md";
+  (model.prop("devdoc")? model.prop("devdoc"):model.name + ".md");
 console.log ("Exportado a: " + g_filePath)
 
 if(!g_filePath) {

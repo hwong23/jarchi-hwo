@@ -99,12 +99,9 @@ if(! folders.size()) {
 // var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
 // Nombre de archivo por propiedad del modelo
 let r = __DIR__.split("\/");
-var filePath = "/"+r[1]+"/"+r[2] + 
-  (model.prop("rutaMac")? model.prop("rutaMac"):'/Downloads/tmpr/prymd/') + 
-  (model.prop("devdoc")? model.prop("devdoc"):model.name + ".html");
+var filePath = "/"+r[1]+"/"+r[2] + (model.prop("rutaMac")? model.prop("rutaMac"):'/Downloads/tmpr/prymd/') + model.name + ".html";
 (debug)?console.log('exporFile: '+filePath):true;
 
-var exportFile = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/') + drivingView_devdoc;
 
 if(!filePath) {
   console.log('User cancelled.');

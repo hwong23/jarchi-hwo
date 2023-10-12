@@ -36,7 +36,7 @@
 // Historia versión (más actual a anterior)
 // Plantillas para elementos
 // Plantillas por vista
-// Propiedades necesarias: plantilla, plantillaELm, model.rutamac
+// Propiedades: vista.plantilla, elemento.plantillaELm, model.rutamac
 
 
 load(__DIR__ + 'libs/nashorn-polyfills.js');

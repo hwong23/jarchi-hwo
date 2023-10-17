@@ -1,8 +1,8 @@
 # $1: ruta repo git origen
-# $1: ruta repo git destino
+# $2: ruta repo git destino
 # $3: msj commit
 
-cd $1
+cd $2
 
 git checkout gh-pages
 

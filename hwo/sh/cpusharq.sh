@@ -7,14 +7,13 @@ cd $1
 cp -R $1/webpage/index.html ../
 
 
-# 
-# git checkout arq
-# git pull
-#  
-# [ $? -eq 0 ] && cp -R ../index.html . || echo "ERR"
-#  
-# git add .
-# git commit -a -m "$3"
-# git push
-#  
-# git checkout main
+git checkout arq
+git pull
+ 
+[ $? -eq 0 ] && cp -R ../index.html . || echo "ERR"
+ 
+git add .
+git commit -a -m "$3"
+git push
+ 
+git checkout main

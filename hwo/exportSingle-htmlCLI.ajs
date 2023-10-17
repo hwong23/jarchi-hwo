@@ -99,7 +99,9 @@ if(! folders.size()) {
 // var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
 // Nombre de archivo por propiedad del modelo
 let r = __DIR__.split("\/");
-var filePath = "/"+r[1]+"/"+r[2] + (model.prop("rutaMacHTML")? model.prop("rutaMacHTML"):'/Downloads/tmpr/prymd/') + model.name + ".html";
+var filePath = "/"+r[1]+"/"+r[2] + 
+  (model.prop("rutaMacHTML")? model.prop("rutaMacHTML"):'/Downloads/tmpr/prymd/') + 
+  (model.prop("reporte")? model.prop("reporte"):model.name + ".html");
 (debug)?console.log('exporFile: '+filePath):true;
 
 

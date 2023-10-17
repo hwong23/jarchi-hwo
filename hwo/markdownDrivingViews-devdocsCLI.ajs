@@ -277,7 +277,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
     var outHdr = indent + " " + Name;
 
     if (Level === 1) {
-        g_outInfo += '<div style="page-break-before: always;"></div>';
+        g_outInfo += '\n<div style="page-break-before: always;"></div>';
         g_outInfo += "\n\\newpage\n";
         // outInfo += "\n ___ \n"; // horiz line before level 1's
     }

@@ -1,11 +1,17 @@
 # Actualiza reporte HMTL generado por Archi.
+# $1: ruta repo git origen
+# $2: origen HTML
+# $3: msj commit
+
+cd $1
+
 git checkout arq
 git pull
 
-cp -R $1/* .
+cp -R $2/*.html .
 
 git add .
-git commit -a -m "$2"
-git push
+git commit -a -m "$3"
+# git push
 
 git checkout main

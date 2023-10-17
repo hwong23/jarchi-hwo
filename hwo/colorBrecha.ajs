@@ -17,8 +17,12 @@
  * 
  */ 
 
+
+console.log ("Set the color of elements depending on a property value");
+
+
 // Amplify elements that have the property "Aplica" with a value between 0 and 100
-amplifyElementColor("gob", 0, 100);
+amplifyElementColor("brecha", 0, 100);
 
 
 // Amplify the red/green color of elements with a given property key with a value between minValue and maxValue

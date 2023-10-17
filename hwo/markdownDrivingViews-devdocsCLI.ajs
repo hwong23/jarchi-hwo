@@ -7,7 +7,7 @@
 	Author: Richard Heward - Tame Blue Lion Ltd
 
 	This generates a markdown file with the embedded images and text based upon a driving view in Archi of groups that trigger each other and embedded views.
-	See my blog for a more detailed explaination. https://www.tamebluelion.co.uk/blog/archi-documentation
+	See my blog for a more detailed explanation. https://www.tamebluelion.co.uk/blog/archi-documentation
 
 	Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
 	Setting

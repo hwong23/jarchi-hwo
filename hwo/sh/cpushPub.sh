@@ -6,7 +6,7 @@ cd $2
 
 git checkout gh-pages
 
-[ $? -eq 0 ] && cp $1/webpage/index.html $2/gh-pages || echo "ERR"
+[ $? -eq 0 ] && cp $1/webpage/index.html . || echo "ERR"
 
 git add .
 git commit -a -m "$3"

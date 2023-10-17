@@ -12,6 +12,6 @@ cp -R $2/*.html .
 
 git add .
 git commit -a -m "$3"
-# git push
+git push
 
 git checkout main

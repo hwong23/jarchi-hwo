@@ -7,13 +7,13 @@ cp -R $2/webbpage/index.html ../
 
 cd $1
 
-git checkout arq
-git pull
-
-cp -R ../index.html .
-
-git add .
-git commit -a -m "$3"
-git push
-
-git checkout main
+# git checkout arq
+# git pull
+# 
+# cp -R ../index.html .
+# 
+# git add .
+# git commit -a -m "$3"
+# git push
+# 
+# git checkout main

@@ -3,17 +3,18 @@
 # $2: origen HTML
 # $3: msj commit
 
-cp -R $2/webbpage/index.html ../
-
 cd $1
+cp -R $1/webpage/index.html ../
 
+
+# 
 # git checkout arq
 # git pull
-# 
-# cp -R ../index.html .
-# 
+#  
+# [ $? -eq 0 ] && cp -R ../index.html . || echo "ERR"
+#  
 # git add .
 # git commit -a -m "$3"
 # git push
-# 
+#  
 # git checkout main

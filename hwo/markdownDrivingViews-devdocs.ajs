@@ -494,7 +494,9 @@ if (useDrivingView()) {
             outputHdr(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
         }
-        docGen = "# " + drivingView.name + "\n"
+        docGen = "# " + (
+            (drivingView.prop("titulo")) ? drivingView.prop("titulo"): drivingView.name
+            ) + "\n";
         // docGen += "\n ___ \n";
         docGen += theToc + "\n";
         docGen += outInfo;

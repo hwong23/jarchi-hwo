@@ -220,6 +220,9 @@ function exportViews(folder) {
 
     
     // Generate report's fragments
+    var vnombre = (v.prop("titulo"))? v.prop("titulo"):
+    (v.labelExpression)? v.labelExpression : v.name;
+
     var nombrevista = v.name.replaceAll(" ","");
     viewTitles = tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
     viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: exportaImagen(v, g_path), viewNombre: nombrevista+'.png', viewAncho: ''});

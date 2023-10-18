@@ -123,6 +123,9 @@ function exportViews(folder) {
   });
   _.chain($(folder).children('view')).sortBy(function(v) { return v.name; }).each(function(v) {
     // Generate report's fragments
+    var vnombre = (v.prop("titulo"))? v.prop("titulo"):
+                (v.labelExpression)? v.labelExpression : v.name;
+
     treeContent += tplTreeView({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
     visibilityRulesBold += tplVisibilityRuleBold({viewId: 'id-'+v.id});
     visibilityRulesReveal += tplVisibilityRuleReveal({viewId: 'id-'+v.id});

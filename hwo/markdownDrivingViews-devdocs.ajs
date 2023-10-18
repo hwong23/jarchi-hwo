@@ -487,7 +487,9 @@ if (useDrivingView()) {
 
         // go through the array, and output.
         for (var i = 0; i < Sections.length; i++) {
-            var nombreitem = (Sections[i].group.labelExpression)?Sections[i].group.labelExpression:Sections[i].group.name;
+            var nombreitem = 
+                (Sections[i].group.prop("titulo"))? Sections[i].group.prop("titulo"):
+                (Sections[i].group.labelExpression)? Sections[i].group.labelExpression : Sections[i].group.name;
 
             outputHdr(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);

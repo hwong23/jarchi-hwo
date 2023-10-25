@@ -9,5 +9,4 @@ mv $1/*.md $2/content/
 mv $1/images/*.png $2/content/images/
 
 # HTML
-[ $? -eq 0 ] && cp $3/*.html $2/webpage/ || echo "ERR"
-
+cp -R $3/*.html $2/webpage/

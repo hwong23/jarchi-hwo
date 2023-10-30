@@ -1,0 +1,12 @@
+console.log ("model purpose");
+console.log ("model purpose: " + model.purpose);
+
+// Git: https://github.com/hwong23/fna-devdocs-f2.git
+// GH-Pages: https://hwong23.github.io/FNA-Contenidos/
+
+// versión 1.1.14
+
+// E-Service, Fase I. 2022.
+// E-Service, Fase II. 2023.
+
+model.purpose = "versión 1.1." + Math.random();

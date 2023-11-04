@@ -163,6 +163,9 @@ function printViewElements(view, level, settings) {
         // Complete the last cell of the row
         g_outInfo += "|\n";
     }
+
+    // Complete the last cell of the row
+    g_outInfo += "\n<br>\n";
 }
 
 function getViews(Level, Levelobj, settings) {

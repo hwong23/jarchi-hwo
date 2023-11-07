@@ -10,7 +10,7 @@ cp -R $1/webpage/index.html ../
 git checkout arq
 git pull
  
-[ $? -eq 0 ] && cp -R ../index.html . || echo "ERR"
+[ $? -eq 0 ] && cp -R ../index.html ./ || echo "ERR"
  
 git add .
 git commit -a -m "$3"

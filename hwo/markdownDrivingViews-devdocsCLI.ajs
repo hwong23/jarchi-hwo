@@ -109,20 +109,20 @@ function printViewElements(view, level, settings) {
     // Define which columns should be included in the catalogue
     var columns = [];
     columns.push({
-        "name": "Name",
+        "name": "Nombre",
         "field": "name"
     });
     columns.push({
-        "name": "Type",
+        "name": "Tipo",
         "field": "type"
     });
     columns.push({
-        "name": "Description",
+        "name": "Descripción",
         "field": "documentation"
     });
     if (settings.IncludeProperties === true) {
         columns.push({
-            "name": "Properties",
+            "name": "Prop.",
             "special": "properties"
         });
     }
@@ -234,7 +234,7 @@ function getViews(Level, Levelobj, settings) {
                     var nombreImagen = myView.name.replaceAll(" ", "");
                     imageURL = imageFolder + nombreImagen;
 
-                    g_outInfo += "\n![Diagram: " + myView.name + "](" + imageURL + 
+                    g_outInfo += "\n![Vista. " + myView.name + "](" + imageURL + 
                         ".png" + "){#fig:" + nombreImagen + " width=" + myViewAncho + "}\n";
                     
                 }

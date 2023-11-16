@@ -94,7 +94,7 @@ function propertiesTable(element) {
 }
 
 function documentRelationships(element) {
-    var theHeader = "|From|Relationship|To|Name|Description|"
+    var theHeader = "|Desde|Relación|Hacia|Nombre|Descrip|"
     var theLine = "|---|---|---|---|---|";
     var theBody = "";
     $(element).outRels().each(function(r){
@@ -114,7 +114,7 @@ function documentRelationships(element) {
         }
     });
 
-    return "**Relationships**\n"+theHeader+"\n"+theLine+"\n"+theBody;
+    return "**Relaciones (impacto)**\n"+theHeader+"\n"+theLine+"\n"+theBody;
 }
 
 function nestedDocumentation(d, element) {

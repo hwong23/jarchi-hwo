@@ -27,6 +27,7 @@ var embed = false;
 var tocMap = [];
 var bodyMap = [];
 var proptable = false;
+var reltable = false;
 
 function convertToText(type) {
     var theString = type.replaceAll("-"," ").split(" ");
@@ -142,7 +143,7 @@ function nestedDocumentation(d, element) {
 
             theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) +" ("+ convertToText(e.type) +")"+linkNum+"\n";
             (e.prop().length > 0 && proptable) ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
-            $(e).outRels().length>0?theDocument+="\n"+escapeMD(documentRelationships(e)):true;
+            ($(e).outRels().length>0 && reltable) ? theDocument+="\n"+escapeMD(documentRelationships(e)):true;
             e.documentation ? theDocument+="\n"+escapeMD(e.documentation)+"\n":true;
             $(e).rels().ends().each(function(r) {
                 if (r.text) {

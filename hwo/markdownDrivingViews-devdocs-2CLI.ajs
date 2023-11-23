@@ -1,0 +1,491 @@
+/*
+	Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
+
+	Script: Documentation Generation
+	Purpose: To generate output based on a driving view
+
+	Author: Richard Heward - Tame Blue Lion Ltd
+
+	This generates a markdown file with the embedded images and text based upon a driving view in Archi of groups that trigger each other and embedded views.
+	See my blog for a more detailed explanation. https://www.tamebluelion.co.uk/blog/archi-documentation
+
+	Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
+	Setting
+	Note - markdown can be converted to PDF / Word Docs or anything. I've used pandoc command line to do this.
+
+    Created: 8-Oct-2019
+    11-Oct-2019 - Included sketch views in the driving view.
+    27-Nov-2019 - Added improved object layout as tables, plus their properties
+    29-Nov-2019 - Now includes all view objects via a .find instead of a .children.
+	12-Dec-2019 - Sorts the properties so they are grouped by element type
+	24-Jan-2020 - Allowed inclusion settings to be set by group. Inherited by nested groups. Made catalogue columns more dynamic (configurable in future?). Refactored recursive functions. (Jared Pritchard)
+    28-Jan-2020 - Outputs the linked views in the visual left-right top-bottom order they are drawn in a driving group. This was tricky and probably messy code, but it works.
+    29-Jan-2020 - includes a hardNewpage variable to drop the text NEWPAGE into the output if your target is MS Word. This allows for post processing find-replace to swap it for proper new pages. It does this for all header levels in the listofNewpageheaders variable.
+
+ */
+
+load(__DIR__ + "lib/myargs.js");
+load(__DIR__ + "lib/devdocslib.js");
+
+// Get current date
+var currentDate = new Date().toLocaleString("en-US", {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+});
+
+console.show();
+console.clear();
+console.log("Documentation Generation @", currentDate);
+
+var Verbose = false;
+var Sections = [];
+var Errors = [];
+var nextOne = null;
+var g_outInfo = "";
+var theToc = "";
+var g_path = "";
+var g_fileName = "";
+var embed = false; // false will store the images outside of the generated markdown; true is embedded inside
+var hardNewpage = false; // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
+var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
+var drivingView = null; // will be set to the selected view that has all the groups and view references on.
+var drivingView_devdoc = "";    // documento técnico automático asociado
+var debug = false;
+
+// Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
+// A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
+var DefaultInclusionSettings = {
+    "IncludeDiagram": true, // if true, will include the view's diagram
+    "IncludeDocumentation": true, // if true, will include the view's documentation text (which itself can have markdown, by the way)
+    "IncludeViewElements": true, // if true, will include a catalogue of the view's elements
+    "IncludeProperties": true, // if true, will include the "properties" field in a catalogue of elements from a view
+    //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
+};
+
+// Shallow clones attributes of a basic object
+function shallowClone(obj) {
+    // If the object provided is not actually an object, return null so we don't accidentally clobber some other reference
+    if (null === obj || "object" !== typeof obj) {
+        return null;
+    }
+
+    // Create a new, blank, object, then copy over the attributes
+    var copy = {};
+    for (var attr in obj) {
+        copy[attr] = obj[attr];
+    }
+    return copy;
+}
+
+function generateLink(theString) {
+    // this function thanks to Steven Mileham
+
+    
+    var regex = /[\[\]\(\)\#\\\/\"]/gi;
+    var theString2 = "#" + theString.toLowerCase().replace(regex, "")
+    // .replaceAll(" [ - ]*", "-") 
+    // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
+    .replaceAll(" ","-")
+    .replaceAll("\<", "lt")
+    .replaceAll("\>", "gt");
+
+    return theString2;
+}
+
+// Prints (documents) the elements and maybe properties (not relations) on the view
+function printViewElements(view, level, settings) {
+    var objList = [];
+    $(view).find("element").each(function (viewObj) {
+        objList.push(viewObj);
+    });
+
+    objList.sort(); // ensures the output groups by object type
+
+    // Print heading
+    outputHdr(level + 1, "Catálogo de Elementos", false);
+    g_outInfo += "\n";
+
+    // Define which columns should be included in the catalogue
+    var columns = [];
+    columns.push({
+        "name": "Nombre",
+        "field": "name"
+    });
+    columns.push({
+        "name": "Tipo",
+        "field": "type"
+    });
+    columns.push({
+        "name": "Descripción",
+        "field": "documentation"
+    });
+    if (settings.IncludeProperties === true) {
+        columns.push({
+            "name": "Prop.",
+            "special": "properties"
+        });
+    }
+
+    // Print column headers
+    var columnString = "";
+    var columnBorder = "";
+    for (var c = 0; c < columns.length; c++) {
+        columnString += "| " + columns[c].name;
+        columnBorder += "|:--------";
+    }
+    g_outInfo += columnString += "\n";
+    g_outInfo += columnBorder += "|\n";
+
+    // For each row (element)
+    var i;
+    for (i in objList) {
+        // Print each desired field under the table column for the row
+        for (var j = 0; j < columns.length; j++) {
+            // Start the cell
+            g_outInfo += "|";
+
+            // Check columns for special cases
+            if (columns[j].special != null) {
+                // If the special case is element properties, and we want to print properties...
+                if (columns[j].special === "properties" && settings.IncludeProperties === true) {
+                    g_outInfo += addPropsAsItalic(objList[i], g_outInfo);
+                    
+                }
+            } else {
+                // Default printing of a cell's data. If it's the first column though, bold it.
+                g_outInfo += (j === 0) ? "**" : "";
+                g_outInfo += replaceNL(objList[i][columns[j].field]);
+                g_outInfo += (j === 0) ? "**" : "";
+            }
+        }
+
+        // Complete the last cell of the row
+        g_outInfo += "|\n";
+    }
+
+    // Complete the last cell of the row
+    g_outInfo += "\n<br>\n";
+}
+
+function getViews(Level, Levelobj, settings) {
+    var thisPath = "";
+    var imageURL = "";
+    
+    var viewList = [];
+
+    if (!Levelobj) {
+        return null;
+    } else {
+        // Find the view references composed within this group and
+		// put them into an array so we can sort them.
+        $(Levelobj).children().each(function (viewRefs) {
+            if ((viewRefs) && ((viewRefs.type == 'archimate-diagram-model') || (viewRefs.type == 'sketch-model'))) {
+
+                // Find the actual linked views
+                var viewsCollection = $('archimate-diagram-model');
+                viewsCollection.add($('sketch-model'));
+                viewsCollection.each(function (linkedView) {
+
+                    // this doesn't cater for duplicate view names, sorry
+                    if (linkedView.name === viewRefs.name) {
+                        viewList.push([viewRefs, linkedView]);
+                    }
+                });
+
+            }
+        });
+
+        // sort viewList by x then y bounds. Effectively allows views to go top left to bottom right in order.
+        // this is complicated by the need to refer to the viewRefs part of the pair.
+        viewList.sort(function (left, right) {
+            return left[0].bounds.x - right[0].bounds.x;
+        });
+
+        viewList.sort(function (top, bottom) {
+            return top[0].bounds.y - bottom[0].bounds.y;
+        });
+
+        // now go through the sorted viewList
+        for (var k = 0; k < viewList.length; k++) {
+            exportViews_1(k, Level, viewList, settings);
+            // exportViews_2(k);
+        }
+    }
+}
+
+
+function exportViews_1 (k, Level, viewList, settings) {
+    var myView = viewList[k][0];
+    var myViewAncho = myView.prop("ancho")?myView.prop("ancho") + "in":"";
+    var myRef = viewList[k][1];
+    var imageFolder = "images/";
+
+    outputHdr(Level + 1, myView.name, true);
+
+    // Include the view's diagram (if desired)
+    if (settings.IncludeDiagram === true) {
+
+        var bytes = $.model.renderViewAsBase64(myRef, "PNG", {
+            scale: 1,
+            margin: 10
+        });
+
+        if (embed) {
+            g_outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
+        } else {
+            thisPath = g_path + "images/" + myView.name.replaceAll(" ", "");
+            (debug)?console.log('imagePath: '+thisPath):true;
+
+            $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
+
+            var nombreImagen = myView.name.replaceAll(" ", "");
+            imageURL = imageFolder + nombreImagen;
+
+            g_outInfo += "\n![Vista. " + myView.name + "](" + imageURL + 
+                ".png" + "){#fig:" + nombreImagen + " width=" + myViewAncho + "}\n";
+            
+        }
+    }
+    if (settings.IncludeDocumentation === true) {
+        myView.documentation != "" ? g_outInfo += "\n" + myView.documentation + "\n" : true;
+    }
+
+    // Now document the view details (if desired)
+    if (settings.IncludeViewElements === true) {
+        printViewElements(myRef, Level + 1, settings);
+    }
+}
+
+function addSpace(numSpaces) {
+    var i;
+    var rtnText = " ";
+    for (i = 0; i < numSpaces; i++) {
+        rtnText += "   ";
+    }
+    return rtnText;
+}
+
+function outputHdr(Level, Name, AddLink, Doc) {
+
+    var indent = "";
+    var tocIndent = "";
+
+    for (var i = 0; i < Level; i++) {
+        indent = indent + "#";
+    }
+    for (var j = 0; j < Level - 1; j++) { // ToC needs one less indent tab.
+        tocIndent = tocIndent + "\t";
+    }
+
+    if (Name != "Catálogo de Elementos") {
+        console.log(addSpace(Level - 1), Name);
+    }
+
+    var outHdr = indent + " " + Name;
+
+    if (Level === 1) {
+        g_outInfo += '\n<div style="page-break-before: always;"></div>';
+        g_outInfo += "\n\\newpage\n";
+        // outInfo += "\n ___ \n"; // horiz line before level 1's
+    }
+
+    // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
+    if (hardNewpage) {
+        if (listofNewpageheaders.indexOf(Level) != -1) {
+            outInfo_vista += "\n\\newpage\n";
+        }
+    }
+
+    g_outInfo += "\n" + outHdr;
+
+    // Add a link to table of contents (TOC), if requested
+    if (AddLink) {
+        var thisLink = generateLink(Name);
+        // outInfo += "\n" + "[](" + thisLink + ")";
+        theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
+    }
+
+    if (Doc) {
+        g_outInfo += "\n\n" + Doc;
+    }
+
+}
+
+// Finds the group's sub-group, if any
+// Returns true if no errors were encountered
+function getSubGroups(group, nextLevel, parentInclusionSettings) {
+    var outcome = true;
+
+    $(group).outRels("composition-relationship").each(function (subGroup) {
+
+        var incomingRels2 = $(subGroup.target).inRels("triggering-relationship").size();
+
+        // If it's the first child in the sub group
+        if (incomingRels2 == 0) {
+            // add the sub group onto the array
+            outcome = outcome && addGroup(subGroup.target, nextLevel, parentInclusionSettings);
+        } else {
+            // just ignore the rest, getSubGroups / getNextGroup will take care of them.
+        }
+    });
+
+    return outcome;
+}
+
+// Finds the next sibling group in the series
+// Returns true if no errors were encountered
+function getNextGroup(group, level, parentInclusionSettings) {
+    var nextGroup = null;
+    var outgoingRels = $(group).outRels("triggering-relationship").size();
+
+    if (outgoingRels == 1) {
+        // There's a triggering out so find the next..
+        nextGroup = $(group).outRels("triggering-relationship").first();
+        if (nextGroup) {
+            // add the next one onto the array
+            return addGroup(nextGroup.target, level, parentInclusionSettings);
+        } else {
+            window.alert("The groups should all use triggering relationships");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Adds a group to the list of sections to output in the document, and orchestrates a recursive grab of the next sub group & sibling group (if existing)
+// Returns true if no errors were encountered
+function addGroup(group, level, parentInclusionSettings) {
+
+    // Get this group's updated inclusion settings
+    var settings = devdoc_getGroupInclusionSettings(group, parentInclusionSettings);
+    if (settings === null) {
+        Errors.push({
+            message: "Group is missing settings",
+            object: group
+        });
+        return false;
+    }
+
+    // Add the group to the list of sections
+    Sections.push({
+        "group": group,
+        "level": level,
+        "settings": settings
+    });
+
+    // Look for more sub groups under this one
+    getSubGroups(group, level + 1, settings)
+
+    // Look for sibling groups
+    getNextGroup(group, level, parentInclusionSettings)
+
+    return true;
+}
+
+function useDrivingView(alias) {
+    // drivingView = selection.filter("archimate-diagram-model").first();
+    
+    drivingView = $("view").filter(function(o) { 
+        // console.log (o.name + ': ' + o.prop(alias));
+        var dd_alias = o.prop("alias") ? o.prop("alias"):"";
+        return (dd_alias === alias);
+    }).first();
+    
+    if (!drivingView) {
+        console.log("Please open and select a Driving View for the documentation");
+        return (false);
+    } else {
+        drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
+        console.log("Driving view is: " + drivingView.name);
+        var inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
+        console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
+        console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
+        console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
+        console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
+        console.log("DevDoc asociado: " + drivingView_devdoc);
+
+        // Go through each immediate child group in the view, find the first group(s) in a series
+        var outcome = true;
+        $(drivingView).children("grouping").each(function (thisGroup) {
+            if (thisGroup) {
+                var incomingRels = $(thisGroup).inRels("triggering-relationship").size();
+
+                if (incomingRels == 0) {
+                    // It's a top-level section, put it in the array.
+                    outcome = outcome && addGroup(thisGroup, 1, inclusionSettings);
+                } else {
+                    // Ignore if if there's an incoming triggering relationship ... our recursive getNextGroup function will find it.
+                }
+            }
+        });
+
+        if (!outcome) {
+            window.alert("Error when extracting a group");
+            console.log("Error stack:");
+            for (var i = 0; i < Errors.length; i++) {
+                console.log("- " + Errors[i].message);
+                if (Verbose) {
+                    console.log(" " + Errors[i].object);
+                }
+            }
+        }
+
+    }
+
+    return (true);
+
+} // end of useDrivingView
+
+
+// Main Code
+
+var docGen = "";
+
+if (useDrivingView(getArgumento("vistaDocumental"))) {
+    // Nombre de archivo por propiedad del modelo
+    let r = __DIR__.split("\/");
+    var exportFile = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/') + drivingView_devdoc;
+    (debug)?console.log('exporFile: '+exportFile):true;
+
+    // where's the path. Find where the last slash delimiter is
+    var lastSlash = "";
+    if (exportFile) {
+        // if (exportFile.indexOf("/") == -1) {
+        //     lastSlash = exportFile.lastIndexOf("\\"); // Windows
+        // } else {
+        //     lastSlash = exportFile.lastIndexOf("/"); // Mac or Linux
+        // }
+        // path = exportFile.substring(0, lastSlash + 1);
+        // fileName = exportFile.substring(lastSlash + 1, exportFile.length);
+
+        g_path = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/');
+        g_fileName = drivingView_devdoc;
+
+        console.log("path: ", g_path);
+        console.log("fileName: ", g_fileName);
+
+        // go through the array, and output.
+        for (var i = 0; i < Sections.length; i++) {
+            var nombreitem = 
+                (Sections[i].group.prop("titulo"))? Sections[i].group.prop("titulo"):
+                (Sections[i].group.labelExpression)? Sections[i].group.labelExpression : Sections[i].group.name;
+
+            outputHdr(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
+            getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
+        }
+        docGen = "# " + (
+            (drivingView.prop("titulo")) ? drivingView.prop("titulo"): drivingView.name
+            ) + "\n";
+        // docGen += "\n ___ \n";
+        docGen += theToc + "\n";
+        docGen += g_outInfo;
+        docGen += "\n\n``Generated on: " + currentDate + "``";
+
+        $.fs.writeFile(exportFile, docGen);
+    }
+}
+
+// end of script
+console.log("Done");

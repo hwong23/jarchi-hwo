@@ -4,6 +4,7 @@ var list = $("view").filter(function(o) {
     
 });
 
+
 console.log (list.length);
 var vista = list.first();
 console.log (vista.name);

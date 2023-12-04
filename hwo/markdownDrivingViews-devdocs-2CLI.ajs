@@ -222,12 +222,12 @@ function getViews(Level, Levelobj, settings) {
 
 
 function exportViews_2 (k, viewList) {
-    var v = viewList[k][0];
+    var viewItem = viewList[k][0];
+    var v = viewList[k][1];
     var myViewAncho = v.prop("ancho")?v.prop("ancho") + "in":"";
-    var myRef = viewList[k][1];
     var imageFolder = "images/";
 
-    console.log(addSpace(1), v.name);
+    console.log(addSpace(1), viewItem.name);
     
     
       // Generate report's fragments
@@ -237,6 +237,7 @@ function exportViews_2 (k, viewList) {
       visibilityRulesBold += tplVisibilityRuleBold({viewId: 'id-'+v.id});
       visibilityRulesReveal += tplVisibilityRuleReveal({viewId: 'id-'+v.id});
       viewTitles += tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
+      viewDiagrams += tplViewDiagram({viewId: 'id-'+v.id, viewImage: $.model.renderViewAsBase64(v, "PNG")});
       viewDocumentations += tplDocumentation({
          viewId: 'id-'+v.id,
          documentationText: _.escape(v.documentation).replace(/\n/g, '<br>'),

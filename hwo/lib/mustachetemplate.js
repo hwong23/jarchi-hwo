@@ -35,3 +35,12 @@ var elementsCollection;
 var relationships = '';
 var relationshipsCollection;
 var debug = true;
+
+
+// Set Markdown rendering options
+var mdOptions = {
+  gfm: true,
+  breaks: true,
+  smartLists: true,
+  smartypants: true
+};

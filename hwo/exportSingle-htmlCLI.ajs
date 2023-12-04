@@ -158,7 +158,7 @@ function exportViews(folder) {
       viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
     });
   });
-  
+
   treeContent = tplTreeFolder({folderId: 'id-'+folder.id, folderName: _.escape(folder.name), folderContent: treeContent});
   treeContent = previousContent + treeContent;
 }

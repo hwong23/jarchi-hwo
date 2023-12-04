@@ -180,14 +180,12 @@ function getViews(Level, Levelobj, settings) {
         // Find the view references composed within this group and
 		// put them into an array so we can sort them.
         $(Levelobj).children().each(function (viewRefs) {
-            // if ((viewRefs) && ((viewRefs.type == 'archimate-diagram-model') || (viewRefs.type == 'sketch-model'))) {
             if (
                 (viewRefs) && ((viewRefs.type == 'archimate-diagram-model') || 
                 (viewRefs.type == 'sketch-model') ||
                 (viewRefs.type == 'canvas-model'))
                 )
             {
-
                 // Find the actual linked views
                 var viewsCollection = $('archimate-diagram-model');
                 viewsCollection.add($('sketch-model'));

@@ -2,6 +2,7 @@ load(__DIR__ + 'nashorn-polyfills.js');
 load(__DIR__ + 'underscore-min.js');
 load(__DIR__ + 'marked.min.js');
 
+// funciones con argumento plantillas base 
 var tplMainReport = _.template(readFully(__DIR__ + '../templates/main-report.html', 'UTF-8'));
 var tplVisibilityRuleBold = _.template(readFully(__DIR__ + '../templates/visibility-rule-bold.tpl', 'UTF-8'));
 var tplVisibilityRuleReveal = _.template(readFully(__DIR__ + '../templates/visibility-rule-reveal.tpl', 'UTF-8'));
@@ -19,4 +20,18 @@ _.templateSettings = {
     interpolate: /\{\{(.+?)\}\}/g
   };
 
-  
+// acumuladores de contenido
+var visibilityRulesBold = '';
+var visibilityRulesReveal = '';
+var inputCheckbox = '';
+var treeFolder = '';
+var treeContent = '';
+var viewTitles =  '';
+var viewDiagrams = '';
+var viewDocumentations = '';
+var viewsIdsByConceptId = {};
+var elements = '';
+var elementsCollection;
+var relationships = '';
+var relationshipsCollection;
+var debug = true;

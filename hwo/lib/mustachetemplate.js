@@ -20,22 +20,6 @@ _.templateSettings = {
     interpolate: /\{\{(.+?)\}\}/g
   };
 
-// acumuladores de contenido
-var visibilityRulesBold = '';
-var visibilityRulesReveal = '';
-var inputCheckbox = '';
-var treeFolder = '';
-var treeContent = '';
-var viewTitles =  '';
-var viewDiagrams = '';
-var viewDocumentations = '';
-var viewsIdsByConceptId = {};
-var elements = '';
-var elementsCollection;
-var relationships = '';
-var relationshipsCollection;
-var debug = true;
-
 
 // Set Markdown rendering options
 var mdOptions = {

@@ -215,21 +215,40 @@ function getViews(Level, Levelobj, settings) {
         // now go through the sorted viewList
         for (var k = 0; k < viewList.length; k++) {
             // exportViews_2 (k, Level, viewList, settings);
-            exportViews_2 (k, viewList);
+            exportViews_2 (k, viewList, settings);
         }
     }
 }
 
 
-function exportViews_2 (k, viewList) {
+function exportViews_2 (k, viewList, settings) 
+{
+    // acumuladores de contenido
+    var visibilityRulesBold = '';
+    var visibilityRulesReveal = '';
+    var inputCheckbox = '';
+    var treeFolder = '';
+    var treeContent = '';
+    var viewTitles =  '';
+    var viewDiagrams = '';
+    var viewDocumentations = '';
+    var viewsIdsByConceptId = {};
+    var elements = '';
+    var elementsCollection;
+    var relationships = '';
+    var relationshipsCollection;
+    var debug = true;
+
+    // variables de trabajo
     var viewItem = viewList[k][0];
     var v = viewList[k][1];
     var myViewAncho = v.prop("ancho")?v.prop("ancho") + "in":"";
     var imageFolder = "images/";
 
+
     console.log(addSpace(1), viewItem.name);
     
-    
+
       // Generate report's fragments
       var vnombre = (v.prop("titulo"))? v.prop("titulo"):
                   (v.labelExpression)? v.labelExpression : v.name;
@@ -243,8 +262,6 @@ function exportViews_2 (k, viewList) {
          documentationText: _.escape(v.documentation).replace(/\n/g, '<br>'),
          documentationMarkdown: marked(_.escape(v.documentation), mdOptions)
       });
-
-      console.log( "viewDocumentations: " + viewDocumentations.length() );
       
         //   // Update lists of elements and relationships
         //   $(v).find('element').each(function(e) {
@@ -267,6 +284,10 @@ function exportViews_2 (k, viewList) {
     
     // treeContent = tplTreeFolder({folderId: 'id-'+folder.id, folderName: _.escape(folder.name), folderContent: treeContent});
     // treeContent = previousContent + treeContent;
+    
+    if (settings.IncludeDocumentation === true) {
+        viewDocumentations != "" ? g_outInfo += "\n" + viewDocumentations + "\n" : true;
+    }
   }
   
 

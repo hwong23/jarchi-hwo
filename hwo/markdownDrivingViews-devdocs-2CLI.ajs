@@ -26,6 +26,7 @@
 
 load(__DIR__ + "lib/myargs.js");
 load(__DIR__ + "lib/devdocslib.js");
+load(__DIR__ + 'lib/myseleccion.js');
 load(__DIR__ + "lib/mustachetemplate.js");
 
 // Get current date
@@ -224,26 +225,18 @@ function getViews(Level, Levelobj, settings) {
 function exportViews_2 (k, viewList, settings) 
 {
     // acumuladores de contenido
-    var visibilityRulesBold = '';
-    var visibilityRulesReveal = '';
-    var inputCheckbox = '';
-    var treeFolder = '';
-    var treeContent = '';
-    var viewTitles =  '';
-    var viewDiagrams = '';
     var viewDocumentations = '';
-    var viewsIdsByConceptId = {};
-    var elements = '';
-    var elementsCollection;
-    var relationships = '';
-    var relationshipsCollection;
-    var debug = true;
+    var elemtPlantilla = "";
+    var elemtPlantillaActual = '';
+
 
     // variables de trabajo
     var viewItem = viewList[k][0];
     var v = viewList[k][1];
     var myViewAncho = v.prop("ancho")?v.prop("ancho") + "in":"";
     var imageFolder = "images/";
+    var cambioPlnt = true;
+
 
 
     console.log(addSpace(1), viewItem.name);
@@ -253,37 +246,20 @@ function exportViews_2 (k, viewList, settings)
       var vnombre = (v.prop("titulo"))? v.prop("titulo"):
                   (v.labelExpression)? v.labelExpression : v.name;
   
-      visibilityRulesBold += tplVisibilityRuleBold({viewId: 'id-'+v.id});
-      visibilityRulesReveal += tplVisibilityRuleReveal({viewId: 'id-'+v.id});
-      viewTitles += tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
-      viewDiagrams += tplViewDiagram({viewId: 'id-'+v.id, viewImage: $.model.renderViewAsBase64(v, "PNG")});
-      viewDocumentations += tplDocumentation({
-         viewId: 'id-'+v.id,
-         documentationText: _.escape(v.documentation).replace(/\n/g, '<br>'),
-         documentationMarkdown: marked(_.escape(v.documentation), mdOptions)
-      });
-      
-        //   // Update lists of elements and relationships
-        //   $(v).find('element').each(function(e) {
-        //     if(elementsCollection) {
-        //       if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
-        //     } else {
-        //       elementsCollection = $(e.concept);
-        //     }
-        //     viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
-        //   });
-        //   $(v).find('relationship').each(function(r) {
-        //     if(relationshipsCollection) {
-        //       if(!relationshipsCollection.contains(r.concept)) relationshipsCollection.add($(r.concept));
-        //     } else {
-        //       relationshipsCollection = $(r.concept);
-        //     }
-        //     viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
-        //   });
+    // Carga las configuraciones de la vista
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8') );
+    elemtPlantillaActual = v.prop('plantillaElm') ? v.prop('plantillaElm'):'elementtabla-md,element-md';
+    cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
+    var inclusionSettings = devdoc_getGroupInclusionSettings(v, DefaultInclusionSettings);
     
+    if (cambioPlnt) {
+        elemtPlantilla = elemtPlantillaActual;
+        // console.log ('elemtPlantilla: ' + elemtPlantilla.split(',')[0] + '.tpl');
+        tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
+        tplElementFila = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
+    }
     
-    // treeContent = tplTreeFolder({folderId: 'id-'+folder.id, folderName: _.escape(folder.name), folderContent: treeContent});
-    // treeContent = previousContent + treeContent;
+
     
     if (settings.IncludeDocumentation === true) {
         viewDocumentations != "" ? g_outInfo += "\n" + viewDocumentations + "\n" : true;

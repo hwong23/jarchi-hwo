@@ -7,13 +7,3 @@ load(__DIR__ + 'marked.min.js');
 _.templateSettings = {
     interpolate: /\{\{(.+?)\}\}/g
   };
-
-
-// Set Markdown rendering options
-var mdOptions = {
-  gfm: true,
-  breaks: true,
-  smartLists: true,
-  smartypants: true
-};
-

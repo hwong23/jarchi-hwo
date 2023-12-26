@@ -30,6 +30,15 @@ load(__DIR__ + 'lib/myseleccion.js');
 load(__DIR__ + "lib/mustachetemplate.js");
 
 
+// Set Markdown rendering options
+var mdOptions = {
+    gfm: true,
+    breaks: true,
+    smartLists: true,
+    smartypants: true
+};
+
+
 // funciones con argumento plantillas base 
 var tplDocumentation;
 var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
@@ -94,7 +103,6 @@ function shallowClone(obj) {
 function generateLink(theString) {
     // this function thanks to Steven Mileham
 
-    
     var regex = /[\[\]\(\)\#\\\/\"]/gi;
     var theString2 = "#" + theString.toLowerCase().replace(regex, "")
     // .replaceAll(" [ - ]*", "-") 
@@ -116,7 +124,7 @@ function exportaImagen (vv, pth) {
   
     // return _.escape(vv.name);
     return vv.name;
-  }
+}
   
 // Prints (documents) the elements and maybe properties (not relations) on the view
 function printViewElements(view, level, settings) {
@@ -262,6 +270,7 @@ function exportViews_2 (k, viewList, settings)
     var imageFolder = "images/";
     var elements = '';
     var relaciones = '';
+    var elementsCollection;
     var cambioPlnt = true;
 
 
@@ -276,9 +285,30 @@ function exportViews_2 (k, viewList, settings)
     
     if (cambioPlnt) {
         elemtPlantilla = elemtPlantillaActual;
-        // console.log ('elemtPlantilla: ' + elemtPlantilla.split(',')[0] + '.tpl');
         tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
         tplElementFila = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
+    }
+
+    // Update lists of elements and relationships
+    if (inclusionSettings.IncludeViewElements === true) {
+        $(v).find('element').each(function(e) {
+          if(elementsCollection) {
+            if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
+          } else {
+            elementsCollection = $(e.concept);
+          }
+          viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
+        });
+      }
+    if (inclusionSettings.IncluyeRelaciones === true) {
+    $(v).find('relationship').each(function(r) {
+        if(relacionesCollection) {
+        if(!relacionesCollection.contains(r.concept)) relacionesCollection.add($(r.concept));
+        } else {
+        relacionesCollection = $(r.concept);
+        }
+        viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
+    });
     }
 
     // Generate report's fragments
@@ -295,7 +325,7 @@ function exportViews_2 (k, viewList, settings)
         viewTitle: viewTitles,
         viewNota: obtNota (v),
         viewDiagram: viewDiagrams,
-        documentationText: _.escape(v.documentation),  //.replace(/\n/g, '<br>'),
+        documentationText: _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
         elements: viewElements,
         relaciones: relaciones

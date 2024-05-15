@@ -1,5 +1,5 @@
 <!--
-Single-page HTML Export
+Single-page MD Export
 
 Created with Archi (https://www.archimatetool.com) and the following jArchi script:
 https://github.com/archi-contribs/jarchi-single-page-html-export

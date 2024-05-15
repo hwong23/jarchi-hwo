@@ -110,9 +110,11 @@ function exportViews(folder) {
   console.log('Exporting "', folder.name, '"...');
   var previousContent = treeContent;
   treeContent = '';
+
   _.chain($(folder).children('folder')).sortBy(function(f) { return f.name; }).each(function(f) {
     exportViews(f)
   });
+
   _.chain($(folder).children('view')).sortBy(function(v) { return v.name; }).each(function(v) {
     // Generate report's fragments
     treeContent += tplTreeView({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
@@ -145,6 +147,7 @@ function exportViews(folder) {
       viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
     });
   });
+  
   treeContent = tplTreeFolder({folderId: 'id-'+folder.id, folderName: _.escape(folder.name), folderContent: treeContent});
   treeContent = previousContent + treeContent;
 }

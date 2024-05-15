@@ -119,9 +119,11 @@ function exportViews(folder) {
   console.log('Exporting "', folder.name, '"...');
   var previousContent = treeContent;
   treeContent = '';
+
   _.chain($(folder).children('folder')).sortBy(function(f) { return f.name; }).each(function(f) {
     exportViews(f)
   });
+
   _.chain($(folder).children('view')).sortBy(function(v) { return v.name; }).each(function(v) 
   {
     // Generate report's fragments
@@ -159,7 +161,9 @@ function exportViews(folder) {
     });
   });
 
-  treeContent = tplTreeFolder({folderId: 'id-'+folder.id, folderName: _.escape(folder.name), folderContent: treeContent});
+  treeContent = tplTreeFolder({
+    folderId: 'id-'+folder.id, folderName: _.escape(folder.name), 
+    folderContent: treeContent});
   treeContent = previousContent + treeContent;
 }
 
@@ -184,6 +188,7 @@ _.chain(relationshipsCollection).sortBy(function(r) { return r.name; }).each(fun
     relationshipDocumentationMarkdown: marked(_.escape(r.documentation), mdOptions)
     });
 });
+
 
 var mainReport = tplMainReport({
   roboto: roboto,

@@ -61,6 +61,8 @@ console.show();
 console.clear();
 console.log("Documentation Generation @", currentDate);
 
+
+// Globales: contexto global
 var Verbose = false;
 var Sections = [];
 var Errors = [];
@@ -75,6 +77,8 @@ var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if
 var drivingView = null; // will be set to the selected view that has all the groups and view references on.
 var drivingView_devdoc = "";    // documento técnico automático asociado
 var debug = false;
+var viewsIdsByConceptId = {};
+
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.

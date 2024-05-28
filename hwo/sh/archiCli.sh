@@ -1,4 +1,4 @@
-# Ejecutar los programas (...) y exportSingle-htmlCLI. Generación de página HTML del repositorio de arquitectura copmleto.
+# Generación de documento MD basado en la vista documental marcada con el alias propertie del repositorio de arquitectura.
 
 
 # $1: ruta usuario repositorio git

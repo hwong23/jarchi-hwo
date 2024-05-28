@@ -1,3 +1,5 @@
+# Objetivo?
+
 # $1: ruta usuario repositorio git
 # $2: ruta y modelo arq
 # $3: ruta programa ajs

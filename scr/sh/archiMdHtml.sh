@@ -18,3 +18,6 @@ mv $config_deploy_origenmd/images/*.png $config_deploy_destinomd/content/images/
 
 # HTML
 cp -R $config_deploy_origenhtml/*.html $config_deploy_destinomd/webpage/
+
+status=$?
+[ $status -eq 0 ] && echo OK. Documentos MD actualizados || echo "ERR"

@@ -611,7 +611,7 @@ if (useDrivingView(getArgumento("vistaDocumental"))) {
         // docGen += "\n ___ \n";
         docGen += theToc + "\n";
         docGen += g_outInfo;
-        docGen += "\n\n``Generated on: " + currentDate + "``";
+        // docGen += "\n\n``Generated on: " + currentDate + "``";
 
         $.fs.writeFile(exportFile, docGen);
     }

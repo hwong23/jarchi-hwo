@@ -18,11 +18,11 @@ cd $config_publish_gitorigen
  
 git checkout arq
 git pull --rebase
-#  
-# [ $? -eq 0 ] && cp -R ../index.html ./ || echo "ERR"
-#  
-# git add .
-# git commit -a -m "$2"
-# git push
-#  
+
+[ $? -eq 0 ] && cp -R ../index.html ./ || echo "ERR"
+
+git add .
+git commit -a -m "$2"
+git push
+ 
 git checkout main

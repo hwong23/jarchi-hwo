@@ -13,7 +13,7 @@ echo '   comentario:' $2
 # $2: msj commit
 
 cd $config_publish_gitorigen
-# cp -R $config_publish_gitorigen/webpage/index.html ../
+cp -R $config_publish_gitorigen/webpage/index.html ../
  
  
 git checkout arq

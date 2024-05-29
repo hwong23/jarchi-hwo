@@ -5,7 +5,7 @@
 . parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
 echo Configuracion: 
-echo '   origenhtml:' $config_publish_gitorigen
+echo '   gitorigen:' $config_publish_gitorigen
 echo '   comentario:' $2
 
 
@@ -13,7 +13,7 @@ echo '   comentario:' $2
 # $2: msj commit
 
 cd $config_publish_gitorigen
-cp -R $config_publish_gitorigen/webpage/index.html ../
+cp webpage/index.html ..
  
  
 git checkout arq

@@ -1,21 +1,28 @@
 # Actualiza reporte HMTL generado por Archi.
 
 
-# $1: ruta repo git origen
-# $2: origen HTML
-# $3: msj commit
+# include parse_yaml function
+. parse_yaml.sh
+eval $(parse_yaml $1/zconfig.yml "config_")
+echo Configuracion: 
+echo '   origenhtml:' $config_publish_gitorigen
+echo '   comentario:' $2
 
-cd $1
-cp -R $1/webpage/index.html ../
 
+# $1: ruta archivo zconfig.yml
+# $2: msj commit
 
+cd $config_publish_gitorigen
+# cp -R $config_publish_gitorigen/webpage/index.html ../
+ 
+ 
 git checkout arq
-git pull
- 
-[ $? -eq 0 ] && cp -R ../index.html ./ || echo "ERR"
- 
-git add .
-git commit -a -m "$3"
-git push
- 
+git pull --rebase
+#  
+# [ $? -eq 0 ] && cp -R ../index.html ./ || echo "ERR"
+#  
+# git add .
+# git commit -a -m "$2"
+# git push
+#  
 git checkout main

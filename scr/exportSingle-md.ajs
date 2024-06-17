@@ -38,6 +38,9 @@
 // Plantillas por vista
 // Propiedades: vista.plantilla, elemento.plantillaELm, model.rutamacMD
 
+// Requiere: 1) carpeta de salida documentos MD: propiedad del modelo rutaMacMD
+//           2) subcarpeta interna 'images'
+
 
 load(__DIR__ + 'libs/nashorn-polyfills.js');
 load(__DIR__ + 'libs/underscore-min.js');
@@ -101,6 +104,8 @@ var nonViewFolders = allFolders.not(viewsFolder).not(viewFolders);
 
 var folders = selection.filter("folder").not(nonViewFolders);
 
+var gDebug = true;
+
 
 // 1. selección de carpeta de vistas
 if(! folders.size()) {
@@ -139,7 +144,7 @@ function exportaImagen (vv, pth) {
 }
 
 function exportViews(folder) {
-  console.log('Exporting folder', folder.name);
+  console.log('Exporting folder ', folder.name);
   var previousContent = treeContent;
   treeContent = '';
   _.chain($(folder).children('folder')).sortBy(function(f) { return f.name; }).each(function(f) {
@@ -167,7 +172,8 @@ function exportViews(folder) {
     
     if (cambioPlnt) {
       elemtPlantilla = elemtPlantillaActual;
-      // console.log ('elemtPlantilla: ' + elemtPlantilla.split(',')[0] + '.tpl');
+      (gDebug) ? console.log ('elemtPlantilla: ' + __DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl'):0;
+      (gDebug) ? console.log ('elemtPlantilla: ' + __DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl'):0;
       tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
       tplElementFila = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
     }
@@ -197,24 +203,24 @@ function exportViews(folder) {
     _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
       // Plantilla elemento
       elements += tplElementFila({
-      viewsIds: viewsIdsByConceptId[e.id],
-      elementName: e.name,
-      elementType: properCase(e.type),
-      elementDocumentationText: e.documentation.replace(/\n/g, '<br>'),
-      // elementDocumentationMarkdown: marked((e.documentation), mdOptions)
-      elementDocumentationMarkdown: ''
+        viewsIds: viewsIdsByConceptId[e.id],
+        elementName: e.name,
+        elementType: properCase(e.type),
+        elementDocumentationText: e.documentation.replace(/\n/g, '<br>'),
+        // elementDocumentationMarkdown: marked((e.documentation), mdOptions)
+        elementDocumentationMarkdown: ''
       });
     });
     _.chain(relacionesCollection).sortBy(function(r) { return r.name; }).each(function(r) {
       relaciones += tplRelationship({
-      viewsIds: viewsIdsByConceptId[r.id],
-      relationshipName: _.escape(r.name),
-      relationshipType: properCase(r.type),
-      relationshipSource: _.escape(r.source.name),
-      relationshipTarget: _.escape(r.target.name),
-      relationshipDocumentationText: _.escape(r.documentation).replace(/\n/g, '<br>'),
-      // relationshipDocumentationMarkdown: marked(_.escape(r.documentation), mdOptions)
-      relationshipDocumentationMarkdown: ''
+        viewsIds: viewsIdsByConceptId[r.id],
+        relationshipName: _.escape(r.name),
+        relationshipType: properCase(r.type),
+        relationshipSource: _.escape(r.source.name),
+        relationshipTarget: _.escape(r.target.name),
+        relationshipDocumentationText: _.escape(r.documentation).replace(/\n/g, '<br>'),
+        // relationshipDocumentationMarkdown: marked(_.escape(r.documentation), mdOptions)
+        relationshipDocumentationMarkdown: ''
       });
     });
 
@@ -222,7 +228,6 @@ function exportViews(folder) {
     // Generate report's fragments
     var vnombre = (v.prop("titulo"))? v.prop("titulo"):
     (v.labelExpression)? v.labelExpression : v.name;
-
     var nombrevista = v.name.replaceAll(" ","");
     viewTitles = tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
     viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: exportaImagen(v, g_path), viewNombre: nombrevista+'.png', viewAncho: ''});
@@ -237,6 +242,8 @@ function exportViews(folder) {
       elements: viewElements,
       relaciones: relaciones
     });
+
+    (gDebug) ? console.log ('nombrevista: ' + nombrevista):0;
   }); // chain
 }
 
@@ -268,6 +275,7 @@ var mainReport = tplMainReport({
 	treeMargin: '1.3em'
 });
 
+(gDebug) ? console.log('Export iniciado.'):0;
 $.fs.writeFile(g_filePath, mainReport, 'UTF-8');
 
 console.log('Export terminated.');

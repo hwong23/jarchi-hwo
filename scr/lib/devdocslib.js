@@ -121,6 +121,7 @@ function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
         console.log("Default settings were not correctly passed to a child node");
         return (null);
     }
+
     var settings = shallowClone(defaultSettings);
 
     // Check for overrides
@@ -153,7 +154,7 @@ function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
     return settings;
 }
 
-function useDrivingView(alias) {
+function devdoc_useDrivingView(alias) {
     // drivingView = selection.filter("archimate-diagram-model").first();
     
     drivingView = $("view").filter(function(o) { 

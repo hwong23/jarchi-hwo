@@ -186,7 +186,7 @@ var theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 
 (debug)?console.log("vistaDocumental: "+getArgumento("vistaDocumental")):true;
-var theView = useDrivingView(getArgumento("vistaDocumental"));
+var theView = devdoc_useDrivingView(getArgumento("vistaDocumental"));
     // $(selection).filter("archimate-diagram-model").first();
 
 

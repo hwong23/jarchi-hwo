@@ -23,8 +23,8 @@
 
  */
 
-    load(__DIR__ + "lib/myargs.js");
-load(__DIR__ + "../hwo/lib/devdocslib.js");
+load(__DIR__ + "lib/myargs.js");
+load(__DIR__ + "lib/devdocslib.js");
 
 // Get current date
 var currentDate = new Date().toLocaleString("en-US", {

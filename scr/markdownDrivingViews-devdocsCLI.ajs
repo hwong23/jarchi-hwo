@@ -400,13 +400,14 @@ function useDrivingView(alias) {
         drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
         console.log("Driving view is: " + drivingView.name);
         var inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
+        
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
         console.log("DevDoc asociado: " + drivingView_devdoc);
-
-        // Go through each immediate child group in the view, find the first group(s) in a series
+    
+            // Go through each immediate child group in the view, find the first group(s) in a series
         var outcome = true;
         $(drivingView).children("grouping").each(function (thisGroup) {
             if (thisGroup) {

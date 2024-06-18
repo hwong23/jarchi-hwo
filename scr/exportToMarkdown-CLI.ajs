@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Export View to Markdown
  *
  * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
@@ -211,29 +211,30 @@ if (theView) {
 
     let r = __DIR__.split("\/");
     g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = "/"+r[1]+"/"+r[2] + (theView.prop("rutaMacMD")? theView.prop("rutaMacMD"):'/Downloads/tmpr/pgnmd/');
-    g_fileName = g_drivingView_devdoc;
+    g_path = "/"+r[1]+"/"+r[2] + (theView.prop("rutaMacMD")? theView.prop("rutaMacMD"):'/Downloads/tmpr/prymd/');
+    g_fileName = g_path+g_drivingView_devdoc;
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
     (debug)?console.log('g_path: '+g_path):true;
     (debug)?console.log('g_fileName: '+g_fileName):true;
 
+    var exportFile = g_fileName;
 
-    // if(exportFile != null) {
-    //     if (!embed) {
-    //         imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
-    //         relativeURL = imageURL.split("\\");
-    //         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-    //         $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-    //         theDocument+="\n[embedView]: "+relativeURL[relativeURL.length-1];
-    //     }
-    //     theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-    //     $.fs.writeFile(exportFile, theDocument);
-    //     console.log("> Export done");
-    // }
-    // else {
-    //     console.log("> Export cancelled");
-    // }
+    if(exportFile != null) {
+         if (!embed) {
+             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
+             relativeURL = imageURL.split("\\");
+             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+             $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
+             theDocument+="\n[embedView]: "+relativeURL[relativeURL.length-1];
+         }
+         theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
+         $.fs.writeFile(exportFile, theDocument);
+         console.log("> Export done");
+     }
+     else {
+         console.log("> Export cancelled");
+     }
 }
 else {
     console.log("> Please Select a View");

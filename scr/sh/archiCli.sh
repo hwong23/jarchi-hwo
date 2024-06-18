@@ -16,8 +16,8 @@ echo '   rutaexpportprg': $config_development_rutaexpportprg
 
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash --modelrepository.loadModel $config_development_rutamodelo --script.runScript $config_development_rutaprg -vistaDocumental $config_development_vistadoc
 
-status=$?
-echo 
-echo exportSingle-htmlCLI
-[ $status -eq 0 ] && /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash --modelrepository.loadModel $config_development_rutamodelo --script.runScript $config_development_rutaexpportprg -vistaDocumental $config_development_vistadoc || echo "ERR"
+# status=$?
+# echo 
+# echo exportSingle-htmlCLI
+# [ $status -eq 0 ] && /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash --modelrepository.loadModel $config_development_rutamodelo --script.runScript $config_development_rutaexpportprg -vistaDocumental $config_development_vistadoc || echo "ERR"
 

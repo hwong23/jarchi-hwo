@@ -176,7 +176,10 @@ console.log("Export to Markdown");
 var theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 
-var theView = $(selection).filter("archimate-diagram-model").first();
+(debug)?console.log("vistaDocumental: "+getArgumento("vistaDocumental")):true;
+var theView = useDrivingView(getArgumento("vistaDocumental"));
+    // $(selection).filter("archimate-diagram-model").first();
+
 
 if (theView) {
 

@@ -152,3 +152,57 @@ function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
 
     return settings;
 }
+
+function useDrivingView(alias) {
+    // drivingView = selection.filter("archimate-diagram-model").first();
+    
+    drivingView = $("view").filter(function(o) { 
+        // console.log (o.name + ': ' + o.prop(alias));
+        var dd_alias = o.prop("alias") ? o.prop("alias"):"";
+        return (dd_alias === alias);
+    }).first();
+    
+    if (!drivingView) {
+        console.log("Please open and select a Driving View for the documentation");
+        return (false);
+    } else {
+        drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
+        console.log("Driving view is: " + drivingView.name);
+        var inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
+        console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
+        console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
+        console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
+        console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
+        console.log("DevDoc asociado: " + drivingView_devdoc);
+
+        // Go through each immediate child group in the view, find the first group(s) in a series
+        var outcome = true;
+        $(drivingView).children("grouping").each(function (thisGroup) {
+            if (thisGroup) {
+                var incomingRels = $(thisGroup).inRels("triggering-relationship").size();
+
+                if (incomingRels == 0) {
+                    // It's a top-level section, put it in the array.
+                    outcome = outcome && addGroup(thisGroup, 1, inclusionSettings);
+                } else {
+                    // Ignore if if there's an incoming triggering relationship ... our recursive getNextGroup function will find it.
+                }
+            }
+        });
+
+        if (!outcome) {
+            console.log("Error when extracting a group");
+            console.log("Error stack:");
+            for (var i = 0; i < Errors.length; i++) {
+                console.log("- " + Errors[i].message);
+                if (Verbose) {
+                    console.log(" " + Errors[i].object);
+                }
+            }
+        }
+
+    }
+
+    return (true);
+
+} // end of useDrivingView

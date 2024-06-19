@@ -17,7 +17,6 @@
 
 var debug = false;
 var userPath = "/Users/HWO.work/Documents";
-
 // Show output in the console
 console.show();
 console.clear();

@@ -1,0 +1,15 @@
+development:
+  rutausr: /Users/hwo/gh
+  rutamodelo: /Users/hwo/gh/model/pgn-078-arq
+  rutaprg: /Users/hwo/gh/jarchi-hwo/scr/markdownDrivingViews-devdocsCLI.ajs
+  vistadoc: pgndoc
+  rutaexpportprg: /Users/hwo/gh/jarchi-hwo/scr/exportSingle-htmlCLI.ajs
+deploy:
+  origenmd: /Users/hwo/Downloads/tmpr/pgnmd
+  destinomd: /Users/hwo/gh/pgn/pgn-078
+  origenhtml: /Users/hwo/Downloads/tmpr/pgnarchidoc
+ccambio:
+  gitorigen: /Users/hwo/gh/pgn/pgn-078
+publish:
+  gitorigen: /Users/hwo/gh/pgn/pgn-078 
+  

@@ -144,15 +144,12 @@ function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
     if (checkIncludeDiagram !== null) {
         settings["IncludeDiagram"] = checkIncludeDiagram === "true" ? true : false;
     }
-
     if (checkIncludeDocumentation !== null) {
         settings["IncludeDocumentation"] = checkIncludeDocumentation === "true" ? true : false;
     }
-
     if (checkIncludeElements !== null) {
         settings["IncludeViewElements"] = checkIncludeElements === "true" ? true : false;
     }
-
     if (checkIncludeProperties !== null) {
         settings["IncludeProperties"] = checkIncludeProperties === "true" ? true : false;
     }
@@ -177,14 +174,16 @@ function devdoc_useDrivingView(alias) {
         return (false);
     } 
     else {
-        var inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
+        var inclusionSettings = devdoc_getGroupInclusionSettings(model, devdocs_DefaultInclusionSettings);
+        inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, inclusionSettings);
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
-        console.log("DevDoc asociado: " + drivingView_devdoc);
     }
 
     return drivingView;
 
 } // end of useDrivingView
+
+

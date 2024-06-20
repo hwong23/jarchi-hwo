@@ -177,17 +177,6 @@ function devdoc_useDrivingView(alias) {
         return (false);
     } 
     else {
-    else {
-    //     drivingView_devdoc = drivingView.prop("devdoc")?drivingView.prop("devdoc"):"02n.a1.contenido.md";
-    //     console.log("Driving view is: " + drivingView.name);
-        var inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, devdocs_DefaultInclusionSettings);
-        console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
-    //     console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
-    //     console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
-    //     console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
-    //     console.log("DevDoc asociado: " + drivingView_devdoc);
-
-    }
         var inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, DefaultInclusionSettings);
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);

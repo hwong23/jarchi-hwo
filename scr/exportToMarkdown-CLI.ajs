@@ -202,7 +202,7 @@ if (theView) {
     theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
 
     // Notes with no relationships
-    $(selection).find().not("element")clear
+    $(selection).find().not("element")
     .not("relationship").each(function(c){
         if (c.text) {
             if ($(c).rels().length==0) {

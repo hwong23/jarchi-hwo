@@ -271,9 +271,10 @@ if (theView) {
     
     // Crea el archivo de salida de documentación theView
     var exportFile = g_fileName;
+    var exportFile2 = g_path+"02n.a1.contenido-templ.md";
 
     if(exportFile != null) {
-         if (!embed) {
+         if (!embed) {  // escribe archivo imagen exportFile
              imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
              relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
@@ -282,6 +283,7 @@ if (theView) {
          }
          theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, theDocument);
+         $.fs.writeFile(exportFile2, viewDocumentations);
          console.log("> Export done");
      }
      else {

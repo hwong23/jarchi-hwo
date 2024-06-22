@@ -221,7 +221,7 @@ if (theView) {
     else {theDocument+="\n!["+theView.name+"][embedView]\n";}
 
     
-    // interpolación de texto mediante plantilla
+    // interpolación de texto mediante plantilla: selección de plantilla base
     tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8') ); 
 
 
@@ -237,10 +237,26 @@ if (theView) {
         };
     })
 
+    // interpolación de texto mediante plantilla: creción de contenido
     nestedDocumentation(0, theView);
+    viewDocumentations += tplDocumentation (
+        {
+        viewId: 'id-'+theView.id,
+        // viewTitle: viewTitles,
+        // viewNota: obtNota (v),
+        // viewDiagram: viewDiagrams,
+        documentationText: _.escape(theDocument)
+        // ,
+        // documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
+        // elements: viewElements,
+        // relaciones: relaciones
+        }
+    );
 
-    // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
-    // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+
+    // Define el rata y nombre del archivo de salida de la documentación de la vista, theView
+        // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
 
     var r = __DIR__.split("\/");
     g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
@@ -251,6 +267,8 @@ if (theView) {
     (debug)?console.log('g_path: '+g_path):true;
     (debug)?console.log('g_fileName: '+g_fileName):true;
 
+    
+    // Crea el archivo de salida de documentación theView
     var exportFile = g_fileName;
 
     if(exportFile != null) {

@@ -316,7 +316,7 @@ function exportViews_2 (k, viewList, settings)
     });
     }
 
-    // Generate report's fragments
+    // Generate report's fragments: título, diagrama, elementos
     var vnombre = (v.prop("titulo"))? v.prop("titulo"):
     (v.labelExpression)? v.labelExpression : v.name;
 

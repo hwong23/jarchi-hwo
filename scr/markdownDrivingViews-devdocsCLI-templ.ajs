@@ -396,6 +396,7 @@ function addSpace(numSpaces) {
     return rtnText;
 }
 
+
 function outputHdr(Level, Name, AddLink, Doc) {
 
     var indent = "";

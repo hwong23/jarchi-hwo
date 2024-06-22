@@ -194,6 +194,7 @@ function nestedDocumentation(d, element) {
 
 
 var theDocument = "";
+var viewDocumentations = '';
 var theTOC = "* [Introducción](#Introducción)";
 
 // Argumentos de entrada por CLI

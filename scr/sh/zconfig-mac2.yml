@@ -1,7 +1,7 @@
 development:
-  rutausr: /Users/hwo/gh
-  rutamodelo: /Users/hwo/gh/model/modelocontenidos
-  rutaprg: /Users/hwo/gh/jarchi-hwo/scr/exportToMarkdown-CLI.ajs
+  rutausr: /Users/hwo/git
+  rutamodelo: /Users/hwo/git/models/modelocontenidos
+  rutaprg: /Users/hwo/git/jarchi-hwo/scr/exportToMarkdown-CLI.ajs
   vistadoc: hv
   rutaexpportprg: /Users/hwo/gh/jarchi-hwo/scr/exportSingle-htmlCLI.ajs
 deploy:

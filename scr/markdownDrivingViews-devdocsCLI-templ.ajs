@@ -40,7 +40,7 @@ var mdOptions = {
 };
 
 
-// funciones con argumento plantillas base 
+// funciones con argumento plantillas base
 var tplDocumentation;
 var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
@@ -62,7 +62,7 @@ console.clear();
 console.log("Documentation Generation @", currentDate);
 
 
-// Globales: contexto global
+// Contexto global
 var Verbose = false;
 var Sections = [];
 var Errors = [];

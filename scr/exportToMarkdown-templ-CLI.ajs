@@ -223,7 +223,7 @@ if (theView) {
 
     
     // interpolación de texto mediante plantilla: selección de plantilla base
-    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8') ); 
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (theView.prop('plantilla') ? theView.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8') ); 
 
 
     theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
@@ -243,14 +243,14 @@ if (theView) {
     viewDocumentations += tplDocumentation (
         {
         viewId: 'id-'+theView.id,
-        // viewTitle: viewTitles,
-        // viewNota: obtNota (v),
-        // viewDiagram: viewDiagrams,
+        viewTitle: "",      // viewTitles,
+        viewNota: "",       // obtNota (v),
+        viewDiagram: "",    // viewDiagrams,
         documentationText: _.escape(theDocument)
-        // ,
-        // documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
-        // elements: viewElements,
-        // relaciones: relaciones
+        ,
+        // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
+        elements: "",       // viewElements,
+        relaciones: ""      // relaciones
         }
     );
 
@@ -284,6 +284,9 @@ if (theView) {
          theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, theDocument);
          $.fs.writeFile(exportFile2, viewDocumentations);
+
+         (debug)?console.log("theDocument "+theDocument.length):true;
+         (debug)?console.log("viewDocumentations "+viewDocumentations.length):true;
          console.log("> Export done");
      }
      else {

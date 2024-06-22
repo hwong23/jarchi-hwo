@@ -223,7 +223,7 @@ if (theView) {
 
     
     // interpolación de texto mediante plantilla: selección de plantilla base
-    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (theView.prop('plantilla') ? theView.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8') ); 
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (theView.prop('plantilla') ? theView.prop('plantilla'):'documentation-md-tex') + '.tpl', 'UTF-8') ); 
 
 
     theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
@@ -282,8 +282,7 @@ if (theView) {
              theDocument+="\n[embedView]: "+relativeURL[relativeURL.length-1];
          }
          theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-         $.fs.writeFile(exportFile, theDocument);
-         $.fs.writeFile(exportFile2, viewDocumentations);
+         $.fs.writeFile(exportFile, /*theDocument*/ viewDocumentations);
 
          (debug)?console.log("theDocument "+theDocument.length):true;
          (debug)?console.log("viewDocumentations "+viewDocumentations.length):true;

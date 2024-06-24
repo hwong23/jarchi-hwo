@@ -1,5 +1,5 @@
 ---
-metadata: ok
+{{elements}}
 ---
 {{viewTitle}}
 {{viewNota}}

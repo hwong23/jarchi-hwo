@@ -284,7 +284,7 @@ function exportViews_2 (k, viewList, settings)
 
     // Carga las configuraciones de la vista
     tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8') );
-    elemtPlantillaActual = v.prop('plantillaElm') ? v.prop('plantillaElm'):'elementtabla-md,element-md';
+    elemtPlantillaActual = v.prop('plantillaElm')? v.prop('plantillaElm'):'elementtabla-md,element-md';
     cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
     var inclusionSettings = devdoc_getGroupInclusionSettings(v, DefaultInclusionSettings);
     

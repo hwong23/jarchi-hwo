@@ -1,0 +1,4 @@
+|
+   {{elementName}}
+   {elementDocumentationText}
+

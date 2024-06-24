@@ -6,6 +6,4 @@
 {{documentationText}}
 {{viewDiagram}}
 
-{{elements}}
-
 {{relaciones}}

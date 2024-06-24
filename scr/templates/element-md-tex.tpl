@@ -1,4 +1,3 @@
-|
+{{elementName}}: |
    {{elementName}}
-   {elementDocumentationText}
-
+   {{elementDocumentationText}}

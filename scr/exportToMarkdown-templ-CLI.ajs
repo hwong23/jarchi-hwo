@@ -38,6 +38,8 @@ var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
+var elements = '';
+var elementsCollection;
 
 
 // funciones con argumento plantillas
@@ -45,7 +47,7 @@ var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.
 var tplDocumentation;
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
-var tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
+var tplElement = _.template(readFully(__DIR__ + 'templates/element-md-tex.tpl', 'UTF-8'));
 
 
 console.show();
@@ -94,7 +96,7 @@ function nestedDocumentation(d, element) {
             });
             // _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
                 elements += tplElement({
-                viewsIds: viewsIdsByConceptId[e.id],
+                viewsIds: '',
                 elementName: _.escape(e.name),
                 elementType: properCase(e.type),
                 elementDocumentationText: _.escape(e.documentation), //.replace(/\n/g, '<br>'),
@@ -166,7 +168,7 @@ if (theView) {
         documentationText: _.escape(theDocument)
         ,
         // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
-        elements: "",       // viewElements,
+        elements: elements,
         relaciones: ""      // relaciones
         }
     );
@@ -303,3 +305,13 @@ function documentRelationships(element) {
 
     return "**Relaciones (impacto)**\n"+theHeader+"\n"+theLine+"\n"+theBody;
 }
+
+function properCase(str) {
+    return str.replace(
+      /\w*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    ).replace('-', ' ');
+  }
+  

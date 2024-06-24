@@ -1,3 +1,2 @@
 {{elementName}}: |
-   {{elementName}}
    {{elementDocumentationText}}

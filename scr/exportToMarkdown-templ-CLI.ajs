@@ -104,7 +104,6 @@ function nestedDocumentation(d, element) {
                 elementDocumentationMarkdown: ''
                 });
             // });
-            debug? console.log("elements: "+elements.length):true;
             debug? console.log(e.name+":"+$(e).children().not("relationship")+":"+e):true;
             if ($(e).children().length>0) {
                 d++;

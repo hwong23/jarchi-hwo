@@ -42,7 +42,7 @@ var g_drivingView_devdoc = "";    // documento automático asociado
 
 // funciones con argumento plantillas
 var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
-var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (theView.prop('plantilla') ? theView.prop('plantilla'):'documentation-md-tex') + '.tpl', 'UTF-8') ); 
+var tplDocumentation;
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
@@ -141,7 +141,8 @@ if (theView) {
     }
     else {theDocument+="\n!["+theView.name+"][embedView]\n";}
 
-    
+    // interpolación de texto mediante plantilla
+    var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (theView.prop('plantilla') ? theView.prop('plantilla'):'documentation-md-tex') + '.tpl', 'UTF-8') ); 
     theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
 
     // Notes with no relationships

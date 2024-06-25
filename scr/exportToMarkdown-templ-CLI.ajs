@@ -87,7 +87,7 @@ function nestedDocumentation(d, element) {
 
                 elements += tplElement({
                 viewsIds: '',
-                elementName: _.escape( e.prop('yml-elemento')? e.prop('yml-elemento'):e.name ),
+                elementName: _.escape( e.prop('ide')? e.prop('yml-elemento'):e.name ),
                 elementType: properCase(e.type),
                 elementDocumentationText: _.escape(e.documentation), //.replace(/\n/g, '<br>'),
                 elementDocumentationMarkdown: ''

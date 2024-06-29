@@ -119,23 +119,18 @@ var theView = devdoc_useDrivingView(vistaDocumental);
 
 if (theView) {
 
+    // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
     toc(0,theView);
-
     theDocument+="\n"+theTOC+"\n";
-
     theDocument+="\n## Introducción\n";
-
     if (embed==true){
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
         theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
     }
     else {theDocument+="\n!["+theView.name+"][embedView]\n";}
-
-    // interpolación de texto mediante plantilla
-    var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (theView.prop('plantilla') ? theView.prop('plantilla'):'documentation-md-tex') + '.tpl', 'UTF-8') ); 
-    theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
-
+    theView.documentation!=""? theDocument+="\n"+theView.documentation+"\n":true;
+        
     // Notes with no relationships
     $(selection).find().not("element")
     .not("relationship").each(function(c){
@@ -145,7 +140,10 @@ if (theView) {
             }
         };
     })
-
+    
+    
+    // interpolación de texto mediante plantilla
+    var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (theView.prop('plantilla') ? theView.prop('plantilla'):'documentation-md-tex') + '.tpl', 'UTF-8') ); 
     // interpolación de texto mediante plantilla: creción de contenido
     nestedDocumentation(0, theView);
     viewDocumentations += tplDocumentation (
@@ -163,10 +161,9 @@ if (theView) {
     );
 
 
-    // Define el rata y nombre del archivo de salida de la documentación de la vista, theView
+    // Define ruta/nombre del archivo de salida de la documentación de la vista theView
         // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
         // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-
     var r = __DIR__.split("\/");
     g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
     g_path = "/"+r[1]+"/"+r[2] + (theView.prop("rutaMacMD")? theView.prop("rutaMacMD"):'/Downloads/tmpr/prymd/');
@@ -179,7 +176,6 @@ if (theView) {
     
     // Crea el archivo de salida de documentación theView
     var exportFile = g_fileName;
-    var exportFile2 = g_path+"02n.a1.contenido-templ.md";
 
     if(exportFile != null) {
          if (!embed) {  // escribe archivo imagen exportFile
@@ -187,12 +183,11 @@ if (theView) {
              relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             theDocument+="\n[embedView]: "+relativeURL[relativeURL.length-1];
+             viewDocumentations+="\n[embedView]: "+relativeURL[relativeURL.length-1];
          }
-         theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-         $.fs.writeFile(exportFile, /*theDocument*/ viewDocumentations);
+         viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
+         $.fs.writeFile(exportFile, viewDocumentations);
 
-         (debug)?console.log("theDocument "+theDocument.length):true;
          (debug)?console.log("viewDocumentations "+viewDocumentations.length):true;
          console.log("> Export done");
      }

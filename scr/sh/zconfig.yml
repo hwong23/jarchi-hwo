@@ -1,7 +1,8 @@
 development:
   rutausr: /Users/hwong23/git
   rutamodelo: /Users/hwong23/git/archigit/modelocontenidos
-  rutaprg: /Users/hwong23/git/jarchi-hwo/scr/exportToMarkdown-templ-CLI.ajs
+  # rutaprg: /Users/hwong23/git/jarchi-hwo/scr/exportToMarkdown-templ-CLI.ajs
+  rutaprg: /Users/hwong23/git/jarchi-hwo/scr/exportToMarkdown-CLI.ajs
   vistadoc: hv
   rutaexpportprg: /Users/hwo/gh/jarchi-hwo/scr/exportSingle-htmlCLI.ajs
 deploy:

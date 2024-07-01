@@ -18,7 +18,7 @@
  *              Embed view (experimental)
  * Version 3.5: Added support for jArchi 4.4 (additional attributes)
  * Version 3.6: Linea de comando (CLI)
- * Version 4.0: (interpolación texto) Plantillas
+ * Version 4.0: (interpolación) Documentación por plantillas
  *
  * (c) 2018 Steven Mileham, HWO
  *
@@ -43,11 +43,11 @@ var elementsCollection;
 
 
 // funciones con argumento plantillas
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
 var tplDocumentation;
+var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
-var tplElement = _.template(readFully(__DIR__ + 'templates/element-md-tex.tpl', 'UTF-8'));
+var tplElement = _.template(readFully(__DIR__ + 'templates/tex/element-md-tex.tpl', 'UTF-8'));
 
 
 console.show();
@@ -143,7 +143,8 @@ if (theView) {
     
     
     // interpolación de texto mediante plantilla
-    var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (theView.prop('plantilla') ? theView.prop('plantilla'):'documentation-md-tex') + '.tpl', 'UTF-8') ); 
+    var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
+        (theView.prop('plantilla')? theView.prop('plantilla'):'tex/documentation-md-tex') + '.tpl', 'UTF-8') ); 
     // interpolación de texto mediante plantilla: creción de contenido
     nestedDocumentation(0, theView);
     viewDocumentations += tplDocumentation (

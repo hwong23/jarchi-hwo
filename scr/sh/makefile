@@ -12,10 +12,10 @@ all:
 md:
 	# (cd article && \
 	# pandoc --defaults=./../defaults.yaml --defaults=docx.yaml)
-	sh archiCli-md.sh .
+	(sh archiCli-md.sh .)
 
 html:
 	# (cd article && \
 	# pandoc --defaults=./../defaults.yaml --defaults=pdf.yaml)
-	sh archiCli-html.sh .
+	(sh archiCli-html.sh .)
 

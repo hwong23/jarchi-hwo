@@ -44,7 +44,7 @@ var elementsCollection;
 
 // funciones con argumento plantillas
 var tplDocumentation;
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
+var tplMainReport = _.template(readFully(__DIR__ + 'templates/ppt/main-report-ppt.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/tex/element-md-tex.tpl', 'UTF-8'));
@@ -62,7 +62,6 @@ console.log("Export to Markdown");
     element: argumento vista
  Requiere: 
  */
- 
 function nestedDocumentation(d, element) {
     $(element).children().not("relationship").each(function(e) {
         if (e.name) {

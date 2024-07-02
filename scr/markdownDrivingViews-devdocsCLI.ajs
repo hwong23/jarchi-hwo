@@ -21,6 +21,7 @@
 	24-Jan-2020 - Allowed inclusion settings to be set by group. Inherited by nested groups. Made catalogue columns more dynamic (configurable in future?). Refactored recursive functions. (Jared Pritchard)
     28-Jan-2020 - Outputs the linked views in the visual left-right top-bottom order they are drawn in a driving group. This was tricky and probably messy code, but it works.
     29-Jan-2020 - includes a hardNewpage variable to drop the text NEWPAGE into the output if your target is MS Word. This allows for post processing find-replace to swap it for proper new pages. It does this for all header levels in the listofNewpageheaders variable.
+    Oct-2023    - Ejecución por línea de comando (CLI)
 
  */
 

@@ -18,4 +18,3 @@ html:
 	# (cd article && \
 	# pandoc --defaults=./../defaults.yaml --defaults=pdf.yaml)
 	(sh archiCli-html.sh .)
-

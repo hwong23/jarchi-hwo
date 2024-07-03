@@ -129,8 +129,10 @@ function documentRelationships(element) {
 
 function nestedDocumentation(d, element) {
     $(element).children().not("relationship").
-    filter(function(child) {return child.prop("destino")=="ppt"? true:false}).each(function(e) {
-        if (e.name) {
+    filter(function(child) {return (child.prop("destino")?  
+        (child.prop("destino").includes("doc")? true:false): false)}).each(function(e) {
+
+            if (e.name) {
             var headerDepth ="##";
             for (var i=0; i<d; i++) {
                 headerDepth+="#";

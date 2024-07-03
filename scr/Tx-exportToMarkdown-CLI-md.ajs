@@ -60,7 +60,10 @@ function generateLink(theString) {
 }
 
 function toc(d, element){
-    $(element).children().not("relationship").each(function(e) {
+    $(element).children().not("relationship").filter(function(child) {
+        var prop_destino = child.prop("destino");
+        return (prop_destino? (prop_destino.includes("doc")? true:false): false)
+    }).each(function(e) {
         if (e.name) {
             headerDepth="";
             for (var i=0; i<d; i++){

@@ -64,8 +64,11 @@ console.log("Export to Markdown");
  */
  
 function nestedDocumentation(d, element) {
-    $(element).children().not("relationship").
-    filter(function(child) {return child.prop("destino").contains("tex")? true:false}).each(function(e) {
+    $(element).children().not("relationship").filter(function(child) {
+        var prop_destino = child.prop("destino");
+        return (prop_destino? (prop_destino.includes("tex")? true:false): false)
+    }).each(function(e) {
+        
         if (e.name) {
             var headerDepth ="##";      // nivel inicial jerarquía del título
             for (var i=0; i<d; i++) {

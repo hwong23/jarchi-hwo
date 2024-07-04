@@ -1,7 +1,7 @@
 development:
-  rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
-  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
   prg: Tx-exportToMarkdown-CLI-templppt.ajs
   # rutaprg: /Users/hwo/gh/jarchi-hwo/scr/Tx-exportToMarkdown-templtex-CLI.ajs
   # rutaprg: /Users/hwo/gh/jarchi-hwo/scr/Tx-exportToMarkdown-CLI-md.ajs

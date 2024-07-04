@@ -9,10 +9,16 @@ all:
 	# make article presentation thesis
 	make md html
 
-md:
+mddoc:
 	# (cd article && \
 	# pandoc --defaults=./../defaults.yaml --defaults=docx.yaml)
-	(sh archiCli-md.sh .)
+	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs $(devdoc))
+
+mdtex:
+	(sh archiCli-md.sh . Tx-exportToMarkdown-templtex-CLI.ajs)
+
+mdppt:
+	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templppt.ajs)
 
 html:
 	# (cd article && \

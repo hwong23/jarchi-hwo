@@ -165,7 +165,9 @@ function nestedDocumentation(d, element) {
                     theDocument+="\n> "+escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
                 }
             });
-            debug? console.log(e.name+":"+$(e).children().not("relationship")+":"+e):true;
+            
+            debug? console.log(e.name+":"+e):true;
+            
             if ($(e).children().length>0) {
                 d++;
                 nestedDocumentation(d, e);
@@ -230,7 +232,6 @@ if (theView) {
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
     (debug)?console.log('g_path: '+g_path):true;
-    (debug)?console.log('g_fileName: '+g_fileName):true;
 
     var exportFile = g_fileName;
 

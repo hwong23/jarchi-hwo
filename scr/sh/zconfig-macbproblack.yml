@@ -1,12 +1,11 @@
 development:
-  rutausr: /Users/hwong23/git
-  rutamodelo: /Users/hwong23/git/archigit/modelocontenidos
-  rutaprg: /Users/hwong23/git/jarchi-hwo/scr/Tx-exportToMarkdown-CLI-templppt.ajs
-  # rutaprg: /Users/hwong23/git/jarchi-hwo/scr/Tx-exportToMarkdown-templtex-CLI.ajs
-  # rutaprg: /Users/hwong23/git/jarchi-hwo/scr/Tx-exportToMarkdown-CLI-md.ajs
-  # rutaprg: /Users/hwong23/git/jarchi-hwo/scr/markdownDrivingViews-devdocsCLI.ajs
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
+  prg: Tx-exportToMarkdown-CLI-templppt.ajs
   vistadoc: hvppt
-  rutaexpportprg: /Users/hwong23/git/jarchi-hwo/scr/exportSingle-htmlCLI.ajs
+  rutaexpportprg: /Users/hwo/git/jarchi-hwo/scr
+  expportprg: exportSingle-htmlCLI.ajs
 deploy:
   # origenmd: /Users/hwo/Downloads/tmpr/pgnmd
   # destinomd: /Users/hwo/gh/pgn/pgn-078

@@ -156,10 +156,10 @@ function nestedDocumentation(d, element) {
                 linkNum = " "+bodyMap[theHash];
             }
 
-            theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) /* +"("+ convertToText(e.type) +")" */ +linkNum+"\n";
+            theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
             (e.prop().length > 0 && proptable) ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
             ($(e).outRels().length>0 && reltable) ? theDocument+="\n"+escapeMD(documentRelationships(e)):true;
-            e.documentation ? theDocument+="\n"+escapeMD(e.documentation)+"\n":true;
+            e.documentation ? theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
                     theDocument+="\n> "+escapeMD(r.text).replaceAll("\n","\n> ")+"\n";

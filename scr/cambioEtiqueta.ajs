@@ -1,0 +1,11 @@
+/*
+ * Cambio de etiqueta de elementos seleccionados
+ */
+
+console.log("> Agregar/Cambiar etiqueta");
+
+var valorP = window.prompt("Expresión", "${property:destino}_${name}");
+
+$(selection).each(function(v) {
+    v.labelExpression=valorP;
+});

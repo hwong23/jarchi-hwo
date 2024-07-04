@@ -2,7 +2,7 @@
  * Cambio de propiedades de elementos seleccionados
  */
 
-console.log("> Agregar/Cambiar propiedad alcanceSOA");
+console.log("> Agregar/Cambiar propiedad");
 
 var valorP = window.prompt("Propiedad", "alcanseSOA");
 var valorVP = window.prompt("Valor", "Fase 1.1");

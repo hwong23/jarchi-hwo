@@ -15,10 +15,10 @@ mddoc:
 	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs $(devdoc))
 
 mdtex:
-	(sh archiCli-md.sh . Tx-exportToMarkdown-templtex-CLI.ajs)
+	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templtex.ajs $(devdoc))
 
 mdppt:
-	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templppt.ajs)
+	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templppt.ajs $(devdoc))
 
 html:
 	# (cd article && \

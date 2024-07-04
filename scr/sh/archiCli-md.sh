@@ -1,4 +1,5 @@
-# Generación de documento MD basado en la vista documental marcada con el alias propertie del repositorio de arquitectura.
+# Generación de documento MD basado en la vista documental marcada con 
+# el alias propertie del repositorio de contenidos de arquitectura.
 
 
 # $1: ruta archivo zconfig.yml

@@ -88,15 +88,16 @@ function nestedDocumentation(d, element) {
                 linkNum = " "+bodyMap[theHash];
             }
 
-                elements += tplElement({
+            elements += tplElement({
                 viewsIds: '',
                 elementName: _.escape(e.name),
                 elementType: properCase(e.type),
                 elementDocumentationText: _.escape(e.documentation), //.replace(/\n/g, '<br>'),
                 elementDocumentationMarkdown: ''
-                });
+            });
 
-                debug? console.log(e.name+":"+$(e).children().not("relationship")+":"+e):true;
+            debug? console.log(e.name+":"+e):true;
+
             if ($(e).children().length>0) {
                 d++;
                 nestedDocumentation(d, e);

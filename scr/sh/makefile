@@ -7,11 +7,10 @@ help:
 
 all:
 	# make article presentation thesis
-	make md html
+	make mddoc mdtex mdppt html
 
 mddoc:
-	# (cd article && \
-	# pandoc --defaults=./../defaults.yaml --defaults=docx.yaml)
+	# (cd article && \ pandoc --defaults=./../defaults.yaml --defaults=docx.yaml)
 	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs $(devdoc))
 
 mdtex:

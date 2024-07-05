@@ -31,11 +31,138 @@ var debug = true;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
-var proptable = false;
-var reltable = false;
+var proptable = false;            // escribe tabla de propiedades?
+var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
+
+console.show();
+console.clear();
+console.log("Export to Markdown");
+
+function nestedDocumentation(d, element) {
+    $(element).children().not("relationship").filter(function(child) {
+        var prop_destino = child.prop("destino");
+        return (prop_destino? (prop_destino.includes("doc")? true:false): false)
+    }).each(function(e) {
+
+            if (e.name) {
+                var headerDepth ="##";      // nivel inicial jerarquía del título
+            for (var i=0; i<d; i++) {
+                headerDepth+="#";
+            }
+
+            var theHash = generateLink(e.name +" ("+ convertToText(e.type)+")");
+            if (bodyMap[theHash]==null) {
+                bodyMap[theHash]=1;
+            }
+            else {
+                bodyMap[theHash]+=1;
+            }
+
+            var linkNum="";
+
+            if (bodyMap[theHash]>1) {
+                linkNum = " "+bodyMap[theHash];
+            }
+
+            theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
+            (e.prop().length > 0 && proptable) ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
+            ($(e).outRels().length>0 && reltable) ? theDocument+="\n"+escapeMD(documentRelationships(e)):true;
+            e.documentation ? theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
+            $(e).rels().ends().each(function(r) {
+                if (r.text) {
+                    theDocument+="\n> "+escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
+                }
+            });
+            
+            debug? console.log(e.name+":"+e):true;
+            
+            if ($(e).children().length>0) {
+                d++;
+                nestedDocumentation(d, e);
+                d--;
+            }
+        }
+    });
+}
+
+
+var theDocument = "";
+var theTOC = "* [Introducción](#Introducción)";
+
+// Argumentos de entrada por CLI
+var vistaDocumental = getArgumento("vistaDocumental");
+(debug)?console.log("vistaDocumental: "+vistaDocumental):true;
+
+// Selección de la vista indicada por el argumento entrada CLI
+var theView = devdoc_useDrivingView(vistaDocumental);
+    // $(selection).filter("archimate-diagram-model").first();
+
+
+if (theView) {
+
+    // composición de theDocument, contenedor de la documentación de la vista
+    theDocument+="# "+theView.name+"\n";
+    toc(0,theView);
+    theDocument+="\n"+theTOC+"\n";
+    theDocument+="\n## Introducción\n";
+    if (embed==true){
+        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+        theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
+    }
+    else {theDocument+="\n!["+theView.name+"][embedView]\n";}
+    theView.documentation!=""? theDocument+="\n"+theView.documentation+"\n":true;
+
+    // Notes with no relationships
+    $(selection).find().not("element")
+    .not("relationship").each(function(c){
+        if (c.text) {
+            if ($(c).rels().length==0) {
+                theDocument+="\n"+escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
+            }
+        };
+    })
+
+    nestedDocumentation(0, theView);
+
+    // Define ruta/nombre del archivo de salida de la documentación de la vista theView
+        // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+    var r = __DIR__.split("\/");
+    g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
+    g_path = "/"+r[1]+"/"+r[2] + (theView.prop("rutaMacMD")? theView.prop("rutaMacMD"):'/Downloads/tmpr/prymd/');
+    g_fileName = g_path+g_drivingView_devdoc;
+
+    (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
+    (debug)?console.log('g_path: '+g_path):true;
+
+    
+    // Crea el archivo de salida de documentación theView
+    var exportFile = g_fileName;
+
+    if(exportFile != null) {
+        if (!embed) {  // escribe archivo imagen exportFile
+             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
+             relativeURL = imageURL.split("\\");
+             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+             $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
+             theDocument+="\n[embedView]: "+relativeURL[relativeURL.length-1];
+         }
+         theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
+         $.fs.writeFile(exportFile, theDocument);
+         
+         console.log("> Export done");
+     }
+     else {
+         console.log("> Export cancelled");
+     }
+}
+else {
+    console.log("> Please Select a View");
+}
+
 
 function convertToText(type) {
     var theString = type.replaceAll("-"," ").split(" ");
@@ -128,129 +255,4 @@ function documentRelationships(element) {
     });
 
     return "**Relaciones (impacto)**\n"+theHeader+"\n"+theLine+"\n"+theBody;
-}
-
-function nestedDocumentation(d, element) {
-    $(element).children().not("relationship").filter(function(child) {
-        var prop_destino = child.prop("destino");
-        return (prop_destino? (prop_destino.includes("doc")? true:false): false)
-    }).each(function(e) {
-
-            if (e.name) {
-            var headerDepth ="##";
-            for (var i=0; i<d; i++) {
-                headerDepth+="#";
-            }
-
-            var theHash = generateLink(e.name +" ("+ convertToText(e.type)+")");
-            if (bodyMap[theHash]==null) {
-                bodyMap[theHash]=1;
-            }
-            else {
-                bodyMap[theHash]+=1;
-            }
-
-            var linkNum="";
-
-            if (bodyMap[theHash]>1) {
-                linkNum = " "+bodyMap[theHash];
-            }
-
-            theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
-            (e.prop().length > 0 && proptable) ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
-            ($(e).outRels().length>0 && reltable) ? theDocument+="\n"+escapeMD(documentRelationships(e)):true;
-            e.documentation ? theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
-            $(e).rels().ends().each(function(r) {
-                if (r.text) {
-                    theDocument+="\n> "+escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
-                }
-            });
-            
-            debug? console.log(e.name+":"+e):true;
-            
-            if ($(e).children().length>0) {
-                d++;
-                nestedDocumentation(d, e);
-                d--;
-            }
-        }
-    });
-}
-
-console.show();
-console.clear();
-console.log("Export to Markdown");
-
-var theDocument = "";
-var theTOC = "* [Introducción](#Introducción)";
-
-// Argumentos de entrada por CLI
-var vistaDocumental = getArgumento("vistaDocumental");
-(debug)?console.log("vistaDocumental: "+vistaDocumental):true;
-
-// Selección de la vista indicada por el argumento entrada CLI
-var theView = devdoc_useDrivingView(vistaDocumental);
-    // $(selection).filter("archimate-diagram-model").first();
-
-
-if (theView) {
-
-    theDocument+="# "+theView.name+"\n";
-    toc(0,theView);
-
-    theDocument+="\n"+theTOC+"\n";
-
-    theDocument+="\n## Introducción\n";
-
-    if (embed==true){
-        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-        theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
-    }
-    else {theDocument+="\n!["+theView.name+"][embedView]\n";}
-
-    theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
-
-    // Notes with no relationships
-    $(selection).find().not("element")
-    .not("relationship").each(function(c){
-        if (c.text) {
-            if ($(c).rels().length==0) {
-                theDocument+="\n"+escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
-            }
-        };
-    })
-
-    nestedDocumentation(0, theView);
-
-    // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
-    // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-
-    var r = __DIR__.split("\/");
-    g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = "/"+r[1]+"/"+r[2] + (theView.prop("rutaMacMD")? theView.prop("rutaMacMD"):'/Downloads/tmpr/prymd/');
-    g_fileName = g_path+g_drivingView_devdoc;
-
-    (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
-    (debug)?console.log('g_path: '+g_path):true;
-
-    var exportFile = g_fileName;
-
-    if(exportFile != null) {
-         if (!embed) {
-             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
-             relativeURL = imageURL.split("\\");
-             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-             $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             theDocument+="\n[embedView]: "+relativeURL[relativeURL.length-1];
-         }
-         theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-         $.fs.writeFile(exportFile, theDocument);
-         console.log("> Export done");
-     }
-     else {
-         console.log("> Export cancelled");
-     }
-}
-else {
-    console.log("> Please Select a View");
 }

@@ -108,8 +108,8 @@ function nestedDocumentation(d, element) {
 
 
 var theDocument = "";
-var viewDocumentations = '';
 var theTOC = "* [Introducción](#Introducción)";
+var viewDocumentations = '';
 
 // Argumentos de entrada por CLI
 var vistaDocumental = getArgumento("vistaDocumental");
@@ -145,11 +145,12 @@ if (theView) {
     })
     
     
+    nestedDocumentation(0, theView);
+
     // interpolación de texto mediante plantilla
     var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
         (theView.prop('plantilla')? theView.prop('plantilla'):'ppt/documentation-md-ppt') + '.tpl', 'UTF-8') ); 
     
-    nestedDocumentation(0, theView);
     viewDocumentations += tplDocumentation (
         {
         viewId: 'id-'+theView.id,
@@ -175,9 +176,8 @@ if (theView) {
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
     (debug)?console.log('g_path: '+g_path):true;
-    (debug)?console.log('g_fileName: '+g_fileName):true;
 
-    
+
     // Crea el archivo de salida de documentación theView
     var exportFile = g_fileName;
 
@@ -192,7 +192,6 @@ if (theView) {
          viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, viewDocumentations);
 
-         (debug)?console.log("viewDocumentations "+viewDocumentations.length):true;
          console.log("> Export done");
      }
      else {

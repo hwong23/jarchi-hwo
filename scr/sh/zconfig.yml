@@ -1,10 +1,10 @@
 development:
-  rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
-  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
   prg: Tx-exportToMarkdown-CLI-templppt.ajs
   vistadoc: hvppt
-  rutaexpportprg: /Users/hwo/gh/jarchi-hwo/scr
+  rutaexpportprg: /Users/hwo/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
 deploy:
   # origenmd: /Users/hwo/Downloads/tmpr/pgnmd
@@ -14,3 +14,4 @@ ccambio:
   # gitorigen: /Users/hwo/gh/pgn/pgn-078
 publish:
   # gitorigen: /Users/hwo/gh/pgn/pgn-078 
+  

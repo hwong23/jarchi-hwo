@@ -62,7 +62,6 @@ console.log("Export to Markdown");
     element: argumento vista
  Requiere: 
  */
- 
 function nestedDocumentation(d, element) {
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
@@ -89,15 +88,16 @@ function nestedDocumentation(d, element) {
                 linkNum = " "+bodyMap[theHash];
             }
 
-                elements += tplElement({
+            elements += tplElement({
                 viewsIds: '',
                 elementName: _.escape( e.prop('ide')? e.prop('ide'):e.name ),
                 elementType: properCase(e.type),
                 elementDocumentationText: _.escape(e.documentation), //.replace(/\n/g, '<br>'),
                 elementDocumentationMarkdown: ''
-                });
+            });
 
-                debug? console.log(e.name+":"+$(e).children().not("relationship")+":"+e):true;
+            debug? console.log(e.name+":"+e):true;
+
             if ($(e).children().length>0) {
                 d++;
                 nestedDocumentation(d, e);

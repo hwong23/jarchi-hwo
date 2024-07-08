@@ -178,7 +178,7 @@ function devdoc_useDrivingView(alias) {
         inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, inclusionSettings);
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
-        console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
+        console.log("Default IncludeViewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
     }
 

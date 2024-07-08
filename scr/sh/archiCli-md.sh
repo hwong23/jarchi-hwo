@@ -28,7 +28,7 @@ echo '   rutaMacHTML': $config_development_rutaMacHTML
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\
 commandline.app -consoleLog -nosplash --modelrepository.loadModel \
 $config_development_rutamodelo --script.runScript $config_development_rutaprg/$config_development_prg \
--vistaDocumental $config_development_vistadoc \
+-vistaDocumental $config_development_vistadoc -rutaMacMD $config_development_rutaMacMD \
 -rutaMacHTML $config_development_rutaMacHTML
 
 

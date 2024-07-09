@@ -2,13 +2,6 @@
 .DEFAULT_GOAL := help
 
 
-help:
-	head -2 Makefile
-
-all:
-	# make article presentation thesis
-	make mddoc mdtex mdppt html
-
 mddoc:
 	# (cd article && \ pandoc --defaults=./../defaults.yaml --defaults=docx.yaml)
 	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs $(devdoc))
@@ -23,3 +16,14 @@ html:
 	# (cd article && \
 	# pandoc --defaults=./../defaults.yaml --defaults=pdf.yaml)
 	(sh archiCli-html.sh .)
+
+entrega: 
+	
+
+help:
+	head -2 Makefile
+
+all:
+	# make article presentation thesis
+	make mddoc mdtex mdppt html
+

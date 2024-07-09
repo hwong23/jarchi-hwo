@@ -3,9 +3,10 @@ development:
   rutamodelo: $HOME/git/archigit/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   prg: Tx-exportToMarkdown-CLI-templppt.ajs
-  vistadoc: hvppt
+  vistadoc: &vistadoc hvppt
   rutaexpportprg: /Users/hwo/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
+  otro: *vistadoc
 deploy:
   # origenmd: /Users/hwo/Downloads/tmpr/pgnmd
   # destinomd: /Users/hwo/gh/pgn/pgn-078

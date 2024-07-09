@@ -20,6 +20,7 @@ echo '   rutaprg' $config_development_rutaprg
 echo '   prg:' $config_development_prg
 echo '   vistadoc' $config_development_vistadoc
 echo '   rutaexpportprg': $config_development_rutaexpportprg
+echo '   otro': $config_development_otro
 
 
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\

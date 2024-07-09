@@ -17,19 +17,15 @@ echo Configuracion:
 echo '   rutausr:' $config_development_rutausr
 echo '   rutamodelo:' $config_development_rutamodelo
 echo '   rutaprg' $config_development_rutaprg
-# echo '   prg:' $config_development_prg
-# echo '   vistadoc' $config_development_vistadoc
-echo '   devdoc': $config_development_devdoc
+echo '   prg:' $config_development_prg
+echo '   vistadoc' $config_development_vistadoc
 echo '   rutaexpportprg': $config_development_rutaexpportprg
-echo '   rutaMacMD': $config_development_rutaMacMD
-echo '   rutaMacHTML': $config_development_rutaMacHTML
 
 
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\
 commandline.app -consoleLog -nosplash --modelrepository.loadModel \
 $config_development_rutamodelo --script.runScript $config_development_rutaprg/$config_development_prg \
--vistaDocumental $config_development_vistadoc -rutaMacMD $config_development_rutaMacMD \
--rutaMacHTML $config_development_rutaMacHTML
+-vistaDocumental $config_development_vistadoc
 
 
 # status=$?

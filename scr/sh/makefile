@@ -4,7 +4,7 @@
 
 mddoc:
 	# (cd article && \ pandoc --defaults=./../defaults.yaml --defaults=docx.yaml)
-	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs $(devdoc))
+	(eval $(parse_yaml $1/zconfig.yml "config_") && sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs $(devdoc))
 
 mdtex:
 	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templtex.ajs $(devdoc))

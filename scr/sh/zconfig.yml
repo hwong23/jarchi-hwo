@@ -26,6 +26,7 @@ mdtex:
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
+  rutaMacMD: /gh/tex-plantll-hv/contd/tex
 mdppt:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos

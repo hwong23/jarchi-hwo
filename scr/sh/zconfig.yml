@@ -35,3 +35,5 @@ mdppt:
   vistadoc: hvppt
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
+  rutaMacMD: /gh/tex-plantll-hv/contd/tex
+  

@@ -50,7 +50,7 @@ echo '   rutaexpportprg': $rutaexpportprg
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\
 commandline.app -consoleLog -nosplash --modelrepository.loadModel \
 $rutamodelo --script.runScript $rutaprg/$prg \
--vistaDocumental $vistadoc
+-vistaDocumental $vistadoc -rutaMacMD $rutaMacMD
 
 
 # status=$?

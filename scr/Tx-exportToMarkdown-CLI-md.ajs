@@ -137,7 +137,7 @@ if (theView) {
         // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
     var r = __DIR__.split("\/");
     g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = (theRutaMacMD? theRutaMacMD:"/"+r[1]+"/"+r[2]+'/Downloads/tmpr/prymd/');
+    g_path = (theRutaMacMD? "/"+r[1]+"/"+r[2]+theRutaMacMD:"/"+r[1]+"/"+r[2]+theView.prop("rutaMacMD"));
     g_fileName = g_path+g_drivingView_devdoc;
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;

@@ -10,7 +10,7 @@
 
 # include parse_yaml function
 . parse_yaml.sh
-eval $(parse_yaml $1/zconfig.yml "config_")
+eval $(parse_yaml $1/zconfig.yml config_)
 
 rutausr=$(varvalue config_ $4 _rutausr)
 rutamodelo=$(varvalue config_ $4 _rutamodelo)
@@ -28,10 +28,10 @@ echo '   vistadoc' $vistadoc
 echo '   rutaexpportprg': $rutaexpportprg
 
 
-# /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\
-# commandline.app -consoleLog -nosplash --modelrepository.loadModel \
-# $config_development_rutamodelo --script.runScript $config_development_rutaprg/$config_development_prg \
-# -vistaDocumental $config_development_vistadoc
+/Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\
+commandline.app -consoleLog -nosplash --modelrepository.loadModel \
+$rutamodelo --script.runScript $rutaprg/$prg \
+-vistaDocumental $vistadoc
 
 
 # status=$?

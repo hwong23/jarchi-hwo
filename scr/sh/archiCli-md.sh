@@ -8,6 +8,24 @@
 # $4: entrada de configuración
 
 
+# Validacion número de argumentos
+ if [ $# -ne 4 ]; then
+    echo "Error: requiere 4 argumentos"
+    echo '$1': ruta archivo zconfig.yml
+    echo '$2': transformador Tx-MD
+    echo '$3': vista fuente del modelo de contenidos 
+    echo '$4': entrada de configuración
+
+    exit 1
+  fi
+
+# Validacion argumentos vacíos
+# if [ -z "$1" ||  -z "$2"]; then
+#    echo "Error: Argument is empty!"
+#    exit 1
+#  fi
+ 
+
 # include parse_yaml function
 . parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml config_)

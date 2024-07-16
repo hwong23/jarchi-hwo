@@ -1,3 +1,5 @@
+# version 0.2 - varcalue
+
 #!/bin/sh
 parse_yaml() {
    local prefix=$2

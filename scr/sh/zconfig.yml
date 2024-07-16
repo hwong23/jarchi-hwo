@@ -21,7 +21,7 @@ mddoc:
   vistadoc: hvppt
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: 
+  rutaMacMD: /gh/tex-plantll-hv/contd/doc
 mdtex:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos

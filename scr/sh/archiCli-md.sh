@@ -33,10 +33,10 @@ eval $(parse_yaml $1/zconfig.yml config_)
 rutausr=$(varvalue config_ $4 _rutausr)
 rutamodelo=$(varvalue config_ $4 _rutamodelo)
 rutaprg=$(varvalue config_ $4 _rutaprg)
-prg=$(varvalue config_ $4 _prg)
-vistadoc=$(varvalue config_ $4 _vistadoc)
+prg=$2
+vistadoc=$3
 rutaexpportprg=$(varvalue config_ $4 _rutaexpportprg)
-
+rutaMacMD=$(varvalue config_ $4 _rutaMacMD)
 
 echo Configuracion: 
 echo '   rutausr:' $rutausr
@@ -45,6 +45,7 @@ echo '   rutaprg' $rutaprg
 echo '   prg:' $prg
 echo '   vistadoc' $vistadoc
 echo '   rutaexpportprg': $rutaexpportprg
+echo '   rutaMacMD': $rutaMacMD
 
 
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\

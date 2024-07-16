@@ -14,10 +14,10 @@ ccambio:
 publish:
   # gitorigen: /Users/hwo/gh/pgn/pgn-078 
 mddoc:
-  rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
-  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
   prg: Tx-exportToMarkdown-CLI-templppt.ajs
   vistadoc: hvppt
-  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs

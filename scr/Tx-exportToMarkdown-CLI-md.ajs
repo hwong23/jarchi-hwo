@@ -18,6 +18,7 @@
  *              Embed view (experimental)
  * Version 3.5: Added support for jArchi 4.4 (additional attributes)
  * Version 3.6: Linea de comando (CLI)
+ * Version 3.7: Argumento theRutaMacMD
  *
  * (c) 2018 Steven Mileham
  *
@@ -93,8 +94,12 @@ var theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 
 // Argumentos de entrada por CLI
+var theRutaMacMD = getArgumento("rutaMacMD");
+    theRutaMacMD = theRutaMacMD? theRutaMacMD+"/":theRutaMacMD;
 var vistaDocumental = getArgumento("vistaDocumental");
-(debug)?console.log("vistaDocumental: "+vistaDocumental):true;
+console.log("Entradas: ")
+debug? console.log("   theRutaMacMD: "+theRutaMacMD):true;
+debug? console.log("   vistaDocumental: "+vistaDocumental):true;
 
 // Selección de la vista indicada por el argumento entrada CLI
 var theView = devdoc_useDrivingView(vistaDocumental);
@@ -132,7 +137,7 @@ if (theView) {
         // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
     var r = __DIR__.split("\/");
     g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = "/"+r[1]+"/"+r[2] + (theView.prop("rutaMacMD")? theView.prop("rutaMacMD"):'/Downloads/tmpr/prymd/');
+    g_path = (theRutaMacMD? theRutaMacMD:"/"+r[1]+"/"+r[2]+'/Downloads/tmpr/prymd/');
     g_fileName = g_path+g_drivingView_devdoc;
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;

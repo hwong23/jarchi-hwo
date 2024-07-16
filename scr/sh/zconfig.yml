@@ -1,5 +1,5 @@
 development:
-  rutausr: 
+  rutausr: na
   rutamodelo: 
   rutaprg: 
   prg: 
@@ -14,6 +14,23 @@ ccambio:
 publish:
   # gitorigen: /Users/hwo/gh/pgn/pgn-078 
 mddoc:
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  prg: Tx-exportToMarkdown-CLI-templppt.ajs
+  vistadoc: hvppt
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  expportprg: exportSingle-htmlCLI.ajs
+  rutaMacMD: /gh/tex-plantll-hv/contd/doc
+mdtex:
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  prg: Tx-exportToMarkdown-CLI-templppt.ajs
+  vistadoc: hvppt
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  expportprg: exportSingle-htmlCLI.ajs
+mdppt:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr

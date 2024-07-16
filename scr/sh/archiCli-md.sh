@@ -37,6 +37,7 @@ prg=$(varvalue config_ $4 _prg)
 vistadoc=$(varvalue config_ $4 _vistadoc)
 rutaexpportprg=$(varvalue config_ $4 _rutaexpportprg)
 
+
 echo Configuracion: 
 echo '   rutausr:' $rutausr
 echo '   rutamodelo:' $rutamodelo

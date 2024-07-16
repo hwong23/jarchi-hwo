@@ -1,5 +1,5 @@
 development:
-  rutausr: na
+  rutausr: 
   rutamodelo: 
   rutaprg: 
   prg: 
@@ -17,17 +17,13 @@ mddoc:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
-  prg: Tx-exportToMarkdown-CLI-templppt.ajs
-  vistadoc: hvppt
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/tex-plantll-hv/contd/doc
+  rutaMacMD: /gh/tex-plantll-hv/contd/docx
 mdtex:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
-  prg: Tx-exportToMarkdown-CLI-templppt.ajs
-  vistadoc: hvppt
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
 mdppt:

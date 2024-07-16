@@ -42,6 +42,14 @@ console.show();
 console.clear();
 console.log("Export to Markdown");
 
+
+
+/*
+ nestedDocumentation. Exporta documentación de los elementos de una vista
+    d: nivel de identación títulos
+    element: argumento vista
+ Requiere: 
+ */
 function nestedDocumentation(d, element) {
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
@@ -95,7 +103,6 @@ var theTOC = "* [Introducción](#Introducción)";
 
 // Argumentos de entrada por CLI
 var theRutaMacMD = getArgumento("rutaMacMD");
-    theRutaMacMD = theRutaMacMD? theRutaMacMD+"/":theRutaMacMD;
 var vistaDocumental = getArgumento("vistaDocumental");
 console.log("Entradas: ")
 debug? console.log("   theRutaMacMD: "+theRutaMacMD):true;
@@ -137,7 +144,9 @@ if (theView) {
         // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
     var r = __DIR__.split("\/");
     g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = (theRutaMacMD? "/"+r[1]+"/"+r[2]+theRutaMacMD:"/"+r[1]+"/"+r[2]+theView.prop("rutaMacMD"));
+    g_path = theRutaMacMD? 
+        '/'+r[1]+'/'+r[2]+theRutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
     g_fileName = g_path+g_drivingView_devdoc;
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;

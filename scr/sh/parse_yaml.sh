@@ -14,3 +14,8 @@ parse_yaml() {
       }
    }'
 }
+
+
+function varvalue () {
+   eval echo \${$1$2$3}
+}

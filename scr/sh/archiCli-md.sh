@@ -5,28 +5,33 @@
 # $1: ruta archivo zconfig.yml
 # $2: transformador Tx-MD
 # $3: vista fuente, modelo de contenidos 
-
+# $4: entrada de configuración
 
 
 # include parse_yaml function
 . parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
-config_development_prg=$2
-config_development_vistadoc=$3
+
+rutausr=$(varvalue config_ $4 _rutausr)
+rutamodelo=$(varvalue config_ $4 _rutamodelo)
+rutaprg=$(varvalue config_ $4 _rutaprg)
+prg=$(varvalue config_ $4 _prg)
+vistadoc=$(varvalue config_ $4 _vistadoc)
+rutaexpportprg=$(varvalue config_ $4 _rutaexpportprg)
+
 echo Configuracion: 
-echo '   rutausr:' $config_development_rutausr
-echo '   rutamodelo:' $config_development_rutamodelo
-echo '   rutaprg' $config_development_rutaprg
-echo '   prg:' $config_development_prg
-echo '   vistadoc' $config_development_vistadoc
-echo '   rutaexpportprg': $config_development_rutaexpportprg
-echo '   otro': $config_development_otro
+echo '   rutausr:' $rutausr
+echo '   rutamodelo:' $rutamodelo
+echo '   rutaprg' $rutaprg
+echo '   prg:' $prg
+echo '   vistadoc' $vistadoc
+echo '   rutaexpportprg': $rutaexpportprg
 
 
-/Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\
-commandline.app -consoleLog -nosplash --modelrepository.loadModel \
-$config_development_rutamodelo --script.runScript $config_development_rutaprg/$config_development_prg \
--vistaDocumental $config_development_vistadoc
+# /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\
+# commandline.app -consoleLog -nosplash --modelrepository.loadModel \
+# $config_development_rutamodelo --script.runScript $config_development_rutaprg/$config_development_prg \
+# -vistaDocumental $config_development_vistadoc
 
 
 # status=$?

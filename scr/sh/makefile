@@ -3,14 +3,13 @@
 
 
 mddoc:
-	# (cd article && \ pandoc --defaults=./../defaults.yaml --defaults=docx.yaml)
-	(eval $(parse_yaml $1/zconfig.yml "config_") && sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs $(devdoc))
+	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs $(devdoc) mddoc)
 
 mdtex:
-	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templtex.ajs $(devdoc))
+	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templtex.ajs $(devdoc) mdtex)
 
 mdppt:
-	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templppt.ajs $(devdoc))
+	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templppt.ajs $(devdoc) mdppt)
 
 html:
 	# (cd article && \

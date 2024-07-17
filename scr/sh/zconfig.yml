@@ -31,9 +31,7 @@ mdppt:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
-  prg: Tx-exportToMarkdown-CLI-templppt.ajs
-  vistadoc: hvppt
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/tex-plantll-hv/contd/tex
+  rutaMacMD: /gh/tex-plantll-hv/contd/ppt
   

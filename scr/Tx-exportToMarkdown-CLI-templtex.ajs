@@ -63,7 +63,6 @@ console.log("Export to Markdown");
     element: argumento vista
  Requiere: 
  */
- 
 function nestedDocumentation(d, element) {
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
@@ -98,7 +97,8 @@ function nestedDocumentation(d, element) {
                 elementDocumentationMarkdown: ''
                 });
 
-                debug? console.log(e.name+":"+$(e).children().not("relationship")+":"+e):true;
+                debug? console.log(e.name+":"+e):true;
+
             if ($(e).children().length>0) {
                 d++;
                 nestedDocumentation(d, e);

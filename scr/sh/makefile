@@ -14,10 +14,9 @@ mdppt:
 	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templppt.ajs \
 	$(devdoc) mdppt)
 
-html:
-	# (cd article && \
-	# pandoc --defaults=./../defaults.yaml --defaults=pdf.yaml)
-	(sh archiCli-html.sh .)
+mdhtml:
+	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs \
+	$(devdoc) mdhtml)
 
 entrega: 
 	

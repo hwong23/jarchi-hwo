@@ -34,4 +34,9 @@ mdppt:
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/tex-plantll-hv/contd/ppt
-  
+mdhtml:
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  expportprg: exportSingle-htmlCLI.ajs
+  rutaMacMD: /gh/tex-plantll-hv/contd/html  

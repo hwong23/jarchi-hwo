@@ -118,7 +118,6 @@ var viewDocumentations = '';
 
 // Argumentos de entrada por CLI
 var theRutaMacMD = getArgumento("rutaMacMD");
-    theRutaMacMD = theRutaMacMD? theRutaMacMD+"/":theRutaMacMD;
 var vistaDocumental = getArgumento("vistaDocumental");
 console.log("Entradas: ")
 debug? console.log("   theRutaMacMD: "+theRutaMacMD):true;

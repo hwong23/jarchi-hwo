@@ -141,7 +141,7 @@ if (theView) {
         (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
         (debug)?console.log('g_path: '+g_path):true;
 
-        
+
     // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
     toc(0,theView);

@@ -65,6 +65,8 @@ console.log("Export to Markdown");
  Requiere: 
  */
 function nestedDocumentation(d, element) {
+    debug? console.log('Elementos: '):true;
+
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes("ppt")? true:false): false)
@@ -98,7 +100,7 @@ function nestedDocumentation(d, element) {
                 elementDocumentationMarkdown: ''
             });
 
-            debug? console.log(e.name+":"+e):true;
+            debug? console.log('   '+e.name+":"+e):true;
 
             if ($(e).children().length>0) {
                 d++;

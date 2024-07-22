@@ -20,6 +20,7 @@
  * Version 3.6: Linea de comando (CLI)
  * Version 4.0: (interpolación) Documentación por plantillas
  * Version 4.1: Argumento theRutaMacMD
+ * Version 4.2: Referencia imagen URL
  *
  * (c) 2018 Steven Mileham, HWO
  *
@@ -127,19 +128,34 @@ var theView = devdoc_useDrivingView(vistaDocumental);
 
 
 if (theView) {
+    // Define ruta/nombre del archivo de salida de la documentación de la vista theView
+        // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+        var r = __DIR__.split("\/");
+        g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
+        g_path = theRutaMacMD? 
+            '/'+r[1]+'/'+r[2]+theRutaMacMD+'/':
+            '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
+        g_fileName = g_path+g_drivingView_devdoc;
+    
+        (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
+        (debug)?console.log('g_path: '+g_path):true;
 
+        
     // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
     toc(0,theView);
     theDocument+="\n"+theTOC+"\n";
     theDocument+="\n## Introducción\n";
+    imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
     if (embed==true){
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
         theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
     }
-    else {theDocument+="\n!["+theView.name+"][embedView]\n";}
+    else {theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";}
     theView.documentation!=""? theDocument+="\n"+theView.documentation+"\n":true;
-        
+
+
     // Notes with no relationships
     $(selection).find().not("element")
     .not("relationship").each(function(c){
@@ -172,17 +188,6 @@ if (theView) {
     );
 
 
-    // Define ruta/nombre del archivo de salida de la documentación de la vista theView
-        // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
-        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-    var r = __DIR__.split("\/");
-    g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = (theRutaMacMD? "/"+r[1]+"/"+r[2]+theRutaMacMD:"/"+r[1]+"/"+r[2]+theView.prop("rutaMacMD"));
-    g_fileName = g_path+g_drivingView_devdoc;
-
-    (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
-    (debug)?console.log('g_path: '+g_path):true;
-
 
     // Crea el archivo de salida de documentación theView
     var exportFile = g_fileName;
@@ -193,7 +198,7 @@ if (theView) {
              relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             viewDocumentations+="\n[embedView]: "+relativeURL[relativeURL.length-1];
+             viewDocumentations+='\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
          viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, viewDocumentations);

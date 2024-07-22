@@ -22,6 +22,7 @@ var devdocs_DefaultInclusionSettings = {
     "IncludeDocumentation": true, // if true, will include the view's documentation text (which itself can have markdown, by the way)
     "IncludeViewElements": true,  // if true, will include a catalogue of the view's elements
     "IncludeProperties": true,    // if true, will include the "properties" field in a catalogue of elements from a view
+    "IncludeRutaCompleta": false  // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
 
@@ -125,8 +126,9 @@ function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
         defaultSettings["IncludeDiagram"] === null ||
         defaultSettings["IncludeDocumentation"] === null ||
         defaultSettings["IncludeViewElements"] === null ||
-        defaultSettings["IncludeProperties"] === null
-        // defaultSettings["IncluyeRelaciones"] === null
+        defaultSettings["IncludeProperties"] === null ||
+        defaultSettings["IncluyeRelaciones"] === null ||
+        defaultSettings["IncludeRutaCompleta"] === null
     ) {
         console.log("Default settings were not correctly passed to a child node");
         return (null);
@@ -139,22 +141,26 @@ function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
     var checkIncludeDocumentation = settingsElement.prop("IncludeDocumentation");
     var checkIncludeElements = settingsElement.prop("IncludeViewElements");
     var checkIncludeProperties = settingsElement.prop("IncludeProperties");
+    var checkIncludeRutaCompleta = settingsElement.prop("IncludeRutaCompleta");
     var checkIncluyeRelaciones = settingsElement.prop("IncluyeRelaciones");
 
     if (checkIncludeDiagram !== null) {
-        settings["IncludeDiagram"] = checkIncludeDiagram === "true" ? true : false;
+        settings["IncludeDiagram"] = checkIncludeDiagram === "true"? true : false;
     }
     if (checkIncludeDocumentation !== null) {
-        settings["IncludeDocumentation"] = checkIncludeDocumentation === "true" ? true : false;
+        settings["IncludeDocumentation"] = checkIncludeDocumentation === "true"? true : false;
     }
     if (checkIncludeElements !== null) {
-        settings["IncludeViewElements"] = checkIncludeElements === "true" ? true : false;
+        settings["IncludeViewElements"] = checkIncludeElements === "true"? true : false;
     }
     if (checkIncludeProperties !== null) {
-        settings["IncludeProperties"] = checkIncludeProperties === "true" ? true : false;
+        settings["IncludeProperties"] = checkIncludeProperties === "true"? true : false;
     }
     if (checkIncluyeRelaciones !== null) {
-        settings["IncluyeRelaciones"] = checkIncluyeRelaciones === "true" ? true : false;
+        settings["IncluyeRelaciones"] = checkIncluyeRelaciones === "true"? true : false;
+    }
+    if (checkIncludeRutaCompleta !== null) {
+        settings["IncludeRutaCompleta"] = checkIncludeRutaCompleta === "true"? true : false;
     }
 
 
@@ -180,6 +186,7 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeViewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
+        console.log("Default IncludeRutaCompleta setting: " + inclusionSettings["IncludeRutaCompleta"]);
     }
 
     return drivingView;

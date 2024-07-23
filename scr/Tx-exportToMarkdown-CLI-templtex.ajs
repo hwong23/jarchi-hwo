@@ -21,6 +21,7 @@
  * Version 4.0: (interpolación) Documentación por plantillas
  * Version 4.1: Argumento theRutaMacMD
  * Version 4.2: Referencia imagen URL
+ * Version 4.2.1: Argumento rutaCompleta
  *
  * (c) 2018 Steven Mileham, HWO
  *
@@ -119,9 +120,11 @@ var viewDocumentations = '';
 // Argumentos de entrada por CLI
 var theRutaMacMD = getArgumento("rutaMacMD");
 var vistaDocumental = getArgumento("vistaDocumental");
+var argRutaCompleta = getArgumento("rutaCompleta");
 console.log("Entradas: ")
-debug? console.log("   theRutaMacMD: "+theRutaMacMD):true;
-debug? console.log("   vistaDocumental: "+vistaDocumental):true;
+debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
+debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
+debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
 
 // Selección de la vista indicada por el argumento entrada CLI
 var theView = devdoc_useDrivingView(vistaDocumental);
@@ -199,7 +202,8 @@ if (theView) {
              relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             viewDocumentations+='\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+             viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
+                '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
          viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, viewDocumentations);

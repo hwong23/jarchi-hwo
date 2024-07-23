@@ -37,7 +37,7 @@ prg=$2
 vistadoc=$3
 rutaexpportprg=$(varvalue config_ $4 _rutaexpportprg)
 rutaMacMD=$(varvalue config_ $4 _rutaMacMD)
-rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $4 _rutaexpportprg) || echo $5)
+rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $4 _rutaCompleta) || echo $5)
 
 echo Configuracion: 
 echo '   rutausr:' $rutausr
@@ -54,7 +54,7 @@ echo '   rutaCompleta': $rutaCompleta
 commandline.app -consoleLog -nosplash --modelrepository.loadModel \
 $rutamodelo --script.runScript $rutaprg/$prg \
 -vistaDocumental $vistadoc -rutaMacMD $rutaMacMD \
--rutacompleta $rutaCompleta
+-rutaCompleta $rutaCompleta
 
 
 # status=$?

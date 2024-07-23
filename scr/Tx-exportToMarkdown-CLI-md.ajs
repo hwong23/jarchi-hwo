@@ -105,14 +105,16 @@ var theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 
 // Argumentos de entrada por CLI
-var theRutaMacMD = getArgumento("rutaMacMD");
-var vistaDocumental = getArgumento("vistaDocumental");
+var argRutaMacMD = getArgumento("rutaMacMD");
+var argVistaDocumental = getArgumento("vistaDocumental");
+var argRutaCompleta = getArgumento("rutaCompleta");
 console.log("Entradas: ")
-debug? console.log("   theRutaMacMD: "+theRutaMacMD):true;
-debug? console.log("   vistaDocumental: "+vistaDocumental):true;
+debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
+debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
+debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
 
 // Selección de la vista indicada por el argumento entrada CLI
-var theView = devdoc_useDrivingView(vistaDocumental);
+var theView = devdoc_useDrivingView(argVistaDocumental);
     // $(selection).filter("archimate-diagram-model").first();
 
 
@@ -122,8 +124,8 @@ if (theView) {
         // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
     var r = __DIR__.split("\/");
     g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = theRutaMacMD? 
-        '/'+r[1]+'/'+r[2]+theRutaMacMD+'/':
+    g_path = argRutaMacMD? 
+        '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
         '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
     g_fileName = g_path+g_drivingView_devdoc;
 
@@ -167,7 +169,9 @@ if (theView) {
              relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             theDocument+='\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+             theDocument+= argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
+                '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+            //  theDocument+='\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
          theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, theDocument);

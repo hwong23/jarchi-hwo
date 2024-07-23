@@ -20,6 +20,7 @@ mddoc:
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   rutaMacMD: /git/tex-plantll-hv/contd/docx
+  rutaCompleta: no
 mdtex:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos

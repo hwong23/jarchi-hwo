@@ -53,7 +53,8 @@ echo '   rutaCompleta': $rutaCompleta
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\
 commandline.app -consoleLog -nosplash --modelrepository.loadModel \
 $rutamodelo --script.runScript $rutaprg/$prg \
--vistaDocumental $vistadoc -rutaMacMD $rutaMacMD
+-vistaDocumental $vistadoc -rutaMacMD $rutaMacMD \
+-rutacompleta $rutaCompleta
 
 
 # status=$?

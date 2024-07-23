@@ -14,12 +14,12 @@ ccambio:
 publish:
   gitorigen: /Users/hwo/gh/pgn/pgn-078 
 mddoc:
-  rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
-  rutaprg: $HOME/git/jarchi-hwo/scr
-  rutaexpportprg: $HOME/git/jarchi-hwo/scr
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /git/tex-plantll-hv/contd/docx
+  rutaMacMD: /gh/tex-plantll-hv/contd/docx
 mdtex:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos

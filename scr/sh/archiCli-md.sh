@@ -9,7 +9,7 @@
 
 
 # Validacion número de argumentos
- if [ $# -ne 4 ]; then
+ if [ $# -lt 4 ]; then
     echo "Error: requiere 4 argumentos"
     echo '$1': ruta archivo zconfig.yml
     echo '$2': transformador Tx-MD
@@ -37,6 +37,7 @@ prg=$2
 vistadoc=$3
 rutaexpportprg=$(varvalue config_ $4 _rutaexpportprg)
 rutaMacMD=$(varvalue config_ $4 _rutaMacMD)
+rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $4 _rutaexpportprg) || echo $5)
 
 echo Configuracion: 
 echo '   rutausr:' $rutausr
@@ -46,6 +47,7 @@ echo '   prg:' $prg
 echo '   vistadoc' $vistadoc
 echo '   rutaexpportprg': $rutaexpportprg
 echo '   rutaMacMD': $rutaMacMD
+echo '   rutaCompleta': $rutaCompleta
 
 
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.\

@@ -20,6 +20,7 @@
  * Version 3.6: Linea de comando (CLI)
  * Version 3.7: Argumento theRutaMacMD
  * Version 4.2: Referencia imagen URL
+ * Version 4.2.1: Argumento rutaCompleta
  *
  * (c) 2018 Steven Mileham, HWO
  *
@@ -171,7 +172,6 @@ if (theView) {
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
              theDocument+= argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
                 '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
-            //  theDocument+='\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
          theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, theDocument);

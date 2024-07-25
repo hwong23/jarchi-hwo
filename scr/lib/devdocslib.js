@@ -1,3 +1,4 @@
+// HWO
 /*
 	Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
 
@@ -11,12 +12,7 @@
 	Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
 	Setting
 	Note - markdown can be converted to PDF / Word Docs or anything. I've used pandoc command line to do this.
-
-*   Version 4.3: Librería de funciones devdocs
-*
-*  (c) 2018 Steven Mileham, HWO
 */
-
 
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.

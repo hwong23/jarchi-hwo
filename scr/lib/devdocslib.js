@@ -1,4 +1,3 @@
-// HWO
 /*
 	Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
 
@@ -12,7 +11,12 @@
 	Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
 	Setting
 	Note - markdown can be converted to PDF / Word Docs or anything. I've used pandoc command line to do this.
+
+*   Version 4.3: Librería de funciones devdocs
+*
+*  (c) 2018 Steven Mileham, HWO
 */
+
 
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
@@ -194,3 +198,26 @@ function devdoc_useDrivingView(alias) {
 } // end of useDrivingView
 
 
+function devdoc_documentRelationships(element) {
+    var theHeader = "|Desde|Relación|Hacia|Nombre|Descrip|"
+    var theLine = "|---|---|---|---|---|";
+    var theBody = "";
+    $(element).outRels().each(function(r){
+        var q= r.concept;
+        if (r.type!="diagram-model-connection") {
+            theBody+="|"+r.source.name;
+            theBody+="|"+convertToText(r.type);
+            if (q.accessType) {
+                theBody+=" ("+q.accessType+")";
+            }
+            if (q.influenceStrength) {
+                theBody+=" ("+q.influenceStrength+")";
+            }
+            theBody+="|["+ escapeMD(r.target.name)  +" ("+ convertToText(r.target.type) +")]("+generateLink(r.target.name +" ("+ convertToText(r.target.type)+")")+")";
+            theBody+="|"+r.name;
+            theBody+="|"+r.documentation+"|\n";
+        }
+    });
+
+    return "**Relaciones (impacto)**\n"+theHeader+"\n"+theLine+"\n"+theBody;
+}

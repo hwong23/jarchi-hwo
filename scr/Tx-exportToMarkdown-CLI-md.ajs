@@ -21,7 +21,8 @@
  * Version 3.7: Argumento theRutaMacMD
  * Version 4.2: Referencia imagen URL
  * Version 4.2.1: Argumento rutaCompleta
- *
+*  Version 4.3: Librería de funciones devdocs
+*
  * (c) 2018 Steven Mileham, HWO
  *
  */
@@ -82,7 +83,7 @@ function nestedDocumentation(d, element) {
 
             theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
             (e.prop().length > 0 && proptable) ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
-            ($(e).outRels().length>0 && reltable) ? theDocument+="\n"+escapeMD(documentRelationships(e)):true;
+            ($(e).outRels().length>0 && reltable) ? theDocument+="\n"+escapeMD(devdoc_documentRelationships(e)):true;
             e.documentation ? theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
@@ -256,26 +257,3 @@ function propertiesTable(element) {
     return "**Properties**\n"+theHeader+"|\n"+theLine+"|\n"+theBody+"|\n";
 }
 
-function documentRelationships(element) {
-    var theHeader = "|Desde|Relación|Hacia|Nombre|Descrip|"
-    var theLine = "|---|---|---|---|---|";
-    var theBody = "";
-    $(element).outRels().each(function(r){
-        var q= r.concept;
-        if (r.type!="diagram-model-connection") {
-            theBody+="|"+r.source.name;
-            theBody+="|"+convertToText(r.type);
-            if (q.accessType) {
-                theBody+=" ("+q.accessType+")";
-            }
-            if (q.influenceStrength) {
-                theBody+=" ("+q.influenceStrength+")";
-            }
-            theBody+="|["+ escapeMD(r.target.name)  +" ("+ convertToText(r.target.type) +")]("+generateLink(r.target.name +" ("+ convertToText(r.target.type)+")")+")";
-            theBody+="|"+r.name;
-            theBody+="|"+r.documentation+"|\n";
-        }
-    });
-
-    return "**Relaciones (impacto)**\n"+theHeader+"\n"+theLine+"\n"+theBody;
-}

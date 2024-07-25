@@ -82,7 +82,7 @@ function nestedDocumentation(d, element) {
             }
 
             theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
-            (e.prop().length > 0 && proptable) ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
+            (e.prop().length > 0 && proptable) ? theDocument+="\n"+escapeMD(devdoc_propertiesTable(e)):true;
             ($(e).outRels().length>0 && reltable) ? theDocument+="\n"+escapeMD(devdoc_documentRelationships(e)):true;
             e.documentation ? theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
             $(e).rels().ends().each(function(r) {
@@ -242,18 +242,5 @@ function toc(d, element){
             }
         }
     });
-}
-
-function propertiesTable(element) {
-    var theProperties = element.prop();
-    var theHeader="";
-    var theLine="";
-    var theBody="";
-    for (var i=0; i<theProperties.length;i++){
-        theHeader+="|"+theProperties[i];
-        theLine+="|---";
-        theBody+="|"+element.prop(theProperties[i]);
-    }
-    return "**Properties**\n"+theHeader+"|\n"+theLine+"|\n"+theBody+"|\n";
 }
 

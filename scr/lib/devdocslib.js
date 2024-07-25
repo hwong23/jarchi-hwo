@@ -221,3 +221,43 @@ function devdoc_documentRelationships(element) {
 
     return "**Relaciones (impacto)**\n"+theHeader+"\n"+theLine+"\n"+theBody;
 }
+
+
+function devdoc_propertiesTable(element) {
+    var theProperties = element.prop();
+    var theHeader="";
+    var theLine="";
+    var theBody="";
+    for (var i=0; i<theProperties.length;i++){
+        theHeader+="|"+theProperties[i];
+        theLine+="|---";
+        theBody+="|"+element.prop(theProperties[i]);
+    }
+    return "**Properties**\n"+theHeader+"|\n"+theLine+"|\n"+theBody+"|\n";
+}
+
+
+// Helper function - convert a value to a color between azul y verde
+function devdoc_getColorValue(num, maxValue) {
+    var red = 0;
+    var green = Math.round(255 * (num / maxValue));
+    var blue = Math.round(255 - (255 * (num / maxValue)));
+    
+    return devdoc_convertRGBToHexString(red, green, blue);
+}
+
+// Helper function - convert rgb values to a hex color string. Format is #rrggbb
+function devdoc_convertRGBToHexString(red, green, blue) {
+    red = red.toString(16);
+    if(red.length == 1) red = "0" + red;
+
+    green = green.toString(16);
+    if(green.length == 1) green = "0" + green;
+
+    blue = blue.toString(16);
+    if(blue.length == 1) blue = "0" + blue;
+
+    return '#' + red + green + blue;
+}
+
+

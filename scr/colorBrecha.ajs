@@ -38,34 +38,11 @@ function amplifyElementColor(propertyKey, minValue, maxValue) {
         // If within scope, change color of element's view instances
         if(value && value >= minValue && value <= maxValue) {
             // Set all view instances of the element's color according to the property value
-            console.log ("E: " + element.name + " " + value + ":" + getColorValue(value, maxValue));
+            console.log ("E: " + element.name + " " + value + ":" + devdoc_getColorValue(value, maxValue));
             // $(element).objectRefs().attr("fillColor", getColorValue(value, maxValue));
             // element.attr("fillColor", 
-            element.fillColor = getColorValue(value, maxValue);
+            element.fillColor = devdoc_getColorValue(value, maxValue);
         }
     });
-}
-
-// Helper function - convert a value to a color between azul y verde
-function getColorValue(num, maxValue) {
-    var red = 0;
-    var green = Math.round(255 * (num / maxValue));
-    var blue = Math.round(255 - (255 * (num / maxValue)));
-    
-    return convertRGBToHexString(red, green, blue);
-}
-
-// Helper function - convert rgb values to a hex color string. Format is #rrggbb
-function convertRGBToHexString(red, green, blue) {
-    red = red.toString(16);
-    if(red.length == 1) red = "0" + red;
-
-    green = green.toString(16);
-    if(green.length == 1) green = "0" + green;
-
-    blue = blue.toString(16);
-    if(blue.length == 1) blue = "0" + blue;
-
-    return '#' + red + green + blue;
 }
 

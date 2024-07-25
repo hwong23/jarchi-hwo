@@ -86,7 +86,7 @@ function salidaEncbzdo(Level, Name, AddLink, Doc) {
     
     // Add a link to table of contents (TOC), if requested
     if (AddLink) {
-        var thisLink = generateLink(Name);
+        var thisLink = devdoc_generateLink(Name);
         
         // No es necesario repetir el vínculo (markdown ya vincula los títulos)
         // outDoc += "\n" + "[](" + thisLink + ")\n";
@@ -209,7 +209,7 @@ function devdoc_documentRelationships(element) {
             if (q.influenceStrength) {
                 theBody+=" ("+q.influenceStrength+")";
             }
-            theBody+="|["+ escapeMD(r.target.name)  +" ("+ convertToText(r.target.type) +")]("+generateLink(r.target.name +" ("+ convertToText(r.target.type)+")")+")";
+            theBody+="|["+ devdoc_escapeMD(r.target.name)  +" ("+ convertToText(r.target.type) +")]("+devdoc_generateLink(r.target.name +" ("+ convertToText(r.target.type)+")")+")";
             theBody+="|"+r.name;
             theBody+="|"+r.documentation+"|\n";
         }
@@ -256,4 +256,17 @@ function devdoc_convertRGBToHexString(red, green, blue) {
     return '#' + red + green + blue;
 }
 
+
+function devdoc_escapeMD(theString){
+    var newString = theString.replaceAll("<","&lt;").replaceAll("\n>","\n~QUOTE~");
+    return newString.substring(0,1)+newString.substring(1).replaceAll(">","&gt;").replaceAll("~QUOTE~",">");
+}
+
+function devdoc_generateLink(theString) {
+    var regex = /[\[\]\(\)\#\\\/\"]/gi;
+    return "#"+theString.toLowerCase().replace(regex,"")
+                                      .replaceAll(" ","-")
+                                      .replaceAll("\<","lt")
+                                      .replaceAll("\>","gt");
+}
 

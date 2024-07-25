@@ -66,7 +66,7 @@ function nestedDocumentation(d, element) {
                 headerDepth+="#";
             }
 
-            var theHash = devdoc_generateLink(e.name +" ("+ convertToText(e.type)+")");
+            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
             if (bodyMap[theHash]==null) {
                 bodyMap[theHash]=1;
             }
@@ -187,15 +187,6 @@ else {
 }
 
 
-function convertToText(type) {
-    var theString = type.replaceAll("-"," ").split(" ");
-    var theResult = "";
-    for (var i=0; i<theString.length; i++){
-        theResult+= theString[i][0].toUpperCase()+theString[i].substring(1,theString[i].length) + " ";
-    }
-    return theResult.trim();
-}
-
 function toc(d, element){
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
@@ -206,7 +197,7 @@ function toc(d, element){
             for (var i=0; i<d; i++){
                 headerDepth+="  ";
             }
-            var theHash = devdoc_generateLink(e.name +" ("+ convertToText(e.type)+")");
+            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
             if (tocMap[theHash]==null) {
                 tocMap[theHash]=1;
             }
@@ -220,7 +211,7 @@ function toc(d, element){
                 linkNum = "-"+tocMap[theHash];
             }
 
-            theTOC+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
+            theTOC+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
             if ($(e).children().not("relationship").length>0) {
                 d++;
                 toc(d, e);

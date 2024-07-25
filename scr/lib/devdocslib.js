@@ -202,14 +202,14 @@ function devdoc_documentRelationships(element) {
         var q= r.concept;
         if (r.type!="diagram-model-connection") {
             theBody+="|"+r.source.name;
-            theBody+="|"+convertToText(r.type);
+            theBody+="|"+devdoc_convertToText(r.type);
             if (q.accessType) {
                 theBody+=" ("+q.accessType+")";
             }
             if (q.influenceStrength) {
                 theBody+=" ("+q.influenceStrength+")";
             }
-            theBody+="|["+ devdoc_escapeMD(r.target.name)  +" ("+ convertToText(r.target.type) +")]("+devdoc_generateLink(r.target.name +" ("+ convertToText(r.target.type)+")")+")";
+            theBody+="|["+ devdoc_escapeMD(r.target.name)  +" ("+ devdoc_convertToText(r.target.type) +")]("+devdoc_generateLink(r.target.name +" ("+ devdoc_convertToText(r.target.type)+")")+")";
             theBody+="|"+r.name;
             theBody+="|"+r.documentation+"|\n";
         }
@@ -268,5 +268,15 @@ function devdoc_generateLink(theString) {
                                       .replaceAll(" ","-")
                                       .replaceAll("\<","lt")
                                       .replaceAll("\>","gt");
+}
+
+
+function devdoc_convertToText(type) {
+    var theString = type.replaceAll("-"," ").split(" ");
+    var theResult = "";
+    for (var i=0; i<theString.length; i++){
+        theResult+= theString[i][0].toUpperCase()+theString[i].substring(1,theString[i].length) + " ";
+    }
+    return theResult.trim();
 }
 

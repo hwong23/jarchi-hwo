@@ -1,17 +1,24 @@
 // HWO
 /*
-	Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
+   Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
 
-	Script: Documentation Generation
-	Purpose: To generate output based on a driving view
+   Script: Documentation Generation
+   Purpose: To generate output based on a driving view
 
-	Author: Richard Heward - Tame Blue Lion Ltd
+   Author: Richard Heward - Tame Blue Lion Ltd
 
-	This generates a markdown file with the embedded images and text based upon a driving view in Archi of groups that trigger each other and embedded views. 	See my blog for a more detailed explaination. https://www.tamebluelion.co.uk/blog/archi-documentation
+   This generates a markdown file with the embedded images and text based upon a driving view in Archi of groups that trigger each other and embedded views. 	See my blog for a more detailed explaination. https://www.tamebluelion.co.uk/blog/archi-documentation
 
-	Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
-	Setting
-	Note - markdown can be converted to PDF / Word Docs or anything. I've used pandoc command line to do this.
+   Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
+   Setting
+   Note - markdown can be converted to PDF / Word Docs or anything. I've used pandoc command line to do this.
+
+   
+*  Version 4.3: Funciones de librería devdoc
+ *
+ *  (c) 2018 Steven Mileham, HWO
+ *
+ 
 */
 
 

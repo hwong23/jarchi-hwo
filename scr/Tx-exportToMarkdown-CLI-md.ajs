@@ -21,7 +21,8 @@
  * Version 3.7: Argumento theRutaMacMD
  * Version 4.2: Referencia imagen URL
  * Version 4.2.1: Argumento rutaCompleta
- *
+ * Version 4.3: Funciones de librería devdoc
+ * 
  * (c) 2018 Steven Mileham, HWO
  *
  */

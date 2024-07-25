@@ -22,6 +22,7 @@
  * Version 4.1: Argumento theRutaMacMD
  * Version 4.2: Referencia imagen URL
  * Version 4.2.1: Argumento rutaCompleta
+ * Version 4.3: Funciones de librería devdoc
  *
  * (c) 2018 Steven Mileham, HWO
  *
@@ -79,7 +80,7 @@ function nestedDocumentation(d, element) {
                 headerDepth+="#";
             }
 
-            var theHash = generateLink(e.name +" ("+ convertToText(e.type)+")");
+            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
             if (bodyMap[theHash]==null) {
                 bodyMap[theHash]=1;
             }
@@ -165,7 +166,7 @@ if (theView) {
     .not("relationship").each(function(c){
         if (c.text) {
             if ($(c).rels().length==0) {
-                theDocument+="\n"+escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
+                theDocument+="\n"+devdoc_escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
             }
         };
     })
@@ -219,28 +220,6 @@ else {
 }
 
 
-function convertToText(type) {
-    var theString = type.replaceAll("-"," ").split(" ");
-    var theResult = "";
-    for (var i=0; i<theString.length; i++){
-        theResult+= theString[i][0].toUpperCase()+theString[i].substring(1,theString[i].length) + " ";
-    }
-    return theResult.trim();
-}
-
-function escapeMD(theString){
-    var newString = theString.replaceAll("<","&lt;").replaceAll("\n>","\n~QUOTE~");
-    return newString.substring(0,1)+newString.substring(1).replaceAll(">","&gt;").replaceAll("~QUOTE~",">");
-}
-
-function generateLink(theString) {
-    var regex = /[\[\]\(\)\#\\\/\"]/gi;
-    return "#"+theString.toLowerCase().replace(regex,"")
-                                      .replaceAll(" ","-")
-                                      .replaceAll("\<","lt")
-                                      .replaceAll("\>","gt");
-}
-
 function toc(d, element){
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
@@ -251,7 +230,7 @@ function toc(d, element){
             for (var i=0; i<d; i++){
                 headerDepth+="  ";
             }
-            var theHash = generateLink(e.name +" ("+ convertToText(e.type)+")");
+            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
             if (tocMap[theHash]==null) {
                 tocMap[theHash]=1;
             }
@@ -265,7 +244,7 @@ function toc(d, element){
                 linkNum = "-"+tocMap[theHash];
             }
 
-            theTOC+="\n"+headerDepth +"* ["+ escapeMD(e.name)  +" ("+ convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
+            theTOC+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
             if ($(e).children().not("relationship").length>0) {
                 d++;
                 toc(d, e);
@@ -275,42 +254,6 @@ function toc(d, element){
     });
 }
 
-function propertiesTable(element) {
-    var theProperties = element.prop();
-    var theHeader="";
-    var theLine="";
-    var theBody="";
-    for (var i=0; i<theProperties.length;i++){
-        theHeader+="|"+theProperties[i];
-        theLine+="|---";
-        theBody+="|"+element.prop(theProperties[i]);
-    }
-    return "**Properties**\n"+theHeader+"|\n"+theLine+"|\n"+theBody+"|\n";
-}
-
-function documentRelationships(element) {
-    var theHeader = "|Desde|Relación|Hacia|Nombre|Descrip|"
-    var theLine = "|---|---|---|---|---|";
-    var theBody = "";
-    $(element).outRels().each(function(r){
-        var q= r.concept;
-        if (r.type!="diagram-model-connection") {
-            theBody+="|"+r.source.name;
-            theBody+="|"+convertToText(r.type);
-            if (q.accessType) {
-                theBody+=" ("+q.accessType+")";
-            }
-            if (q.influenceStrength) {
-                theBody+=" ("+q.influenceStrength+")";
-            }
-            theBody+="|["+ escapeMD(r.target.name)  +" ("+ convertToText(r.target.type) +")]("+generateLink(r.target.name +" ("+ convertToText(r.target.type)+")")+")";
-            theBody+="|"+r.name;
-            theBody+="|"+r.documentation+"|\n";
-        }
-    });
-
-    return "**Relaciones (impacto)**\n"+theHeader+"\n"+theLine+"\n"+theBody;
-}
 
 function properCase(str) {
     return str.replace(

@@ -292,7 +292,7 @@ function devdocs_toc(nivel, element, include){
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes(include)? true:false): false)
     }).each(function(e) {
-        var o_doc;
+        var o_toc;
 
         if (e.name) {
             headerDepth="";
@@ -320,7 +320,7 @@ function devdocs_toc(nivel, element, include){
                 nivel--;
             }
 
-            return o_doc;
+            return o_toc;
         }
     });
 }

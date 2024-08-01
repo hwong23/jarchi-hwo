@@ -314,7 +314,7 @@ function devdocs_toc(nivel, element, include, o_toc){
             o_toc+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
             if ($(e).children().not("relationship").length>0) {
                 nivel++;
-                devdocs_toc(nivel, e, 'doc');
+                devdocs_toc(nivel, e, 'doc', o_toc);
                 nivel--;
             }
         }

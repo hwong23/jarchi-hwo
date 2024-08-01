@@ -40,6 +40,9 @@ var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
+var theDocument = "";
+var theTOC = "* [Introducción](#Introducción)";
+
 
 console.show();
 console.clear();
@@ -102,10 +105,6 @@ function nestedDocumentation(d, element) {
     });
 }
 
-
-var theDocument = "";
-var theTOC = "* [Introducción](#Introducción)";
-
 // Argumentos de entrada por CLI
 var argRutaMacMD = getArgumento("rutaMacMD");
 var argVistaDocumental = getArgumento("vistaDocumental");
@@ -137,7 +136,7 @@ if (theView) {
     
     // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
-    devdocs_toc(0,theView, 'doc', theTOC);
+    theTOC=devdocs_toc(0,theView, 'doc');
     theDocument+="\n"+theTOC+"\n";
     theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);

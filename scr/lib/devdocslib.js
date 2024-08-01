@@ -287,11 +287,13 @@ function devdoc_convertToText(type) {
     return theResult.trim();
 }
 
-function devdocs_toc(nivel, element, include, o_toc){
+function devdocs_toc(nivel, element, include){
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes(include)? true:false): false)
     }).each(function(e) {
+        var o_doc;
+
         if (e.name) {
             headerDepth="";
             for (var i=0; i<nivel; i++){
@@ -314,9 +316,11 @@ function devdocs_toc(nivel, element, include, o_toc){
             o_toc+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
             if ($(e).children().not("relationship").length>0) {
                 nivel++;
-                devdocs_toc(nivel, e, 'doc', o_toc);
+                o_doc=devdocs_toc(nivel, e, 'doc');
                 nivel--;
             }
+
+            return o_doc;
         }
     });
 }

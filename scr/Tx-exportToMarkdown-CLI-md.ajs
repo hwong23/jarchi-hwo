@@ -136,7 +136,7 @@ if (theView) {
     
     // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
-    theTOC=devdocs_toc(0,theView, 'doc');
+    theTOC+=devdocs_toc(0,theView, 'doc');
     theDocument+="\n"+theTOC+"\n";
     theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);

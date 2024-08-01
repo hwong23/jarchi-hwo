@@ -287,7 +287,7 @@ function devdoc_convertToText(type) {
     return theResult.trim();
 }
 
-function devdocs_toc(nivel, element, include){
+function devdocs_toc(nivel, element, include, o_toc){
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes(include)? true:false): false)
@@ -311,7 +311,7 @@ function devdocs_toc(nivel, element, include){
                 linkNum = "-"+tocMap[theHash];
             }
 
-            theTOC+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
+            o_toc+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
             if ($(e).children().not("relationship").length>0) {
                 nivel++;
                 devdocs_toc(nivel, e, 'doc');

@@ -291,7 +291,8 @@ function devdocs_toc(nivel, element, include){
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes(include)? true:false): false)
-    }).each(function(e) {
+    }).each(function(e) 
+    {
         var o_toc;
 
         if (e.name) {
@@ -323,5 +324,7 @@ function devdocs_toc(nivel, element, include){
             return o_toc;
         }
     });
+    
+    return "";
 }
 

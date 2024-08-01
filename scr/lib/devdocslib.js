@@ -21,6 +21,8 @@
  
 */
 
+var devdocs_debug = false;
+
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
@@ -287,14 +289,12 @@ function devdoc_convertToText(type) {
     return theResult.trim();
 }
 
-function devdocs_toc(nivel, element, include){
+function devdocs_toc(nivel, element, include, o_toc){
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes(include)? true:false): false)
     }).each(function(e) 
     {
-        var o_toc;
-
         if (e.name) {
             headerDepth="";
             for (var i=0; i<nivel; i++){
@@ -314,17 +314,15 @@ function devdocs_toc(nivel, element, include){
                 linkNum = "-"+tocMap[theHash];
             }
 
-            o_toc+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
+            o_toc+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name) +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
             if ($(e).children().not("relationship").length>0) {
                 nivel++;
-                o_toc+=devdocs_toc(nivel, e, 'doc');
+                o_toc=devdocs_toc(nivel, e, 'doc', o_toc);
                 nivel--;
             }
-
-            return o_toc;
         }
     });
 
-    return "";
+    return o_toc;
 }
 

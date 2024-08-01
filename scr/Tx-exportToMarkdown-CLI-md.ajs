@@ -31,7 +31,7 @@ load(__DIR__ + "lib/myargs.js");
 load(__DIR__ + "lib/devdocslib.js");
 
 
-var debug = true;
+var debug = false;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
@@ -47,7 +47,6 @@ var theTOC = "* [Introducción](#Introducción)";
 console.show();
 console.clear();
 console.log("Export to Markdown");
-
 
 
 /*
@@ -136,7 +135,7 @@ if (theView) {
     
     // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
-    theTOC+=devdocs_toc(0,theView, 'doc');
+    theTOC=devdocs_toc(0,theView, 'doc', theTOC);
     theDocument+="\n"+theTOC+"\n";
     theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);

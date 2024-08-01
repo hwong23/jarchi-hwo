@@ -137,7 +137,7 @@ if (theView) {
     
     // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
-    toc(0,theView);
+    toc(0,theView, 'doc');
     theDocument+="\n"+theTOC+"\n";
     theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
@@ -188,14 +188,14 @@ else {
 }
 
 
-function toc(d, element){
+function toc(nivel, element, include){
     $(element).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
-        return (prop_destino? (prop_destino.includes("doc")? true:false): false)
+        return (prop_destino? (prop_destino.includes(include)? true:false): false)
     }).each(function(e) {
         if (e.name) {
             headerDepth="";
-            for (var i=0; i<d; i++){
+            for (var i=0; i<nivel; i++){
                 headerDepth+="  ";
             }
             var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
@@ -214,9 +214,9 @@ function toc(d, element){
 
             theTOC+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
             if ($(e).children().not("relationship").length>0) {
-                d++;
-                toc(d, e);
-                d--;
+                nivel++;
+                toc(nivel, e, 'doc');
+                nivel--;
             }
         }
     });

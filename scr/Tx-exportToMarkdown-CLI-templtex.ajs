@@ -23,6 +23,7 @@
  * Version 4.2: Referencia imagen URL
  * Version 4.2.1: Argumento rutaCompleta
  * Version 4.3: Funciones de librería devdoc
+ * Version 4.3.1: Funciones de librería devdoc
  *
  * (c) 2018 Steven Mileham, HWO
  *
@@ -42,8 +43,11 @@ var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
+var theDocument = "";
+var theTOC = "* [Introducción](#Introducción)";
 var elements = '';
 var elementsCollection;
+var viewDocumentations = '';
 
 
 // funciones con argumento plantillas
@@ -57,7 +61,6 @@ var tplElement = _.template(readFully(__DIR__ + 'templates/tex/element-md-tex.tp
 console.show();
 console.clear();
 console.log("Export to Markdown");
-
 
 
 /*
@@ -114,10 +117,6 @@ function nestedDocumentation(d, element) {
 }
 
 
-var theDocument = "";
-var theTOC = "* [Introducción](#Introducción)";
-var viewDocumentations = '';
-
 // Argumentos de entrada por CLI
 var argRutaMacMD = getArgumento("rutaMacMD");
 var argVistaDocumental = getArgumento("vistaDocumental");
@@ -149,7 +148,7 @@ if (theView) {
 
     // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
-    toc(0,theView);
+    theTOC=devdocs_toc(0,theView, 'tex', theTOC);
     theDocument+="\n"+theTOC+"\n";
     theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
@@ -217,41 +216,6 @@ if (theView) {
 }
 else {
     console.log("> Please Select a View");
-}
-
-
-function toc(d, element){
-    $(element).children().not("relationship").filter(function(child) {
-        var prop_destino = child.prop("destino");
-        return (prop_destino? (prop_destino.includes("ppt")? true:false): false)
-    }).each(function(e) {
-        if (e.name) {
-            headerDepth="";
-            for (var i=0; i<d; i++){
-                headerDepth+="  ";
-            }
-            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
-            if (tocMap[theHash]==null) {
-                tocMap[theHash]=1;
-            }
-            else {
-                tocMap[theHash]+=1;
-            }
-
-            var linkNum="";
-
-            if (tocMap[theHash]>1) {
-                linkNum = "-"+tocMap[theHash];
-            }
-
-            theTOC+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name)  +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
-            if ($(e).children().not("relationship").length>0) {
-                d++;
-                toc(d, e);
-                d--;
-            }
-        }
-    });
 }
 
 

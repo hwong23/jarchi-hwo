@@ -15,7 +15,7 @@ publish:
   gitorigen: /Users/hwo/git/pgn/pgn-078 
 mddoc:
   rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
+  rutamodelo: $HOME/git/archigit/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
@@ -23,7 +23,7 @@ mddoc:
   rutaCompleta: no
 mdtex:
   rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
+  rutamodelo: $HOME/git/archigit/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
@@ -31,7 +31,7 @@ mdtex:
   rutaCompleta: no
 mdppt:
   rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
+  rutamodelo: $HOME/git/archigit/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
@@ -39,7 +39,7 @@ mdppt:
   rutaCompleta: no
 mdhtml:
   rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
+  rutamodelo: $HOME/git/archigit/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   rutaMacMD: /git/tex-plantll-hv/contd/html

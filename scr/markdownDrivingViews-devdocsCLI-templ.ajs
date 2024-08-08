@@ -27,7 +27,6 @@
 
 load(__DIR__ + "lib/myargs.js");
 load(__DIR__ + "lib/devdocslib.js");
-load(__DIR__ + 'lib/myseleccion.js');
 load(__DIR__ + "lib/mustachetemplate.js");
 
 
@@ -328,7 +327,7 @@ function exportViews_2 (k, viewList, settings)
         {
         viewId: 'id-'+v.id,
         viewTitle: viewTitles,
-        viewNota: obtNota (v),
+        viewNota: devdocs_obtNota (v),
         viewDiagram: viewDiagrams,
         documentationText: _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),

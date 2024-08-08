@@ -183,7 +183,7 @@ if (theView) {
         {
         viewId: 'id-'+theView.id,
         viewTitle: "",      // viewTitles,
-        viewNota: "",       // obtNota (v),
+        viewNota: devdocs_obtNota (v),
         viewDiagram: "",    // viewDiagrams,
         documentationText: _.escape(theDocument)
         ,

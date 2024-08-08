@@ -46,7 +46,6 @@ load(__DIR__ + 'libs/nashorn-polyfills.js');
 load(__DIR__ + 'libs/underscore-min.js');
 load(__DIR__ + 'libs/marked.min.js');
 load(__DIR__ + 'lib/devdocslib.js');
-load(__DIR__ + 'lib/myseleccion.js');
 
 console.show();
 console.clear();
@@ -235,7 +234,7 @@ function exportViews(folder) {
     viewDocumentations += tplDocumentation({
       viewId: 'id-'+v.id,
       viewTitle: viewTitles,
-      viewNota: obtNota (v),
+      viewNota: devdocs_obtNota (v),
       viewDiagram: viewDiagrams,
       documentationText: _.escape(v.documentation),  //.replace(/\n/g, '<br>'),
       documentationMarkdown: marked(_.escape(v.documentation), mdOptions),

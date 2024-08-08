@@ -326,3 +326,21 @@ function devdocs_toc(nivel, element, include, o_toc){
     return o_toc;
 }
 
+// Notes with no relationships
+function devdocs_obtNota (theView) {
+    var notatexto = '';
+    var c = $(theView).find().not("element").not("relationship").first();
+
+    // try {
+        if (c) {
+            if ($(c).rels().length==0) {
+                notatexto = notatexto + c.text + '\n\n';
+            }
+        };
+    // }
+    // catch(err) {
+    //     console.error(c.name);
+    // }
+
+    return notatexto;
+}

@@ -101,7 +101,8 @@ function nestedDocumentation(d, element) {
                 viewsIds: '',
                 elementName: _.escape( e.prop('ide')? e.prop('ide'):e.name ),
                 elementType: properCase(e.type),
-                elementDocumentationText: _.escape(e.documentation), //.replace(/\n/g, '<br>'),
+                elementDocumentationText: _.escape(e.documentation).
+                    replace(/\n/g, '\n   '),
                 elementDocumentationMarkdown: ''
                 });
 

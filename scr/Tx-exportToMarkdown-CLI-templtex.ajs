@@ -100,10 +100,9 @@ function nestedDocumentation(d, element) {
 
                 elements += tplElement({
                 viewsIds: '',
-                elementName: _.escape( e.prop('ide')? e.prop('ide'):e.name ),
+                elementName: _.escape( e.prop('ide')? e.prop('ide'):e.name.replaceAll(' ','-') ),
                 elementType: properCase(e.type),
-                elementDocumentationText: _.escape(e.documentation).
-                    replace(/\n/g, '\n   '),
+                elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
                 elementDocumentationMarkdown: ''
                 });
 
@@ -227,6 +226,6 @@ function properCase(str) {
       function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
       }
-    ).replace('-', ' ');
+    ).replace(' ', '-');
   }
   

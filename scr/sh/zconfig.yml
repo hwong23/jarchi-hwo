@@ -1,46 +1,40 @@
-development:
-  rutausr: 
-  rutamodelo: 
-  rutaprg: 
-  prg: 
-  rutaexpportprg: 
-  expportprg: 
 deploy:
   origenmd: /Users/hwo/Downloads/tmpr/pgnmd
-  destinomd: /Users/hwo/git/pgn/pgn-078
+  destinomd: /Users/hwo/gh/pgn/pgn-078
   origenhtml: /Users/hwo/Downloads/tmpr/pgnarchidoc
 ccambio:
-  gitorigen: /Users/hwo/git/pgn/pgn-078
+  gitorigen: /Users/hwo/gh/pgn/pgn-078
 publish:
-  gitorigen: /Users/hwo/git/pgn/pgn-078 
+  gitorigen: /Users/hwo/gh/pgn/pgn-078 
+
 mddoc:
-  rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
-  rutaprg: $HOME/git/jarchi-hwo/scr
-  rutaexpportprg: $HOME/git/jarchi-hwo/scr
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /git/tex-plantll-hv/contd/docx
+  rutaMacMD: /gh/tex-plantll-hv/contd/docx
   rutaCompleta: no
 mdtex:
-  rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
-  rutaprg: $HOME/git/jarchi-hwo/scr
-  rutaexpportprg: $HOME/git/jarchi-hwo/scr
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /git/tex-plantll-hv/contd/tex
+  rutaMacMD: /gh/tex-plantll-hv/contd/tex
   rutaCompleta: no
 mdppt:
-  rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
-  rutaprg: $HOME/git/jarchi-hwo/scr
-  rutaexpportprg: $HOME/git/jarchi-hwo/scr
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /git/tex-plantll-hv/contd/ppt
+  rutaMacMD: /gh/tex-plantll-hv/contd/ppt
   rutaCompleta: no
 mdhtml:
-  rutausr: $HOME/git
-  rutamodelo: $HOME/git/models/modelocontenidos
-  rutaprg: $HOME/git/jarchi-hwo/scr
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /git/tex-plantll-hv/contd/html
+  rutaMacMD: /gh/tex-plantll-hv/contd/html
   rutaCompleta: no

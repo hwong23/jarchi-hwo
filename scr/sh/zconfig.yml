@@ -14,7 +14,7 @@ mddoc:
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devocs-contd/contd/docx
-  rutaCompleta: no
+  rutaCompleta: si
 mdtex:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos

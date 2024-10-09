@@ -13,7 +13,7 @@ mddoc:
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/devocs-contd/contd/docx
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/docx
   rutaCompleta: si
 mdtex:
   rutausr: $HOME/gh
@@ -21,7 +21,7 @@ mdtex:
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/devocs-contd/contd/tex
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/tex
   rutaCompleta: no
 mdppt:
   rutausr: $HOME/gh
@@ -29,12 +29,12 @@ mdppt:
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/devocs-contd/contd/ppt
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/ppt
   rutaCompleta: no
 mdhtml:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/devocs-contd/contd/html
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/html
   rutaCompleta: no

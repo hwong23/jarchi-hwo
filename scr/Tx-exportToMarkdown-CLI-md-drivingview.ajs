@@ -2,9 +2,10 @@
 	Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
 
 	Script: Documentation Generation
-	Purpose: To generate output based on a driving view. Usa plantillas mustage para escribir archivos md.
-    This generates a markdown file with the embedded images and text based upon a driving view in Archi of 
-    groups that trigger each other and embedded views.
+	Purpose: To generate output based on a driving view. Usa plantillas mustage para 
+    escribir archivos md.
+    This generates a markdown file with the embedded images and text based upon a 
+    driving view in Archi of groups that trigger each other and embedded views.
 	See my blog for a more detailed explanation. https://www.tamebluelion.co.uk/blog/archi-documentation
 
 	Author: Richard Heward - Tame Blue Lion Ltd
@@ -23,7 +24,7 @@
     28-Jan-2020 - Outputs the linked views in the visual left-right top-bottom order they are drawn in a driving group. This was tricky and probably messy code, but it works.
     29-Jan-2020 - includes a hardNewpage variable to drop the text NEWPAGE into the output if your target is MS Word. This allows for post processing find-replace to swap it for proper new pages. It does this for all header levels in the listofNewpageheaders variable.
     01-Dic-2023 - Plantillas mustage para escribir archivos md
-    11-Oct-2024 - Transformador (Tx) para devdocs 2.0 (1.0 = manubot)
+    11-Oct-2024 - Transformador (Tx) para devdocs 2.0; 1.0 = manubot
 
  */
 

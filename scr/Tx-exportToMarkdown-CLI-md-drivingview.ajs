@@ -331,12 +331,12 @@ function getViews(Level, Levelobj, settings) {
 
         // now go through the sorted viewList
         for (var k = 0; k < viewList.length; k++) {
-            exportViews_2 (k, viewList, settings);
+            exportViews (k, viewList, settings);
         }
     }
 }
 
-function exportViews_2 (k, viewList, settings) 
+function exportViews (k, viewList, settings) 
 {
     // acumuladores de contenido
     var viewDocumentations = '';
@@ -357,7 +357,7 @@ function exportViews_2 (k, viewList, settings)
     var cambioPlnt = true;
 
 
-    console.log(addSpace(1), 'exportViews_2', viewItem.name);
+    console.log(addSpace(1), 'exportViews', viewItem.name);
     
 
     // configuraciones de la vista: plantillas, opciones de presentación inclusionSettings
@@ -409,8 +409,9 @@ function exportViews_2 (k, viewList, settings)
           elementDocumentationText: e.documentation.replace(/\n/g, '<br>'),
           elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
         });
-      });
+    });
   
+    (debug)? console.log (addSpace(1), 'exportviews', elements.length()):true;
 
     // Generate report's fragments: título, diagrama, elementos
     var vnombre = (v.prop("titulo"))? v.prop("titulo"):

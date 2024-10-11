@@ -105,16 +105,17 @@ console.log("Documentation Generation @", currentDate);
 // Main Code
 var docGen = "";    // contenido documento completo
 
-if ( argVistaDocumental ) {
+if (useDrivingView( argVistaDocumental ))
+{
     // nombre de documento dado por propiedad del modelo
     var r = __DIR__.split("\/");
-    g_drivingView_devdoc = theView.prop("devdoc")? 
-        theView.prop("devdoc"):
+    g_drivingView_devdoc = g_drivingView.prop("devdoc")? 
+    g_drivingView.prop("devdoc"):
         "02n.a1.contenido.md";
     // nombre de archivo dado por argumento CLI
         g_path = argRutaMacMD? 
         '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
-        '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
+        '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
     g_fileName = g_path+g_drivingView_devdoc;
 
     console.log("path: ", g_path);

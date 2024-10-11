@@ -49,15 +49,15 @@ var currentDate = new Date().toLocaleString("en-US", {
 
 // variables de contexto global
 var Verbose = false;
-var Sections = [];
 var Errors = [];
 var nextOne = null;
 var theToc = "";
+var g_Sections = [];
 var g_outInfo = "";
 var g_path = "";
 var g_fileName = "";
-var g_drivingView_devdoc = "";    // documento automático asociado
-var g_drivingView = null;         // will be set to the selected view that has all the groups and view references on.
+var g_drivingView_devdoc = "";    // nombre de documento dado por propiedad del modelo
+var g_drivingView = null;         // will be set to the selected view that has all the groups and view references on
 var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
@@ -103,8 +103,7 @@ console.log("Documentation Generation @", currentDate);
 
 
 // Main Code
-
-var docGen = "";
+var docGen = "";    // contenido documento completo
 
 if ( argVistaDocumental ) {
     // nombre de archivo dado por propiedad del modelo
@@ -136,15 +135,18 @@ if ( argVistaDocumental ) {
         // fileName = exportFile.substring(lastSlash + 1, exportFile.length);
 
 
-        // go through the array, and output.
-        for (var i = 0; i < Sections.length; i++) {
+        // go through the array, and output
+        for (var i = 0; i < g_Sections.length; i++) {
             var nombreitem = 
-                (Sections[i].group.prop("titulo"))? Sections[i].group.prop("titulo"):
-                (Sections[i].group.labelExpression)? Sections[i].group.labelExpression : Sections[i].group.name;
+                (g_Sections[i].group.prop("titulo"))? g_Sections[i].group.prop("titulo"):
+                (g_Sections[i].group.labelExpression)? g_Sections[i].group.labelExpression : g_Sections[i].group.name;
 
-            outputHdr(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
-            getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
+            outputHdr(g_Sections[i].level, nombreitem, true, g_Sections[i].group.documentation);
+            
+            // obtiene documentación de las vistas
+            getViews(g_Sections[i].level, g_Sections[i].group, g_Sections[i].settings);
         }
+
         docGen = "# " + (
             (g_drivingView.prop("titulo")) ? g_drivingView.prop("titulo"): g_drivingView.name
             ) + "\n";
@@ -324,12 +326,10 @@ function getViews(Level, Levelobj, settings) {
 
         // now go through the sorted viewList
         for (var k = 0; k < viewList.length; k++) {
-            // exportViews_2 (k, Level, viewList, settings);
             exportViews_2 (k, viewList, settings);
         }
     }
 }
-
 
 function exportViews_2 (k, viewList, settings) 
 {
@@ -531,11 +531,13 @@ function addGroup(group, level, parentInclusionSettings) {
     }
 
     // Add the group to the list of sections
-    Sections.push({
+    g_Sections.push(
+        {
         "group": group,
         "level": level,
         "settings": settings
-    });
+        }
+    );
 
     // Look for more sub groups under this one
     getSubGroups(group, level + 1, settings)

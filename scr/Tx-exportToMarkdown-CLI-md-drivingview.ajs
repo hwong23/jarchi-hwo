@@ -79,10 +79,10 @@ var DefaultInclusionSettings = {
 };
 
 // funciones con argumento plantillas base
-var tplDocumentation;
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
-var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
-var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
+var tplDocumentation;   // definido por propiedad 'plantilla' de la vista
+// var tplMainReport = _.template(readFully(__DIR__ + 'templates/md-doctec/newmain-report-md.tpl', 'UTF-8'));
+var tplViewTitle = _.template(readFully(__DIR__ + 'templates/md-doctec/view-title-md.tpl', 'UTF-8'));
+var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/md-doctec/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = function() {};
 var tplElementFila = function() {};
 var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));
@@ -360,10 +360,11 @@ function exportViews_2 (k, viewList, settings)
     console.log(addSpace(1), 'exportViews_2', viewItem.name);
     
 
-    // configuraciones de la vista: plantilla, opciones de presentación
-    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? 
-        v.prop('plantilla'):
-        'documentation-md-dv') + '.tpl', 'UTF-8') );
+    // configuraciones de la vista: plantillas, opciones de presentación inclusionSettings
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/md-doctec/' + 
+        (v.prop('plantilla')? 
+            v.prop('plantilla'):
+            'documentation-md') + '.tpl', 'UTF-8') );
     elemtPlantillaActual = v.prop('plantillaElm')? 
         v.prop('plantillaElm'):
         'elementtabla-md,element-md';
@@ -372,8 +373,8 @@ function exportViews_2 (k, viewList, settings)
     
     if (cambioPlnt) {
         elemtPlantilla = elemtPlantillaActual;
-        tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
-        tplElementFila = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
+        tplElement = _.template(readFully(__DIR__ + 'templates/md-doctec/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
+        tplElementFila = _.template(readFully(__DIR__ + 'templates/md-doctec/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
     }
 
     // Update lists of elements and relationships

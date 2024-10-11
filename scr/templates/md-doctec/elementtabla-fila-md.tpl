@@ -1,1 +1,1 @@
-| {{elementName}} | {{elementType}} | {{elementDocumentationText}} | {{elementDocumentationMarkdown}} |
+| {{elementName}} | {{elementType}} | {{elementDocumentationText}} |

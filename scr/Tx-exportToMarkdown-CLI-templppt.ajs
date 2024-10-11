@@ -52,7 +52,7 @@ var viewDocumentations = '';
 
 // funciones con argumento plantillas
 var tplDocumentation;
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/ppt/main-report-ppt.tpl', 'UTF-8'));
+var tplMainReport = _.template(readFully(__DIR__ + 'templates/ppt/main-md-ppt.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/ppt/element-md-ppt.tpl', 'UTF-8'));
@@ -174,7 +174,7 @@ if (theView) {
     nestedDocumentation(0, theView);
 
     // interpolación de texto mediante plantilla
-    var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
         (theView.prop('plantilla')? theView.prop('plantilla'):'ppt/documentation-md-ppt') + '.tpl', 'UTF-8') ); 
     
     viewDocumentations += tplDocumentation (

@@ -398,8 +398,9 @@ function exportViews_2 (k, viewList, settings)
     });
     }
 
+    // carga de elementos de la vista actual
     _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
-        // Plantilla elemento
+        // plantilla elemento
         elements += tplElementFila({
           viewsIds: viewsIdsByConceptId[e.id],
           elementName: e.name,

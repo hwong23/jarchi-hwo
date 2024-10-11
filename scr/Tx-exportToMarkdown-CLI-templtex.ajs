@@ -52,8 +52,8 @@ var viewDocumentations = '';
 
 
 // funciones con argumento plantillas
-var tplDocumentation;
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
+var tplDocumentation;   // definido por propiedad 'plantilla' de la vista
+var tplMainReport = _.template(readFully(__DIR__ + 'templates/tex/main-md-tex.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/tex/element-md-tex.tpl', 'UTF-8'));
@@ -98,13 +98,13 @@ function nestedDocumentation(d, element) {
                 linkNum = " "+bodyMap[theHash];
             }
 
-                elements += tplElement({
+            elements += tplElement({
                 viewsIds: '',
                 elementName: _.escape( e.prop('ide')? e.prop('ide'):e.name.replaceAll(' ','-') ),
-                elementType: properCase(e.type),
+                elementType: devdocs_properCase(e.type),
                 elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
                 elementDocumentationMarkdown: ''
-                });
+            });
 
                 debug? console.log('   '+e.name+":"+e):true;
 
@@ -175,8 +175,10 @@ if (theView) {
     nestedDocumentation(0, theView);
     
     // interpolación de texto mediante plantilla
-    var tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
-        (theView.prop('plantilla')? theView.prop('plantilla'):'tex/documentation-md-tex') + '.tpl', 'UTF-8') ); 
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
+        (theView.prop('plantilla')? 
+        theView.prop('plantilla'):
+        'tex/documentation-md-tex') + '.tpl', 'UTF-8') ); 
     
     viewDocumentations += tplDocumentation (
         {
@@ -219,13 +221,3 @@ else {
     console.log("> Please Select a View");
 }
 
-
-function properCase(str) {
-    return str.replace(
-      /\w*/g,
-      function(txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      }
-    ).replace(' ', '-');
-  }
-  

@@ -367,7 +367,7 @@ function exportViews (k, viewList, settings)
             'documentation-md') + '.tpl', 'UTF-8') );
     elemtPlantillaActual = v.prop('plantillaElm')? 
         v.prop('plantillaElm'):
-        'elementtabla-md,element-md';
+        'elementtabla-md,elementtabla-fila-md';
     cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
     var inclusionSettings = devdoc_getGroupInclusionSettings(v, DefaultInclusionSettings);
     

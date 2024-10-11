@@ -2,7 +2,7 @@
 	Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
 
 	Script: Documentation Generation
-	Purpose: To generate output based on a driving view
+	Purpose: To generate output based on a driving view. Usa plantillas mustage para escribir archivos md.
 
 	Author: Richard Heward - Tame Blue Lion Ltd
 
@@ -21,7 +21,7 @@
 	24-Jan-2020 - Allowed inclusion settings to be set by group. Inherited by nested groups. Made catalogue columns more dynamic (configurable in future?). Refactored recursive functions. (Jared Pritchard)
     28-Jan-2020 - Outputs the linked views in the visual left-right top-bottom order they are drawn in a driving group. This was tricky and probably messy code, but it works.
     29-Jan-2020 - includes a hardNewpage variable to drop the text NEWPAGE into the output if your target is MS Word. This allows for post processing find-replace to swap it for proper new pages. It does this for all header levels in the listofNewpageheaders variable.
-    01-Dic-2023 - Plantillas
+    01-Dic-2023 - Plantillas mustage para escribir archivos md
 
  */
 

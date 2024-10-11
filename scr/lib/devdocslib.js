@@ -344,3 +344,14 @@ function devdocs_obtNota (theView) {
 
     return notatexto;
 }
+
+
+function devdocs_properCase(str) {
+    return str.replace(
+      /\w*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    ).replace('-', ' ');
+  }
+  

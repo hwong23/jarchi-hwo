@@ -125,7 +125,7 @@ if (theView) {
         // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
         // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
     var r = __DIR__.split("\/");
-    g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
+    g_drivingView_devdoc = theView.prop("devdoc")? theView.prop("devdoc"):"02n.a1.contenido.md";
     g_path = argRutaMacMD? 
         '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
         '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';

@@ -414,14 +414,16 @@ function exportViews (k, viewList, settings)
     (debug)? console.log (addSpace(1), 'exportviews', elements.length()):true;
 
     // Generate report's fragments: título, diagrama, elementos
-    var nombrevista = (v.prop("titulo"))? 
+    var vnombre = (v.prop("titulo"))? 
         v.prop("titulo"):
         (v.labelExpression)? 
             v.labelExpression : 
-            v.name.replaceAll(" ","");
+            v.name;
 
-    viewTitles = tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(v.name)});
-    viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: exportaImagen(v, g_path), viewNombre: nombrevista+'.png', viewAncho: ''});
+    var nombrevista = v.name.replaceAll(" ","");
+    viewTitles = tplViewTitle({viewId: 'id-'+v.id, viewName: _.escape(vnombre)});
+    viewDiagrams = tplViewDiagram({viewId: 'id-'+v.id, viewImage: exportaImagen(v, g_path), 
+        viewNombre: nombrevista+'.png', viewAncho: ''});
     viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
     viewDocumentations += tplDocumentation (
         {

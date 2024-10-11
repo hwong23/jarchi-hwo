@@ -33,7 +33,7 @@ eval $(parse_yaml $1/zconfig.yml config_)
 rutausr=$(varvalue config_ $4 _rutausr)
 rutamodelo=$(varvalue config_ $4 _rutamodelo)
 rutaprg=$(varvalue config_ $4 _rutaprg)
-prg=$2
+prg=$([ -z "$2"  ] && echo $(varvalue config_ $4 _expportprg) || echo $2)
 vistadoc=$3
 rutaexpportprg=$(varvalue config_ $4 _rutaexpportprg)
 rutaMacMD=$(varvalue config_ $4 _rutaMacMD)

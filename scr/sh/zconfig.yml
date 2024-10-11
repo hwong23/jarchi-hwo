@@ -12,7 +12,7 @@ mddoc:
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
-  expportprg: exportSingle-htmlCLI.ajs
+  expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/docx
   rutaCompleta: no
 mdtex:

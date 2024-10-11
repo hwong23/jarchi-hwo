@@ -75,7 +75,7 @@ var hardNewpage = false; // if true, the text NEWPAGE will be put in the output 
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
 var drivingView = null; // will be set to the selected view that has all the groups and view references on.
 var drivingView_devdoc = "";    // documento técnico automático asociado
-var debug = false;
+var debug = true;
 var viewsIdsByConceptId = {};
 
 
@@ -88,6 +88,19 @@ var DefaultInclusionSettings = {
     "IncludeProperties": true, // if true, will include the "properties" field in a catalogue of elements from a view
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
+
+
+// Argumentos de entrada por CLI
+var argRutaMacMD = getArgumento("rutaMacMD");
+var argVistaDocumental = getArgumento("vistaDocumental");
+var argRutaCompleta = getArgumento("rutaCompleta");
+console.log("Entradas: ")
+debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
+debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
+debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
+
+
+return 0;
 
 // Shallow clones attributes of a basic object
 function shallowClone(obj) {

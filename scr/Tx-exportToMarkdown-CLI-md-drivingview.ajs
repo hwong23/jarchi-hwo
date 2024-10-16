@@ -406,7 +406,7 @@ function exportViews (k, viewList, settings)
           viewsIds: viewsIdsByConceptId[e.id],
           elementName: e.name,
           elementType: devdocs_properCase(e.type),
-          elementDocumentationText: e.documentation.replace(/\n/g, ' '),
+          elementDocumentationText: e.documentation.replace(/\n/g, ' '),    //<br>
           elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
         });
     });
@@ -429,7 +429,7 @@ function exportViews (k, viewList, settings)
         {
         viewId: 'id-'+v.id,
         viewTitle: viewTitles,
-        viewNota: devdocs_obtNota (v),
+        viewNota: devdocs_obtNota (v).replace(/\n/g, ' '),    //<br>,
         viewDiagram: viewDiagrams,
         documentationText: _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),

@@ -7,7 +7,10 @@ https://github.com/archi-contribs/jarchi-single-page-html-export
 Copyright (c) 2020 Phillip Beauvoir & Jean-Baptiste Sarrodie - MIT License
 -->
 {{viewTitle}}
-{{viewNota}}
+    {{viewNota}}
+
+
+
 {{documentationText}}
 {{viewDiagram}}
 

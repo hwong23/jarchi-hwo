@@ -406,7 +406,7 @@ function exportViews (k, viewList, settings)
           viewsIds: viewsIdsByConceptId[e.id],
           elementName: e.name,
           elementType: devdocs_properCase(e.type),
-          elementDocumentationText: e.documentation.replace(/\n/g, '<br>'),
+          elementDocumentationText: e.documentation.replace(/\n/g, ' '),
           elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
         });
     });

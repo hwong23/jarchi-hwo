@@ -20,7 +20,7 @@ mddoc:
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  rutaMacMD: /git/devdocs/tex-plantll-hv/contd/docx
+  rutaMacMD: /git/devdocs/devocs-contd/contd/docx
   rutaCompleta: no
 mdtex:
   rutausr: $HOME/git
@@ -28,7 +28,7 @@ mdtex:
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /git/devdocs/tex-plantll-hv/contd/tex
+  rutaMacMD: /git/devdocs/devocs-contd/contd/tex
   rutaCompleta: no
 mdppt:
   rutausr: $HOME/git
@@ -36,12 +36,12 @@ mdppt:
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /git/devdocs/tex-plantll-hv/contd/ppt
+  rutaMacMD: /git/devdocs/devocs-contd/contd/ppt
   rutaCompleta: no
 mdhtml:
   rutausr: $HOME/git
   rutamodelo: $HOME/git/archigit/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
-  rutaMacMD: /git/devdocs/tex-plantll-hv/contd/html
+  rutaMacMD: /git/devdocs/devocs-contd/contd/html
   rutaCompleta: no

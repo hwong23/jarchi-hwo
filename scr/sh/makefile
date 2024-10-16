@@ -6,6 +6,10 @@ mddoc:
 	(sh archiCli-md.sh . "" \
 	$(devdoc) mddoc)
 
+mdpdf:
+	(sh archiCli-md.sh . "" \
+	$(devdoc) mdpdf)
+
 mddoc2:
 	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs \
 	$(devdoc) mddoc)

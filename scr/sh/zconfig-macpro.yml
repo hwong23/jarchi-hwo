@@ -1,0 +1,40 @@
+deploy:
+  origenmd: /Users/hwo/Downloads/tmpr/pgnmd
+  destinomd: /Users/hwo/gh/pgn/pgn-078
+  origenhtml: /Users/hwo/Downloads/tmpr/pgnarchidoc
+ccambio:
+  gitorigen: /Users/hwo/gh/pgn/pgn-078
+publish:
+  gitorigen: /Users/hwo/gh/pgn/pgn-078 
+
+mddoc:
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/docx
+  rutaCompleta: no
+mdtex:
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  expportprg: exportSingle-htmlCLI.ajs
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/tex
+  rutaCompleta: no
+mdppt:
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  expportprg: exportSingle-htmlCLI.ajs
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/ppt
+  rutaCompleta: no
+mdhtml:
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  expportprg: exportSingle-htmlCLI.ajs
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/html
+  rutaCompleta: no

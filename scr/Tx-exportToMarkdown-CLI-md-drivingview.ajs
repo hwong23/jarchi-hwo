@@ -359,6 +359,8 @@ function exportViews (k, viewList, settings)
         'elementtabla-md,elementtabla-fila-md';
     cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
     var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
+
+    (debug)? console.log ("exportViews: ", v.name, ": ", viewInclusionSettings): true;
     
     if (cambioPlnt) {
         elemtPlantilla = elemtPlantillaActual;

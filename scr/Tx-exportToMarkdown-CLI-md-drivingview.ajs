@@ -358,7 +358,7 @@ function exportViews (k, viewList, settings)
         v.prop('plantillaElm'):
         'elementtabla-md,elementtabla-fila-md';
     cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
-    var inclusionSettings = devdoc_getGroupInclusionSettings(v, DefaultInclusionSettings);
+    var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
     
     if (cambioPlnt) {
         elemtPlantilla = elemtPlantillaActual;
@@ -367,7 +367,7 @@ function exportViews (k, viewList, settings)
     }
 
     // Update lists of elements and relationships
-    if (inclusionSettings.IncludeViewElements === true) {
+    if (viewInclusionSettings.IncludeViewElements === true) {
         $(v).find('element').each(function(e) {
           if(elementsCollection) {
             if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
@@ -377,7 +377,7 @@ function exportViews (k, viewList, settings)
           viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
         });
     }
-    if (inclusionSettings.IncluyeRelaciones === true) {
+    if (viewInclusionSettings.IncluyeRelaciones === true) {
         $(v).find('relationship').each(function(r) {
         if(relacionesCollection) {
         if(!relacionesCollection.contains(r.concept)) relacionesCollection.add($(r.concept));
@@ -578,12 +578,13 @@ function useDrivingView(alias) {
         return (false);
     } else {       
         console.log("Driving view is: " + g_drivingView.name);
-        var inclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdocs_DefaultInclusionSettings);
-        console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
-        console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
-        console.log("Default IncludeVIewElements setting: " + inclusionSettings["IncludeViewElements"]);
-        console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
-        console.log("Default IncluyeRelaciones setting: " + inclusionSettings["IncluyeRelaciones"]);
+        var drivingViewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
+        console.log("Default IncludeDiagram setting: " + drivingViewInclusionSettings["IncludeDiagram"]);
+        console.log("Default IncludeDocumentation setting: " + drivingViewInclusionSettings["IncludeDocumentation"]);
+        console.log("Default IncludeVIewElements setting: " + drivingViewInclusionSettings["IncludeViewElements"]);
+        console.log("Default IncludeProperties setting: " + drivingViewInclusionSettings["IncludeProperties"]);
+        console.log("Default IncludeRutaCompleta setting: " + drivingViewInclusionSettings["IncludeRutaCompleta"]);
+        console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
         console.log("DevDoc asociado: " + g_drivingView_devdoc);
 
         // Go through each immediate child group in the view, find the first group(s) in a series
@@ -594,7 +595,7 @@ function useDrivingView(alias) {
 
                 if (incomingRels == 0) {
                     // It's a top-level section, put it in the array.
-                    outcome = outcome && addGroup(thisGroup, 1, inclusionSettings);
+                    outcome = outcome && addGroup(thisGroup, 1, drivingViewInclusionSettings);
                 } else {
                     // Ignore if if there's an incoming triggering relationship ... our recursive getNextGroup function will find it.
                 }

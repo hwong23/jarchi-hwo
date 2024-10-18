@@ -26,12 +26,13 @@ var devdocs_debug = false;
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
-var devdocs_DefaultInclusionSettings = {
+var devdoc_DefaultInclusionSettings = {
     "IncludeDiagram": true,       // if true, will include the view's diagram
     "IncludeDocumentation": true, // if true, will include the view's documentation text (which itself can have markdown, by the way)
     "IncludeViewElements": true,  // if true, will include a catalogue of the view's elements
     "IncludeProperties": true,    // if true, will include the "properties" field in a catalogue of elements from a view
-    "IncludeRutaCompleta": false  // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
+    "IncludeRutaCompleta": false,  // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
+    "IncluyeRelaciones": false  // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
 
@@ -128,22 +129,22 @@ function shallowClone(obj) {
 // Retorna una mezcla de configuración objeto+padre+default
 // settingsElement: reference to the driving view or a group which may have overriding settings
 // defaultSettings: settings object to use as default (required)
-function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
+function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
     // Check default settings
-    if (defaultSettings === null ||
-        typeof defaultSettings !== "object" ||
-        defaultSettings["IncludeDiagram"] === null ||
-        defaultSettings["IncludeDocumentation"] === null ||
-        defaultSettings["IncludeViewElements"] === null ||
-        defaultSettings["IncludeProperties"] === null ||
-        defaultSettings["IncluyeRelaciones"] === null ||
-        defaultSettings["IncludeRutaCompleta"] === null
+    if (parentSettings === null ||
+        typeof parentSettings !== "object" ||
+        parentSettings["IncludeDiagram"] === null ||
+        parentSettings["IncludeDocumentation"] === null ||
+        parentSettings["IncludeViewElements"] === null ||
+        parentSettings["IncludeProperties"] === null ||
+        parentSettings["IncluyeRelaciones"] === null ||
+        parentSettings["IncludeRutaCompleta"] === null
     ) {
         console.log("Default settings were not correctly passed to a child node");
         return (null);
     }
 
-    var settings = shallowClone(defaultSettings);
+    var settings = shallowClone(parentSettings);
 
     // Check for overrides
     var checkIncludeDiagram = settingsElement.prop("IncludeDiagram");
@@ -165,11 +166,11 @@ function devdoc_getGroupInclusionSettings(settingsElement, defaultSettings) {
     if (checkIncludeProperties !== null) {
         settings["IncludeProperties"] = checkIncludeProperties === "true"? true : false;
     }
-    if (checkIncluyeRelaciones !== null) {
-        settings["IncluyeRelaciones"] = checkIncluyeRelaciones === "true"? true : false;
-    }
     if (checkIncludeRutaCompleta !== null) {
         settings["IncludeRutaCompleta"] = checkIncludeRutaCompleta === "true"? true : false;
+    }
+    if (checkIncluyeRelaciones !== null) {
+        settings["IncluyeRelaciones"] = checkIncluyeRelaciones === "true"? true : false;
     }
 
 
@@ -189,7 +190,7 @@ function devdoc_useDrivingView(alias) {
         return (false);
     } 
     else {
-        var inclusionSettings = devdoc_getGroupInclusionSettings(model, devdocs_DefaultInclusionSettings);
+        var inclusionSettings = devdoc_getGroupInclusionSettings(model, devdoc_DefaultInclusionSettings);
         inclusionSettings = devdoc_getGroupInclusionSettings(drivingView, inclusionSettings);
         console.log("Default IncludeDiagram setting: " + inclusionSettings["IncludeDiagram"]);
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);

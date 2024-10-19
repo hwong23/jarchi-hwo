@@ -63,7 +63,7 @@ var g_drivingView = null;         // will be set to the selected view that has a
 var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
-var debug = true;
+var debug = false;
 var viewsIdsByConceptId = {};
 
 
@@ -374,6 +374,7 @@ function exportViews (k, viewList, settings)
         (v.labelExpression)? 
             v.labelExpression : 
             v.name;
+    var nombrevista = v.name.replaceAll(" ","");
 
 
     (debug)? console.log (addSpace(1), "exportViews: IncludeViewElements", viewInclusionSettings.IncludeViewElements) : true;
@@ -421,13 +422,11 @@ function exportViews (k, viewList, settings)
 
 
     // Generate report's fragments: título, diagrama, elementos
-    var nombrevista = v.name.replaceAll(" ","");
     viewTitles = tplViewTitle({viewId: v.id, viewName: _.escape(vnombre)});
     viewDiagrams = (viewInclusionSettings.IncludeDiagram) ? 
         tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
         viewNombre: nombrevista+'.png', viewAncho: ''}):
         "";
-    
     viewDocumentations += tplDocumentation (
         {
         viewId: 'id-'+v.id,

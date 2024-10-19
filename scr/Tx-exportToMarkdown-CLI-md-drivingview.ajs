@@ -434,7 +434,7 @@ function exportViews (k, viewList, settings)
         viewTitle: viewTitles,
         viewNota: (viewInclusionSettings.IncludeDocumentation) ? 
             devdoc_obtNota (v).replace(/\n/g, ' '): 
-            ""˝,    //<br>,
+            "",    //<br>,
         viewDiagram: viewDiagrams,
         documentationText: _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),

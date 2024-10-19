@@ -15,6 +15,14 @@ mddoc:
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/docx
   rutaCompleta: no
+mdpdf:
+  rutausr: $HOME/gh
+  rutamodelo: $HOME/gh/model/modelocontenidos
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/pdf
+  rutaCompleta: no
 mdtex:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos

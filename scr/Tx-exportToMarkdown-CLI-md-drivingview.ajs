@@ -25,6 +25,7 @@
     29-Jan-2020 - includes a hardNewpage variable to drop the text NEWPAGE into the output if your target is MS Word. This allows for post processing find-replace to swap it for proper new pages. It does this for all header levels in the listofNewpageheaders variable.
     01-Dic-2023 - Plantillas mustage para escribir archivos md
     11-Oct-2024 - Transformador (Tx) para devdocs 2.0; 1.0 = manubot
+    17-Oct-2024 - Configuraciones de la vista: plantillas, opciones de presentación, nombre
 
  */
 
@@ -62,7 +63,7 @@ var g_drivingView = null;         // will be set to the selected view that has a
 var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
-var debug = false;
+var debug = true;
 var viewsIdsByConceptId = {};
 
 
@@ -367,7 +368,7 @@ function exportViews (k, viewList, settings)
     // 2. opciones de presentación inclusionSettings
     var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
 
-    // 3.
+    // 3. nombre físico y etiqueta
     var vnombre = (v.prop("titulo"))? 
         v.prop("titulo"):
         (v.labelExpression)? 
@@ -375,11 +376,11 @@ function exportViews (k, viewList, settings)
             v.name;
 
 
-    (debug)? console.log ("exportViews: ", v.name, ": ", viewInclusionSettings): true;
+    (debug)? console.log (addSpace(1), "exportViews: IncludeViewElements", viewInclusionSettings.IncludeViewElements) : true;
+    (debug)? console.log (addSpace(1), "exportViews: IncludeDiagram", viewInclusionSettings.IncludeDiagram) : true;
     
 
     // Update lists of elements and relationships
-    (debug)? console.log (addSpace(1), "exportViews: IncludeViewElements", viewInclusionSettings.IncludeViewElements) : true;
     if (viewInclusionSettings.IncludeViewElements === true) {
         $(v).find('element').each(function(e) {
           if(elementsCollection) {
@@ -391,7 +392,6 @@ function exportViews (k, viewList, settings)
         });
 
         // carga de elementos de la vista actual
-        (debug)? console.log (addSpace(1), "carga elementos vista"): true;
         _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
             // plantilla elemento
             elements += tplElementFila({
@@ -423,7 +423,7 @@ function exportViews (k, viewList, settings)
     // Generate report's fragments: título, diagrama, elementos
     var nombrevista = v.name.replaceAll(" ","");
     viewTitles = tplViewTitle({viewId: v.id, viewName: _.escape(vnombre)});
-    viewDiagrams = (viewInclusionSettings.IncludeViewElements) ? 
+    viewDiagrams = (viewInclusionSettings.IncludeDiagram) ? 
         tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
         viewNombre: nombrevista+'.png', viewAncho: ''}):
         "";
@@ -432,7 +432,9 @@ function exportViews (k, viewList, settings)
         {
         viewId: 'id-'+v.id,
         viewTitle: viewTitles,
-        viewNota: devdoc_obtNota (v).replace(/\n/g, ' '),    //<br>,
+        viewNota: (viewInclusionSettings.IncludeDocumentation) ? 
+            devdoc_obtNota (v).replace(/\n/g, ' '): 
+            ""˝,    //<br>,
         viewDiagram: viewDiagrams,
         documentationText: _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),

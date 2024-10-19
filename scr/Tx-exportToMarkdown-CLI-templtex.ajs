@@ -134,17 +134,17 @@ var theView = devdoc_useDrivingView(argVistaDocumental);
 
 if (theView) {
     // Define ruta/nombre del archivo de salida de la documentación de la vista theView
-        // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
-        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-        var r = __DIR__.split("\/");
-        g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-        g_path = argRutaMacMD? 
-            '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
-            '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
-        g_fileName = g_path+g_drivingView_devdoc;
-    
-        (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
-        (debug)?console.log('g_path: '+g_path):true;
+    // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+    // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+    var r = __DIR__.split("\/");
+    g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
+    g_path = argRutaMacMD ? 
+        '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
+    g_fileName = g_path+g_drivingView_devdoc;
+
+    (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
+    (debug)?console.log('g_path: '+g_path):true;
 
 
     // composición de theDocument, contenedor de la documentación de la vista

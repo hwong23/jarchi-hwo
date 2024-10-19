@@ -62,7 +62,7 @@ var g_drivingView = null;         // will be set to the selected view that has a
 var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
-var debug = false;
+var debug = true;
 var viewsIdsByConceptId = {};
 
 
@@ -328,6 +328,7 @@ function exportViews (k, viewList, settings)
     // acumuladores de contenido
     var viewDocumentations = '';
     var elemtPlantilla = "";
+    var viewElements = "";
     var elemtPlantillaActual = '';
     var viewTitles =  '';
     var viewDiagrams = '';
@@ -366,10 +367,19 @@ function exportViews (k, viewList, settings)
     // 2. opciones de presentación inclusionSettings
     var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
 
+    // 3.
+    var vnombre = (v.prop("titulo"))? 
+        v.prop("titulo"):
+        (v.labelExpression)? 
+            v.labelExpression : 
+            v.name;
+
+
     (debug)? console.log ("exportViews: ", v.name, ": ", viewInclusionSettings): true;
     
 
     // Update lists of elements and relationships
+    (debug)? console.log (addSpace(1), "exportViews: IncludeViewElements", viewInclusionSettings.IncludeViewElements) : true;
     if (viewInclusionSettings.IncludeViewElements === true) {
         $(v).find('element').each(function(e) {
           if(elementsCollection) {
@@ -379,6 +389,22 @@ function exportViews (k, viewList, settings)
           }
           viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
         });
+
+        // carga de elementos de la vista actual
+        (debug)? console.log (addSpace(1), "carga elementos vista"): true;
+        _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
+            // plantilla elemento
+            elements += tplElementFila({
+              viewsIds: viewsIdsByConceptId[e.id],
+              elementName: e.name,
+              elementType: devdocs_properCase(e.type),
+              elementDocumentationText: e.documentation.replace(/\n/g, ' '),    //<br>
+              elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
+            });
+        });
+        
+        // extrapola documentación de elementos
+        viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
     }
     if (viewInclusionSettings.IncluyeRelaciones === true) {
         $(v).find('relationship').each(function(r) {
@@ -391,34 +417,17 @@ function exportViews (k, viewList, settings)
     });
     }
 
-    // carga de elementos de la vista actual
-    _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
-        // plantilla elemento
-        elements += tplElementFila({
-          viewsIds: viewsIdsByConceptId[e.id],
-          elementName: e.name,
-          elementType: devdocs_properCase(e.type),
-          elementDocumentationText: e.documentation.replace(/\n/g, ' '),    //<br>
-          elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
-        });
-    });
-  
-    (debug)? console.log (addSpace(1), 'exportviews', elements.length()):true;
+    (debug)? console.log (addSpace(1), 'exportviews: elementos ', elements.length()):true;
+
 
     // Generate report's fragments: título, diagrama, elementos
-    var vnombre = (v.prop("titulo"))? 
-        v.prop("titulo"):
-        (v.labelExpression)? 
-            v.labelExpression : 
-            v.name;
-
     var nombrevista = v.name.replaceAll(" ","");
     viewTitles = tplViewTitle({viewId: v.id, viewName: _.escape(vnombre)});
     viewDiagrams = (viewInclusionSettings.IncludeViewElements)? 
         tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
         viewNombre: nombrevista+'.png', viewAncho: ''}):
         "";
-    viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
+    
     viewDocumentations += tplDocumentation (
         {
         viewId: 'id-'+v.id,

@@ -65,20 +65,6 @@ var DefaultInclusionSettings = {
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
 
-// Shallow clones attributes of a basic object
-function shallowClone(obj) {
-    // If the object provided is not actually an object, return null so we don't accidentally clobber some other reference
-    if (null === obj || "object" !== typeof obj) {
-        return null;
-    }
-
-    // Create a new, blank, object, then copy over the attributes
-    var copy = {};
-    for (var attr in obj) {
-        copy[attr] = obj[attr];
-    }
-    return copy;
-}
 
 function generateLink(theString) {
     // this function thanks to Steven Mileham
@@ -435,7 +421,7 @@ function getGroupInclusionSettings(settingsElement, defaultSettings) {
         window.alert("Default settings were not correctly passed to a child node");
         return (null);
     }
-    var settings = shallowClone(defaultSettings);
+    var settings = devdoc_shallowClone(defaultSettings);
 
     // Check for overrides
     var checkIncludeDiagram = settingsElement.prop("IncludeDiagram");

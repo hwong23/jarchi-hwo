@@ -112,7 +112,7 @@ function salidaEncbzdo(Level, Name, AddLink, Doc) {
 }
 
 // Shallow clones attributes of a basic object
-function shallowClone(obj) {
+function devdoc_shallowClone(obj) {
     // If the object provided is not actually an object, return null so we don't accidentally clobber some other reference
     if (null === obj || "object" !== typeof obj) {
         return null;
@@ -144,7 +144,7 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
         return (null);
     }
 
-    var settings = shallowClone(parentSettings);
+    var settings = devdoc_shallowClone(parentSettings);
 
     // Check for overrides
     var checkIncludeDiagram = settingsElement.prop("IncludeDiagram");
@@ -197,6 +197,7 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncludeViewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
         console.log("Default IncludeRutaCompleta setting: " + inclusionSettings["IncludeRutaCompleta"]);
+        console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
     }
 
     return drivingView;

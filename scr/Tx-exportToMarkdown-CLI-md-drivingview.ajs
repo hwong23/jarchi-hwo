@@ -157,22 +157,6 @@ if (useDrivingView( argVistaDocumental ))
 console.log("Done");
 
 
-
-// Shallow clones attributes of a basic object
-function shallowClone(obj) {
-    // If the object provided is not actually an object, return null so we don't accidentally clobber some other reference
-    if (null === obj || "object" !== typeof obj) {
-        return null;
-    }
-
-    // Create a new, blank, object, then copy over the attributes
-    var copy = {};
-    for (var attr in obj) {
-        copy[attr] = obj[attr];
-    }
-    return copy;
-}
-
 function generateLink(theString) {
     // this function thanks to Steven Mileham
 
@@ -199,82 +183,6 @@ function exportaImagen (vv, pth) {
     return vv.name;
 }
   
-// Prints (documents) the elements and maybe properties (not relations) on the view
-function printViewElements(view, level, settings) 
-{
-    var objList = [];
-    $(view).find("element").each(function (viewObj) {
-        objList.push(viewObj);
-    });
-
-    (debug)? console.log ('printViewElements ', objList.length, " elementos en vista"):true;
-    objList.sort(); // ensures the output groups by object type
-
-    // Print heading
-    outputHdr(level + 1, "Catálogo de Elementos", false);
-    g_outInfo += "\n";
-
-    // Define which columns should be included in the catalogue
-    var columns = [];
-    columns.push({
-        "name": "Nombre",
-        "field": "name"
-    });
-    columns.push({
-        "name": "Tipo",
-        "field": "type"
-    });
-    columns.push({
-        "name": "Descripción",
-        "field": "documentation"
-    });
-    if (settings.IncludeProperties === true) {
-        columns.push({
-            "name": "Prop.",
-            "special": "properties"
-        });
-    }
-
-    // Print column headers
-    var columnString = "";
-    var columnBorder = "";
-    for (var c = 0; c < columns.length; c++) {
-        columnString += "| " + columns[c].name;
-        columnBorder += "|:--------";
-    }
-    g_outInfo += columnString += "\n";
-    g_outInfo += columnBorder += "|\n";
-
-    // For each row (element)
-    var i;
-    for (i in objList) {
-        // Print each desired field under the table column for the row
-        for (var j = 0; j < columns.length; j++) {
-            // Start the cell
-            g_outInfo += "|";
-
-            // Check columns for special cases
-            if (columns[j].special != null) {
-                // If the special case is element properties, and we want to print properties...
-                if (columns[j].special === "properties" && settings.IncludeProperties === true) {
-                    g_outInfo += addPropsAsItalic(objList[i], g_outInfo);
-                    
-                }
-            } else {
-                // Default printing of a cell's data. If it's the first column though, bold it.
-                g_outInfo += (j === 0) ? "**" : "";
-                g_outInfo += replaceNL(objList[i][columns[j].field]);
-                g_outInfo += (j === 0) ? "**" : "";
-            }
-        }
-
-        // Complete the last cell of the row
-        g_outInfo += "|\n";
-    }
-
-    // Complete the last cell of the row
-    g_outInfo += "\n<br>\n";
-}
 
 function getViews(Level, Levelobj, settings) {
     var thisPath = "";
@@ -502,7 +410,6 @@ function outputHdr(Level, Name, AddLink, Doc) {
     if (Doc) {
         g_outInfo += "\n\n" + Doc;
     }
-
 }
 
 // Finds the group's sub-group, if any
@@ -579,8 +486,9 @@ function addGroup(group, level, parentInclusionSettings) {
     return true;
 }
 
+// selección de la vista documental: g_drivingView
 function useDrivingView(alias) {
-    // drivingView = selection.filter("archimate-diagram-model").first();
+    drivingView = selection.filter("archimate-diagram-model").first();
     
     g_drivingView = $("view").filter(function(o) { 
         // console.log (o.name + ': ' + o.prop(alias));

@@ -67,7 +67,6 @@ var debug = false;
 var viewsIdsByConceptId = {};
 
 
-
 // funciones con argumento plantillas base
 var tplDocumentation;   // definido por propiedad 'plantilla' de la vista
 // var tplMainReport = _.template(readFully(__DIR__ + 'templates/md-doctec/newmain-report-md.tpl', 'UTF-8'));
@@ -157,32 +156,61 @@ if (useDrivingView( argVistaDocumental ))
 console.log("Done");
 
 
-function generateLink(theString) {
-    // this function thanks to Steven Mileham
+// selección de la vista documental: g_drivingView
+function useDrivingView(alias) {
+    drivingView = selection.filter("archimate-diagram-model").first();
+    
+    g_drivingView = $("view").filter(function(o) { 
+        // console.log (o.name + ': ' + o.prop(alias));
+        var dd_alias = o.prop("alias") ? o.prop("alias"):"";
+        return (dd_alias === alias);
+    }).first();
+    
+    if (!g_drivingView) {
+        console.log("Please open and select a Driving View for the documentation");
+        return (false);
+    } else {       
+        console.log("Driving view is: " + g_drivingView.name);
+        var drivingViewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
+        console.log("Default IncludeDiagram setting: " + drivingViewInclusionSettings["IncludeDiagram"]);
+        console.log("Default IncludeDocumentation setting: " + drivingViewInclusionSettings["IncludeDocumentation"]);
+        console.log("Default IncludeVIewElements setting: " + drivingViewInclusionSettings["IncludeViewElements"]);
+        console.log("Default IncludeProperties setting: " + drivingViewInclusionSettings["IncludeProperties"]);
+        console.log("Default IncludeRutaCompleta setting: " + drivingViewInclusionSettings["IncludeRutaCompleta"]);
+        console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
+        console.log("DevDoc asociado: " + g_drivingView_devdoc);
 
-    var regex = /[\[\]\(\)\#\\\/\"]/gi;
-    var theString2 = "#" + theString.toLowerCase().replace(regex, "")
-    // .replaceAll(" [ - ]*", "-") 
-    // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
-    .replaceAll(" ","-")
-    .replaceAll("\<", "lt")
-    .replaceAll("\>", "gt");
+        // Go through each immediate child group in the view, find the first group(s) in a series
+        var outcome = true;
+        $(g_drivingView).children("grouping").each(function (thisGroup) {
+            if (thisGroup) {
+                var incomingRels = $(thisGroup).inRels("triggering-relationship").size();
 
-    return theString2;
-}
+                if (incomingRels == 0) {
+                    // It's a top-level section, put it in the array.
+                    outcome = outcome && addGroup(thisGroup, 1, drivingViewInclusionSettings);
+                } else {
+                    // Ignore if if there's an incoming triggering relationship ... our recursive getNextGroup function will find it.
+                }
+            }
+        });
 
-function exportaImagen (vv, pth) {
-    var bytes = $.model.renderViewAsBase64(vv, "PNG", {
-      scale: 1,
-      margin: 10
-    });
-  
-    $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
-  
-    // return _.escape(vv.name);
-    return vv.name;
-}
-  
+        if (!outcome) {
+            console.log("Error when extracting a group");
+            console.log("Error stack:");
+            for (var i = 0; i < Errors.length; i++) {
+                console.log("- " + Errors[i].message);
+                if (Verbose) {
+                    console.log(" " + Errors[i].object);
+                }
+            }
+        }
+
+    }
+
+    return (true);
+
+} // end of useDrivingView
 
 function getViews(Level, Levelobj, settings) {
     var thisPath = "";
@@ -486,59 +514,29 @@ function addGroup(group, level, parentInclusionSettings) {
     return true;
 }
 
-// selección de la vista documental: g_drivingView
-function useDrivingView(alias) {
-    drivingView = selection.filter("archimate-diagram-model").first();
-    
-    g_drivingView = $("view").filter(function(o) { 
-        // console.log (o.name + ': ' + o.prop(alias));
-        var dd_alias = o.prop("alias") ? o.prop("alias"):"";
-        return (dd_alias === alias);
-    }).first();
-    
-    if (!g_drivingView) {
-        console.log("Please open and select a Driving View for the documentation");
-        return (false);
-    } else {       
-        console.log("Driving view is: " + g_drivingView.name);
-        var drivingViewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
-        console.log("Default IncludeDiagram setting: " + drivingViewInclusionSettings["IncludeDiagram"]);
-        console.log("Default IncludeDocumentation setting: " + drivingViewInclusionSettings["IncludeDocumentation"]);
-        console.log("Default IncludeVIewElements setting: " + drivingViewInclusionSettings["IncludeViewElements"]);
-        console.log("Default IncludeProperties setting: " + drivingViewInclusionSettings["IncludeProperties"]);
-        console.log("Default IncludeRutaCompleta setting: " + drivingViewInclusionSettings["IncludeRutaCompleta"]);
-        console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
-        console.log("DevDoc asociado: " + g_drivingView_devdoc);
+function generateLink(theString) {
+    // this function thanks to Steven Mileham
 
-        // Go through each immediate child group in the view, find the first group(s) in a series
-        var outcome = true;
-        $(g_drivingView).children("grouping").each(function (thisGroup) {
-            if (thisGroup) {
-                var incomingRels = $(thisGroup).inRels("triggering-relationship").size();
+    var regex = /[\[\]\(\)\#\\\/\"]/gi;
+    var theString2 = "#" + theString.toLowerCase().replace(regex, "")
+    // .replaceAll(" [ - ]*", "-") 
+    // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
+    .replaceAll(" ","-")
+    .replaceAll("\<", "lt")
+    .replaceAll("\>", "gt");
 
-                if (incomingRels == 0) {
-                    // It's a top-level section, put it in the array.
-                    outcome = outcome && addGroup(thisGroup, 1, drivingViewInclusionSettings);
-                } else {
-                    // Ignore if if there's an incoming triggering relationship ... our recursive getNextGroup function will find it.
-                }
-            }
-        });
+    return theString2;
+}
 
-        if (!outcome) {
-            console.log("Error when extracting a group");
-            console.log("Error stack:");
-            for (var i = 0; i < Errors.length; i++) {
-                console.log("- " + Errors[i].message);
-                if (Verbose) {
-                    console.log(" " + Errors[i].object);
-                }
-            }
-        }
-
-    }
-
-    return (true);
-
-} // end of useDrivingView
-
+function exportaImagen (vv, pth) {
+    var bytes = $.model.renderViewAsBase64(vv, "PNG", {
+      scale: 1,
+      margin: 10
+    });
+  
+    $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
+  
+    // return _.escape(vv.name);
+    return vv.name;
+}
+  

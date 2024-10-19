@@ -347,24 +347,28 @@ function exportViews (k, viewList, settings)
     console.log(addSpace(1), 'exportViews', viewItem.name);
     
 
-    // configuraciones de la vista: plantillas, opciones de presentación inclusionSettings
+    // configuraciones de la vista:
+    // 1. plantillas
     tplDocumentation = _.template( readFully(__DIR__ + 'templates/md-doctec/' + 
         (v.prop('plantilla')? 
             v.prop('plantilla'):
             'documentation-md') + '.tpl', 'UTF-8') );
-    elemtPlantillaActual = v.prop('plantillaElm')? 
-        v.prop('plantillaElm'):
-        'elementtabla-md,elementtabla-fila-md';
-    cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
-    var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
-
-    (debug)? console.log ("exportViews: ", v.name, ": ", viewInclusionSettings): true;
+        elemtPlantillaActual = v.prop('plantillaElm')? 
+            v.prop('plantillaElm'):
+            'elementtabla-md,elementtabla-fila-md';
+            cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
     
     if (cambioPlnt) {
         elemtPlantilla = elemtPlantillaActual;
         tplElement = _.template(readFully(__DIR__ + 'templates/md-doctec/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
         tplElementFila = _.template(readFully(__DIR__ + 'templates/md-doctec/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
     }
+
+    // 2. opciones de presentación inclusionSettings
+    var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
+
+    (debug)? console.log ("exportViews: ", v.name, ": ", viewInclusionSettings): true;
+    
 
     // Update lists of elements and relationships
     if (viewInclusionSettings.IncludeViewElements === true) {

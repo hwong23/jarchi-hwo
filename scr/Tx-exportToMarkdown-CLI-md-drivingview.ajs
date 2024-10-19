@@ -102,8 +102,8 @@ if (useDrivingView( argVistaDocumental ))
     g_drivingView_devdoc = g_drivingView.prop("devdoc")? 
     g_drivingView.prop("devdoc"):
         "02n.a1.contenido.md";
-    // nombre de archivo dado por argumento CLI
-        g_path = argRutaMacMD? 
+    // (sobrescribe) nombre de archivo dado por argumento CLI
+    g_path = argRutaMacMD? 
         '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
         '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
     g_fileName = g_path+g_drivingView_devdoc;
@@ -140,9 +140,9 @@ if (useDrivingView( argVistaDocumental ))
             getViews(g_Sections[i].level, g_Sections[i].group, g_Sections[i].settings);
         }
 
-        docGen = "# " + (
-            (g_drivingView.prop("titulo")) ? g_drivingView.prop("titulo"): g_drivingView.name
-            ) + "\n";
+        docGen = "# " + ( (g_drivingView.prop("titulo")) ? 
+            g_drivingView.prop("titulo"): 
+            g_drivingView.name ) + "\n";
         // docGen += "\n ___ \n";
         docGen += theToc + "\n";
         docGen += g_outInfo;
@@ -278,7 +278,6 @@ function printViewElements(view, level, settings)
 function getViews(Level, Levelobj, settings) {
     var thisPath = "";
     var imageURL = "";
-    
     var viewList = [];
 
     if (!Levelobj) {
@@ -298,7 +297,6 @@ function getViews(Level, Levelobj, settings) {
                 viewsCollection.add($('sketch-model'));
                 viewsCollection.add($('canvas-model'));
                 viewsCollection.each(function (linkedView) {
-
                     // this doesn't cater for duplicate view names, sorry
                     if (linkedView.name === viewRefs.name) {
                         viewList.push([viewRefs, linkedView]);

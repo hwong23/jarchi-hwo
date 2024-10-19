@@ -148,7 +148,7 @@ if (theView) {
 
     // composición de theDocument, contenedor de la documentación de la vista
     theDocument+="# "+theView.name+"\n";
-    theTOC=devdocs_toc(0,theView, 'ppt', theTOC);
+    theTOC=devdoc_toc(0,theView, 'ppt', theTOC);
     theDocument+="\n"+theTOC+"\n";
     theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);

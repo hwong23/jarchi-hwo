@@ -27,7 +27,7 @@ mdtex:
   rutamodelo: $HOME/git/archigit/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
-  expportprg: exportSingle-htmlCLI.ajs
+  expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   rutaMacMD: /git/devdocs/devocs-contd/contd/tex
   rutaCompleta: no
 mdppt:

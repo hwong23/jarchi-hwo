@@ -413,7 +413,8 @@ function exportViews (k, viewList, settings)
 
     var nombrevista = v.name.replaceAll(" ","");
     viewTitles = tplViewTitle({viewId: v.id, viewName: _.escape(vnombre)});
-    viewDiagrams = tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
+    viewDiagrams = (inclusionSettings.IncludeViewElements)? 
+    tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
         viewNombre: nombrevista+'.png', viewAncho: ''});
     viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
     viewDocumentations += tplDocumentation (

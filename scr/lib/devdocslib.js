@@ -328,7 +328,7 @@ function devdoc_toc(nivel, element, include, o_toc){
 }
 
 // Notes with no relationships
-function devdocs_obtNota (theView) {
+function devdoc_obtNota (theView) {
     var notatexto = '';
     var c = $(theView).find().not("element").not("relationship").first();
 

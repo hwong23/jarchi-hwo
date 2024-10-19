@@ -357,7 +357,6 @@ function exportViews (k, viewList, settings)
             v.prop('plantillaElm'):
             'elementtabla-md,elementtabla-fila-md';
             cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
-    
     if (cambioPlnt) {
         elemtPlantilla = elemtPlantillaActual;
         tplElement = _.template(readFully(__DIR__ + 'templates/md-doctec/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
@@ -424,7 +423,7 @@ function exportViews (k, viewList, settings)
         {
         viewId: 'id-'+v.id,
         viewTitle: viewTitles,
-        viewNota: devdocs_obtNota (v).replace(/\n/g, ' '),    //<br>,
+        viewNota: devdoc_obtNota (v).replace(/\n/g, ' '),    //<br>,
         viewDiagram: viewDiagrams,
         documentationText: _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),

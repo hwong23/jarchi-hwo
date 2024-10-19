@@ -234,7 +234,7 @@ function exportViews(folder) {
     viewDocumentations += tplDocumentation({
       viewId: 'id-'+v.id,
       viewTitle: viewTitles,
-      viewNota: devdocs_obtNota (v),
+      viewNota: devdoc_obtNota (v),
       viewDiagram: viewDiagrams,
       documentationText: _.escape(v.documentation),  //.replace(/\n/g, '<br>'),
       documentationMarkdown: marked(_.escape(v.documentation), mdOptions),

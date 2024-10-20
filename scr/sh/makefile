@@ -15,7 +15,7 @@ mddoc2:
 	$(devdoc) mddoc)
 
 mdtex:
-	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templtex.ajs \
+	(sh archiCli-md.sh . "" \
 	$(devdoc) mdtex)
 
 mdppt:

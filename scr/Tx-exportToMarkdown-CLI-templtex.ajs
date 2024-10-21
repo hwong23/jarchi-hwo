@@ -54,8 +54,8 @@ var viewDocumentations = '';
 // funciones con argumento plantillas
 var tplDocumentation;   // definido por propiedad 'plantilla' de la vista
 var tplMainReport = _.template(readFully(__DIR__ + 'templates/tex/main-md-tex.tpl', 'UTF-8'));
-var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
-var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
+var tplViewTitle = _.template(readFully(__DIR__ + 'templates/tex/view-title-md.tpl', 'UTF-8'));
+var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/tex/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/tex/element-md-tex.tpl', 'UTF-8'));
 
 
@@ -172,6 +172,7 @@ if (theView) {
     })
 
     
+    // llena la colección de elemntos elements
     nestedDocumentation(0, theView);
     
     // interpolación de texto mediante plantilla

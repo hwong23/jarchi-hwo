@@ -197,7 +197,7 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncludeViewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
         console.log("Default IncludeRutaCompleta setting: " + inclusionSettings["IncludeRutaCompleta"]);
-        console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
+        console.log("Default IncluyeRelaciones setting: " + inclusionSettings["IncluyeRelaciones"]);
     }
 
     return drivingView;

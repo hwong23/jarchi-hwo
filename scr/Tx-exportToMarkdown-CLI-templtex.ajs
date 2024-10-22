@@ -53,7 +53,6 @@ var viewDocumentations = '';
 
 // funciones con argumento plantillas
 var tplDocumentation;   // definido por propiedad 'plantilla' de la vista
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/tex/main-md-tex.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/tex/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/tex/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/tex/element-md-tex.tpl', 'UTF-8'));
@@ -62,60 +61,6 @@ var tplElement = _.template(readFully(__DIR__ + 'templates/tex/element-md-tex.tp
 console.show();
 console.clear();
 console.log("Export to Markdown");
-
-
-/*
- nestedDocumentation. Exporta documentación de los elementos de una vista
-    d: nivel de identación títulos
-    element: argumento vista
- Requiere: 
- */
-function nestedDocumentation(d, element) {
-    debug? console.log('Elementos: '):true;
-
-    $(element).children().not("relationship").filter(function(child) {
-        var prop_destino = child.prop("destino");
-        return (prop_destino? (prop_destino.includes("tex")? true:false): false)
-    }).each(function(e) {
-
-        if (e.name) {
-            var headerDepth ="##";      // nivel inicial jerarquía del título
-            for (var i=0; i<d; i++) {
-                headerDepth+="#";
-            }
-
-            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
-            if (bodyMap[theHash]==null) {
-                bodyMap[theHash]=1;
-            }
-            else {
-                bodyMap[theHash]+=1;
-            }
-
-            var linkNum="";
-
-            if (bodyMap[theHash]>1) {
-                linkNum = " "+bodyMap[theHash];
-            }
-
-            elements += tplElement({
-                viewsIds: '',
-                elementName: _.escape( e.prop('ide')? e.prop('ide'):e.name.replaceAll(' ','-') ),
-                elementType: devdocs_properCase(e.type),
-                elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
-                elementDocumentationMarkdown: ''
-            });
-
-                debug? console.log('   '+e.name+":"+e):true;
-
-            if ($(e).children().length>0) {
-                d++;
-                nestedDocumentation(d, e);
-                d--;
-            }
-        }
-    });
-}
 
 
 // Argumentos de entrada por CLI
@@ -173,7 +118,7 @@ if (theView) {
 
     
     // llena la colección de elemntos elements
-    nestedDocumentation(0, theView);
+    nestedDocumentation_elements(0, theView);
     
     // interpolación de texto mediante plantilla
     tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
@@ -187,11 +132,10 @@ if (theView) {
         viewTitle: "",      // viewTitles,
         viewNota: devdoc_obtNota (theView),
         viewDiagram: "",    // viewDiagrams,
-        documentationText: _.escape(theDocument)
-        ,
+        documentationText: _.escape(theDocument),
         // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
-        elements: elements,
-        relaciones: ""      // relaciones
+        elements: elements,     // colección elements es alimentada por nestedDocumentation
+        relaciones: ""          // relaciones
         }
     );
 
@@ -222,3 +166,57 @@ else {
     console.log("> Please Select a View");
 }
 
+/*
+ nestedDocumentation. Exporta documentación de los elementos de una vista
+    d: nivel de identación títulos
+    element: argumento vista
+ Requiere: 
+ */
+ function nestedDocumentation_elements(d, element) {
+    debug? console.log('Elementos: '):true;
+
+    $(element).children().not("relationship").filter(function(child) {
+        var prop_destino = child.prop("destino");
+        return (prop_destino? (prop_destino.includes("tex")? true:false): false)
+    }).each(function(e) {
+
+        if (e.name) {
+            var headerDepth ="##";      // nivel inicial jerarquía del título
+            for (var i=0; i<d; i++) {
+                headerDepth+="#";
+            }
+
+            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
+            if (bodyMap[theHash]==null) {
+                bodyMap[theHash]=1;
+            }
+            else {
+                bodyMap[theHash]+=1;
+            }
+
+            var linkNum="";
+
+            if (bodyMap[theHash]>1) {
+                linkNum = " "+bodyMap[theHash];
+            }
+
+            elements += tplElement({
+                viewsIds: '',
+                elementName: _.escape( e.prop('ide')? 
+                    e.prop('ide'):
+                    e.name.replaceAll(' ','-') ),
+                elementType: devdocs_properCase(e.type),
+                elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
+                elementDocumentationMarkdown: ''
+            });
+
+                debug? console.log('   '+e.name+":"+e):true;
+
+            if ($(e).children().length>0) {
+                d++;
+                nestedDocumentation_elements(d, e);
+                d--;
+            }
+        }
+    });
+}

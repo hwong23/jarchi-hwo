@@ -21,7 +21,7 @@
  
 */
 
-var devdocs_debug = false;
+var devdoc_debug = false;
 
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
@@ -196,8 +196,8 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeViewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
-        console.log("Default IncludeRutaCompleta setting: " + devdoc_useDrivingView["IncludeRutaCompleta"]);
-        console.log("Default IncluyeRelaciones setting: " + devdoc_useDrivingView["IncluyeRelaciones"]);
+        console.log("Default IncludeRutaCompleta setting: " + inclusionSettings["IncludeRutaCompleta"]);
+        console.log("Default IncluyeRelaciones setting: " + inclusionSettings["IncluyeRelaciones"]);
     }
 
     return drivingView;

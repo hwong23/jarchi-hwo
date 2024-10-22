@@ -69,12 +69,12 @@ var viewsIdsByConceptId = {};
 
 // funciones con argumento plantillas base
 var tplDocumentation;   // definido por propiedad 'plantilla' de la vista
-// var tplMainReport = _.template(readFully(__DIR__ + 'templates/md-doctec/newmain-report-md.tpl', 'UTF-8'));
 var tplViewTitle = _.template(readFully(__DIR__ + 'templates/md-doctec/view-title-md.tpl', 'UTF-8'));
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/md-doctec/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = function() {};
 var tplElementFila = function() {};
 var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));
+
 
 // Argumentos de entrada por CLI
 var argRutaMacMD = getArgumento("rutaMacMD");
@@ -340,7 +340,7 @@ function exportViews (k, viewList, settings)
             });
         });
         
-        // extrapola documentación de elementos
+        // interpolación de texto meidante plantilla de elementos
         viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
     }
     if (viewInclusionSettings.IncluyeRelaciones === true) {

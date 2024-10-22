@@ -196,8 +196,8 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncludeDocumentation setting: " + inclusionSettings["IncludeDocumentation"]);
         console.log("Default IncludeViewElements setting: " + inclusionSettings["IncludeViewElements"]);
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
-        console.log("Default IncludeRutaCompleta setting: " + inclusionSettings["IncludeRutaCompleta"]);
-        console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
+        console.log("Default IncludeRutaCompleta setting: " + devdoc_useDrivingView["IncludeRutaCompleta"]);
+        console.log("Default IncluyeRelaciones setting: " + devdoc_useDrivingView["IncluyeRelaciones"]);
     }
 
     return drivingView;

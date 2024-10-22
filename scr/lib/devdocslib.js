@@ -21,7 +21,7 @@
  
 */
 
-var devdoc_debug = false;
+var devdoc_debug = true;
 
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
@@ -200,6 +200,7 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncluyeRelaciones setting: " + inclusionSettings["IncluyeRelaciones"]);
     }
 
+    (debug)? console.log ('devdoc_useDrivingView: ', drivingView.name): true;
     return drivingView;
 
 } // end of useDrivingView

@@ -44,7 +44,7 @@ var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
-var theDocument = "";
+var g_theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 var elements = '';
 var elementsCollection;
@@ -93,17 +93,17 @@ if (theView) {
 
 
     // composición de theDocument, contenedor de la documentación de la vista
-    theDocument+="# "+theView.name+"\n";
+    g_theDocument+="# "+theView.name+"\n";
     theTOC=devdoc_toc(0,theView, 'tex', theTOC);
-    theDocument+="\n"+theTOC+"\n";
-    theDocument+="\n## Introducción\n";
+    g_theDocument+="\n"+theTOC+"\n";
+    g_theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
     if (embed==true){
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-        theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
+        g_theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
     }
-    else {theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";}
-    theView.documentation!=""? theDocument+="\n"+theView.documentation+"\n":true;
+    else {g_theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";}
+    theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
 
     
     // Notes with no relationships
@@ -111,7 +111,7 @@ if (theView) {
     .not("relationship").each(function(c){
         if (c.text) {
             if ($(c).rels().length==0) {
-                theDocument+="\n"+devdoc_escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
+                g_theDocument+="\n"+devdoc_escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
             }
         };
     })
@@ -132,7 +132,7 @@ if (theView) {
         viewTitle: "",      // viewTitles,
         viewNota: devdoc_obtNota (theView),
         viewDiagram: "",    // viewDiagrams,
-        documentationText: _.escape(theDocument),
+        documentationText: _.escape(g_theDocument),
         // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
         elements: elements,     // colección elements es alimentada por nestedDocumentation
         relaciones: ""          // relaciones

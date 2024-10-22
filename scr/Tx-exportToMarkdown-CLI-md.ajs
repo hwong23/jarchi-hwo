@@ -32,7 +32,7 @@ load(__DIR__ + "lib/myargs.js");
 load(__DIR__ + "lib/devdocslib.js");
 
 
-var debug = false;
+var debug = true;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
@@ -41,7 +41,7 @@ var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
-var theDocument = "";
+var g_theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 
 
@@ -84,13 +84,13 @@ function nestedDocumentation(d, element) {
                 linkNum = " "+bodyMap[theHash];
             }
 
-            theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
-            (e.prop().length > 0 && proptable) ? theDocument+="\n"+devdoc_escapeMD(devdoc_propertiesTable(e)):true;
-            ($(e).outRels().length>0 && reltable) ? theDocument+="\n"+devdoc_escapeMD(devdoc_documentRelationships(e)):true;
-            e.documentation ? theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
+            g_theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
+            (e.prop().length > 0 && proptable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_propertiesTable(e)):true;
+            ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_documentRelationships(e)):true;
+            e.documentation ? g_theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
-                    theDocument+="\n> "+devdoc_escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
+                    g_theDocument+="\n> "+devdoc_escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
                 }
             });
         
@@ -136,17 +136,17 @@ if (theView) {
 
     
     // composición de theDocument, contenedor de la documentación de la vista
-    theDocument+="# "+theView.name+"\n";
+    g_theDocument+="# "+theView.name+"\n";
     theTOC=devdoc_toc(0,theView, 'doc', theTOC);
-    theDocument+="\n"+theTOC+"\n";
-    theDocument+="\n## Introducción\n";
+    g_theDocument+="\n"+theTOC+"\n";
+    g_theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
     if (embed==true){
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-        theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
+        g_theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
     }
-    else {theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";}
-    theView.documentation!=""? theDocument+="\n"+theView.documentation+"\n":true;
+    else {g_theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";}
+    theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
 
 
     // Notes with no relationships
@@ -154,12 +154,13 @@ if (theView) {
     .not("relationship").each(function(c){
         if (c.text) {
             if ($(c).rels().length==0) {
-                theDocument+="\n"+devdoc_escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
+                g_theDocument+="\n"+devdoc_escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
             }
         };
     })
     
 
+    // llena la colección de elemntos elements[]
     nestedDocumentation(0, theView);
 
     
@@ -172,11 +173,11 @@ if (theView) {
              relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             theDocument+= argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
+             g_theDocument+= argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
                 '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
-         theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-         $.fs.writeFile(exportFile, theDocument);
+         g_theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
+         $.fs.writeFile(exportFile, g_theDocument);
          
          console.log("> Export done");
      }

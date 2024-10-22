@@ -32,7 +32,7 @@ load(__DIR__ + "lib/myargs.js");
 load(__DIR__ + "lib/devdocslib.js");
 
 
-var debug = true;
+var debug = false;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];

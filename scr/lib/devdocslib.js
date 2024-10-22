@@ -21,7 +21,7 @@
  
 */
 
-var devdoc_debug = true;
+var devdoc_debug = false;
 
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.

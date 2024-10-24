@@ -24,7 +24,7 @@ mddoc:
   rutaCompleta: no
 mdpdf:
   rutausr: $HOME/git
-  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutamodelo: $HOME/git/models/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
@@ -32,7 +32,7 @@ mdpdf:
   rutaCompleta: no
 mdtex:
   rutausr: $HOME/git
-  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutamodelo: $HOME/git/models/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-templtex.ajs
@@ -40,7 +40,7 @@ mdtex:
   rutaCompleta: no
 mdppt:
   rutausr: $HOME/git
-  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutamodelo: $HOME/git/models/modelocontenidos
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs

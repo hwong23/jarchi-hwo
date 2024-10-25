@@ -2,6 +2,8 @@ deploy:
   origenmd: /Users/hwo/Downloads/tmpr/pgnmd
   destinomd: /Users/hwo/gh/pgn/pgn-078
   origenhtml: /Users/hwo/Downloads/tmpr/pgnarchidoc
+  prgexporthtml: exportSingle-htmlCLI.ajs
+  rutaprgexporthtml: /gh/devdocs/devocs-contd/contd/docx
 ccambio:
   gitorigen: /Users/hwo/gh/pgn/pgn-078
 publish:

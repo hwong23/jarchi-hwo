@@ -22,6 +22,10 @@ mdhtml:
 	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs \
 	$(devdoc) mdhtml)
 
+exporta:
+	(sh archiCli-html.sh . "" \
+	$(devdoc) mddoc)
+
 entrega: 
 	
 

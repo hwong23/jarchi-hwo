@@ -36,6 +36,7 @@
 load(__DIR__ + 'libs/nashorn-polyfills.js');
 load(__DIR__ + 'libs/underscore-min.js');
 load(__DIR__ + 'libs/marked.min.js');
+load(__DIR__ + "lib/myargs.js");
 
 console.show();
 console.clear();
@@ -91,6 +92,18 @@ var nonViewFolders = allFolders.not(viewsFolder).not(viewFolders);
 
 var folders = selection.filter("folder").not(nonViewFolders);
 
+
+// Argumentos de entrada por CLI
+var argRutaMacMD = getArgumento("rutaMacMD");
+var argVistaDocumental = getArgumento("vistaDocumental");
+var argRutaCompleta = getArgumento("rutaCompleta");
+console.log("Entradas: ")
+debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
+debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
+debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
+
+
+
 if(! folders.size()) {
   folders = viewsFolder;
   console.log("All views have been selected.");
@@ -99,9 +112,11 @@ if(! folders.size()) {
 // var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
 // Nombre de archivo por propiedad del modelo
 let r = __DIR__.split("\/");
-var filePath = "/"+r[1]+"/"+r[2] + 
-  (model.prop("rutaMacHTML")? model.prop("rutaMacHTML"):'/Downloads/tmpr/prymd/') + 
-  (model.prop("reporte")? model.prop("reporte"):model.name + ".html");
+var filePath = argRutaMacMD ? '/'+r[1]+'/'+r[2]+argRutaMacMD+'/': 
+   model.prop("rutaMacHTML") ? model.prop("rutaMacHTML"): 
+   '/Downloads/tmpr/prymd/';
+filePath += filePath? model.prop("reporte")? model.prop("reporte"): model.name + ".html":null;
+
 (debug)?console.log('exporFile: '+filePath):true;
 
 

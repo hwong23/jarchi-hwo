@@ -79,9 +79,9 @@ var icon = readFully(__DIR__ + 'resources/icon.css', 'UTF-8');
 var picnic = readFully(__DIR__ + 'resources/picnic-custom.css', 'UTF-8');
 
 var tplDocumentation;
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/newmain-report-md.tpl', 'UTF-8'));
-var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
-var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
+var tplMainReport = _.template(readFully(__DIR__ + 'templates/singled/newmain-report-md.tpl', 'UTF-8'));
+var tplViewTitle = _.template(readFully(__DIR__ + 'templates/singled/view-title-md.tpl', 'UTF-8'));
+var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/singled/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = function() {};
 var tplElementFila = function() {};
 var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));

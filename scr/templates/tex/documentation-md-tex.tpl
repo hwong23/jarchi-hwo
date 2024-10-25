@@ -17,3 +17,5 @@ titlepage-background: "background1.pdf"
 {{viewDiagram}}
 
 {{relaciones}}
+
+Versión $COMMIT

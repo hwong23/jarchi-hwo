@@ -12,7 +12,6 @@ titlepage-background: "background1.pdf"
 {{elements}}
 ...
 {{viewTitle}}
-{{viewNota}}
 {{documentationText}}
 {{viewDiagram}}
 

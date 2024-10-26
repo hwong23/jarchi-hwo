@@ -277,9 +277,9 @@ function devdoc_escapeMD(theString){
 function devdoc_generateLink(theString) {
     var regex = /[\[\]\(\)\#\\\/\"]/gi;
     return "#"+theString.toLowerCase().replace(regex,"")
-                                      .replaceAll(" ","-")
-                                      .replaceAll("\<","lt")
-                                      .replaceAll("\>","gt");
+                                      .replaceAll(" ","-");
+                                    //   .replaceAll("\<","lt")
+                                    //   .replaceAll("\>","gt");
 }
 
 

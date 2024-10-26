@@ -116,37 +116,49 @@ debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
 debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
 
 // Selección de la vista indicada por el argumento entrada CLI
-var theView = devdoc_useDrivingView(argVistaDocumental);
+var g_drivingView = devdoc_useDrivingView(argVistaDocumental);
     // $(selection).filter("archimate-diagram-model").first();
 
 
-if (theView) {
+if (g_drivingView) {
     // Define ruta/nombre del archivo de salida de la documentación de la vista theView
         // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
         // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
     var r = __DIR__.split("\/");
-    g_drivingView_devdoc = theView.prop("devdoc")? theView.prop("devdoc"):"02n.a1.contenido.md";
+    g_drivingView_devdoc = g_drivingView.prop("devdoc")? g_drivingView.prop("devdoc"):"02n.a1.contenido.md";
     g_path = argRutaMacMD? 
         '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
-        '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
+        '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
     g_fileName = g_path+g_drivingView_devdoc;
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
     (debug)?console.log('g_path: '+g_path):true;
 
     
+    // configuración de presentación de la vista seleccionada
+    var drivingViewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
+
+    
     // composición de theDocument, contenedor de la documentación de la vista
-    g_theDocument+="# "+theView.name+"\n";
-    theTOC=devdoc_toc(0,theView, 'doc', theTOC);
+    g_theDocument+="# "+g_drivingView.name+"\n";
+    theTOC=devdoc_toc(0,g_drivingView, 'doc', theTOC);
     g_theDocument+="\n"+theTOC+"\n";
     g_theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
-    if (embed==true){
-        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-        g_theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
+    if (viewInclusionSettings.IncludeViewElements) {
+        if (embed==true){
+            var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
+            g_theDocument+="\n!["+g_drivingView.name+"](data:image/png;base64,"+bytes+")\n";
+        }
+        else {
+            g_theDocument += (drivingViewInclusionSettings["IncludeDiagram"]===true) ? 
+            "\n!["+g_drivingView.name+"]["+ imageReferencia +"]\n":
+            "";
+        }
     }
-    else {g_theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";}
-    theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
+    g_drivingView.documentation != "" ? 
+        g_theDocument+="\n"+g_drivingView.documentation+"\n":
+        true;
 
 
     // Notes with no relationships
@@ -161,7 +173,7 @@ if (theView) {
     
 
     // llena la colección de elemntos elements[]
-    nestedDocumentation(0, theView);
+    nestedDocumentation(0, g_drivingView);
 
     
     // Crea el archivo de salida de documentación theView
@@ -171,7 +183,7 @@ if (theView) {
         if (!embed) {  // escribe archivo imagen exportFile
              imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
              relativeURL = imageURL.split("\\");
-             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+             var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
              g_theDocument+= argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
                 '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';

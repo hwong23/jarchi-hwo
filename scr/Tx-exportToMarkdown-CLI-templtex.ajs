@@ -98,11 +98,13 @@ if (theView) {
     g_theDocument+="\n"+theTOC+"\n";
     g_theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
-    if (embed==true){
+    if (embed==true) {
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
         g_theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
     }
-    else {g_theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";}
+    else {
+        g_theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";
+    }
     theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
 
     

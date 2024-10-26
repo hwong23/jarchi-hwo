@@ -212,6 +212,7 @@ function useDrivingView(alias) {
 
 } // end of useDrivingView
 
+// recorre los elementos del grupo de vistas Levelobj
 function getViews(Level, Levelobj, settings) {
     var thisPath = "";
     var imageURL = "";
@@ -260,6 +261,7 @@ function getViews(Level, Levelobj, settings) {
     }
 }
 
+// extrae configuración y documentación de vistas de la lista viewList
 function exportViews (k, viewList, settings) 
 {
     // acumuladores de contenido
@@ -343,6 +345,8 @@ function exportViews (k, viewList, settings)
         // interpolación de texto meidante plantilla de elementos
         viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
     }
+
+    // carga las relaciones de los elementos de la vista actual
     if (viewInclusionSettings.IncluyeRelaciones === true) {
         $(v).find('relationship').each(function(r) {
         if(relacionesCollection) {
@@ -361,7 +365,7 @@ function exportViews (k, viewList, settings)
     viewTitles = tplViewTitle({viewId: v.id, viewName: _.escape(vnombre)});
     viewDiagrams = (viewInclusionSettings.IncludeDiagram) ? 
         tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
-        viewNombre: nombrevista+'.png', viewAncho: ''}):
+        viewNombre: nombrevista+'.png', viewAncho: '250px'}):
         "";
     viewDocumentations += tplDocumentation (
         {

@@ -33,7 +33,7 @@ var devdoc_DefaultInclusionSettings = {
     "IncludeProperties": true,      // if true, will include the "properties" field in a catalogue of elements from a view
     "IncludeRutaCompleta": false,   // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
     "IncluyeRelaciones": false,     // incluye la ruta completa en los MD para favorecer a los documentos de salida
-    "IncluyeElementosSindoc": true  // incluye elementos sin documentación
+    "IncluyeElementosSindoc": false  // incluye elementos sin documentación
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
 
@@ -293,8 +293,9 @@ function devdoc_convertToText(type) {
     return theResult.trim();
 }
 
-function devdoc_toc(nivel, element, include, o_toc){
+function devdoc_toc(nivel, element, include, o_toc, incluyeElementosSindoc = true){
     $(element).children().not("relationship").filter(function(child) {
+        // permite elementos sin documentación?
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes(include)? true:false): false)
     }).each(function(e) 

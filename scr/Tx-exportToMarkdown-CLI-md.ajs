@@ -22,7 +22,8 @@
  * Version 4.2: Referencia imagen URL
  * Version 4.2.1: Argumento rutaCompleta
  * Version 4.3: Funciones de librería devdoc
- * Version 4.3.1: Funciones de librería devdoc
+ * Version 4.3.1: Funciones de librería devdoc extendida
+ * Version 4.4.0: inclusionsettings para elementos sin documentación
  * 
  * (c) 2018 Steven Mileham, HWO
  *
@@ -51,12 +52,12 @@ console.log("Export to Markdown");
 
 
 /*
- nestedDocumentation. Exporta documentación de los elementos de una vista
+ nestedDocumentation. documentación de los elementos de una vista
     d: nivel de identación títulos
     element: argumento vista
  Requiere: 
  */
-function nestedDocumentation(d, element) {
+function nestedDocumentation_elements(d, element, inclusionsettings = null) {
     debug? console.log('Elementos: '):true;
 
     $(element).children().not("relationship").filter(function(child) {
@@ -84,10 +85,13 @@ function nestedDocumentation(d, element) {
                 linkNum = " "+bodyMap[theHash];
             }
 
+            // if (e.documentation && )
             g_theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
             (e.prop().length > 0 && proptable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_propertiesTable(e)):true;
             ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_documentRelationships(e)):true;
             e.documentation ? g_theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
+            
+            // tabla de relaciones
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
                     g_theDocument+="\n> "+devdoc_escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
@@ -98,7 +102,7 @@ function nestedDocumentation(d, element) {
             
             if ($(e).children().length>0) {
                 d++;
-                nestedDocumentation(d, e);
+                nestedDocumentation_elements(d, e, inclusionsettings);
                 d--;
             }
         } // if (e.name)
@@ -173,7 +177,7 @@ if (g_drivingView) {
     
 
     // llena la colección de elemntos elements[]
-    nestedDocumentation(0, g_drivingView);
+    nestedDocumentation_elements(0, g_drivingView, drivingViewInclusionSettings);
 
     
     // Crea el archivo de salida de documentación theView

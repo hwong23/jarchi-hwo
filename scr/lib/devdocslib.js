@@ -27,12 +27,13 @@ var devdoc_debug = false;
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
 var devdoc_DefaultInclusionSettings = {
-    "IncludeDiagram": true,       // if true, will include the view's diagram
-    "IncludeDocumentation": true, // if true, will include the view's documentation text (which itself can have markdown, by the way)
-    "IncludeViewElements": true,  // if true, will include a catalogue of the view's elements
-    "IncludeProperties": true,    // if true, will include the "properties" field in a catalogue of elements from a view
-    "IncludeRutaCompleta": false,  // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
-    "IncluyeRelaciones": false  // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
+    "IncludeDiagram": true,         // if true, will include the view's diagram
+    "IncludeDocumentation": true,   // if true, will include the view's documentation text (which itself can have markdown, by the way)
+    "IncludeViewElements": true,    // if true, will include a catalogue of the view's elements
+    "IncludeProperties": true,      // if true, will include the "properties" field in a catalogue of elements from a view
+    "IncludeRutaCompleta": false,   // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
+    "IncluyeRelaciones": false,     // incluye la ruta completa en los MD para favorecer a los documentos de salida
+    "IncluyeElementosSindoc": true  // incluye elementos sin documentación
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
 

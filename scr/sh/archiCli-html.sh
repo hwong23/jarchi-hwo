@@ -32,14 +32,14 @@ eval $(parse_yaml $1/zconfig.yml config_)
 
 rutamodelo=$(varvalue config_ $4 _rutamodelo)
 rutaprg=$(varvalue config_ $4 _rutaprg)
-prghtml=$([ -z "$5"  ] && echo $config_deploy_prgexporthtml || echo $5)
-rutaprgexporthtml=$config_deploy_rutaprgexporthtml
+prgreport=$([ -z "$5"  ] && echo $config_deploy_prgreporthtml || echo $5)
+rutareport=$config_deploy_rutareport
 
 echo Configuracion: 
 echo '   rutamodelo:' $rutamodelo
 echo '   rutaprg' $rutaprg
-echo '   prgexporthtml': $config_deploy_prgexporthtml
-echo '   rutaprgexporthtml': $config_deploy_rutaprgexporthtml
+echo '   prgexporthtml': $prgreport
+echo '   rutaprgexporthtml': $rutareport
 
 # /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
 #    --modelrepository.loadModel $rutamodelo \
@@ -53,7 +53,7 @@ status=$?
 [ $status -eq 0 ] && /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app \
 -consoleLog -nosplash \
    --modelrepository.loadModel $rutamodelo \
-   --script.runScript $rutaprg/$prghtml \
-   -rutaMacMD $rutaprgexporthtml \
+   --script.runScript $rutaprg/$prgreport \
+   -rutaMacMD $rutareport \
   || echo "ERR"
 

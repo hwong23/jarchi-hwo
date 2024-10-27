@@ -3,9 +3,9 @@
 
 # param alias := nombre vista documental (archi.property alias)
 
-mddoc:
+mddocx:
 	(sh archiCli-md.sh . "" \
-	$(alias) mddoc)
+	$(alias) mddocx)
 
 mdpdf:
 	(sh archiCli-md.sh . "" \

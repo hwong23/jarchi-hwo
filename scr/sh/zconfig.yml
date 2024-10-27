@@ -10,7 +10,7 @@ deploy:
 # publish:
 #   gitorigen: /Users/hwo/gh/pgn/pgn-078 
 
-mddoc:
+mddocx:
   rutausr: $HOME/gh
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr

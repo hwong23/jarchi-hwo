@@ -85,12 +85,16 @@ function nestedDocumentation_elements(d, element, inclusionsettings = null) {
             //     linkNum = " "+bodyMap[theHash];
             // }
 
-            // if (e.documentation && )
-            g_theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ + /*linkNum*/ "\n";
-            (e.prop().length > 0 && proptable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_propertiesTable(e)):true;
-            ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_documentRelationships(e)):true;
-            e.documentation ? g_theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
-            
+            if (e.documentation ||          // si elemento con documentación
+                                            // si elemento sin documentación permitido
+                (!e.documentation && inclusionsettings.IncluyeElementosSindoc) ||
+                $(e).children().length>0)   // si elemento es un grupo
+            {    
+                g_theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ + /*linkNum*/ "\n";
+                (e.prop().length > 0 && proptable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_propertiesTable(e)):true;
+                ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_documentRelationships(e)):true;
+                e.documentation ? g_theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
+            }
             // tabla de relaciones
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
@@ -100,6 +104,7 @@ function nestedDocumentation_elements(d, element, inclusionsettings = null) {
         
             debug? console.log('   '+e.name+":"+e):true;
             
+            // el elemento es contenedor
             if ($(e).children().length>0) {
                 d++;
                 nestedDocumentation_elements(d, e, inclusionsettings);

@@ -335,7 +335,7 @@ function devdoc_obtNota (theView) {
     var c = $(theView).find().not("element").not("relationship").first();
 
     // try {
-        if (c.text) {
+        if (c !== null) {
             if ($(c).rels().length==0) {
                 notatexto = notatexto + c.text + '\n\n';
             }

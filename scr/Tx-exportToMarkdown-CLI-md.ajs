@@ -111,9 +111,9 @@ var argRutaMacMD = getArgumento("rutaMacMD");
 var argVistaDocumental = getArgumento("vistaDocumental");
 var argRutaCompleta = getArgumento("rutaCompleta");
 console.log("Entradas: ")
-debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
-debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
-debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
+console.log("   theRutaMacMD: "+argRutaMacMD);
+console.log("   vistaDocumental: "+argVistaDocumental);
+console.log("   rutaCompleta: "+argRutaCompleta);
 
 // Selección de la vista indicada por el argumento entrada CLI
 var g_drivingView = devdoc_useDrivingView(argVistaDocumental);

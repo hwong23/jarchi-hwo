@@ -37,6 +37,7 @@ load(__DIR__ + 'libs/nashorn-polyfills.js');
 load(__DIR__ + 'libs/underscore-min.js');
 load(__DIR__ + 'libs/marked.min.js');
 load(__DIR__ + "lib/myargs.js");
+load(__DIR__ + "lib/devdocslib.js");
 
 console.show();
 console.clear();

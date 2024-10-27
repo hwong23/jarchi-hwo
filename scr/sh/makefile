@@ -26,9 +26,6 @@ exporta:
 	(sh archiCli-html.sh . "" \
 	$(devdoc) mddoc)
 
-entrega: 
-	
-
 help:
 	head -2 Makefile
 

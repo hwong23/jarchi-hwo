@@ -24,6 +24,7 @@
  * Version 4.2.1: Argumento rutaCompleta
  * Version 4.3: Funciones de librería devdoc
  * Version 4.3.1: Funciones de librería devdoc
+ * Version 4.4: Ajuste texto documental (\n---)
  *
  * (c) 2018 Steven Mileham, HWO
  *
@@ -43,7 +44,7 @@ var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
-var theDocument = "";
+var g_theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 var elements = '';
 var elementsCollection;
@@ -51,10 +52,9 @@ var viewDocumentations = '';
 
 
 // funciones con argumento plantillas
-var tplDocumentation;
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/ppt/main-md-ppt.tpl', 'UTF-8'));
-var tplViewTitle = _.template(readFully(__DIR__ + 'templates/view-title-md.tpl', 'UTF-8'));
-var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/view-diagram-md.tpl', 'UTF-8'));
+var tplDocumentation;   // definido por propiedad 'plantilla' de la vista
+var tplViewTitle = _.template(readFully(__DIR__ + 'templates/ppt/view-title-md.tpl', 'UTF-8'));
+var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/ppt/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = _.template(readFully(__DIR__ + 'templates/ppt/element-md-ppt.tpl', 'UTF-8'));
 
 
@@ -63,13 +63,118 @@ console.clear();
 console.log("Export to Markdown");
 
 
+// Argumentos de entrada por CLI
+var argRutaMacMD = getArgumento("rutaMacMD");
+var argVistaDocumental = getArgumento("vistaDocumental");
+var argRutaCompleta = getArgumento("rutaCompleta");
+console.log("Entradas: ")
+debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
+debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
+debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
+
+// Selección de la vista indicada por el argumento entrada CLI
+var theView = devdoc_useDrivingView(argVistaDocumental);
+    // $(selection).filter("archimate-diagram-model").first();
+
+
+if (theView) {
+    // Define ruta/nombre del archivo de salida de la documentación de la vista theView
+    // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+    // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+    var r = __DIR__.split("\/");
+    g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
+    g_path = argRutaMacMD ? 
+        '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
+    g_fileName = g_path+g_drivingView_devdoc;
+
+    (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
+    (debug)?console.log('g_path: '+g_path):true;
+
+
+    // composición de theDocument, contenedor de la documentación de la vista
+    g_theDocument+="# "+theView.name+"\n";
+    theTOC=devdoc_toc(0,theView, 'ppt', theTOC);
+    g_theDocument+="\n"+theTOC+"\n";
+    g_theDocument+="\n## Introducción\n";
+    imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
+    if (embed==true) {
+        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+        g_theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
+    }
+    else {
+        g_theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";
+    }
+    theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
+
+
+    // Notes with no relationships
+    $(selection).find().not("element")
+    .not("relationship").each(function(c){
+        if (c.text) {
+            if ($(c).rels().length==0) {
+                g_theDocument+="\n"+devdoc_escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
+            }
+        };
+    })
+    
+    
+    // llena la colección de elementos elements
+    nestedDocumentation_elements(0, theView);
+
+    // interpolación de texto mediante plantilla
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
+        (theView.prop('plantilla')? 
+        theView.prop('plantilla'):
+        'ppt/documentation-md-ppt') + '.tpl', 'UTF-8') ); 
+    
+    viewDocumentations += tplDocumentation (
+        {
+        viewId: 'id-'+theView.id,
+        viewTitle: "",      // viewTitles,
+        viewNota: devdoc_obtNota (theView),
+        viewDiagram: "",    // viewDiagrams,
+        documentationText: _.escape(g_theDocument),
+        // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
+        elements: elements,     // colección elements es alimentada por nestedDocumentation
+        relaciones: ""          // relaciones
+        }
+    );
+
+
+    // Crea el archivo de salida de documentación theView
+    var exportFile = g_fileName;
+
+    if(exportFile != null) {
+         if (!embed) {  // escribe archivo imagen exportFile
+             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
+             relativeURL = imageURL.split("\\");
+             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+             $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
+             viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
+                '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+         }
+         viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
+         $.fs.writeFile(exportFile, viewDocumentations);
+
+         console.log("> Export done");
+     }
+     else {
+         console.log("> Export cancelled");
+     }
+}
+else {
+    console.log("> Please Select a View");
+}
+
+
 /*
  nestedDocumentation. Exporta documentación de los elementos de una vista
     d: nivel de identación títulos
     element: argumento vista
  Requiere: 
  */
-function nestedDocumentation(d, element) {
+ function nestedDocumentation_elements(d, element) {
     debug? console.log('Elementos: '):true;
 
     $(element).children().not("relationship").filter(function(child) {
@@ -100,7 +205,7 @@ function nestedDocumentation(d, element) {
             elements += tplElement({
                 viewsIds: '',
                 elementName: _.escape(e.name),
-                elementType: properCase(e.type),
+                elementType: devdocs_properCase(e.type),
                 elementDocumentationText: _.escape(e.documentation), //.replace(/\n/g, '<br>'),
                 elementDocumentationMarkdown: ''
             });
@@ -109,122 +214,9 @@ function nestedDocumentation(d, element) {
 
             if ($(e).children().length>0) {
                 d++;
-                nestedDocumentation(d, e);
+                nestedDocumentation_elements(d, e);
                 d--;
             }
-        } // if (e.name)
+        }
     });
 }
-
-
-// Argumentos de entrada por CLI
-var argRutaMacMD = getArgumento("rutaMacMD");
-var argVistaDocumental = getArgumento("vistaDocumental");
-var argRutaCompleta = getArgumento("rutaCompleta");
-console.log("Entradas: ")
-debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
-debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
-debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
-
-// Selección de la vista indicada por el argumento entrada CLI
-var theView = devdoc_useDrivingView(argVistaDocumental);
-    // $(selection).filter("archimate-diagram-model").first();
-
-
-if (theView) {
-    // Define ruta/nombre del archivo de salida de la documentación de la vista theView
-        // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
-        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-        var r = __DIR__.split("\/");
-        g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-        g_path = argRutaMacMD? 
-            '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
-            '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
-        g_fileName = g_path+g_drivingView_devdoc;
-    
-        (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
-        (debug)?console.log('g_path: '+g_path):true;
-
-
-    // composición de theDocument, contenedor de la documentación de la vista
-    theDocument+="# "+theView.name+"\n";
-    theTOC=devdoc_toc(0,theView, 'ppt', theTOC);
-    theDocument+="\n"+theTOC+"\n";
-    theDocument+="\n## Introducción\n";
-    imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
-    if (embed==true){
-        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-        theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
-    }
-    else {theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";}
-    theView.documentation!=""? theDocument+="\n"+theView.documentation+"\n":true;
-
-
-    // Notes with no relationships
-    $(selection).find().not("element")
-    .not("relationship").each(function(c){
-        if (c.text) {
-            if ($(c).rels().length==0) {
-                theDocument+="\n"+devdoc_escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
-            }
-        };
-    })
-    
-    
-    nestedDocumentation(0, theView);
-
-    // interpolación de texto mediante plantilla
-    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
-        (theView.prop('plantilla')? theView.prop('plantilla'):'ppt/documentation-md-ppt') + '.tpl', 'UTF-8') ); 
-    
-    viewDocumentations += tplDocumentation (
-        {
-        viewId: 'id-'+theView.id,
-        viewTitle: "",      // viewTitles,
-        viewNota: devdoc_obtNota (theView),
-        viewDiagram: "",    // viewDiagrams,
-        documentationText: _.escape(theDocument)
-        ,
-        // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
-        elements: elements,
-        relaciones: ""      // relaciones
-        }
-    );
-
-
-
-    // Crea el archivo de salida de documentación theView
-    var exportFile = g_fileName;
-
-    if(exportFile != null) {
-         if (!embed) {  // escribe archivo imagen exportFile
-             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
-             relativeURL = imageURL.split("\\");
-             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-             $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
-                '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
-         }
-         viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-         $.fs.writeFile(exportFile, viewDocumentations);
-
-         console.log("> Export done");
-     }
-     else {
-         console.log("> Export cancelled");
-     }
-}
-else {
-    console.log("> Please Select a View");
-}
-
-
-function properCase(str) {
-    return str.replace(
-      /\w*/g,
-      function(txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      }
-    ).replace('-', ' ');
-}
-  

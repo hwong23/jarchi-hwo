@@ -119,7 +119,7 @@ if (theView) {
     })
 
     
-    // llena la colección de elemntos elements
+    // llena la colección de elementos elements
     nestedDocumentation_elements(0, theView);
     
     // interpolación de texto mediante plantilla
@@ -142,7 +142,6 @@ if (theView) {
     );
 
 
-    
     // Crea el archivo de salida de documentación theView
     var exportFile = g_fileName;
 
@@ -167,6 +166,7 @@ if (theView) {
 else {
     console.log("> Please Select a View");
 }
+
 
 /*
  nestedDocumentation. Exporta documentación de los elementos de una vista
@@ -208,7 +208,7 @@ else {
                     e.prop('ide'):
                     e.name.replaceAll(' ','-') ),
                 elementType: devdocs_properCase(e.type),
-                elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
+                elementDocumentationText: _.escape(e.documentation), //.replace(/\n/g, '\n   '),
                 elementDocumentationMarkdown: ''
             });
 

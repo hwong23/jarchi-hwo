@@ -25,6 +25,7 @@
  * Version 4.3: Funciones de librería devdoc
  * Version 4.3.1: Funciones de librería devdoc
  * Version 4.4: Ajuste texto documental (\n---)
+ * Version 4.4.1: nestedDocumentation_elements
  *
  * (c) 2018 Steven Mileham, HWO
  *
@@ -206,7 +207,7 @@ else {
                 viewsIds: '',
                 elementName: _.escape(e.name),
                 elementType: devdocs_properCase(e.type),
-                elementDocumentationText: _.escape(e.documentation), //.replace(/\n/g, '<br>'),
+                elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
                 elementDocumentationMarkdown: ''
             });
 

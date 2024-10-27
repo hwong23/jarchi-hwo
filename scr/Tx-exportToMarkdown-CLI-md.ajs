@@ -90,9 +90,9 @@ function nestedDocumentation_elements(d, element, inclusionsettings = null) {
                 (!e.documentation && inclusionsettings.IncluyeElementosSindoc) ||
                 $(e).children().length>0)   // si elemento es un grupo
             {    
-                g_theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ + /*linkNum*/ "\n";
-                (e.prop().length > 0 && proptable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_propertiesTable(e)):true;
-                ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_documentRelationships(e)):true;
+                g_theDocument+="\n"+headerDepth +" "+ (e.name) /*+"("+ convertToText(e.type) +")"*/ + /*linkNum*/ "\n";
+                (e.prop().length > 0 && proptable) ? g_theDocument+="\n" +(devdoc_propertiesTable(e)):true;
+                ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+(devdoc_documentRelationships(e)):true;
                 e.documentation ? g_theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
             }
             // tabla de relaciones

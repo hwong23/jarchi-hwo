@@ -349,7 +349,7 @@ function devdoc_obtNota (theView) {
 }
 
 
-function devdocs_properCase(str) {
+function devdoc_properCase(str) {
     return str.replace(
       /\w*/g,
       function(txt) {

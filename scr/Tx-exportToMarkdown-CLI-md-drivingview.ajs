@@ -336,7 +336,7 @@ function exportViews (k, viewList, settings)
             elements += tplElementFila({
               viewsIds: viewsIdsByConceptId[e.id],
               elementName: e.name,
-              elementType: devdocs_properCase(e.type),
+              elementType: devdoc_properCase(e.type),
               elementDocumentationText: e.documentation.replace(/\n/g, ' '),    //<br>
               elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
             });

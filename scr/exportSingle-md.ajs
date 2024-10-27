@@ -1,10 +1,9 @@
-// Generate Single-page HTML Export
+// Generate Single-page MD Export
 //
 // https://github.com/archi-contribs/jarchi-single-page-html-export
-//
 // Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
 //
-// This script creates a single HTML page which contains views contained into
+// This script creates a single MD page which contains views contained into
 // selected folders. This HTML page makes heavy use of CSS tricks to create
 // a dynamic web application which doesn't rely on JavaScript.
 // This non-JS approach is by design to allow the file to be previewed when
@@ -33,10 +32,11 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-// Historia versión (más actual a anterior)
+// Historia versión (más actual a antigua)
 // Plantillas para elementos
 // Plantillas por vista
 // Propiedades: vista.plantilla, elemento.plantillaELm, model.rutamacMD
+// DefaultInclusionSettings
 
 // Requiere: 1) carpeta de salida documentos MD: propiedad del modelo rutaMacMD
 //           2) subcarpeta interna 'images'
@@ -112,12 +112,15 @@ if(! folders.size()) {
   console.log("All views have been selected.");
 }
 
-
-// 2. elabora el ruta+nombre archivo con base en propiedades del modelo
+// var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
+// 2. ruta+nombre archivo con base en propiedad del modelo
 var r = __DIR__.split("\/");
-var g_path = "/"+r[1]+"/"+r[2] + model.prop("rutaMacMD");
+var g_path = argRutaMacMD ? '/'+r[1]+'/'+r[2]+argRutaMacMD+'/': 
+   model.prop("rutaMacMD") ? model.prop("rutaMacMD"):
+   '/Downloads/tmpr/prymd/';
 var g_filePath = g_path + 
-  (model.prop("devdoc")? model.prop("devdoc"):model.name + ".md");
+  (model.prop("devdoc")? model.prop("devdoc"):
+  model.name + ".md");
 console.log ("Exportado a: " + g_filePath)
 
 if(!g_filePath) {
@@ -204,7 +207,7 @@ function exportViews(folder) {
       elements += tplElementFila({
         viewsIds: viewsIdsByConceptId[e.id],
         elementName: e.name,
-        elementType: properCase(e.type),
+        elementType: devdoc_properCase(e.type),
         elementDocumentationText: e.documentation.replace(/\n/g, '<br>'),
         // elementDocumentationMarkdown: marked((e.documentation), mdOptions)
         elementDocumentationMarkdown: ''
@@ -214,7 +217,7 @@ function exportViews(folder) {
       relaciones += tplRelationship({
         viewsIds: viewsIdsByConceptId[r.id],
         relationshipName: _.escape(r.name),
-        relationshipType: properCase(r.type),
+        relationshipType: devdoc_properCase(r.type),
         relationshipSource: _.escape(r.source.name),
         relationshipTarget: _.escape(r.target.name),
         relationshipDocumentationText: _.escape(r.documentation).replace(/\n/g, '<br>'),
@@ -278,12 +281,3 @@ var mainReport = tplMainReport({
 $.fs.writeFile(g_filePath, mainReport, 'UTF-8');
 
 console.log('Export terminated.');
-
-function properCase(str) {
-  return str.replace(
-    /\w*/g,
-    function(txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    }
-  ).replace('-', ' ');
-}

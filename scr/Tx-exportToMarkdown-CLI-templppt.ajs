@@ -206,7 +206,7 @@ else {
             elements += tplElement({
                 viewsIds: '',
                 elementName: _.escape(e.name),
-                elementType: devdocs_properCase(e.type),
+                elementType: devdoc_properCase(e.type),
                 elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
                 elementDocumentationMarkdown: ''
             });

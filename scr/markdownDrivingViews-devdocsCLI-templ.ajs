@@ -2,11 +2,13 @@
 	Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
 
 	Script: Documentation Generation
-	Purpose: To generate output based on a driving view. Usa plantillas mustage para escribir archivos md.
+	Purpose: To generate output based on a driving view. Usa plantillas mustage para
+    escribir archivos md.
 
 	Author: Richard Heward - Tame Blue Lion Ltd
 
-	This generates a markdown file with the embedded images and text based upon a driving view in Archi of groups that trigger each other and embedded views.
+	This generates a markdown file with the embedded images and text based upon 
+    a driving view in Archi of groups that trigger each other and embedded views.
 	See my blog for a more detailed explanation. https://www.tamebluelion.co.uk/blog/archi-documentation
 
 	Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
@@ -88,6 +90,57 @@ var DefaultInclusionSettings = {
     "IncludeProperties": true, // if true, will include the "properties" field in a catalogue of elements from a view
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
+
+
+// Main Code
+var docGen = "";
+
+if (useDrivingView(getArgumento("vistaDocumental"))) {
+    // Nombre de archivo por propiedad del modelo
+    let r = __DIR__.split("\/");
+    var exportFile = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/') + drivingView_devdoc;
+    (debug)?console.log('exporFile: '+exportFile):true;
+
+    // where's the path. Find where the last slash delimiter is
+    var lastSlash = "";
+    if (exportFile) {
+        // if (exportFile.indexOf("/") == -1) {
+        //     lastSlash = exportFile.lastIndexOf("\\"); // Windows
+        // } else {
+        //     lastSlash = exportFile.lastIndexOf("/"); // Mac or Linux
+        // }
+        // path = exportFile.substring(0, lastSlash + 1);
+        // fileName = exportFile.substring(lastSlash + 1, exportFile.length);
+
+        g_path = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/');
+        g_fileName = drivingView_devdoc;
+
+        console.log("path: ", g_path);
+        console.log("fileName: ", g_fileName);
+
+        // go through the array, and output.
+        for (var i = 0; i < Sections.length; i++) {
+            var nombreitem = 
+                (Sections[i].group.prop("titulo"))? Sections[i].group.prop("titulo"):
+                (Sections[i].group.labelExpression)? Sections[i].group.labelExpression : Sections[i].group.name;
+
+            outputHdr(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
+            getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
+        }
+        docGen = "# " + (
+            (drivingView.prop("titulo")) ? drivingView.prop("titulo"): drivingView.name
+            ) + "\n";
+        // docGen += "\n ___ \n";
+        docGen += theToc + "\n";
+        docGen += g_outInfo;
+        // docGen += "\n\n``Generated on: " + currentDate + "``";
+
+        $.fs.writeFile(exportFile, docGen);
+    }
+}
+
+// end of script
+console.log("Done");
 
 
 function generateLink(theString) {
@@ -242,7 +295,7 @@ function getViews(Level, Levelobj, settings) {
     }
 }
 
-
+// uso de plantillas
 function exportViews_2 (k, viewList, settings) 
 {
     // acumuladores de contenido
@@ -554,54 +607,3 @@ function useDrivingView(alias) {
 
 } // end of useDrivingView
 
-
-// Main Code
-
-var docGen = "";
-
-if (useDrivingView(getArgumento("vistaDocumental"))) {
-    // Nombre de archivo por propiedad del modelo
-    let r = __DIR__.split("\/");
-    var exportFile = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/') + drivingView_devdoc;
-    (debug)?console.log('exporFile: '+exportFile):true;
-
-    // where's the path. Find where the last slash delimiter is
-    var lastSlash = "";
-    if (exportFile) {
-        // if (exportFile.indexOf("/") == -1) {
-        //     lastSlash = exportFile.lastIndexOf("\\"); // Windows
-        // } else {
-        //     lastSlash = exportFile.lastIndexOf("/"); // Mac or Linux
-        // }
-        // path = exportFile.substring(0, lastSlash + 1);
-        // fileName = exportFile.substring(lastSlash + 1, exportFile.length);
-
-        g_path = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/');
-        g_fileName = drivingView_devdoc;
-
-        console.log("path: ", g_path);
-        console.log("fileName: ", g_fileName);
-
-        // go through the array, and output.
-        for (var i = 0; i < Sections.length; i++) {
-            var nombreitem = 
-                (Sections[i].group.prop("titulo"))? Sections[i].group.prop("titulo"):
-                (Sections[i].group.labelExpression)? Sections[i].group.labelExpression : Sections[i].group.name;
-
-            outputHdr(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
-            getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
-        }
-        docGen = "# " + (
-            (drivingView.prop("titulo")) ? drivingView.prop("titulo"): drivingView.name
-            ) + "\n";
-        // docGen += "\n ___ \n";
-        docGen += theToc + "\n";
-        docGen += g_outInfo;
-        // docGen += "\n\n``Generated on: " + currentDate + "``";
-
-        $.fs.writeFile(exportFile, docGen);
-    }
-}
-
-// end of script
-console.log("Done");

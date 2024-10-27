@@ -4,13 +4,13 @@
 	Script: Documentation Generation
 	Purpose: To generate output based on a driving view. Usa plantillas mustage para 
     escribir archivos md.
+    
     This generates a markdown file with the embedded images and text based upon a 
     driving view in Archi of groups that trigger each other and embedded views.
 	See my blog for a more detailed explanation. https://www.tamebluelion.co.uk/blog/archi-documentation
 
 	Author: Richard Heward - Tame Blue Lion Ltd
 
-	
     Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
 	Setting
 	Note - markdown can be converted to PDF / Word Docs or anything. I've used pandoc command line to do this.
@@ -26,6 +26,7 @@
     01-Dic-2023 - Plantillas mustage para escribir archivos md
     11-Oct-2024 - Transformador (Tx) para devdocs 2.0; 1.0 = manubot
     17-Oct-2024 - Configuraciones de la vista: plantillas, opciones de presentación, nombre
+    17-Oct-2024 - Argumentos de entrada por CLI
 
  */
 
@@ -212,6 +213,7 @@ function useDrivingView(alias) {
 
 } // end of useDrivingView
 
+
 // recorre los elementos del grupo de vistas Levelobj
 function getViews(Level, Levelobj, settings) {
     var thisPath = "";
@@ -387,7 +389,7 @@ function exportViews (k, viewList, settings)
         viewDocumentations != "" ? g_outInfo += "\n" + viewDocumentations + "\n" : true;
     }
 }
-  
+
 
 function addSpace(numSpaces) {
     var i;

@@ -71,22 +71,22 @@ function nestedDocumentation_elements(d, element, inclusionsettings = null) {
                 headerDepth+="#";
             }
 
-            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
-            if (bodyMap[theHash]==null) {
-                bodyMap[theHash]=1;
-            }
-            else {
-                bodyMap[theHash]+=1;
-            }
+            // var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
+            // if (bodyMap[theHash]==null) {
+            //     bodyMap[theHash]=1;
+            // }
+            // else {
+            //     bodyMap[theHash]+=1;
+            // }
 
-            var linkNum="";
+            // var linkNum="";
 
-            if (bodyMap[theHash]>1) {
-                linkNum = " "+bodyMap[theHash];
-            }
+            // if (bodyMap[theHash]>1) {
+            //     linkNum = " "+bodyMap[theHash];
+            // }
 
             // if (e.documentation && )
-            g_theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
+            g_theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ + /*linkNum*/ "\n";
             (e.prop().length > 0 && proptable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_propertiesTable(e)):true;
             ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_documentRelationships(e)):true;
             e.documentation ? g_theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;

@@ -35,18 +35,13 @@ rutaprg=$(varvalue config_ $4 _rutaprg)
 prgreport=$([ -z "$5"  ] && echo $config_deploy_prgreporthtml || echo $5)
 rutareport=$config_deploy_rutareport
 
+
 echo Configuracion: 
 echo '   rutamodelo:' $rutamodelo
 echo '   rutaprg' $rutaprg
 echo '   prgexporthtml': $prgreport
 echo '   rutaprgexporthtml': $rutareport
 
-# /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
-#    --modelrepository.loadModel $rutamodelo \
-#    --script.runScript $rutaprg/$prg \
-#    -vistaDocumental $vistadoc \
-#    -rutaMacMD $rutaMacMD \
-#    -rutaCompleta $rutaCompleta
 
 status=$?
 

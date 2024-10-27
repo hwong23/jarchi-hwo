@@ -3,6 +3,7 @@ deploy:
   destinomd: /Users/hwo/gh/pgn/pgn-078
   origenhtml: /Users/hwo/Downloads/tmpr/pgnarchidoc
   prgexporthtml: exportSingle-htmlCLI.ajs
+  prgexportmd: exportSingle-md.ajs
   rutaprgexporthtml: /gh/devdocs/devocs-contd/contd/docx
 ccambio:
   gitorigen: /Users/hwo/gh/pgn/pgn-078
@@ -16,6 +17,7 @@ mddoc:
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/docx
   rutaCompleta: no
 mdpdf:
@@ -25,6 +27,7 @@ mdpdf:
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/pdf
   rutaCompleta: no
 mdtex:
@@ -32,8 +35,9 @@ mdtex:
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
-  expportprg_solo: Tx-exportToMarkdown-CLI-templtex.ajs
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/tex
   rutaCompleta: no
 mdppt:
@@ -43,6 +47,7 @@ mdppt:
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/ppt
   rutaCompleta: no
 mdhtml:
@@ -51,5 +56,6 @@ mdhtml:
   rutaprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/html
   rutaCompleta: no

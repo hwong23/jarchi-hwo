@@ -65,7 +65,7 @@ function nestedDocumentation_elements(d, element, inclusionsettings = null) {
         return (prop_destino? (prop_destino.includes("doc")? true:false): false)
     }).each(function(e) 
     {
-        if (e.name) {
+        if (!e.documentation && inclusionsettings.IncluyeElementosSindoc) {
             var headerDepth ="##";      // nivel inicial jerarquía del título
             for (var i=0; i<d; i++) {
                 headerDepth+="#";
@@ -85,7 +85,7 @@ function nestedDocumentation_elements(d, element, inclusionsettings = null) {
                 linkNum = " "+bodyMap[theHash];
             }
 
-            // if (e.documentation && )
+            
             g_theDocument+="\n"+headerDepth +" "+ devdoc_escapeMD(e.name) /*+"("+ convertToText(e.type) +")"*/ +linkNum+"\n";
             (e.prop().length > 0 && proptable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_propertiesTable(e)):true;
             ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+devdoc_escapeMD(devdoc_documentRelationships(e)):true;

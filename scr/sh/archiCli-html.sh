@@ -30,23 +30,16 @@
 . parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml config_)
 
-rutausr=$(varvalue config_ $4 _rutausr)
 rutamodelo=$(varvalue config_ $4 _rutamodelo)
 rutaprg=$(varvalue config_ $4 _rutaprg)
-prg=$([ -z "$2"  ] && echo $(varvalue config_ $4 _expportprg) || echo $2)
-vistadoc=$3
-rutaMacMD=$(varvalue config_ $4 _rutaMacMD)
-rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $4 _rutaCompleta) || echo $5)
+prghtml=$([ -z "$5"  ] && echo $config_deploy_prgexporthtml || echo $5)
+rutaprgexporthtml=$config_deploy_rutaprgexporthtml
 
 echo Configuracion: 
-echo '   rutausr:' $rutausr
 echo '   rutamodelo:' $rutamodelo
 echo '   rutaprg' $rutaprg
-echo '   prg:' $prg
-echo '   vistadoc' $vistadoc
-echo '   rutaMacMD': $rutaMacMD
-echo '   rutaCompleta': $rutaCompleta
-
+echo '   prgexporthtml': $config_deploy_prgexporthtml
+echo '   rutaprgexporthtml': $config_deploy_rutaprgexporthtml
 
 # /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
 #    --modelrepository.loadModel $rutamodelo \
@@ -55,16 +48,7 @@ echo '   rutaCompleta': $rutaCompleta
 #    -rutaMacMD $rutaMacMD \
 #    -rutaCompleta $rutaCompleta
 
-
 status=$?
-echo 
-echo exportSingle-htmlCLI
-echo 'prgexporthtml': $config_deploy_prgexporthtml
-echo 'rutaprgexporthtml': $config_deploy_rutaprgexporthtml
-
-prghtml=$([ -z "$5"  ] && echo $config_deploy_prgexporthtml || echo $2)
-rutaprgexporthtml=$config_deploy_rutaprgexporthtml
-
 
 [ $status -eq 0 ] && /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app \
 -consoleLog -nosplash \

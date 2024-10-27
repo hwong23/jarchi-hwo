@@ -96,13 +96,10 @@ var folders = selection.filter("folder").not(nonViewFolders);
 
 // Argumentos de entrada por CLI
 var argRutaMacMD = getArgumento("rutaMacMD");
-var argVistaDocumental = getArgumento("vistaDocumental");
-var argRutaCompleta = getArgumento("rutaCompleta");
+// var argVistaDocumental = getArgumento("vistaDocumental");
+// var argRutaCompleta = getArgumento("rutaCompleta");
 console.log("Entradas: ")
 debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
-debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
-debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
-
 
 // 1. selección de carpeta de vistas
 if(! folders.size()) {

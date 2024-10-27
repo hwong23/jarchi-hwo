@@ -145,7 +145,7 @@ if (g_drivingView) {
     g_theDocument+="\n"+theTOC+"\n";
     g_theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
-    if (viewInclusionSettings.IncludeViewElements) {
+    if (drivingViewInclusionSettings.IncludeViewElements) {
         if (embed==true){
             var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
             g_theDocument+="\n!["+g_drivingView.name+"](data:image/png;base64,"+bytes+")\n";

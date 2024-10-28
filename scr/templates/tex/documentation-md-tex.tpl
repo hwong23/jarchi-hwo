@@ -1,5 +1,4 @@
 ---
-title: "Documentación Técnica del Proyecto Evolución de Plataforma de Interoperabilidad de la JEP, 2024"
 author: ${DEVDOCS_AUTOR}
 date: "2024-09-16"
 subject: "Implementación del Proyecto, Softgic"

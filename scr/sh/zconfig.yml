@@ -15,8 +15,8 @@ mddocx:
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
-  expportprg: Tx-exportToMarkdown-CLI-md.ajs
-  expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/docx
   rutaCompleta: no

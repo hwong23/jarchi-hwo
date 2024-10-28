@@ -27,6 +27,7 @@
     11-Oct-2024 - Transformador (Tx) para devdocs 2.0; 1.0 = manubot
     17-Oct-2024 - Configuraciones de la vista: plantillas, opciones de presentación, nombre
     17-Oct-2024 - Argumentos de entrada por CLI
+    28-Oct-2024 - inclusionsettings para elementos sin documentación
 
  */
 
@@ -334,14 +335,20 @@ function exportViews (k, viewList, settings)
 
         // carga de elementos de la vista actual
         _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
-            // plantilla elemento
-            elements += tplElementFila({
-              viewsIds: viewsIdsByConceptId[e.id],
-              elementName: e.name,
-              elementType: devdoc_properCase(e.type),
-              elementDocumentationText: e.documentation.replace(/\n/g, ' '),    //<br>
-              elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
-            });
+            if (e.documentation ||      // si elemento con documentación
+                                        // si elemento sin documentación permitido
+            (!e.documentation && viewInclusionSettings.IncluyeElementosSindoc) ||
+            $(e).children().length>0)   // si elemento es un grupo
+            {    
+                // plantilla elemento
+                elements += tplElementFila({
+                viewsIds: viewsIdsByConceptId[e.id],
+                elementName: e.name,
+                elementType: devdoc_properCase(e.type),
+                elementDocumentationText: e.documentation.replace(/\n/g, ' '),    //<br>
+                elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
+                });
+            }
         });
         
         // interpolación de texto meidante plantilla de elementos

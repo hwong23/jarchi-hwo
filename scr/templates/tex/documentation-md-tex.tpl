@@ -7,7 +7,7 @@ subtitle: "Implementación del Proyecto, Softgic"
 lang: "en"
 titlepage: true,
 titlepage-rule-color: "360049"
-titlepage-background: "background1.pdf"
+titlepage-background: "softgicbackgr.png"
 {{elements}}
 ...
 {{viewTitle}}

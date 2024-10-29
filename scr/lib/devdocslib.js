@@ -275,6 +275,12 @@ function devdoc_escapeMD(theString){
     return newString.substring(0,1)+newString.substring(1).replaceAll(">","&gt;").replaceAll("~QUOTE~",">");
 }
 
+function devdoc_escapeDOC(theString){
+    var newString = theString.replaceAll("<<","(");
+    return newString.substring(0,1) +
+           newString.substring(1).replaceAll(">>",")");
+}
+
 function devdoc_generateLink(theString) {
     var regex = /[\[\]\(\)\#\\\/\"]/gi;
     return "#"+theString.toLowerCase().replace(regex,"")

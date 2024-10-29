@@ -343,7 +343,7 @@ function exportViews (k, viewList, settings)
                 // plantilla elemento
                 elements += tplElementFila({
                 viewsIds: viewsIdsByConceptId[e.id],
-                elementName: e.name,
+                elementName: devdoc_escapeDOC(e.name),
                 elementType: devdoc_properCase(e.type),
                 elementDocumentationText: e.documentation.replace(/\n/g, ' '),    //<br>
                 elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)

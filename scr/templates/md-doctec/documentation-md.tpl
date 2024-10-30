@@ -6,6 +6,7 @@ https://github.com/archi-contribs/jarchi-single-page-html-export
 
 Copyright (c) 2020 Phillip Beauvoir & Jean-Baptiste Sarrodie - MIT License
 -->
+
 {{viewTitle}}
 > {{viewNota}}
 
@@ -15,3 +16,9 @@ Copyright (c) 2020 Phillip Beauvoir & Jean-Baptiste Sarrodie - MIT License
 {{viewDiagram}}
 {{elements}}
 {{relaciones}}
+
+---
+lang: "en"
+titlepage: true
+titlepage-rule-color: "360049"
+...

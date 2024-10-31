@@ -107,8 +107,8 @@ if (theView) {
     }
     else {
         g_theDocument+="\n!["+theView.name+"]["+ argRutaCompleta == 'si' ? 
-            '\n!['+ imageReferencia+ '](' +relativeURL+ ')':
-            '\n!['+ imageReferencia+ '](' +imageReferencia+'.png)'+"\n";
+            '\n!['+ imageReferencia+ '](' +relativeURL+ '){height=500 width=}':
+            '\n!['+ imageReferencia+ '](' +imageReferencia+'.png){height=500 width=}'+"\n";
     }
     theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
 

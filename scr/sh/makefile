@@ -2,9 +2,10 @@
 .DEFAULT_GOAL := help
 
 # param alias := nombre vista documental (archi.property alias)
+# tx := programa transformador (.ajs)
 
 mddocx:
-	(sh archiCli-md.sh . "" \
+	(sh archiCli-md.sh . $(tx) \
 	$(alias) mddocx)
 
 mdpdf:

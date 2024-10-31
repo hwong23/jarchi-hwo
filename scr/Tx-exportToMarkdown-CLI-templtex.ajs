@@ -106,7 +106,9 @@ if (theView) {
         g_theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
     }
     else {
-        g_theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";
+        g_theDocument+="\n!["+theView.name+"]["+ argRutaCompleta == 'si' ? 
+            '\n!['+ imageReferencia+ '](' +relativeURL+ ')':
+            '\n!['+ imageReferencia+ '](' +imageReferencia+'.png)'+"\n";
     }
     theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
 
@@ -156,11 +158,10 @@ if (theView) {
     if(exportFile != null) {
          if (!embed) {  // escribe archivo imagen exportFile
              imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
-             relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
-                '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+            //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
+            //     '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
          viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, viewDocumentations);

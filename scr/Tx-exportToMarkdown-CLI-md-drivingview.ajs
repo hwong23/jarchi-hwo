@@ -296,7 +296,6 @@ function exportViews (k, viewList, settings)
         (v.prop('plantilla')? 
             v.prop('plantilla'):
             'documentation-md') + '.tpl', 'UTF-8') );
-console.log('plantilla: ', v.prop('plantilla'));
     elemtPlantillaActual = v.prop('plantillaElm')? 
         v.prop('plantillaElm'):
         'elementtabla-md,elementtabla-fila-md';

@@ -296,10 +296,11 @@ function exportViews (k, viewList, settings)
         (v.prop('plantilla')? 
             v.prop('plantilla'):
             'documentation-md') + '.tpl', 'UTF-8') );
-        elemtPlantillaActual = v.prop('plantillaElm')? 
-            v.prop('plantillaElm'):
-            'elementtabla-md,elementtabla-fila-md';
-            cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
+console.log('plantilla: ', v.prop('plantilla'));
+    elemtPlantillaActual = v.prop('plantillaElm')? 
+        v.prop('plantillaElm'):
+        'elementtabla-md,elementtabla-fila-md';
+    cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
     if (cambioPlnt) {
         elemtPlantilla = elemtPlantillaActual;
         tplElement = _.template(readFully(__DIR__ + 'templates/md-doctec/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));

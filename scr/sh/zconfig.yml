@@ -26,9 +26,10 @@ mdpdf:
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
-  expportprg: Tx-exportToMarkdown-CLI-md.ajs
+  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs
+  expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/pdf
   rutaCompleta: no
 mdtex:
@@ -36,8 +37,9 @@ mdtex:
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
-  expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-templtex.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/tex
   rutaCompleta: no

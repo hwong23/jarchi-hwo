@@ -9,11 +9,11 @@ mddocx:
 	$(alias) mddocx)
 
 mdpdf:
-	(sh archiCli-md.sh . "" \
+	(sh archiCli-md.sh . $(tx) \
 	$(alias) mdpdf)
 
 mdtex:
-	(sh archiCli-md.sh . "" \
+	(sh archiCli-md.sh . $(tx) \
 	$(alias) mdtex)
 
 mdppt:

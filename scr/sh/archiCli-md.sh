@@ -39,12 +39,12 @@ rutaMacMD=$(varvalue config_ $4 _rutaMacMD)
 rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $4 _rutaCompleta) || echo $5)
 
 echo Configuracion: 
-echo '   rutausr:' $rutausr
-echo '   rutamodelo:' $rutamodelo
-echo '   rutaprg:' $rutaprg
-echo '   prg:' $prg
-echo '   vistadoc:' $vistadoc
-echo '   rutaMacMD:' $rutaMacMD
+echo '   rutausr:     ' $rutausr
+echo '   rutamodelo:  ' $rutamodelo
+echo '   rutaprg:     ' $rutaprg
+echo '   prg:         ' $prg
+echo '   vistadoc:    ' $vistadoc
+echo '   rutaMacMD:   ' $rutaMacMD
 echo '   rutaCompleta:' $rutaCompleta
 
 

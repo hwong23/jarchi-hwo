@@ -164,7 +164,7 @@ if (g_drivingView) {
         }
         else {
             g_theDocument += (drivingViewInclusionSettings["IncludeDiagram"]===true) ? 
-            "\n!["+g_drivingView.name+"]["+ imageReferencia +"]{height=500px}\n":
+            "\n!["+g_drivingView.name+"]("+ imageReferencia +".png){height=500px}\n":
             "";
         }
     }

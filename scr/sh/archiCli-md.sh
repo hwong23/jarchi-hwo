@@ -33,10 +33,19 @@ eval $(parse_yaml $1/zconfig.yml config_)
 rutausr=$(varvalue config_ $4 _rutausr)
 rutamodelo=$(varvalue config_ $4 _rutamodelo)
 rutaprg=$(varvalue config_ $4 _rutaprg)
-prg=$([ $2 == "-" ] && echo $(varvalue config_ $4 _expportprg) || echo $2)
+prg=$(echo $(varvalue config_ $4 _expportprg_$2))
+# prg=$([ $2 == "-" ] && echo $(varvalue config_ $4 _expportprg) || echo $2)
 vistadoc=$3
 rutaMacMD=$(varvalue config_ $4 _rutaMacMD)
 rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $4 _rutaCompleta) || echo $5)
+
+# Validacion argumentos vacíos
+if [ -z $prg ]; then
+   echo "Error: El transformadorTx $tx no existe"
+   exit 1
+ fi
+
+
 
 echo Configuracion: 
 echo '   rutausr:     ' $rutausr
@@ -54,22 +63,4 @@ echo '   rutaCompleta:' $rutaCompleta
    -vistaDocumental $vistadoc \
    -rutaMacMD $rutaMacMD \
    -rutaCompleta $rutaCompleta
-
-
-# status=$?
-# echo 
-# echo exportSingle-htmlCLI
-# echo 'prgexporthtml': $config_deploy_prgexporthtml
-# echo 'rutaprgexporthtml': $config_deploy_rutaprgexporthtml
-# 
-# prghtml=$([ -z "$5"  ] && echo $config_deploy_prgexporthtml || echo $2)
-# rutaprgexporthtml=$config_deploy_rutaprgexporthtml
-# 
-# 
-# [ $status -eq 0 ] && /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app \
-# -consoleLog -nosplash \
-#    --modelrepository.loadModel $rutamodelo \
-#    --script.runScript $rutaprg/$prghtml \
-#    -rutaMacMD $rutaprgexporthtml \
-#   || echo "ERR"
 

@@ -149,13 +149,14 @@ if (g_drivingView) {
 
     
     // composición de theDocument, contenedor de la documentación de la vista
-    g_theDocument+= g_drivingView.prop('titulo')?
+    g_theDocument+= g_drivingView.prop('titulo')?           // título
         '# '+g_drivingView.prop('titulo')+'\n': 
         "# "+g_drivingView.name+"\n";
-    theTOC=devdoc_toc(0,g_drivingView, 'doc', theTOC);
+    theTOC=devdoc_toc(0,g_drivingView, 'doc', theTOC);      // contenido
     g_theDocument+="\n"+theTOC+"\n";
-    g_theDocument+="\n## Introducción\n";
-    imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
+    g_theDocument+="\n## Introducción\n";                   // intro
+    imageReferencia =                                       // imagen
+        g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
     if (drivingViewInclusionSettings.IncludeViewElements) {
         if (embed==true){
             var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
@@ -167,7 +168,7 @@ if (g_drivingView) {
             "";
         }
     }
-    g_drivingView.documentation != "" ? 
+    g_drivingView.documentation != "" ?                     // documentación
         g_theDocument+="\n"+g_drivingView.documentation+"\n":
         true;
 

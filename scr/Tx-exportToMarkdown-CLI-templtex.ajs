@@ -50,6 +50,8 @@ var theTOC = "* [Introducción](#Introducción)";
 var elements = '';
 var elementsCollection;
 var viewDocumentations = '';
+var viewTitles =  '';
+var viewDiagrams = '';
 
 
 // funciones con argumento plantillas
@@ -93,7 +95,7 @@ if (theView) {
     (debug)?console.log('g_path: '+g_path):true;
 
 
-    // composición de theDocument, contenedor de la documentación de la vista
+    // composición de g_theDocument, contenedor de la documentación de la vista
     g_theDocument+="# "+theView.name+"\n";
     theTOC=devdoc_toc(0,theView, 'tex', theTOC);
     g_theDocument+="\n"+theTOC+"\n";
@@ -119,22 +121,27 @@ if (theView) {
         };
     })
 
-    
     // llena la colección de elementos elements
     nestedDocumentation_elements(0, theView);
     
     // interpolación de texto mediante plantilla
-    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/tex/' + 
         (theView.prop('plantilla')? 
         theView.prop('plantilla'):
         'tex/documentation-md-tex') + '.tpl', 'UTF-8') ); 
+    viewTitles = tplViewTitle({viewId: theView.id, viewName: _.escape(
+        (theView.prop("titulo")) ? theView.prop("titulo"): 
+        (theView.labelExpression)? theView.labelExpression : theView.name)}
+        );
     
+    
+    // composición de viewDocumentations, contenedor de la documentación de la vista
     viewDocumentations += tplDocumentation (
         {
         viewId: 'id-'+theView.id,
-        viewTitle: "",      // viewTitles,
+        viewTitle: "",  //viewTitles,
         viewNota: devdoc_obtNota (theView),
-        viewDiagram: "",    // viewDiagrams,
+        viewDiagram: "",    //viewDiagrams,
         documentationText: _.escape(g_theDocument),
         // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
         elements: elements,     // colección elements es alimentada por nestedDocumentation

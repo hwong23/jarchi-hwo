@@ -197,9 +197,9 @@ if (g_drivingView) {
              relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             g_theDocument+= argRutaCompleta == 'si'? 
-                '\n['+ imageReferencia+ ']: ' +relativeURL:
-            '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+             // g_theDocument+= argRutaCompleta == 'si'? 
+             //    '\n['+ imageReferencia+ ']: ' +relativeURL:
+             //    '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
          g_theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, g_theDocument);

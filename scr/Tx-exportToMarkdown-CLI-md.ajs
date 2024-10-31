@@ -149,7 +149,9 @@ if (g_drivingView) {
 
     
     // composición de theDocument, contenedor de la documentación de la vista
-    g_theDocument+="# "+g_drivingView.name+"\n";
+    g_theDocument+= g_drivingView.prop('titulo')?
+        '# '+g_drivingView.prop('titulo')+'\n': 
+        "# "+g_drivingView.name+"\n";
     theTOC=devdoc_toc(0,g_drivingView, 'doc', theTOC);
     g_theDocument+="\n"+theTOC+"\n";
     g_theDocument+="\n## Introducción\n";

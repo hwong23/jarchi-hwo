@@ -141,6 +141,7 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
         parentSettings["IncludeProperties"] === null ||
         parentSettings["IncluyeRelaciones"] === null ||
         parentSettings["IncludeRutaCompleta"] === null ||
+        parentSettings["IncluyeElementosSindoc"] === null ||
         parentSettings["IncluyeSaltosLineaElementos"] == null
     ) {
         console.log("Default settings were not correctly passed to a child node");
@@ -156,6 +157,7 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
     var checkIncludeProperties = settingsElement.prop("IncludeProperties");
     var checkIncludeRutaCompleta = settingsElement.prop("IncludeRutaCompleta");
     var checkIncluyeRelaciones = settingsElement.prop("IncluyeRelaciones");
+    var checkIncluyeElementosSindoc = settingsElement.prop("IncluyeElementosSindoc");
     var checkIncluyeSaltosLineaElementos = settingsElement.prop("IncluyeSaltosLineaElementos");
 
     if (checkIncludeDiagram !== null) {
@@ -175,6 +177,9 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
     }
     if (checkIncluyeRelaciones !== null) {
         settings["IncluyeRelaciones"] = checkIncluyeRelaciones === "true"? true : false;
+    }
+    if (checkIncluyeElementosSindoc !== null) {
+        settings["IncluyeElementosSindoc"] = checkIncluyeElementosSindoc === "true"? true : false;
     }
     if (checkIncluyeSaltosLineaElementos !== null) {
         settings["IncluyeSaltosLineaElementos"] = checkIncluyeSaltosLineaElementos === "true"? true : false;
@@ -205,6 +210,7 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
         console.log("Default IncludeRutaCompleta setting: " + inclusionSettings["IncludeRutaCompleta"]);
         console.log("Default IncluyeRelaciones setting: " + inclusionSettings["IncluyeRelaciones"]);
+        console.log("Default IncluyeElementosSindoc setting: " + inclusionSettings["IncluyeElementosSindoc"]);
         console.log("Default IncluyeSaltosLineaElementos setting: " + inclusionSettings["IncluyeSaltosLineaElementos"]);
     }
 

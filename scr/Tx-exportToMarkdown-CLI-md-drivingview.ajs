@@ -27,8 +27,8 @@
     11-Oct-2024 - Transformador (Tx) para devdocs 2.0; 1.0 = manubot
     17-Oct-2024 - Configuraciones de la vista: plantillas, opciones de presentación, nombre
     17-Oct-2024 - Argumentos de entrada por CLI
-    28-Oct-2024 - inclusionsettings para elementos sin documentación
-    06-Nov-2024 - inclusionsettings para elementos saltos de línea
+    28-Oct-2024 - inclusionsettings.IncluyeElementosSindoc para elementos sin documentación
+    06-Nov-2024 - inclusionsettings.IncluyeSaltosLineaElementos para elementos saltos de línea
 
  */
 
@@ -66,7 +66,7 @@ var g_drivingView = null;         // will be set to the selected view that has a
 var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
-var debug = false;
+var debug = true;
 var viewsIdsByConceptId = {};
 
 
@@ -181,6 +181,7 @@ function useDrivingView(alias) {
         console.log("Default IncludeProperties setting: " + drivingViewInclusionSettings["IncludeProperties"]);
         console.log("Default IncludeRutaCompleta setting: " + drivingViewInclusionSettings["IncludeRutaCompleta"]);
         console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
+        console.log("Default IncluyeElementosSindoc setting: " + drivingViewInclusionSettings["IncluyeElementosSindoc"]);
         console.log("Default IncluyeSaltosLineaElementos setting: " + drivingViewInclusionSettings["IncluyeSaltosLineaElementos"]);
         console.log("DevDoc asociado: " + g_drivingView_devdoc);
 
@@ -324,6 +325,7 @@ function exportViews (k, viewList, settings)
 
     (debug)? console.log (addSpace(1), "exportViews: IncludeViewElements", viewInclusionSettings.IncludeViewElements) : true;
     (debug)? console.log (addSpace(1), "exportViews: IncludeDiagram", viewInclusionSettings.IncludeDiagram) : true;
+    (debug)? console.log (addSpace(1), "exportViews: IncluyeElementosSindoc", viewInclusionSettings.IncluyeElementosSindoc) : true;
     (debug)? console.log (addSpace(1), "exportViews: IncluyeSaltosLineaElementos", viewInclusionSettings.IncluyeSaltosLineaElementos) : true;
     
 

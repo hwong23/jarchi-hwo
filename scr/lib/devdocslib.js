@@ -27,13 +27,14 @@ var devdoc_debug = false;
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.
 var devdoc_DefaultInclusionSettings = {
-    "IncludeDiagram": true,         // if true, will include the view's diagram
-    "IncludeDocumentation": true,   // if true, will include the view's documentation text (which itself can have markdown, by the way)
-    "IncludeViewElements": true,    // if true, will include a catalogue of the view's elements
-    "IncludeProperties": true,      // if true, will include the "properties" field in a catalogue of elements from a view
-    "IncludeRutaCompleta": false,   // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
-    "IncluyeRelaciones": false,     // incluye la ruta completa en los MD para favorecer a los documentos de salida
-    "IncluyeElementosSindoc": false  // incluye elementos sin documentación
+    "IncludeDiagram": true,                 // if true, will include the view's diagram
+    "IncludeDocumentation": true,           // if true, will include the view's documentation text (which itself can have markdown, by the way)
+    "IncludeViewElements": true,            // if true, will include a catalogue of the view's elements
+    "IncludeProperties": true,              // if true, will include the "properties" field in a catalogue of elements from a view
+    "IncludeRutaCompleta": false,           // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
+    "IncluyeRelaciones": false,             // incluye la ruta completa en los MD para favorecer a los documentos de salida
+    "IncluyeElementosSindoc": false,        // incluye elementos sin documentación,
+    "IncluyeSaltosLineaElementos": true     // incluye saltos de línea en la documentación de elementos
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
 
@@ -139,7 +140,8 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
         parentSettings["IncludeViewElements"] === null ||
         parentSettings["IncludeProperties"] === null ||
         parentSettings["IncluyeRelaciones"] === null ||
-        parentSettings["IncludeRutaCompleta"] === null
+        parentSettings["IncludeRutaCompleta"] === null ||
+        parentSettings["IncluyeSaltosLineaElementos"] == null
     ) {
         console.log("Default settings were not correctly passed to a child node");
         return (null);
@@ -154,6 +156,7 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
     var checkIncludeProperties = settingsElement.prop("IncludeProperties");
     var checkIncludeRutaCompleta = settingsElement.prop("IncludeRutaCompleta");
     var checkIncluyeRelaciones = settingsElement.prop("IncluyeRelaciones");
+    var checkIncluyeSaltosLineaElementos = settingsElement.prop("IncluyeSaltosLineaElementos");
 
     if (checkIncludeDiagram !== null) {
         settings["IncludeDiagram"] = checkIncludeDiagram === "true"? true : false;
@@ -172,6 +175,9 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
     }
     if (checkIncluyeRelaciones !== null) {
         settings["IncluyeRelaciones"] = checkIncluyeRelaciones === "true"? true : false;
+    }
+    if (checkIncluyeSaltosLineaElementos !== null) {
+        settings["IncluyeSaltosLineaElementos"] = checkIncluyeSaltosLineaElementos === "true"? true : false;
     }
 
 
@@ -199,6 +205,7 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncludeProperties setting: " + inclusionSettings["IncludeProperties"]);
         console.log("Default IncludeRutaCompleta setting: " + inclusionSettings["IncludeRutaCompleta"]);
         console.log("Default IncluyeRelaciones setting: " + inclusionSettings["IncluyeRelaciones"]);
+        console.log("Default IncluyeSaltosLineaElementos setting: " + inclusionSettings["IncluyeSaltosLineaElementos"]);
     }
 
     (debug)? console.log ('devdoc_useDrivingView: ', drivingView.name): true;

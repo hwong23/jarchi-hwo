@@ -65,7 +65,7 @@ var g_drivingView = null;         // will be set to the selected view that has a
 var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
-var debug = false;
+var debug = true;
 var viewsIdsByConceptId = {};
 
 
@@ -180,6 +180,7 @@ function useDrivingView(alias) {
         console.log("Default IncludeProperties setting: " + drivingViewInclusionSettings["IncludeProperties"]);
         console.log("Default IncludeRutaCompleta setting: " + drivingViewInclusionSettings["IncludeRutaCompleta"]);
         console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
+        console.log("Default IncluyeSaltosLineaElementos setting: " + drivingViewInclusionSettings["IncluyeSaltosLineaElementos"]);
         console.log("DevDoc asociado: " + g_drivingView_devdoc);
 
         // Go through each immediate child group in the view, find the first group(s) in a series
@@ -305,6 +306,7 @@ function exportViews (k, viewList, settings)
         tplElement = _.template(readFully(__DIR__ + 'templates/md-doctec/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
         tplElementFila = _.template(readFully(__DIR__ + 'templates/md-doctec/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
     }
+    console.log(addSpace(1), 'exportViews.', 'plantilla', elemtPlantilla);
 
     // 2. opciones de presentación inclusionSettings
     var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
@@ -320,6 +322,7 @@ function exportViews (k, viewList, settings)
 
     (debug)? console.log (addSpace(1), "exportViews: IncludeViewElements", viewInclusionSettings.IncludeViewElements) : true;
     (debug)? console.log (addSpace(1), "exportViews: IncludeDiagram", viewInclusionSettings.IncludeDiagram) : true;
+    (debug)? console.log (addSpace(1), "exportViews: IncluyeSaltosLineaElementos", viewInclusionSettings.IncluyeSaltosLineaElementos) : true;
     
 
     // Update lists of elements and relationships
@@ -345,7 +348,9 @@ function exportViews (k, viewList, settings)
                 viewsIds: viewsIdsByConceptId[e.id],
                 elementName: devdoc_escapeDOC(e.name),
                 elementType: devdoc_properCase(e.type),
-                elementDocumentationText: e.documentation.replace(/\n/g, ' '),    //<br>
+                elementDocumentationText: viewInclusionSettings.IncluyeSaltosLineaElementos?
+                    e.documentation:
+                    e.documentation.replace(/\n/g, ' '),    //<br>
                 elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
                 });
             }

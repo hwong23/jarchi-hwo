@@ -1,8 +1,8 @@
 
 ---
-lang: "en"
+lang: en
 titlepage: true
-titlepage-rule-color: "360049"
+titlepage-rule-color: 360049
 ...
 
 {{viewTitle}}

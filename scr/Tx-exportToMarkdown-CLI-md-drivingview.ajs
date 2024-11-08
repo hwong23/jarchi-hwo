@@ -397,7 +397,7 @@ function exportViews (k, viewList, settings)
             devdoc_obtNota (v).replace(/\n/g, ' '): 
             "",    //<br>,
         viewDiagram: viewDiagrams,
-        documentationText: _.escape(v.documentation),
+        documentationText: v.documentation,   // _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
         elements: viewElements,
         relaciones: relaciones

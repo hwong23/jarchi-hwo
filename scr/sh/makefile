@@ -33,5 +33,5 @@ help:
 
 all:
 	# make article presentation thesis
-	make mddoc mdtex mdppt html
+	make mddocx mdpdf mdtex 
 

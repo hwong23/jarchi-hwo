@@ -340,7 +340,9 @@ function exportViews (k, viewList, settings)
           viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
         });
 
+        // devdoc::documentación de los elementos de una vista
         // carga de elementos de la vista actual
+        // ordenados por nombre
         _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
             if (e.documentation ||      // si elemento con documentación
                                         // si elemento sin documentación permitido

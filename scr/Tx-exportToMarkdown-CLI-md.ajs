@@ -52,7 +52,7 @@ console.log("Export to Markdown");
 
 
 /*
- nestedDocumentation. documentación de los elementos de una vista
+devdoc::documentación de los elementos de una vista
     d: nivel de identación títulos
     element: argumento vista
  Requiere: 

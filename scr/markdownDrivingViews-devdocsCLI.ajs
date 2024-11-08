@@ -81,6 +81,7 @@ function generateLink(theString) {
 }
 
 // Prints (documents) the elements and maybe properties (not relations) on the view
+// devdoc::documentación de los elementos de una vista
 function printViewElements(view, level, settings) {
     var objList = [];
     $(view).find("element").each(function (viewObj) {
@@ -202,7 +203,7 @@ function getViews(Level, Levelobj, settings) {
         for (var k = 0; k < viewList.length; k++) {
 
             var myView = viewList[k][0];
-            var myViewAncho = myView.prop("ancho")?myView.prop("ancho") + "in":"";
+            var myViewAncho = myView.prop("ancho")? myView.prop("ancho") + "in":"";
             var myRef = viewList[k][1];
 
             outputHdr(Level + 1, myView.name, true);

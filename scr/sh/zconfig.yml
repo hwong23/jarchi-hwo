@@ -40,7 +40,7 @@ mdtex:
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_all: exportSingle-htmlCLI.ajs
-  expportprg_solo: Tx-exportToMarkdown-CLI-templtex.ajs
+  expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/tex
   rutaCompleta: no
 mdppt:
@@ -50,7 +50,8 @@ mdppt:
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/ppt
   rutaCompleta: no
 mdhtml:
@@ -59,6 +60,7 @@ mdhtml:
   rutaprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/devdocs/devocs-contd/contd/html
+  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs 
+  rutaMacMD: /gh/devdocs/devocs-contd/contd/sitio
   rutaCompleta: no

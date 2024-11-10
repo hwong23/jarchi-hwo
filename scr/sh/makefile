@@ -4,6 +4,7 @@
 # param alias := nombre vista documental (archi.property alias)
 # tx := programa transformador (.ajs)
 
+# TODO clean
 # documento
 # tema
 # sitio

@@ -4,6 +4,15 @@
 # param alias := nombre vista documental (archi.property alias)
 # tx := programa transformador (.ajs)
 
+# documento
+# tema
+# sitio
+# presentacion
+# reporte
+# borrador
+
+
+
 mddocx:
 	(sh archiCli-md.sh . $(tx) \
 	$(alias) mddocx)
@@ -21,17 +30,22 @@ mdppt:
 	$(alias) mdppt)
 
 mdhtml:
-	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-md.ajs \
+	(sh archiCli-md.sh . $(tx) \
 	$(alias) mdhtml)
 
-exporta:
-	(sh archiCli-html.sh . "" \
-	$(alias) mddoc)
 
 help:
 	head -2 Makefile
 
 all:
-	# make article presentation thesis
+	# make documento, tema, sitio, presentacion, reporte, borrador
 	make mddocx mdpdf mdtex 
 
+documento:
+	make all alias=$(alias) tx=dd
+
+tema:
+	make all alias=$(alias) tx=solo
+
+sitio:
+	make mdhtml alias=na tx=all

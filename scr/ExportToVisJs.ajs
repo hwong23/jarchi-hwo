@@ -1,0 +1,257 @@
+/*
+ * View export as Vis.js 
+ * Author: Nicolas Figay 2021
+ * Version: 0.1
+ * This script creates a vis.js graph
+*/
+
+var ArchiMateRelationArcs =
+["arrows:{to:    {enabled:false,type:'arrow'},\
+          from:  {enabled:false,type:'arrow'}},\
+          dashes:[5,5]",//Access
+ "arrows:{from:{enabled:true,type:'diamond'}}",
+ "arrows:{flow to:{enabled: true,type:'vee'}},dashes:[5,5]",
+ "arrows:{from:{enabled:true,type:'diamond'}}",
+ "arrows:{from:{enabled:true,type:'circle',arrowStrikethrough:false},\
+          to:  {enabled:true,type:'vee',   arrowStrikethrough:false}}",
+ "arrows:{to: {enabled:true,type:'arrow'}},dashes:[5,5]",
+ "arrows:{to: {enabled:true,type:'curve'}}",
+ "arrows:{to: {enabled:true,type:'triangle'}},dashes:[2,2]",
+ "arrows:{to: {enabled:true,type:'triangle'}}",
+ "arrows:{to: {enabled:true,type:'vee'}}",
+ "arrows:{to: {enabled:true,type:'arrow',arrowStrikethrough:false}}"
+];
+//endPointOffset:{from:0,to:0} to add for arrows closer to the object? To be investigated
+
+console.log("Vis.js export Script");
+load(__DIR__ + "lib/archimate.js");
+var DIR = './img/archimate/';
+var imageExtension="svg";
+
+var ArchiMateRelationNames =[ "Access", "Composition", "Flow", "Aggregation", "Assignment", "Influence", "Association", "Realization", "Specialization", "Triggering", "Serving"];
+//Archi always uses one of the direction of each relation, with an associated label contained in the following array, and corresponding to the relations of the previous array with the same order
+var orientedArchiRelationNames =[ "accesses", "is composed of", "flows to", "aggregates", "is assigned to", "influences", "is associated with", "realizes", "is a specialization of", "triggers", "serves"];
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+var FileWriter=Java.type("java.io.FileWriter");
+var views = selection.filter("archimate-diagram-model");
+if (views.length == 0){console.log ("No view selected -> let's select one or several");}
+
+views.each (function(view){
+// Saving the diagram as PNG
+     var bytes = $.model.renderViewAsBase64(view, "PNG", {scale: 1, margin: 20});
+     var fileName = window.promptSaveFile( { title: "Save View", filterExtensions: [ "*.png" ], fileName: view.name + ".png" } );
+     if(fileName) {$.fs.writeFile(fileName, bytes, "BASE64");}
+     imageName=fileName.replace(/^.*(\\|\/|\:)/, '');
+     console.log(imageName); 
+
+    var fileName = window.promptSaveFile( { title: "Vis.js export", filterExtensions: [ "*.html" ], fileName: view.name + ".html" } );
+    if(fileName) {
+
+    // for the diagram let's create a node and a cluster containing all the nodes representing the element of the diagram
+       var fw = new FileWriter(fileName);
+       fw.write("<!DOCTYPE html>");
+       fw.write('<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">');
+       fw.write("<title>"+ view.name+"</title>");
+       fw.write ('<script type:"text/javascript" src="https://unpkg.com/vis-data@latest/peer/umd/vis-data.min.js"></script>\n');
+       fw.write ('<script type:"text/javascript" src="https://unpkg.com/vis-network@latest/peer/umd/vis-network.min.js"></script>\n');
+       fw.write ('<script type:"text/javascript" src="https://unpkg.com/vis-network@latest/peer/umd/vis-network.min.js"></script>\n');
+       fw.write ('<link rel="stylesheet" type:"text/css" href="https://unpkg.com/vis-network/styles/vis-network.min.css" />\n');  
+       fw.write ('</head>');
+       fw.write('<body onload="draw()" class="lang-fr">');
+
+       fw.write ('<div style="width:100%;height:400px;">\n'); 
+       fw.write ('<div id="mydiagram" style="width:30%; height:100%; float:left; border-width: 2px; border-style: inset; border-color:black" ><img style="width:100%;height:auto;" src="');
+       fw.write (imageName);
+       fw.write ('" /></div>\n'); 
+       fw.write ('<div id="mynetwork1" style="width:30%; height:100%; float:left; border-width: 2px; border-style: inset; border-color:black" ></div>\n'); 
+       fw.write ('<div id="mynetwork2" style="width:30%; height:100%; float:left; border-width: 2px; border-style: inset; border-color:black" ></div>\n'); 
+
+       fw.write ('</div>\n');
+       
+       fw.write ('<script type:"text/javascript">\n');
+       fw.write("function draw() {");
+       fw.write ('var nodes = new vis.DataSet([]);\n');
+       fw.write ('var edges = new vis.DataSet([]);\n');
+  
+       fw.write ('nodes.add({id:"');
+       fw.write (view.id);
+       fw.write ('"');
+       fw.write (",shape:'image', label:'");
+       fw.write (view.name);
+       fw.write ("',image:");
+       fw.write ('"');       
+       fw.write (DIR);
+       fw.write ("view.");
+       fw.write (imageExtension);
+       fw.write ('"');
+       fw.write (', EH4I_Type:"View"');
+       fw.write (', viewpoint:"');
+       fw.write (view.viewpoint.id);
+       fw.write ('"');
+       fw.write ("});")
+       fw.write ("\n");
+       did="#"+view.id; 
+ 
+       $(did).find().filter('element').each(function(node) {
+          imageName=node.type;
+          switch (node.type) {
+              //for any operation to be made before creating a node in vis.js
+              case "junction":
+                imageName=node.concept.junctionType+"-junction";
+              default:                
+          }
+// to create a node in vis.js
+         fw.write ('nodes.add({id:"');
+         fw.write (node.id);
+         fw.write ('"');
+         fw.write (",shape:'image', label:'");
+         fw.write (node.name);
+         fw.write ("',image:");
+         fw.write ('"');
+         fw.write (DIR);
+         fw.write (imageName);
+         fw.write (".");
+         fw.write (imageExtension);
+         fw.write ('"');
+         fw.write (", title: "); 
+         fw.write ('"');
+         fw.write (imageName);
+         fw.write ('"');
+         fw.write (', EH4I_Type:"Entity"');
+         fw.write ("});")
+         fw.write ("\n");
+       }); 
+    
+       $(did).find().filter('relationship').each(function(relation) {
+            var myRelation=relation.type.replace(/-relationship/g, "").capitalize();
+            var myArc=ArchiMateRelationArcs[ArchiMateRelationNames.indexOf(myRelation)];
+            myArc= myArc.replace(/\s+/g,"");
+            var myLink=orientedArchiRelationNames[ArchiMateRelationNames.indexOf(myRelation)];
+            var myLabel=relation.type;
+
+            switch (relation.type) {
+                case "access-relationship":
+                    switch (relation.concept.accessType){
+                        case "write":  myArc=myArc.replace(/to:{enabled:false/,"to:{enabled:true");                                       break;
+                        case "read" :  myArc=myArc.replace(/from:{enabled:false/,"from:{enabled:true");break;
+                        case "readwrite": myArc=myArc.replace(/false/g,"true");break;
+                    }
+                    var myLabel=relation.concept.AccessType;
+               default:           
+            }       
+
+            fw.write ('nodes.add({id:"');
+            fw.write (relation.id);
+            fw.write ('"');
+            fw.write (",shape:'image'");
+            fw.write (", label:'");
+            fw.write (relation.name);
+            fw.write ("',image:");
+            fw.write ('"');
+            fw.write (DIR);
+            fw.write (myRelation);
+            fw.write (".");
+            fw.write (imageExtension);
+            fw.write ('"');
+            fw.write (', EH4I_Type:"Relation"');
+            fw.write (", label: "); 
+            fw.write ('"');
+            fw.write (myLabel);
+            fw.write ('"'); 
+            fw.write ("});")
+            fw.write ("\n");
+            
+            fw.write ("edges.add({from: ");
+            fw.write ('"');
+            fw.write (relation.id);
+            fw.write ('"');
+            fw.write (", to: ");
+            fw.write ('"');                 
+            fw.write (relation.target.id);
+            fw.write ('"');
+            fw.write (', EH4I_Type:"Role"');
+            fw.write (',');
+            fw.write ('arrows: {to:{enabled: true}}'); 
+            fw.write (", label: 'target'"); 
+            fw.write ("});");
+            fw.write ("\n");
+
+            fw.write ("edges.add({from: ");
+            fw.write ('"');                 
+            fw.write (relation.id);
+            fw.write ('"');                 
+            fw.write (", to: ");
+            fw.write ('"');                 
+            fw.write (relation.source.id);
+            fw.write ('"');
+            fw.write (', EH4I_Type:"Role"');
+            fw.write (',');
+            fw.write ("arrows: {to:{enabled: true}}");
+            fw.write (", label: 'source'");                   
+            fw.write ("});");
+            fw.write ("\n");
+if (false){  
+};
+            fw.write ("edges.add({from: ");
+            fw.write ('"');                 
+            fw.write (relation.source.id);
+            fw.write ('"');
+            fw.write (", to: ");
+            fw.write ('"');
+            fw.write (relation.target.id);
+            fw.write ('"');
+            fw.write (", title: "); 
+            fw.write ('"');
+            fw.write (myLink);
+            fw.write ('"'); 
+            fw.write (", label: "); 
+            fw.write ('"');
+            fw.write (myLabel);
+            fw.write ('"'); 
+            fw.write (', EH4I_Type:"Link"');
+            fw.write (',');
+            fw.write ( myArc);                
+            fw.write ("});");
+            fw.write ("\n");
+
+            if(relation.type==="composition-relationship"){
+                 fw.write ('nodes.update({id:"');
+                 fw.write (relation.target.id);
+                 fw.write ('", partOf:"');
+                 fw.write (relation.source.id);
+                 fw.write ('"});');
+                 fw.write ("\n");
+
+            }
+       }); 
+       fw.write ("\n");
+       
+       fw.write('var nodes1 = new vis.DataView(nodes, {filter: function (item) { return (item.EH4I_Type == "Entity");}});\n');
+       fw.write('var edges1 = new vis.DataView(edges, {filter: function (item) { return (item.EH4I_Type == "Link");}});\n');
+
+       fw.write('var nodes2 = new vis.DataView(nodes, {filter: function (item) { return (item.EH4I_Type == "Entity" || item.EH4I_Type == "Relation" );}});\n');
+       fw.write('var edges2 = new vis.DataView(edges, {filter: function (item) { return (item.EH4I_Type == "Role");}});\n');
+
+       fw.write ('var container1 = document.getElementById("mynetwork1");\n');
+       fw.write ('var data1 = { nodes: nodes1, edges: edges1 };\n');
+    
+       fw.write('var options1={joinCondition:function(nodeOptions) {return nodeOptions.partOf === "fdcb8dad-91b2-450d-81a8-e922d34f978e";}};');
+       fw.write ('var network1 = new vis.Network(container1, data1, options1);\n');
+       fw.write('network1.clustering.cluster(options1);');
+       fw.write('network1.on("click",function(params) {console.log(params);if (params.nodes.length == 1) {if (network1.isCluster(params.nodes[0])==true) {network1.openCluster(params.nodes[0]);}}});');
+       
+       fw.write ('var container2 = document.getElementById("mynetwork2");\n');
+       fw.write ('var data2 = { nodes: nodes2, edges: edges2 };\n');
+       fw.write ('var options2 = {};\n');
+       fw.write ('var network2 = new vis.Network(container2, data2, options2);\n');
+       fw.write("};")
+
+       fw.write ('</script></body></html>\n');
+            
+       fw.close();  // forgetting to close it results in a truncated file
+       }
+    }
+);

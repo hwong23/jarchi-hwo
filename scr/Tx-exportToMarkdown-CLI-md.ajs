@@ -57,10 +57,10 @@ devdoc::documentación de los elementos de una vista
     element: argumento vista
  Requiere: 
  */
-function nestedDocumentation_elements(d, element, inclusionsettings = null) {
+function nestedDocumentation_elements(d, view, inclusionsettings = null) {
     debug? console.log('Elementos: '):true;
 
-    $(element).children().not("relationship").filter(function(child) {
+    $(view).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes("doc")? true:false): false)
     }).each(function(e) 

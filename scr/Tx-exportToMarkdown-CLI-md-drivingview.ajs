@@ -29,6 +29,7 @@
     17-Oct-2024 - Argumentos de entrada por CLI
     28-Oct-2024 - inclusionsettings.IncluyeElementosSindoc para elementos sin documentación
     06-Nov-2024 - inclusionsettings.IncluyeSaltosLineaElementos para elementos saltos de línea
+    11-Nov-2024 - cambio bucle de recorrido elementos: nestedDocumentation_elements
 
  */
 
@@ -67,7 +68,7 @@ var embed = false;                // false will store the images outside of the 
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
 var debug = false;
-var viewsIdsByConceptId = {};
+var g_viewsIdsByConceptId = {};
 
 
 // funciones con argumento plantillas base
@@ -219,17 +220,17 @@ function useDrivingView(alias) {
 
 
 // recorre los elementos del grupo de vistas Levelobj
-function getViews(Level, Levelobj, settings) {
+function getViews(Level, GroupObj, settings) {
     var thisPath = "";
     var imageURL = "";
     var viewList = [];
 
-    if (!Levelobj) {
+    if (!GroupObj) {
         return null;
     } else {
         // Find the view references composed within this group and
 		// put them into an array so we can sort them.
-        $(Levelobj).children().each(function (viewRefs) {
+        $(GroupObj).children().each(function (viewRefs) {
             if (
                 (viewRefs) && ((viewRefs.type == 'archimate-diagram-model') || 
                 (viewRefs.type == 'sketch-model') ||
@@ -331,13 +332,17 @@ function exportViews (k, viewList, settings)
 
     // Update lists of elements and relationships
     if (viewInclusionSettings.IncludeViewElements === true) {
+        // llena la colección de elemntos elements[]
+        // nestedDocumentation_elements (0, v, viewInclusionSettings, g_viewsIdsByConceptId, elementsCollection);
+
         $(v).find('element').each(function(e) {
           if(elementsCollection) {
             if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
-          } else {
+          } 
+          else {
             elementsCollection = $(e.concept);
           }
-          viewsIdsByConceptId[e.concept.id] += ' id-'+v.id;
+          g_viewsIdsByConceptId[e.concept.id]+=' id-'+v.id;
         });
 
         // devdoc::documentación de los elementos de una vista
@@ -353,7 +358,7 @@ function exportViews (k, viewList, settings)
 
                 // plantilla elemento
                 elements += tplElementFila({
-                viewsIds: viewsIdsByConceptId[e.id],
+                viewsIds: g_viewsIdsByConceptId[e.id],
                 elementName: devdoc_escapeDOC(e.name),
                 elementType: devdoc_properCase(e.type),
                 elementDocumentationText: viewInclusionSettings.IncluyeSaltosLineaElementos?
@@ -376,7 +381,7 @@ function exportViews (k, viewList, settings)
         } else {
         relacionesCollection = $(r.concept);
         }
-        viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
+        g_viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
     });
     }
 
@@ -566,3 +571,31 @@ function exportaImagen (vv, pth) {
     return vv.name;
 }
   
+function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByConceptId, eCollection) {
+    debug? console.log('Elementos: '):true;
+
+    $(view).children().not("relationship").filter(function(child) {
+        var prop_destino = child.prop("destino");
+        return (prop_destino? (prop_destino.includes("doc")? true:false): false)
+    }).each(function(e) 
+    {
+        if(eCollection) {
+            if(!eCollection.contains(e.concept)) eCollection.add($(e.concept));
+          } 
+          else {
+            eCollection = $(e.concept);
+          }
+          vIdsByConceptId[e.concept.id]+=' id-'+view.id;
+        
+
+        // if (e.name) {
+            
+        //     // el elemento es contenedor
+        //     if ($(e).children().length>0) {
+        //         d++;
+        //         nestedDocumentation_elements(d, e, inclusionsettings);
+        //         d--;
+        //     }
+        // } // if (e.name)
+    });
+}

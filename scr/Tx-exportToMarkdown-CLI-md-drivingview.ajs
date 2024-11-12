@@ -67,7 +67,7 @@ var g_drivingView = null;         // will be set to the selected view that has a
 var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
-var debug = false;
+var debug = true;
 var g_viewsIdsByConceptId = {};
 
 
@@ -333,17 +333,17 @@ function exportViews (k, viewList, settings)
     // Update lists of elements and relationships
     if (viewInclusionSettings.IncludeViewElements === true) {
         // llena la colección de elemntos elements[]
-        // nestedDocumentation_elements (0, v, viewInclusionSettings, g_viewsIdsByConceptId, elementsCollection);
+        nestedDocumentation_elements (0, v, viewInclusionSettings, g_viewsIdsByConceptId, elementsCollection);
 
-        $(v).find('element').each(function(e) {
-          if(elementsCollection) {
-            if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
-          } 
-          else {
-            elementsCollection = $(e.concept);
-          }
-          g_viewsIdsByConceptId[e.concept.id]+=' id-'+v.id;
-        });
+        // $(v).find('element').each(function(e) {
+        //   if(elementsCollection) {
+        //     if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
+        //   } 
+        //   else {
+        //     elementsCollection = $(e.concept);
+        //   }
+        //   g_viewsIdsByConceptId[e.concept.id]+=' id-'+v.id;
+        // });
 
         // devdoc::documentación de los elementos de una vista
         // carga de elementos de la vista actual
@@ -354,7 +354,7 @@ function exportViews (k, viewList, settings)
             (!e.documentation && viewInclusionSettings.IncluyeElementosSindoc) ||
             $(e).children().length>0)   // si elemento es un grupo
             {    
-                (debug)? console.log (addSpace(2), e.name): true;
+                (debug)? console.log (addSpace(2), "exportViews: ", e.name): true;
 
                 // plantilla elemento
                 elements += tplElementFila({
@@ -384,8 +384,6 @@ function exportViews (k, viewList, settings)
         g_viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
     });
     }
-
-    (debug)? console.log (addSpace(1), 'exportviews: elementos ', elements.length()):true;
 
 
     // Generate report's fragments: título, diagrama, elementos
@@ -572,13 +570,15 @@ function exportaImagen (vv, pth) {
 }
   
 function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByConceptId, eCollection) {
-    debug? console.log('Elementos: '):true;
-
     $(view).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes("doc")? true:false): false)
     }).each(function(e) 
     {
+        (debug)? console.log (addSpace(2), "nestedDoc: element ", e.name): true;
+        
+        
+        // el elemento no está en la colección
         if(eCollection) {
             if(!eCollection.contains(e.concept)) eCollection.add($(e.concept));
           } 
@@ -588,14 +588,13 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
           vIdsByConceptId[e.concept.id]+=' id-'+view.id;
         
 
-        // if (e.name) {
-            
-        //     // el elemento es contenedor
-        //     if ($(e).children().length>0) {
-        //         d++;
-        //         nestedDocumentation_elements(d, e, inclusionsettings);
-        //         d--;
-        //     }
-        // } // if (e.name)
+        // el elemento es contenedor
+        if ($(e).children().length>0) {
+            d++;
+            nestedDocumentation_elements(d, e, inclusionsettings, vIdsByConceptId, eCollection);
+            d--;
+        }
     });
+
+    // (debug)? console.log (addSpace(2), 'nestedDoc: elements ', eCollection.size()): true;
 }

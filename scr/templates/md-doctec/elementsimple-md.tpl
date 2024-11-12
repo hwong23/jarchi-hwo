@@ -1,3 +1,2 @@
-### Catálogo de Elementos
 {{filasTabla}}
 

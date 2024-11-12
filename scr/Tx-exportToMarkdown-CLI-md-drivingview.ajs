@@ -31,6 +31,8 @@
     06-Nov-2024 - inclusionsettings.IncluyeSaltosLineaElementos para elementos saltos de línea
     11-Nov-2024 - cambio bucle de recorrido elementos: nestedDocumentation_elements
 
+    TODO mejorar la titulación de los elementos según profundidad
+
  */
 
 load(__DIR__ + "lib/myargs.js");

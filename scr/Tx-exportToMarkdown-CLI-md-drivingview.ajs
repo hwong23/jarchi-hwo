@@ -332,19 +332,9 @@ function exportViews (k, viewList, settings)
 
     // Update lists of elements and relationships
     if (viewInclusionSettings.IncludeViewElements === true) {
-        // llena la colección de elemntos elements[]
+        // llena la colección de elementos elements[]
         elementsCollection = nestedDocumentation_elements (0, v, viewInclusionSettings, 
             g_viewsIdsByConceptId, elementsCollection);
-
-        // $(v).find('element').each(function(e) {
-        //   if(elementsCollection) {
-        //     if(!elementsCollection.contains(e.concept)) elementsCollection.add($(e.concept));
-        //   } 
-        //   else {
-        //     elementsCollection = $(e.concept);
-        //   }
-        //   g_viewsIdsByConceptId[e.concept.id]+=' id-'+v.id;
-        // });
 
 
         (debug)? console.log (addSpace(2), 'exportViews: elements ', elementsCollection.size()): true;

@@ -69,7 +69,7 @@ var g_drivingView = null;         // will be set to the selected view that has a
 var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
 var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
 var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
-var debug = false;
+var debug = true;
 var g_viewsIdsByConceptId = {};
 
 
@@ -580,24 +580,26 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
         
         
         // el elemento e válido y no está en la colección
-        if(eCollection && e.name) {
-            if(!eCollection.contains(e.concept)) eCollection.add($(e.concept));
-            vIdsByConceptId[e.concept.id]+=' idc-'+view.id;
-        } 
-        else {
-            eCollection = $(e.concept);
+        if (e.name) {
+            if(eCollection) {
+                if(!eCollection.contains(e.concept)) eCollection.add($(e.concept));
+                vIdsByConceptId[e.concept.id]+=' idc-'+view.id;
+            } 
+            else {
+                eCollection = $(e.concept);
+            }
         }
         
         // el elemento es contenedor
         nueva_eCollection = eCollection;
         if ($(e).children().length>0) {
             d++;
-            nueva_eCollection = nestedDocumentation_elements(d, e, inclusionsettings, vIdsByConceptId, nueva_eCollection);
+            eCollection = nestedDocumentation_elements(d, e, inclusionsettings, vIdsByConceptId, nueva_eCollection);
             d--;
         }
     });
 
     
-    // (debug)? console.log (addSpace(2), 'nestedDoc: elements ', eCollection.size()): true;
-    return nueva_eCollection;
+    (debug)? console.log (addSpace(2), 'nestedDoc: elements ', eCollection.size()): true;
+    return eCollection;
 }

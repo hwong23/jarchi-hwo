@@ -568,24 +568,26 @@ function exportaImagen (vv, pth) {
 function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByConceptId, eCollection) {
     var nueva_eCollection;
 
-    $(view).children().not("relationship").filter(function(child) {
-        var prop_destino = child.prop("destino");
-        return (prop_destino? (prop_destino.includes("doc")? true:false): false)
-    }).each(function(e) 
+    $(view).children().not("relationship").
+        filter(function(child) {
+        // var prop_destino = child.prop("destino");
+        // return (prop_destino? (prop_destino.includes("doc")? true:false): false)
+        return (child.type != "view-reference" && child.type != "archimate-diagram-model");
+        })
+    .each(function(e) 
     {
-        (debug)? console.log (addSpace(2), "nestedDoc: element ", e.name): true;
+        (debug)? console.log (addSpace(2), "nestedDoc: element ", e.name, e.type): true;
         
         
-        // el elemento no está en la colección
-        if(eCollection) {
+        // el elemento e válido y no está en la colección
+        if(eCollection && e.name) {
             if(!eCollection.contains(e.concept)) eCollection.add($(e.concept));
-          } 
-          else {
+            vIdsByConceptId[e.concept.id]+=' idc-'+view.id;
+        } 
+        else {
             eCollection = $(e.concept);
-          }
-          vIdsByConceptId[e.concept.id]+=' id-'+view.id;
+        }
         
-
         // el elemento es contenedor
         nueva_eCollection = eCollection;
         if ($(e).children().length>0) {

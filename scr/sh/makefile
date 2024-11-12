@@ -5,6 +5,7 @@
 # tx := programa transformador (.ajs)
 
 # TODO clean
+# TODO import doc; read md file
 # documento
 # tema
 # sitio

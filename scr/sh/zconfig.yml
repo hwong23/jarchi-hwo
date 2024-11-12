@@ -4,63 +4,61 @@ deploy:
   # origenhtml: /Users/hwo/Downloads/tmpr/pgnarchidoc
   prgreporthtml: exportSingle-htmlCLI.ajs
   prgreportmd: exportSingle-md.ajs
-  rutareport: /gh/devdocs/devocs-contd/contd/report
+  rutareport: /git/devdocs/devocs-contd/contd/report
 # ccambio:
 #   gitorigen: /Users/hwo/gh/pgn/pgn-078
 # publish:
 #   gitorigen: /Users/hwo/gh/pgn/pgn-078 
 
 mddocx:
-  rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
-  rutaprg: $HOME/gh/jarchi-hwo/scr
-  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
+  rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
-   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  expportprg_all: exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/devdocs/devocs-contd/contd/docx
+  expportprg_all: exportSingle-md.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  rutaMacMD: /git/devdocs/devocs-contd/contd/docx
   rutaCompleta: no
 mdpdf:
-  rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
-  rutaprg: $HOME/gh/jarchi-hwo/scr
-  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
-  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  expportprg_all: exportSingle-htmlCLI.ajs
-  expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
+  rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  rutaMacMD: /gh/devdocs/devocs-contd/contd/pdf
+  expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
+  expportprg_all: exportSingle-htmlCLI.ajs # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  rutaMacMD: /git/devdocs/devocs-contd/contd/pdf
   rutaCompleta: no
 mdtex:
-  rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
-  rutaprg: $HOME/gh/jarchi-hwo/scr
-  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
+  rutaexpportprg: $HOME/git/jarchi-hwo/scr
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_all: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
-  rutaMacMD: /gh/devdocs/devocs-contd/contd/tex
+  rutaMacMD: /git/devdocs/devocs-contd/contd/tex
   rutaCompleta: no
 mdppt:
-  rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
-  rutaprg: $HOME/gh/jarchi-hwo/scr
-  rutaexpportprg: $HOME/gh/jarchi-hwo/scr
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
+  rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_all: exportSingle-htmlCLI.ajs
-  rutaMacMD: /gh/devdocs/devocs-contd/contd/ppt
+  rutaMacMD: /git/devdocs/devocs-contd/contd/ppt
   rutaCompleta: no
 mdhtml:
-  rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
-  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutausr: $HOME/git
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_all: exportSingle-htmlCLI.ajs 
-  rutaMacMD: /gh/devdocs/devocs-contd/contd/sitio
+  rutaMacMD: /git/devdocs/devocs-contd/contd/sitio
   rutaCompleta: no

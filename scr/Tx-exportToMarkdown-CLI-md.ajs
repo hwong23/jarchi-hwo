@@ -192,7 +192,7 @@ if (g_drivingView) {
     var exportFile = g_fileName;
 
     if(exportFile != null) {
-        if (!embed) {  // escribe archivo imagen exportFile
+       if (!embed) {  // escribe archivo imagen exportFile
              imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
              relativeURL = imageURL.split("\\");
              var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
@@ -200,15 +200,19 @@ if (g_drivingView) {
              // g_theDocument+= argRutaCompleta == 'si'? 
              //    '\n['+ imageReferencia+ ']: ' +relativeURL:
              //    '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
-         }
-         g_theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-         $.fs.writeFile(exportFile, g_theDocument);
-         
-         console.log("> Export done");
-     }
-     else {
+       }
+
+       g_theDocument+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
+       $.fs.writeFile(exportFile, g_theDocument);
+       
+       console.log("Salidas:");
+       console.log(devdoc_addSpace(1), "path: ", g_path);
+       console.log(devdoc_addSpace(1), "fileName: ", g_fileName);
+       console.log("> Export done");
+    }
+    else {
          console.log("> Export cancelled");
-     }
+    }
 }
 else {
     console.log("> Please Select a View");

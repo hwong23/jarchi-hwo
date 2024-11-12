@@ -378,4 +378,13 @@ function devdoc_properCase(str) {
       }
     ).replace('-', ' ');
   }
+
   
+function devdoc_addSpace(numSpaces) {
+  var i;
+  var rtnText = " ";
+  for (i = 0; i < numSpaces; i++) {
+      rtnText += "   ";
+  }
+  return rtnText;
+}

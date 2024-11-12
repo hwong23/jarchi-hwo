@@ -333,7 +333,8 @@ function exportViews (k, viewList, settings)
     // Update lists of elements and relationships
     if (viewInclusionSettings.IncludeViewElements === true) {
         // llena la colección de elemntos elements[]
-        nestedDocumentation_elements (0, v, viewInclusionSettings, g_viewsIdsByConceptId, elementsCollection);
+        elementsCollection = nestedDocumentation_elements (0, v, viewInclusionSettings, 
+            g_viewsIdsByConceptId, elementsCollection);
 
         // $(v).find('element').each(function(e) {
         //   if(elementsCollection) {
@@ -345,17 +346,20 @@ function exportViews (k, viewList, settings)
         //   g_viewsIdsByConceptId[e.concept.id]+=' id-'+v.id;
         // });
 
+
+        (debug)? console.log (addSpace(2), 'exportViews: elements ', elementsCollection.size()): true;
+
         // devdoc::documentación de los elementos de una vista
         // carga de elementos de la vista actual
         // ordenados por nombre
-        _.chain(elementsCollection).sortBy(function(e) { return e.name; }).each(function(e) {
+        _.chain(elementsCollection).
+            // sortBy(function(e) { return e.name; }).
+            each(function(e) {
             if (e.documentation ||      // si elemento con documentación
                                         // si elemento sin documentación permitido
             (!e.documentation && viewInclusionSettings.IncluyeElementosSindoc) ||
             $(e).children().length>0)   // si elemento es un grupo
             {    
-                (debug)? console.log (addSpace(2), "exportViews: ", e.name): true;
-
                 // plantilla elemento
                 elements += tplElementFila({
                 viewsIds: g_viewsIdsByConceptId[e.id],
@@ -570,6 +574,8 @@ function exportaImagen (vv, pth) {
 }
   
 function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByConceptId, eCollection) {
+    var nueva_eCollection;
+
     $(view).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes("doc")? true:false): false)
@@ -589,12 +595,15 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
         
 
         // el elemento es contenedor
+        nueva_eCollection = eCollection;
         if ($(e).children().length>0) {
             d++;
-            nestedDocumentation_elements(d, e, inclusionsettings, vIdsByConceptId, eCollection);
+            nueva_eCollection = nestedDocumentation_elements(d, e, inclusionsettings, vIdsByConceptId, nueva_eCollection);
             d--;
         }
     });
 
+    
     // (debug)? console.log (addSpace(2), 'nestedDoc: elements ', eCollection.size()): true;
+    return nueva_eCollection;
 }

@@ -1,0 +1,66 @@
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+Script Name: sort-and-layout-assessments 
+Purpose:     Sorts selected assessments within a view by ID and stacks them in a vertical layout
+             Builds on the AlignSpreadVertically script by Rob Kamp
+
+Thomas Rischbeck, rischbeck@itmc.ch, (C) ITMC 2021
+
+v2 all assessments same size and with label expression
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+minY = null;
+minX = null;
+maxWidth = 0;
+maxHeight = 0;
+
+distance = 5; 
+
+default_width = 200;
+default_height = 30; 
+
+// make all visual elements the same size
+$(selection).each(function(element) {
+    element.bounds = {width: default_width, height: default_height};
+});
+
+// set label expression for all visual elements & align legt
+$(selection).each(function(element) {
+    element.setLabelExpression("${property:ID} ${name}");
+    element.setTextAlignment(TEXT_ALIGNMENT.LEFT);
+});
+
+
+
+// Determine the width, height,  and 
+$(selection).each(function(element) {
+    minY = Math.min(element.bounds.y,minY==null?element.bounds.y:minY);
+    minX = Math.min(element.bounds.x,minX==null?element.bounds.x:minX);
+    maxWidth = Math.max(element.bounds.width,maxWidth);
+    maxHeight = Math.max(element.bounds.height,maxHeight);
+});
+
+// Sort the selection by the "ID" property
+$(selection).sort(function (left,right) {
+    //return left.bounds.x-right.bounds.x;
+    var LID = left.prop("ID");
+    var RID = right.prop("ID");
+    return LID - RID; 
+
+});
+
+// Walk throught the sorted selection
+$(selection).each(function (element) {
+    
+    // Set the new bounds
+    element.bounds = {x: minX, y: minY, width: maxWidth, height: maxHeight};
+
+    // Set the spacing for the next element
+    //minX = minX + maxWidth + 20;
+	minY = minY + maxHeight + distance;
+	
+
+}); 

@@ -41,7 +41,8 @@ help:
 
 all:
 	# make documento, tema, sitio, presentacion, reporte, borrador
-	make mddocx mdpdf mdtex 
+	# mdpdf mdtex 
+	make mddocx 
 
 documento:
 	make all alias=$(alias) tx=dd

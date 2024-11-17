@@ -336,8 +336,15 @@ function exportViews (k, viewList, settings)
         elementsCollection = nestedDocumentation_elements (0, v, viewInclusionSettings, 
             g_viewsIdsByConceptId, elementsCollection);
 
+        // nuevo algo recorrido y orden de elementos
+        var elementsCollection2 = nestedDocumentation_elements2 (0, v, viewInclusionSettings, 
+            g_viewsIdsByConceptId, elementsCollection);
 
-        (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size()): true;
+        elementsCollection2.forEach(function(e) {
+            console.log (devdoc_addSpace(2), 'e:', e.name);
+        });
+
+        (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size): true;
 
         // devdoc::documentación de los elementos de una vista
         // carga de elementos de la vista actual
@@ -566,7 +573,7 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
         (debug)? console.log (devdoc_addSpace(2), "nestedDoc: element ", e.name, e.type): true;
         
         
-        // el elemento e válido y no está en la colección
+        // el elemento es válido y no está en la colección
         if (e.name) {
             if(eCollection) {
                 if(!eCollection.contains(e.concept)) eCollection.add($(e.concept));
@@ -590,3 +597,27 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
     (debug)? console.log (devdoc_addSpace(2), 'nestedDoc: elements ', eCollection.size()): true;
     return eCollection;
 }
+
+function nestedDocumentation_elements2 (d, view_element, inclusionsettings = null, vIdsByConceptId) {
+    var eCollection=new Set();
+
+    $(view_element).children('element').each( function (e) {
+    // $(view).children().not('relationship').each( function (e) {
+        if (e.name != null) {eCollection.add(e);}
+    });
+
+    // console.log(devdoc_addSpace(d+1), 'eCollection', eCollection.size);
+
+    eCollection.forEach(function(e) {
+        // console.log (devdoc_addSpace(d+1), 'e:', e.name);
+
+        if ($(e).children().length>0) {
+            d++;
+            eCollection.add(nestedDocumentation_elements2 (d, e, inclusionsettings = null, vIdsByConceptId));
+            d--;
+        }
+    });
+
+    return eCollection;
+}
+

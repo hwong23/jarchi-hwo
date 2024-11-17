@@ -338,11 +338,11 @@ function exportViews (k, viewList, settings)
 
         // nuevo algo recorrido y orden de elementos
         var elementsCollection2 = new Set();
-        nestedDocumentation_elements2 (0, v, viewInclusionSettings, 
+        elementsCollection2 = nestedDocumentation_elements2 (0, v, viewInclusionSettings, 
             g_viewsIdsByConceptId, elementsCollection2);
 
         elementsCollection2.forEach(function(e) {
-            console.log (devdoc_addSpace(2), 'e:', $(e).children().length);
+            console.log (devdoc_addSpace(2), 'e:', e.name, $(e).children().length);
         });
 
         (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size): true;
@@ -604,24 +604,18 @@ function nestedDocumentation_elements2 (d, view_element, inclusionsettings = nul
     var eCollection=new Set();
 
     $(view_element).children('element').each( function (e) {
-        if (e.name != null) {eCollection.add(e);}
+        if (e.name != null) {ec.add(e);}
+
+            console.log (devdoc_addSpace(d+1), 'e:', e.name);
+    
+            if ($(e).children('element').length>0) {
+                d++;
+                ec = nestedDocumentation_elements2 (d, e, inclusionsettings = null, vIdsByConceptId, ec);
+                d--;
+            }
     });
 
-    console.log(devdoc_addSpace(d+1), 'eCollection', eCollection.size);
-
-    eCollection.
-    forEach(function(e) {
-        console.log (devdoc_addSpace(d+1), 'e:', e.name);
-
-        if ($(e).children('element').length>0) {
-            d++;
-            nestedDocumentation_elements2 (d, e, inclusionsettings = null, vIdsByConceptId, ec);
-            d--;
-        }
-    });
-
-    ec.add( $(eCollection).children());
     console.log (devdoc_addSpace(d+1), 'ec:', ec.size);
-    return eCollection;
+    return ec;
 }
 

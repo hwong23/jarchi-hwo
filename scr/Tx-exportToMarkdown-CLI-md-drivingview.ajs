@@ -337,11 +337,12 @@ function exportViews (k, viewList, settings)
             g_viewsIdsByConceptId, elementsCollection);
 
         // nuevo algo recorrido y orden de elementos
-        var elementsCollection2 = nestedDocumentation_elements2 (0, v, viewInclusionSettings, 
-            g_viewsIdsByConceptId, elementsCollection);
+        var elementsCollection2 = new Set();
+        nestedDocumentation_elements2 (0, v, viewInclusionSettings, 
+            g_viewsIdsByConceptId, elementsCollection2);
 
         elementsCollection2.forEach(function(e) {
-            console.log (devdoc_addSpace(2), 'e:', e.name);
+            console.log (devdoc_addSpace(2), 'e:', $(e).children().length);
         });
 
         (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size): true;
@@ -598,26 +599,29 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
     return eCollection;
 }
 
-function nestedDocumentation_elements2 (d, view_element, inclusionsettings = null, vIdsByConceptId) {
+function nestedDocumentation_elements2 (d, view_element, inclusionsettings = null, vIdsByConceptId, ec) 
+{
     var eCollection=new Set();
 
     $(view_element).children('element').each( function (e) {
-    // $(view).children().not('relationship').each( function (e) {
         if (e.name != null) {eCollection.add(e);}
     });
 
-    // console.log(devdoc_addSpace(d+1), 'eCollection', eCollection.size);
+    console.log(devdoc_addSpace(d+1), 'eCollection', eCollection.size);
 
-    eCollection.forEach(function(e) {
-        // console.log (devdoc_addSpace(d+1), 'e:', e.name);
+    eCollection.
+    forEach(function(e) {
+        console.log (devdoc_addSpace(d+1), 'e:', e.name);
 
-        if ($(e).children().length>0) {
+        if ($(e).children('element').length>0) {
             d++;
-            eCollection.add(nestedDocumentation_elements2 (d, e, inclusionsettings = null, vIdsByConceptId));
+            nestedDocumentation_elements2 (d, e, inclusionsettings = null, vIdsByConceptId, ec);
             d--;
         }
     });
 
+    ec.add( $(eCollection).children());
+    console.log (devdoc_addSpace(d+1), 'ec:', ec.size);
     return eCollection;
 }
 

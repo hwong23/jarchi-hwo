@@ -351,8 +351,6 @@ function exportViews (k, viewList, settings)
             // $(e).children().length>0)   // si elemento es un grupo
             e.type === 'grouping')
             {    
-                console.log (devdoc_addSpace(2), 'ec2:', e.name, $(e).children().length);
-
                 // plantilla elemento
                 elements += tplElementFila({
                 viewsIds: g_viewsIdsByConceptId[e.id],

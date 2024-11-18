@@ -334,20 +334,22 @@ function exportViews (k, viewList, settings)
     if (viewInclusionSettings.IncludeViewElements === true) {
         // nuevo algo recorrido y orden de elementos
         elementsCollection=$(v).children('element');
-        elementsCollection.sort(function (left,right) {
-            return left.bounds.x-right.bounds.x;
-        });
-        elementsCollection.sort(function (top, botom) {
-            return top.bounds.y-botom.bounds.y;
-        });
+        
+        // elementsCollection.sort(function (left,right) {
+        //     return left.bounds.x-right.bounds.x;
+        // });
+        // elementsCollection.sort(function (top, botom) {
+        //     return top.bounds.y-botom.bounds.y;
+        // });
 
         elementsCollection.forEach(function(e) {
             console.log (devdoc_addSpace(1), 'ec2:', e.name, e.type, $(e).children().length);
         });
         
-        elementsCollection = nestedDocumentation_elements (0, elementsCollection, elementsCollection);
+        var ec = [];
+        elementsCollection = nestedDocumentation_elements (0, elementsCollection, ec);
 
-        $(elementsCollection).each(function(e) {
+        elementsCollection.forEach(function(e) {
             console.log (devdoc_addSpace(1), 'ec2:', e.name, e.type, $(e).children().length);
         });
         
@@ -569,14 +571,21 @@ function exportaImagen (vv, pth) {
 }
   
 function nestedDocumentation_elements (d, view, eCollection) {
-    var nueva_eCollection=[];
+    var nueva_eCollection=eCollection;
 
-    // view.each(function(e)
+    view.sort(function (left,right) {
+        return left.bounds.x-right.bounds.x;
+    });
+    view.sort(function (top, botom) {
+        return top.bounds.y-botom.bounds.y;
+    });
+
+
     for (var k = 0; k < view.length; k++)
     {
         var e = view[k];
         // (debug)? console.log (devdoc_addSpace(2), "nestedDoc: element ", e.name, e.type): true;
-        // console.log (devdoc_addSpace(d), "nestedDoc: element ", e.name, $(e).children().length);
+        console.log (devdoc_addSpace(d), "nestedDoc: ini ", e.name, $(e).children().length);
         
         
         // el elemento es válido y no está en la colección
@@ -592,16 +601,16 @@ function nestedDocumentation_elements (d, view, eCollection) {
         }
         
         // el elemento es contenedor
-        eCollection = nueva_eCollection;
+        // eCollection = nueva_eCollection;
         if ($(e).children().length>0) {
             d++;
-            // console.log (devdoc_addSpace(d), "nestedDoc: element ", e.name, $(e).children().length);
-            eCollection = nestedDocumentation_elements(d, $(e).children(), nueva_eCollection);
+            console.log (devdoc_addSpace(3), "nestedDoc: nest ", e.name, $(e).children().length);
+            nueva_eCollection = nestedDocumentation_elements(d, $(e).children(), nueva_eCollection);
             d--;
         }
     }
 
 
     // (debug)? console.log (devdoc_addSpace(2), 'nestedDoc: elements ', eCollection.size()): true;
-    return eCollection;
+    return nueva_eCollection;
 }

@@ -336,15 +336,31 @@ function exportViews (k, viewList, settings)
         elementsCollection = nestedDocumentation_elements (0, v, viewInclusionSettings, 
             g_viewsIdsByConceptId, elementsCollection);
 
-        // nuevo algo recorrido y orden de elementos
-        var elementsCollection2 = new Set();
+        // // nuevo algo recorrido y orden de elementos
+        // elementsCollection2 = $(v).children('element');
+        // elementsCollection2.sort(function (left,right) {
+        //     return left.bounds.x-right.bounds.x;
+        // });
+        var elementsCollection2=[];
         elementsCollection2 = nestedDocumentation_elements2 (0, v, viewInclusionSettings, 
             g_viewsIdsByConceptId, elementsCollection2);
 
         elementsCollection2.forEach(function(e) {
-            console.log (devdoc_addSpace(2), 'e:', e.name, $(e).children().length);
+            console.log (devdoc_addSpace(1), 'ec2:', e.name, $(e).children().length);
         });
 
+        elementsCollection2.sort(function (left,right) {
+            return left.bounds.x-right.bounds.x;
+        });
+        // elementsCollection2.sort(function (top, botm) {
+        //     return top.bounds.y-botm.bounds.y;
+        // });
+
+        elementsCollection2.forEach(function(e) {
+            console.log (devdoc_addSpace(2), 'sorted:', e.name, $(e).children().length);
+        });
+        
+        
         (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size): true;
 
         // devdoc::documentación de los elementos de una vista
@@ -601,10 +617,8 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
 
 function nestedDocumentation_elements2 (d, view_element, inclusionsettings = null, vIdsByConceptId, ec) 
 {
-    var eCollection=new Set();
-
     $(view_element).children('element').each( function (e) {
-        if (e.name != null) {ec.add(e);}
+        if (e.name != null) {ec.push(e);}
 
             console.log (devdoc_addSpace(d+1), 'e:', e.name);
     

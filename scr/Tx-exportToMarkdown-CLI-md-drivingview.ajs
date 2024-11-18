@@ -334,25 +334,17 @@ function exportViews (k, viewList, settings)
     if (viewInclusionSettings.IncludeViewElements === true) {
         // nuevo algo recorrido y orden de elementos
         elementsCollection=$(v).children('element');
-        
-        elementsCollection.forEach(function(e) {
-            console.log (devdoc_addSpace(1), 'ec2:', e.name, e.type, $(e).children().length);
-        });
-        
+               
         var ec = [];
         elementsCollection = nestedDocumentation_elements (0, elementsCollection, ec);
 
-        elementsCollection.forEach(function(e) {
-            console.log (devdoc_addSpace(1), 'ec2:', e.name, e.type, $(e).children().length);
-        });
-        
         (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size): true;
 
         // devdoc::documentación de los elementos de una vista
         // carga de elementos de la vista actual
         // ordenados por nombre
-        $(elementsCollection).
-            each(function(e) {
+        elementsCollection.
+            forEach(function(e) {
             if (e.documentation ||      // si elemento con documentación
                                         // si elemento sin documentación permitido
             (!e.documentation && viewInclusionSettings.IncluyeElementosSindoc) ||

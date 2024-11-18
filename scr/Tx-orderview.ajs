@@ -1,0 +1,482 @@
+load(__DIR__ + "lib/myargs.js");
+load(__DIR__ + "lib/devdocslib.js");
+load(__DIR__ + "lib/mustachetemplate.js");
+
+
+// Set Markdown rendering options
+var mdOptions = {
+    gfm: true,
+    breaks: true,
+    smartLists: true,
+    smartypants: true
+};
+
+// Get current date
+var currentDate = new Date().toLocaleString("en-US", {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+});
+
+// variables de contexto global
+var Verbose = false;
+var Errors = [];
+var nextOne = null;
+var theToc = "";
+var g_Sections = [];
+var g_outInfo = "";
+var g_path = "";
+var g_fileName = "";
+var g_drivingView_devdoc = "";    // nombre de documento dado por propiedad del modelo
+var g_drivingView = null;         // will be set to the selected view that has all the groups and view references on
+var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
+var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
+var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
+var debug = false;
+var g_viewsIdsByConceptId = {};
+
+
+// funciones con argumento plantillas base
+var tplDocumentation;   // definido por propiedad 'plantilla' de la vista
+var tplViewTitle = _.template(readFully(__DIR__ + 'templates/md-doctec/view-title-md.tpl', 'UTF-8'));
+var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/md-doctec/view-diagram-md.tpl', 'UTF-8'));
+var tplElement = function() {};
+var tplElementFila = function() {};
+var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));
+
+
+// Argumentos de entrada por CLI
+var argRutaMacMD = getArgumento("rutaMacMD");
+var argVistaDocumental = getArgumento("vistaDocumental");
+var argRutaCompleta = getArgumento("rutaCompleta");
+console.log("Entradas: ")
+debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
+debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
+debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
+
+
+// Entorno de ejecución
+console.show();
+console.clear();
+console.log("Documentation Generation @", currentDate);
+
+
+// Main Code
+var docGen = "";    // contenido documento completo
+
+if (useDrivingView( argVistaDocumental ))
+{
+    // nombre de documento dado por propiedad del modelo
+    var r = __DIR__.split("\/");
+    g_drivingView_devdoc = g_drivingView.prop("devdoc")? 
+    g_drivingView.prop("devdoc"):
+        "02n.a1.contenido.md";
+    // (sobrescribe) nombre de archivo dado por argumento CLI
+    g_path = argRutaMacMD? 
+        '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
+    g_fileName = g_path+g_drivingView_devdoc;
+
+    console.log("path: ", g_path);
+    console.log("fileName: ", g_fileName);
+
+
+    var exportFile = g_fileName;
+    (debug)?console.log('exportFile: '+exportFile):true;
+
+    // where's the path. Find where the last slash delimiter is
+    var lastSlash = "";
+    if (exportFile) {
+
+        // go through the array, and output
+        for (var i = 0; i < g_Sections.length; i++) {
+            var nombreitem = 
+                (g_Sections[i].group.prop("titulo"))? g_Sections[i].group.prop("titulo"):
+                (g_Sections[i].group.labelExpression)? g_Sections[i].group.labelExpression: 
+                g_Sections[i].group.name;
+
+            outputHdr(g_Sections[i].level, nombreitem, true, g_Sections[i].group.documentation);
+            
+            // obtiene documentación de las vistas
+            getViews(g_Sections[i].level, g_Sections[i].group, g_Sections[i].settings);
+        }
+
+        docGen = "# " + ( (g_drivingView.prop("titulo")) ? 
+            g_drivingView.prop("titulo"): 
+            g_drivingView.name ) + "\n";
+        docGen += theToc + "\n";
+        docGen += g_outInfo;
+
+    }
+}
+
+// end of script
+console.log("Done");
+
+
+// selección de la vista documental: g_drivingView
+function useDrivingView(alias) {
+    drivingView = selection.filter("archimate-diagram-model").first();
+    
+    g_drivingView = $("view").filter(function(o) { 
+        // console.log (o.name + ': ' + o.prop(alias));
+        var dd_alias = o.prop("alias") ? o.prop("alias"):"";
+        return (dd_alias === alias);
+    }).first();
+    
+    if (!g_drivingView) {
+        console.log("Please open and select a Driving View for the documentation");
+        return (false);
+    } else {       
+        console.log("Driving view is: " + g_drivingView.name);
+        var drivingViewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
+        console.log("Default IncludeDiagram setting: " + drivingViewInclusionSettings["IncludeDiagram"]);
+        console.log("Default IncludeDocumentation setting: " + drivingViewInclusionSettings["IncludeDocumentation"]);
+        console.log("Default IncludeVIewElements setting: " + drivingViewInclusionSettings["IncludeViewElements"]);
+        console.log("Default IncludeProperties setting: " + drivingViewInclusionSettings["IncludeProperties"]);
+        console.log("Default IncludeRutaCompleta setting: " + drivingViewInclusionSettings["IncludeRutaCompleta"]);
+        console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
+        console.log("Default IncluyeElementosSindoc setting: " + drivingViewInclusionSettings["IncluyeElementosSindoc"]);
+        console.log("Default IncluyeSaltosLineaElementos setting: " + drivingViewInclusionSettings["IncluyeSaltosLineaElementos"]);
+        console.log("DevDoc asociado: " + g_drivingView_devdoc);
+
+        // Go through each immediate child group in the view, find the first group(s) in a series
+        var outcome = true;
+        $(g_drivingView).children("grouping").each(function (thisGroup) {
+            if (thisGroup) {
+                var incomingRels = $(thisGroup).inRels("triggering-relationship").size();
+
+                if (incomingRels == 0) {
+                    // It's a top-level section, put it in the array.
+                    outcome = outcome && addGroup(thisGroup, 1, drivingViewInclusionSettings);
+                } else {
+                    // Ignore if if there's an incoming triggering relationship ... our recursive getNextGroup function will find it.
+                }
+            }
+        });
+    }
+
+    return (true);
+
+} // end of useDrivingView
+
+
+// recorre los elementos del grupo de vistas Levelobj
+function getViews(Level, GroupObj, settings) {
+    var thisPath = "";
+    var imageURL = "";
+    var viewList = [];
+
+    if (!GroupObj) {
+        return null;
+    } else {
+        // Find the view references composed within this group and
+		// put them into an array so we can sort them.
+        $(GroupObj).children().each(function (viewRefs) {
+            if (
+                (viewRefs) && ((viewRefs.type == 'archimate-diagram-model') || 
+                (viewRefs.type == 'sketch-model') ||
+                (viewRefs.type == 'canvas-model'))
+                )
+            {
+                // Find the actual linked views
+                var viewsCollection = $('archimate-diagram-model');
+                viewsCollection.add($('sketch-model'));
+                viewsCollection.add($('canvas-model'));
+                viewsCollection.each(function (linkedView) {
+                    // this doesn't cater for duplicate view names, sorry
+                    if (linkedView.name === viewRefs.name) {
+                        viewList.push([viewRefs, linkedView]);
+                    }
+                });
+
+            }
+        });
+
+        // sort viewList by x then y bounds. Effectively allows views to go top left to bottom right in order.
+        // this is complicated by the need to refer to the viewRefs part of the pair.
+        viewList.sort(function (left, right) {
+            return left[0].bounds.x - right[0].bounds.x;
+        });
+
+        viewList.sort(function (top, bottom) {
+            return top[0].bounds.y - bottom[0].bounds.y;
+        });
+
+        // now go through the sorted viewList
+        for (var k = 0; k < viewList.length; k++) {
+            exportViews (k, viewList, settings);
+        }
+    }
+}
+
+// extrae configuración y documentación de vistas de la lista viewList
+function exportViews (k, viewList, settings) 
+{
+    // acumuladores de contenido
+    var viewDocumentations = '';
+    var elemtPlantilla = "";
+    var viewElements = "";
+    var elemtPlantillaActual = '';
+    var viewTitles =  '';
+    var viewDiagrams = '';
+
+
+    // variables de trabajo
+    var viewItem = viewList[k][0];
+    var v = viewList[k][1];
+    var myViewAncho = v.prop("ancho")?v.prop("ancho") + "in":"";
+    var imageFolder = "images/";
+    var elements = '';
+    var relaciones = '';
+    var elementsCollection;
+    var cambioPlnt = true;
+
+    console.log(devdoc_addSpace(1), 'exportViews', viewItem.name);
+
+    $(v).sort(function (left,right) {
+        return left.bounds.x-right.bounds.x;
+    });
+    
+    
+    // configuraciones de la vista:
+    // 1. plantillas
+    var docplantilla = (v.prop('plantilla')? 
+        v.prop('plantilla'):
+        'documentation-md');
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/md-doctec/' + docplantilla + '.tpl', 'UTF-8') );
+    elemtPlantillaActual = v.prop('plantillaElm')? 
+        v.prop('plantillaElm'):
+        'elementtabla-md,elementtabla-fila-md';
+    cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
+    // 2. opciones de presentación inclusionSettings
+    var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
+    // 3. nombre físico y etiqueta
+    var vnombre = (v.prop("titulo"))? 
+        v.prop("titulo"):
+        (v.labelExpression)? 
+            v.labelExpression : 
+            v.name;
+    var nombrevista = v.name.replaceAll(" ","");
+    
+
+    // Update lists of elements and relationships
+    if (viewInclusionSettings.IncludeViewElements === true) {
+        // llena la colección de elementos elements[]
+        elementsCollection = nestedDocumentation_elements (0, v, viewInclusionSettings, 
+            g_viewsIdsByConceptId, elementsCollection);
+
+
+        (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size()): true;
+
+        // devdoc::documentación de los elementos de una vista
+        // carga de elementos de la vista actual
+        // ordenados por nombre
+        // _.chain(elementsCollection).
+        //     // sortBy(function(e) { return e.name; }).
+        //     each(function(e) {
+        //     if (e.documentation ||      // si elemento con documentación
+        //                                 // si elemento sin documentación permitido
+        //     (!e.documentation && viewInclusionSettings.IncluyeElementosSindoc) ||
+        //     $(e).children().length>0)   // si elemento es un grupo
+        //     {    
+        //         // plantilla elemento
+        //         elements += tplElementFila({
+        //         viewsIds: g_viewsIdsByConceptId[e.id],
+        //         elementName: devdoc_escapeDOC(e.name),
+        //         elementType: devdoc_properCase(e.type),
+        //         elementDocumentationText: viewInclusionSettings.IncluyeSaltosLineaElementos?
+        //             e.documentation:
+        //             e.documentation.replace(/\n/g, ' '),
+        //         elementDocumentationMarkdown: ''
+        //         });
+        //     }
+        // });
+
+
+    }
+}
+
+function outputHdr(Level, Name, AddLink, Doc) {
+
+    var indent = "";
+    var tocIndent = "";
+
+    for (var i = 0; i < Level; i++) {
+        indent = indent + "#";
+    }
+    for (var j = 0; j < Level - 1; j++) { // ToC needs one less indent tab.
+        tocIndent = tocIndent + "\t";
+    }
+
+    if (Name != "Catálogo de Elementos") {
+        console.log(devdoc_addSpace(Level - 1), Name);
+    }
+
+    var outHdr = indent + " " + Name;
+
+    if (Level === 1) {
+        g_outInfo += '\n<div style="page-break-before: always;"></div>';
+        g_outInfo += "\n\\newpage\n";
+        // outInfo += "\n ___ \n"; // horiz line before level 1's
+    }
+
+    // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
+    if (hardNewpage) {
+        if (listofNewpageheaders.indexOf(Level) != -1) {
+            outInfo_vista += "\n\\newpage\n";
+        }
+    }
+
+    g_outInfo += "\n" + outHdr;
+
+    // Add a link to table of contents (TOC), if requested
+    if (AddLink) {
+        var thisLink = generateLink(Name);
+        // outInfo += "\n" + "[](" + thisLink + ")";
+        theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
+    }
+
+    if (Doc) {
+        g_outInfo += "\n\n" + Doc;
+    }
+}
+
+// Finds the group's sub-group, if any
+// Returns true if no errors were encountered
+function getSubGroups(group, nextLevel, parentInclusionSettings) {
+    var outcome = true;
+
+    $(group).outRels("composition-relationship").each(function (subGroup) {
+
+        var incomingRels2 = $(subGroup.target).inRels("triggering-relationship").size();
+
+        // If it's the first child in the sub group
+        if (incomingRels2 == 0) {
+            // add the sub group onto the array
+            outcome = outcome && addGroup(subGroup.target, nextLevel, parentInclusionSettings);
+        } else {
+            // just ignore the rest, getSubGroups / getNextGroup will take care of them.
+        }
+    });
+
+    return outcome;
+}
+
+// Finds the next sibling group in the series
+// Returns true if no errors were encountered
+function getNextGroup(group, level, parentInclusionSettings) {
+    var nextGroup = null;
+    var outgoingRels = $(group).outRels("triggering-relationship").size();
+
+    if (outgoingRels == 1) {
+        // There's a triggering out so find the next..
+        nextGroup = $(group).outRels("triggering-relationship").first();
+        if (nextGroup) {
+            // add the next one onto the array
+            return addGroup(nextGroup.target, level, parentInclusionSettings);
+        } else {
+            console.log("The groups should all use triggering relationships");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Adds a group to the list of sections to output in the document, and orchestrates a recursive grab of the next sub group & sibling group (if existing)
+// Returns true if no errors were encountered
+function addGroup(group, level, parentInclusionSettings) {
+
+    // Get this group's updated inclusion settings
+    var settings = devdoc_getGroupInclusionSettings(group, parentInclusionSettings);
+    if (settings === null) {
+        Errors.push({
+            message: "Group is missing settings",
+            object: group
+        });
+        return false;
+    }
+
+    // Add the group to the list of sections
+    g_Sections.push(
+        {
+        "group": group,
+        "level": level,
+        "settings": settings
+        }
+    );
+
+    // Look for more sub groups under this one
+    getSubGroups(group, level + 1, settings)
+
+    // Look for sibling groups
+    getNextGroup(group, level, parentInclusionSettings)
+
+    return true;
+}
+
+function generateLink(theString) {
+    // this function thanks to Steven Mileham
+
+    var regex = /[\[\]\(\)\#\\\/\"]/gi;
+    var theString2 = "#" + theString.toLowerCase().replace(regex, "")
+    // .replaceAll(" [ - ]*", "-") 
+    // originally .replaceAll(" ", "-"), but caused issues where name had a dash, eg. "MyProject - Some Viewpoint - Domain"
+    .replaceAll(" ","-")
+    .replaceAll("\<", "lt")
+    .replaceAll("\>", "gt");
+
+    return theString2;
+}
+
+function exportaImagen (vv, pth) {
+    var bytes = $.model.renderViewAsBase64(vv, "PNG", {
+      scale: 1,
+      margin: 10
+    });
+  
+    $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
+  
+    // return _.escape(vv.name);
+    return vv.name;
+}
+  
+function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByConceptId, eCollection) {
+    var nueva_eCollection;
+
+    $(view).children().not("relationship").
+        filter(function(child) {
+        // var prop_destino = child.prop("destino");
+        // return (prop_destino? (prop_destino.includes("doc")? true:false): false)
+        return (child.type != "view-reference" && child.type != "archimate-diagram-model");
+        })
+    .each(function(e) 
+    {
+        (debug)? console.log (devdoc_addSpace(2), "nestedDoc: element ", e.name, e.type): true;
+        
+        
+        // el elemento e válido y no está en la colección
+        if (e.name) {
+            if(eCollection) {
+                if(!eCollection.contains(e.concept)) eCollection.add($(e.concept));
+                vIdsByConceptId[e.concept.id]+=' idc-'+view.id;
+            } 
+            else {
+                eCollection = $(e.concept);
+            }
+        }
+        
+        // el elemento es contenedor
+        nueva_eCollection = eCollection;
+        if ($(e).children().length>0) {
+            d++;
+            eCollection = nestedDocumentation_elements(d, e, inclusionsettings, vIdsByConceptId, nueva_eCollection);
+            d--;
+        }
+    });
+
+    
+    (debug)? console.log (devdoc_addSpace(2), 'nestedDoc: elements ', eCollection.size()): true;
+    return eCollection;
+}

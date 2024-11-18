@@ -287,7 +287,7 @@ function exportViews (k, viewList, settings)
     var imageFolder = "images/";
     var elements = '';
     var relaciones = '';
-    var elementsCollection;
+    var elementsCollection=[];
     var cambioPlnt = true;
 
 
@@ -332,28 +332,25 @@ function exportViews (k, viewList, settings)
 
     // Update lists of elements and relationships
     if (viewInclusionSettings.IncludeViewElements === true) {
-        // llena la colección de elementos elements[]
-        elementsCollection = nestedDocumentation_elements (0, v, viewInclusionSettings, 
-            g_viewsIdsByConceptId, elementsCollection);
-
         // nuevo algo recorrido y orden de elementos
-        var elementsCollection2=$(v).children('element');
-        elementsCollection2.sort(function (left,right) {
+        elementsCollection=$(v).children('element');
+        elementsCollection.sort(function (left,right) {
             return left.bounds.x-right.bounds.x;
         });
-        elementsCollection2.sort(function (top, botom) {
+        elementsCollection.sort(function (top, botom) {
             return top.bounds.y-botom.bounds.y;
         });
-        elementsCollection2 = nestedDocumentation_elements2 (0, v, viewInclusionSettings, 
-            g_viewsIdsByConceptId, elementsCollection2);
 
-
-        elementsCollection2.forEach(function(e) {
+        elementsCollection.forEach(function(e) {
             console.log (devdoc_addSpace(1), 'ec2:', e.name, $(e).children().length);
         });
-        // elementsCollection2.forEach(function(e) {
-        //     console.log (devdoc_addSpace(2), 'sorted:', e.name, $(e).children().length);
-        // });
+
+        elementsCollection = nestedDocumentation_elements2 (0, v, g_viewsIdsByConceptId, 
+            elementsCollection);
+
+        elementsCollection.forEach(function(e) {
+            console.log (devdoc_addSpace(1), 'ec2:', e.name, $(e).children().length);
+        });
         
         
         (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size): true;
@@ -610,25 +607,36 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
     return eCollection;
 }
 
-function nestedDocumentation_elements2 (d, view_element, inclusionsettings = null, vIdsByConceptId, ec) 
-{
-    var ec_interno = [];
+function nestedDocumentation_elements2 (d, view, inclusionsettings = null, vIdsByConceptId, eCollection) {
+    var nueva_eCollection=[];
 
-    ec.forEach(function(e) {
-        console.log (devdoc_addSpace(d), 'nested:', d, e.name);
+    $(view).children('element')
+    .each(function(e) 
+    {
+        console.log (devdoc_addSpace(2), "nestedDoc: element ", e.name, e.type);
         
-        if (e) {
-            ec_interno.push(e);
-            vIdsByConceptId[e.concept.id]+=' idc-'+e.id;
+        
+        // el elemento es válido y no está en la colección
+        if (e.name) {
+            if(eCollection) {
+                eCollection.push(e);
+                // vIdsByConceptId[e.concept.id]=e.id;
+            } 
+            else {
+                eCollection = $(e.concept);
+            }
         }
-
-        if ($(e).children('element').length>0) {
+        
+        // el elemento es contenedor
+        nueva_eCollection = eCollection;
+        if ($(e).children().length>0) {
             d++;
-            ec_interno = nestedDocumentation_elements2 (d, e, inclusionsettings = null, vIdsByConceptId, $(e).children('element'));
+            eCollection = nestedDocumentation_elements(d, e, inclusionsettings, vIdsByConceptId, nueva_eCollection);
             d--;
         }
     });
 
-    return ec_interno;
-}
 
+    console.log (devdoc_addSpace(2), 'nestedDoc: elements ', eCollection.size());
+    return eCollection;
+}

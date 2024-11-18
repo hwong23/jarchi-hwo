@@ -335,13 +335,6 @@ function exportViews (k, viewList, settings)
         // nuevo algo recorrido y orden de elementos
         elementsCollection=$(v).children('element');
         
-        // elementsCollection.sort(function (left,right) {
-        //     return left.bounds.x-right.bounds.x;
-        // });
-        // elementsCollection.sort(function (top, botom) {
-        //     return top.bounds.y-botom.bounds.y;
-        // });
-
         elementsCollection.forEach(function(e) {
             console.log (devdoc_addSpace(1), 'ec2:', e.name, e.type, $(e).children().length);
         });
@@ -584,27 +577,20 @@ function nestedDocumentation_elements (d, view, eCollection) {
     for (var k = 0; k < view.length; k++)
     {
         var e = view[k];
-        // (debug)? console.log (devdoc_addSpace(2), "nestedDoc: element ", e.name, e.type): true;
-        console.log (devdoc_addSpace(d), "nestedDoc: ini ", e.name, $(e).children().length);
+        (debug)? console.log (devdoc_addSpace(d), "nestedDoc: ini ", e.name, $(e).children().length): true;
         
         
         // el elemento es válido y no está en la colección
         if (e.name) {
-            // if(nueva_eCollection) {
-                nueva_eCollection.push(e);
-                console.log (devdoc_addSpace(d), "nestedDoc push ", e.name, e.type);
-                // vIdsByConceptId[e.concept.id]=e.id;
-            // } 
-            // else {
-            //     nueva_eCollection = e;
-            // }
+            nueva_eCollection.push(e);
+            (debug)? console.log (devdoc_addSpace(d), "nestedDoc push ", e.name, e.type): true;
+            // vIdsByConceptId[e.concept.id]=e.id;
         }
         
         // el elemento es contenedor
-        // eCollection = nueva_eCollection;
         if ($(e).children().length>0) {
             d++;
-            console.log (devdoc_addSpace(3), "nestedDoc: nest ", e.name, $(e).children().length);
+            (debug)? console.log (devdoc_addSpace(3), "nestedDoc: nest ", e.name, $(e).children().length): true;
             nueva_eCollection = nestedDocumentation_elements(d, $(e).children(), nueva_eCollection);
             d--;
         }

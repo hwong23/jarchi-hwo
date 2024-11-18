@@ -336,29 +336,24 @@ function exportViews (k, viewList, settings)
         elementsCollection = nestedDocumentation_elements (0, v, viewInclusionSettings, 
             g_viewsIdsByConceptId, elementsCollection);
 
-        // // nuevo algo recorrido y orden de elementos
-        // elementsCollection2 = $(v).children('element');
-        // elementsCollection2.sort(function (left,right) {
-        //     return left.bounds.x-right.bounds.x;
-        // });
-        var elementsCollection2=[];
+        // nuevo algo recorrido y orden de elementos
+        var elementsCollection2=$(v).children('element');
+        elementsCollection2.sort(function (left,right) {
+            return left.bounds.x-right.bounds.x;
+        });
+        elementsCollection2.sort(function (top, botom) {
+            return top.bounds.y-botom.bounds.y;
+        });
         elementsCollection2 = nestedDocumentation_elements2 (0, v, viewInclusionSettings, 
             g_viewsIdsByConceptId, elementsCollection2);
+
 
         elementsCollection2.forEach(function(e) {
             console.log (devdoc_addSpace(1), 'ec2:', e.name, $(e).children().length);
         });
-
-        elementsCollection2.sort(function (left,right) {
-            return left.bounds.x-right.bounds.x;
-        });
-        // elementsCollection2.sort(function (top, botm) {
-        //     return top.bounds.y-botm.bounds.y;
+        // elementsCollection2.forEach(function(e) {
+        //     console.log (devdoc_addSpace(2), 'sorted:', e.name, $(e).children().length);
         // });
-
-        elementsCollection2.forEach(function(e) {
-            console.log (devdoc_addSpace(2), 'sorted:', e.name, $(e).children().length);
-        });
         
         
         (debug)? console.log (devdoc_addSpace(2), 'exportViews: elements ', elementsCollection.size): true;
@@ -617,19 +612,23 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null, vIdsByC
 
 function nestedDocumentation_elements2 (d, view_element, inclusionsettings = null, vIdsByConceptId, ec) 
 {
-    $(view_element).children('element').each( function (e) {
-        if (e.name != null) {ec.push(e);}
+    var ec_interno = [];
 
-            console.log (devdoc_addSpace(d+1), 'e:', e.name);
-    
-            if ($(e).children('element').length>0) {
-                d++;
-                ec = nestedDocumentation_elements2 (d, e, inclusionsettings = null, vIdsByConceptId, ec);
-                d--;
-            }
+    ec.forEach(function(e) {
+        console.log (devdoc_addSpace(d), 'nested:', d, e.name);
+        
+        if (e) {
+            ec_interno.push(e);
+            vIdsByConceptId[e.concept.id]+=' idc-'+e.id;
+        }
+
+        if ($(e).children('element').length>0) {
+            d++;
+            ec_interno = nestedDocumentation_elements2 (d, e, inclusionsettings = null, vIdsByConceptId, $(e).children('element'));
+            d--;
+        }
     });
 
-    console.log (devdoc_addSpace(d+1), 'ec:', ec.size);
-    return ec;
+    return ec_interno;
 }
 

@@ -264,6 +264,8 @@ function getViews(Level, GroupObj, settings) {
             var docGenVista = exportViews (k, viewList, settings);
             var archivovista = rutaTrabajo(viewList[k][1], argRutaMacMD);
             console.log(devdoc_addSpace(1), 'archivovista', archivovista.filename);
+
+            $.fs.writeFile(archivovista.filename, docGenVista);
         }
     }
 }

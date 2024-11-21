@@ -66,13 +66,14 @@ var g_Sections = [];
 var g_outInfo = "";
 var g_path = "";
 var g_fileName = "";
-var g_drivingView_devdoc = "";    // nombre de documento dado por propiedad del modelo
-var g_drivingView = null;         // will be set to the selected view that has all the groups and view references on
-var embed = false;                // false will store the images outside of the generated markdown; true is embedded inside
-var hardNewpage = false;          // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
-var listofNewpageheaders = [1, 2, 3]; // these will generate the hardNewpage (if true) for these header levels
+var g_drivingView_devdoc = "";          // nombre de documento dado por propiedad del modelo
+var g_drivingView = null;               // will be set to the selected view that has all the groups and view references on
+var embed = false;                      // false will store the images outside of the generated markdown; true is embedded inside
+var hardNewpage = false;                // if true, the text NEWPAGE will be put in the output for post processing in MS Word to find and replace for a proper new page.
+var listofNewpageheaders = [1, 2, 3];   // these will generate the hardNewpage (if true) for these header levels
 var debug = false;
 var g_viewsIdsByConceptId = {};
+var g_drivingViewInclusionSettings;     // configuración de la vista documental (dd)
 
 
 // funciones con argumento plantillas base
@@ -152,7 +153,9 @@ if (useDrivingView( argVistaDocumental ))
         docGen += g_outInfo;
         // docGen += "\n\n``Generated on: " + currentDate + "``";
 
-        $.fs.writeFile(exportFile, docGen);
+        if (!g_drivingViewInclusionSettings.DocumentosIndividualesxVista) {
+            $.fs.writeFile(exportFile, docGen);
+        }
     }
 }
 
@@ -173,16 +176,16 @@ function useDrivingView(alias) {
         return (false);
     } else {       
         console.log("Driving view is: " + g_drivingView.name);
-        var drivingViewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
-        console.log("Default IncludeDiagram setting: " + drivingViewInclusionSettings["IncludeDiagram"]);
-        console.log("Default IncludeDocumentation setting: " + drivingViewInclusionSettings["IncludeDocumentation"]);
-        console.log("Default IncludeVIewElements setting: " + drivingViewInclusionSettings["IncludeViewElements"]);
-        console.log("Default IncludeProperties setting: " + drivingViewInclusionSettings["IncludeProperties"]);
-        console.log("Default IncludeRutaCompleta setting: " + drivingViewInclusionSettings["IncludeRutaCompleta"]);
-        console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
-        console.log("Default IncluyeElementosSindoc setting: " + drivingViewInclusionSettings["IncluyeElementosSindoc"]);
-        console.log("Default IncluyeSaltosLineaElementos setting: " + drivingViewInclusionSettings["IncluyeSaltosLineaElementos"]);
-        console.log("Default DocumentosIndividualesxVista setting: " + drivingViewInclusionSettings["DocumentosIndividualesxVista"]);
+        g_drivingViewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
+        console.log("Default IncludeDiagram setting: " + g_drivingViewInclusionSettings["IncludeDiagram"]);
+        console.log("Default IncludeDocumentation setting: " + g_drivingViewInclusionSettings["IncludeDocumentation"]);
+        console.log("Default IncludeVIewElements setting: " + g_drivingViewInclusionSettings["IncludeViewElements"]);
+        console.log("Default IncludeProperties setting: " + g_drivingViewInclusionSettings["IncludeProperties"]);
+        console.log("Default IncludeRutaCompleta setting: " + g_drivingViewInclusionSettings["IncludeRutaCompleta"]);
+        console.log("Default IncluyeRelaciones setting: " + g_drivingViewInclusionSettings["IncluyeRelaciones"]);
+        console.log("Default IncluyeElementosSindoc setting: " + g_drivingViewInclusionSettings["IncluyeElementosSindoc"]);
+        console.log("Default IncluyeSaltosLineaElementos setting: " + g_drivingViewInclusionSettings["IncluyeSaltosLineaElementos"]);
+        console.log("Default DocumentosIndividualesxVista setting: " + g_drivingViewInclusionSettings["DocumentosIndividualesxVista"]);
 
         // Go through each immediate child group in the view, find the first group(s) in a series
         var outcome = true;
@@ -192,7 +195,7 @@ function useDrivingView(alias) {
 
                 if (incomingRels == 0) {
                     // It's a top-level section, put it in the array.
-                    outcome = outcome && addGroup(thisGroup, 1, drivingViewInclusionSettings);
+                    outcome = outcome && addGroup(thisGroup, 1, g_drivingViewInclusionSettings);
                 } else {
                     // Ignore if if there's an incoming triggering relationship ... our recursive getNextGroup function will find it.
                 }

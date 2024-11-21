@@ -27,9 +27,11 @@
     11-Oct-2024 - Transformador (Tx) para devdocs 2.0; 1.0 = manubot
     17-Oct-2024 - Configuraciones de la vista: plantillas, opciones de presentación, nombre
     17-Oct-2024 - Argumentos de entrada por CLI
-    28-Oct-2024 - inclusionsettings.IncluyeElementosSindoc para elementos sin documentación
-    06-Nov-2024 - inclusionsettings.IncluyeSaltosLineaElementos para elementos saltos de línea
-    11-Nov-2024 - cambio bucle de recorrido elementos: nestedDocumentation_elements
+    28-Oct-2024 - Inclusionsettings.IncluyeElementosSindoc para elementos sin documentación
+    06-Nov-2024 - Inclusionsettings.IncluyeSaltosLineaElementos para elementos saltos de línea
+    11-Nov-2024 - Cambio bucle de recorrido elementos: nestedDocumentation_elements
+    18-Nov-2024 - Orden de elementos (left.x, right.x; top.y, bottom.y)
+    20-Nov-2024 - Condición: emitir md individual
 
     TODO mejorar la titulación de los elementos según profundidad
 
@@ -104,22 +106,17 @@ var docGen = "";    // contenido documento completo
 if (useDrivingView( argVistaDocumental ))
 {
     // nombre de documento dado por propiedad del modelo
-    var r = __DIR__.split("\/");
-    g_drivingView_devdoc = g_drivingView.prop("devdoc")? 
-    g_drivingView.prop("devdoc"):
-        "02n.a1.contenido.md";
-    // (sobrescribe) nombre de archivo dado por argumento CLI
-    g_path = argRutaMacMD? 
-        '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
-        '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
-    g_fileName = g_path+g_drivingView_devdoc;
-
+    var archivoruta = rutaTrabajo(g_drivingView, argRutaMacMD);
+    g_drivingView_devdoc = archivoruta.devdoc;
+    g_fileName = archivoruta.filename;
+    g_path = archivoruta.path
+    
     console.log("path: ", g_path);
     console.log("fileName: ", g_fileName);
-
+    console.log("rutatrabajo: ", archivoruta);
+    (debug)?console.log('exportFile: '+exportFile):true;
 
     var exportFile = g_fileName;
-    (debug)?console.log('exportFile: '+exportFile):true;
 
     // where's the path. Find where the last slash delimiter is
     var lastSlash = "";
@@ -133,17 +130,19 @@ if (useDrivingView( argVistaDocumental ))
         // fileName = exportFile.substring(lastSlash + 1, exportFile.length);
 
 
-        // go through the array, and output
+        // go through the array (grupos), and output
         for (var i = 0; i < g_Sections.length; i++) {
             var nombreitem = 
                 (g_Sections[i].group.prop("titulo"))? g_Sections[i].group.prop("titulo"):
                 (g_Sections[i].group.labelExpression)? g_Sections[i].group.labelExpression: 
                 g_Sections[i].group.name;
 
+            // crea tabla de contenido (en theToc)
             outputHdr(g_Sections[i].level, nombreitem, true, g_Sections[i].group.documentation);
             
             // obtiene documentación de las vistas
             getViews(g_Sections[i].level, g_Sections[i].group, g_Sections[i].settings);
+            
         }
 
         docGen = "# " + ( (g_drivingView.prop("titulo")) ? 
@@ -184,7 +183,6 @@ function useDrivingView(alias) {
         console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
         console.log("Default IncluyeElementosSindoc setting: " + drivingViewInclusionSettings["IncluyeElementosSindoc"]);
         console.log("Default IncluyeSaltosLineaElementos setting: " + drivingViewInclusionSettings["IncluyeSaltosLineaElementos"]);
-        console.log("DevDoc asociado: " + g_drivingView_devdoc);
 
         // Go through each immediate child group in the view, find the first group(s) in a series
         var outcome = true;
@@ -263,7 +261,9 @@ function getViews(Level, GroupObj, settings) {
 
         // now go through the sorted viewList
         for (var k = 0; k < viewList.length; k++) {
-            exportViews (k, viewList, settings);
+            var docGenVista = exportViews (k, viewList, settings);
+            // var 
+            console.log(devdoc_addSpace(1), 'docGenVista', docGenVista.length);
         }
     }
 }
@@ -272,7 +272,7 @@ function getViews(Level, GroupObj, settings) {
 function exportViews (k, viewList, settings) 
 {
     // acumuladores de contenido
-    var viewDocumentations = '';
+    var viewDocumentation = '';     // documentación vista actual (suma al contenedor global outputHdr)
     var elemtPlantilla = "";
     var viewElements = "";
     var elemtPlantillaActual = '';
@@ -387,7 +387,7 @@ function exportViews (k, viewList, settings)
         tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
         viewNombre: nombrevista+'.png', viewAlto: '500px', viewAncho: ''}):
         "";
-    viewDocumentations += tplDocumentation (
+    viewDocumentation += tplDocumentation (
         {
         viewId: 'id-'+v.id,
         viewTitle: viewTitles,
@@ -403,9 +403,12 @@ function exportViews (k, viewList, settings)
     );
 
     
+    // suma al contenedor global outputHdr
     if (settings.IncludeDocumentation === true) {
-        viewDocumentations != "" ? g_outInfo += "\n" + viewDocumentations + "\n" : true;
+        viewDocumentation != "" ? g_outInfo += "\n" + viewDocumentation + "\n" : true;
     }
+    
+    return "\n" + viewDocumentation + "\n";
 }
 
 function outputHdr(Level, Name, AddLink, Doc) {
@@ -433,11 +436,11 @@ function outputHdr(Level, Name, AddLink, Doc) {
     }
 
     // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
-    if (hardNewpage) {
-        if (listofNewpageheaders.indexOf(Level) != -1) {
-            outInfo_vista += "\n\\newpage\n";
-        }
-    }
+    // if (hardNewpage) {
+    //     if (listofNewpageheaders.indexOf(Level) != -1) {
+    //         outInfo_vista += "\n\\newpage\n";
+    //     }
+    // }
 
     g_outInfo += "\n" + outHdr;
 
@@ -448,6 +451,7 @@ function outputHdr(Level, Name, AddLink, Doc) {
         theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
     }
 
+    // agregar documentación del grupo (level 1)
     if (Doc) {
         g_outInfo += "\n\n" + Doc;
     }
@@ -553,6 +557,7 @@ function exportaImagen (vv, pth) {
     return vv.name;
 }
   
+// 18-Nov-2024 - Orden de elementos (left.x, right.x; top.y, bottom.y)
 function nestedDocumentation_elements (d, view, eCollection) {
     var nueva_eCollection=eCollection;
 
@@ -589,4 +594,29 @@ function nestedDocumentation_elements (d, view, eCollection) {
 
     // (debug)? console.log (devdoc_addSpace(2), 'nestedDoc: elements ', eCollection.size()): true;
     return nueva_eCollection;
+}
+
+
+// Ruta de trabajo, nombre de archivo
+function rutaTrabajo(vista, rutaMacMD = null) {
+    // nombre de documento dado por propiedad del modelo
+    var r = __DIR__.split("\/");
+    var rutaTrabajo = {};
+
+    var devdoc = vista.prop("devdoc")? 
+    vista.prop("devdoc"):
+        "02n.a1.contenido.md";
+
+    // (sobrescribe) nombre de archivo dado por argumento CLI
+    var path = rutaMacMD? 
+        '/'+r[1]+'/'+r[2]+rutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+    var fileName = path+devdoc;
+
+
+    return {
+        'filename' : fileName,
+        'path' : path,
+        'devdoc' : devdoc
+    };
 }

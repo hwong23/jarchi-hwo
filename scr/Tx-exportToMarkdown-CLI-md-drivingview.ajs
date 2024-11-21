@@ -262,8 +262,8 @@ function getViews(Level, GroupObj, settings) {
         // now go through the sorted viewList
         for (var k = 0; k < viewList.length; k++) {
             var docGenVista = exportViews (k, viewList, settings);
-            // var 
-            console.log(devdoc_addSpace(1), 'docGenVista', docGenVista.length);
+            var archivovista = rutaTrabajo(viewList[k][1], argRutaMacMD);
+            console.log(devdoc_addSpace(1), 'archivovista', archivovista.filename);
         }
     }
 }

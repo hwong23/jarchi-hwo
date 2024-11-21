@@ -31,7 +31,7 @@
     06-Nov-2024 - Inclusionsettings.IncluyeSaltosLineaElementos para elementos saltos de línea
     11-Nov-2024 - Cambio bucle de recorrido elementos: nestedDocumentation_elements
     18-Nov-2024 - Orden de elementos (left.x, right.x; top.y, bottom.y)
-    20-Nov-2024 - Condición: emitir md individual
+    20-Nov-2024 - Condición: emitir md individual, DocumentosIndividualesxVista
 
     TODO mejorar la titulación de los elementos según profundidad
 
@@ -113,7 +113,6 @@ if (useDrivingView( argVistaDocumental ))
     
     console.log("path: ", g_path);
     console.log("fileName: ", g_fileName);
-    console.log("rutatrabajo: ", archivoruta);
     (debug)?console.log('exportFile: '+exportFile):true;
 
     var exportFile = g_fileName;
@@ -183,6 +182,7 @@ function useDrivingView(alias) {
         console.log("Default IncluyeRelaciones setting: " + drivingViewInclusionSettings["IncluyeRelaciones"]);
         console.log("Default IncluyeElementosSindoc setting: " + drivingViewInclusionSettings["IncluyeElementosSindoc"]);
         console.log("Default IncluyeSaltosLineaElementos setting: " + drivingViewInclusionSettings["IncluyeSaltosLineaElementos"]);
+        console.log("Default DocumentosIndividualesxVista setting: " + drivingViewInclusionSettings["DocumentosIndividualesxVista"]);
 
         // Go through each immediate child group in the view, find the first group(s) in a series
         var outcome = true;
@@ -262,10 +262,11 @@ function getViews(Level, GroupObj, settings) {
         // now go through the sorted viewList
         for (var k = 0; k < viewList.length; k++) {
             var docGenVista = exportViews (k, viewList, settings);
-            var archivovista = rutaTrabajo(viewList[k][1], argRutaMacMD);
-            console.log(devdoc_addSpace(1), 'archivovista', archivovista.filename);
-
-            $.fs.writeFile(archivovista.filename, docGenVista);
+            
+            if (settings.DocumentosIndividualesxVista) {
+                var archivovista = rutaTrabajo(viewList[k][1], argRutaMacMD);
+                $.fs.writeFile(archivovista.filename, docGenVista);
+            }
         }
     }
 }

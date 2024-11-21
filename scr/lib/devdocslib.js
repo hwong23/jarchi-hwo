@@ -33,8 +33,9 @@ var devdoc_DefaultInclusionSettings = {
     "IncludeProperties": true,              // if true, will include the "properties" field in a catalogue of elements from a view
     "IncludeRutaCompleta": false,           // verdadero, incluye la ruta completa en los MD para favorecer a los documentos de salida
     "IncluyeRelaciones": false,             // incluye la ruta completa en los MD para favorecer a los documentos de salida
-    "IncluyeElementosSindoc": false,        // incluye elementos sin documentación,
-    "IncluyeSaltosLineaElementos": true     // incluye saltos de línea en la documentación de elementos
+    "IncluyeElementosSindoc": false,        // incluye elementos sin documentación
+    "IncluyeSaltosLineaElementos": true,    // incluye saltos de línea en la documentación de elementos
+    "DocumentosIndividualesxVista": false    // escribe documentos MD separados cada vista
     //TODO: "ElementColumns": [{name: "Name", field: "name"}], // overrides the list of columns to include in the element catalogue (need to find a structure we can easily set in a property that we hopefully don't have to parse)
 };
 
@@ -142,7 +143,8 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
         parentSettings["IncluyeRelaciones"] === null ||
         parentSettings["IncludeRutaCompleta"] === null ||
         parentSettings["IncluyeElementosSindoc"] === null ||
-        parentSettings["IncluyeSaltosLineaElementos"] == null
+        parentSettings["IncluyeSaltosLineaElementos"] == null ||
+        parentSettings["DocumentosIndividualesxVista"] == null
     ) {
         console.log("Default settings were not correctly passed to a child node");
         return (null);
@@ -159,6 +161,7 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
     var checkIncluyeRelaciones = settingsElement.prop("IncluyeRelaciones");
     var checkIncluyeElementosSindoc = settingsElement.prop("IncluyeElementosSindoc");
     var checkIncluyeSaltosLineaElementos = settingsElement.prop("IncluyeSaltosLineaElementos");
+    var checkDocumentosIndividualesxVista = settingsElement.prop("DocumentosIndividualesxVista");
 
     if (checkIncludeDiagram !== null) {
         settings["IncludeDiagram"] = checkIncludeDiagram === "true"? true : false;
@@ -183,6 +186,9 @@ function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
     }
     if (checkIncluyeSaltosLineaElementos !== null) {
         settings["IncluyeSaltosLineaElementos"] = checkIncluyeSaltosLineaElementos === "true"? true : false;
+    }
+    if (checkDocumentosIndividualesxVista !== null) {
+        settings["DocumentosIndividualesxVista"] = checkDocumentosIndividualesxVista === "true"? true : false;
     }
 
 
@@ -212,6 +218,7 @@ function devdoc_useDrivingView(alias) {
         console.log("Default IncluyeRelaciones setting: " + inclusionSettings["IncluyeRelaciones"]);
         console.log("Default IncluyeElementosSindoc setting: " + inclusionSettings["IncluyeElementosSindoc"]);
         console.log("Default IncluyeSaltosLineaElementos setting: " + inclusionSettings["IncluyeSaltosLineaElementos"]);
+        console.log("Default DocumentosIndividualesxVista setting: " + inclusionSettings["DocumentosIndividualesxVista"]);
     }
 
     (debug)? console.log ('devdoc_useDrivingView: ', drivingView.name): true;

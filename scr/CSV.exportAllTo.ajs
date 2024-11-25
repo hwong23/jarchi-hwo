@@ -16,7 +16,7 @@
  */
 
 var debug = false;
-var userPath = "/Users/hwong23/Downloads";
+var userPath = "/Users/hwong23/Downloads/modelexport";
 // Show output in the console
 console.show();
 console.clear();

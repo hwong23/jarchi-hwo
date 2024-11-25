@@ -121,7 +121,7 @@ function escapeTextFields(fieldContent) {
     var docx2 =  docx2.replace(/–/g, "--");
 
     //reemplaza delimitador
-    var docx2 =  docx2.replace(/,/g, "-");
+    var docx2 =  docx2.replace('/'+g_delimitador+'/g', ".");
     
     detailString = "\"" + docx2 + "\"";
     return detailString;

@@ -24,14 +24,27 @@ amplifyElementColor(valorP, 0, 100);
 
 // Amplify the red/green color of elements with a given property key with a value between minValue and maxValue
 function amplifyElementColor(propertyKey, minValue, maxValue) {
+    var theView = $(selection).filter("archimate-diagram-model").first();
+    
     // Iterate through all elements in the model
-    $("element").forEach(function(element) {
+    $(theView).find().not("relationship").each(function(element) {
+    // $("element").forEach(function(element) {
+
+        (element.prop(propertyKey) != null) ? 
+            console.log (
+                'Elemento', 
+                element.name, 
+                element.prop(propertyKey), 
+                element.fillColor):
+            true;
+        
         // Find the property value with the given propertyKey
         var value = element.prop(propertyKey);
         // If within scope, change color of element's view instances
         if(value && value >= minValue && value <= maxValue) {
             // Set all view instances of the element's color according to the property value
-            $(element).objectRefs().attr("fillColor", getColorValue(value, maxValue));
+            // $(element).objectRefs().attr("fillColor", getColorValue(value, maxValue));
+            element.fillColor = getColorValue(value, maxValue);
         }
     });
 }

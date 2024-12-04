@@ -1,4 +1,4 @@
-### Catálogo de Elementos
+### Elementos del Modelo
 
 | Nombre  | Tipo | Documentación |
 |---------|------|---------------|

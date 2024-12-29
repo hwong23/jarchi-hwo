@@ -16,18 +16,40 @@ var debug = true;
 
 console.show();
 console.clear();
-console.log("> Import CSV");
+console.log("> Import CSV From CLI");
 
 load(__DIR__ + "lib/papaparse.min.js");
 load(__DIR__ + "lib/myargs.js");
 
 
-console.log("> Loaded Papa Parse");
+// Argumentos de entrada por CLI
+var argRutaMacMD = myargs_getArgumento("rutaMacMD");
+var argVistaDocumental = myargs_getArgumento("vistaDocumental");
+console.log("Entradas: ")
+debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
+debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
 
-var filePath = window.promptOpenFile({ title: "Open CSV", filterExtensions: ["*.CSV"], fileName: "default.archimate" });
-if (filePath) {
+
+// Selección de la vista indicada por el argumento entrada CLI
+var g_drivingView = csvimport_useDrivingView(argVistaDocumental);
+
+// Define ruta/nombre del archivo de salida de la documentación de la vista theView
+var r = __DIR__.split("\/");
+g_drivingView_devdoc = g_drivingView.prop("devdoc")? 
+    g_drivingView.prop("devdoc"):
+    "contenido.csv";
+g_path = argRutaMacMD? 
+    '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
+    '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
+g_filePath = g_path+g_drivingView_devdoc;
+//
+(debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
+(debug)?console.log('g_path: '+g_path):true;
+
+    
+if (g_filePath) {
     var FileReader = Java.type("java.io.FileReader");
-    var theCSVFile = new FileReader(filePath);
+    var theCSVFile = new FileReader(g_filePath);
 
     var theCSV ="";
 
@@ -97,3 +119,19 @@ if (filePath) {
 else {
     console.log("> Cancelled");
 }
+
+function csvimport_useDrivingView(alias) {
+    drivingView = $("view").filter(function(o) { 
+        var dd_alias = o.prop("alias") ? o.prop("alias"):"";
+        return (dd_alias === alias);
+    }).first();
+    
+    if (!drivingView) {
+        console.log("Please open and select a Driving View for the documentation");
+        return (false);
+    } 
+
+    (debug)? console.log ('devdoc_useDrivingView: ', drivingView.name): true;
+    return drivingView;
+
+} // end of useDrivingView

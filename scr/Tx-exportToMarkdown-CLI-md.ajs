@@ -40,7 +40,7 @@ var bodyMap = [];
 var proptable = false;            // escribe tabla de propiedades?
 var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
-var g_fileName = "";
+var g_filePath = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
 var g_theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
@@ -138,7 +138,7 @@ if (g_drivingView) {
     g_path = argRutaMacMD? 
         '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
         '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
-    g_fileName = g_path+g_drivingView_devdoc;
+    g_filePath = g_path+g_drivingView_devdoc;
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
     (debug)?console.log('g_path: '+g_path):true;
@@ -189,7 +189,7 @@ if (g_drivingView) {
 
     
     // Crea el archivo de salida de documentación theView
-    var exportFile = g_fileName;
+    var exportFile = g_filePath;
 
     if(exportFile != null) {
        if (!embed) {  // escribe archivo imagen exportFile
@@ -207,7 +207,7 @@ if (g_drivingView) {
        
        console.log("Salidas:");
        console.log(devdoc_addSpace(1), "path: ", g_path);
-       console.log(devdoc_addSpace(1), "fileName: ", g_fileName);
+       console.log(devdoc_addSpace(1), "fileName: ", g_filePath);
        console.log("> Export done");
     }
     else {

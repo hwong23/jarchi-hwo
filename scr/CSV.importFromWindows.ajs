@@ -21,10 +21,10 @@ load(__DIR__ + "lib/papaparse.min.js");
 
 console.log("> Loaded Papa Parse");
 
-var filePath = window.promptOpenFile({ title: "Open CSV", filterExtensions: ["*.CSV"], fileName: "default.archimate" });
-if (filePath) {
+var g_filePath = window.promptOpenFile({ title: "Open CSV", filterExtensions: ["*.CSV"], fileName: "default.archimate" });
+if (g_filePath) {
     var FileReader = Java.type("java.io.FileReader");
-    var theCSVFile = new FileReader(filePath);
+    var theCSVFile = new FileReader(g_filePath);
 
     var theCSV ="";
 

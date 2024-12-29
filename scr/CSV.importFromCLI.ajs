@@ -23,10 +23,10 @@ load(__DIR__ + "lib/myargs.js");
 
 
 // Argumentos de entrada por CLI
-var argRutaMacMD = myargs_getArgumento("rutaMacMD");
+var argRutaSalida = myargs_getArgumento("rutaSalida");
 var argVistaDocumental = myargs_getArgumento("vistaDocumental");
 console.log("Entradas: ")
-debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
+debug? console.log("   rutaSalida: "+argRutaSalida):true;
 debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
 
 
@@ -38,15 +38,15 @@ var r = __DIR__.split("\/");
 g_drivingView_devdoc = g_drivingView.prop("devdoc")? 
     g_drivingView.prop("devdoc"):
     "contenido.csv";
-g_path = argRutaMacMD? 
-    '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
+g_path = argRutaSalida? 
+    '/'+r[1]+'/'+r[2]+argRutaSalida+'/':
     '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
 g_filePath = g_path+g_drivingView_devdoc;
 //
 (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
 (debug)?console.log('g_path: '+g_path):true;
 
-    
+
 if (g_filePath) {
     var FileReader = Java.type("java.io.FileReader");
     var theCSVFile = new FileReader(g_filePath);

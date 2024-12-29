@@ -23,28 +23,16 @@ load(__DIR__ + "lib/myargs.js");
 
 
 // Argumentos de entrada por CLI
-var argRutaSalida = myargs_getArgumento("rutaSalida");
-var argVistaDocumental = myargs_getArgumento("vistaDocumental");
+var argRutaLectura = myargs_getArgumento("rutaLectura");
+// var argVistaDocumental = myargs_getArgumento("vistaDocumental");
 console.log("Entradas: ")
-debug? console.log("   rutaSalida: "+argRutaSalida):true;
-debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
+debug? console.log("   rutaSalida: "+argRutaLectura):true;
+// debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
 
 
 // Selección de la vista indicada por el argumento entrada CLI
-var g_drivingView = csvimport_useDrivingView(argVistaDocumental);
-
-// Define ruta/nombre del archivo de salida de la documentación de la vista theView
-var r = __DIR__.split("\/");
-g_drivingView_devdoc = g_drivingView.prop("devdoc")? 
-    g_drivingView.prop("devdoc"):
-    "contenido.csv";
-g_path = argRutaSalida? 
-    '/'+r[1]+'/'+r[2]+argRutaSalida+'/':
-    '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
-g_filePath = g_path+g_drivingView_devdoc;
-//
-(debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
-(debug)?console.log('g_path: '+g_path):true;
+// var g_drivingView = csvimport_useDrivingView(argVistaDocumental);
+var g_filePath = argRutaLectura;
 
 
 if (g_filePath) {

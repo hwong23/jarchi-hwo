@@ -1,4 +1,4 @@
-﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 Script Name: exportToExcelCSV
 Purpose:     Export all elements from the current model (including their properties) to a CSV file which
@@ -6,12 +6,12 @@ Purpose:     Export all elements from the current model (including their propert
              Export uses latin encoding and replaces some characters so that Excel can directly open the CSV 
              (double-click).
              
-             This works in conjunction with smileham's importFromCSV to reimport changes (but doesn't require PapaParse),
-             see https://gist.github.com/smileham/1e57a5946235e780dee5a824f664aa3d
+             This works in conjunction with smileham's importFromCSV to reimport changes (but doesn't 
+             require PapaParse), see https://gist.github.com/smileham/1e57a5946235e780dee5a824f664aa3d
 
 Thomas Rischbeck, rischbeck@itmc.ch, (C) ITMC 2021
 
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 var headerInput = [];
 headerInput.push("Name");
@@ -92,20 +92,20 @@ $("element").each(function(element) {
 
 
 
- // Open a dialog to let the user choose where to save the generated file
- var defaultFileName = "Export_Model_" + modelName + ".csv" ; 
- //var defaultFileName = "Export_Model.csv" ; 
- var exportFile = window.promptSaveFile({ title: "Export to CSV", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
+// Open a dialog to let the user choose where to save the generated file
+var defaultFileName = "Export_Model_" + modelName + ".csv" ; 
+//var defaultFileName = "Export_Model.csv" ; 
+var exportFile = window.promptSaveFile({ title: "Export to CSV", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
 
- // replace the UTF-16 BOM 
+// replace the UTF-16 BOM 
 // res = res.replace(/^\uFEFF/gm, "");
 
- //replace this with utf-16 or utf-16le
- //with CH-DE locale and Excel2016 I got good results with latin encoding
+//replace this with utf-16 or utf-16le
+//with CH-DE locale and Excel2016 I got good results with latin encoding
 //  $.fs.writeFile(exportFile, fileOutString, 'latin1');
 $.fs.writeFile(exportFile, fileOutString, 'UTF-8');
 
- console.log(">>> export done to file " + exportFile);
+console.log(">>> export done to file " + exportFile);
  
 
 // escape/change critical characters in text fields, enclose in '"' quotes

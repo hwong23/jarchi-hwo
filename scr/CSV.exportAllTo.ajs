@@ -9,7 +9,9 @@
  * Version 1.1: Avoid duplicate concepts exported from diagram
  * Version 1.2: Fix missing properties
  * Version 2: Updated to export Relationships to additional CSV
- * Version 2.1: Added error check for View.
+ * Version 2.1: Added error check for View
+ * Version 2.2: exportFile = userPath + "/" + defaultFileName
+ * Version 2.2.1: $('view').each(function(theView)
  *
  * (c) 2018 Steven Mileham
  *
@@ -65,7 +67,6 @@ var current_row = 1;
 var theData = new Array();
 var theRelationshipData = new Array();
 
-// var theView = $(selection).filter("archimate-diagram-model").first();
 $('view').each(function(theView) {
     debug? console.log(theView):true;
 

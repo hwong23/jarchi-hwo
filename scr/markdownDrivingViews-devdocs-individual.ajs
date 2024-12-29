@@ -439,7 +439,7 @@ function useDrivingView(alias) {
 
 var docGen = "";
 
-if (useDrivingView(getArgumento("vistaDocumental"))) {
+if (useDrivingView(myargs_getArgumento("vistaDocumental"))) {
     // Original: nombre de archivo por ventana
     // var exportFile = window.promptSaveFile({
     //     title: "Export to File",

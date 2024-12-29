@@ -116,9 +116,9 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null) {
 
 
 // Argumentos de entrada por CLI
-var argRutaMacMD = getArgumento("rutaMacMD");
-var argVistaDocumental = getArgumento("vistaDocumental");
-var argRutaCompleta = getArgumento("rutaCompleta");
+var argRutaMacMD = myargs_getArgumento("rutaMacMD");
+var argVistaDocumental = myargs_getArgumento("vistaDocumental");
+var argRutaCompleta = myargs_getArgumento("rutaCompleta");
 console.log("Entradas: ")
 console.log("   theRutaMacMD: "+argRutaMacMD);
 console.log("   vistaDocumental: "+argVistaDocumental);

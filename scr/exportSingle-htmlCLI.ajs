@@ -95,7 +95,7 @@ var folders = selection.filter("folder").not(nonViewFolders);
 
 
 // Argumentos de entrada por CLI
-var argRutaMacMD = getArgumento("rutaMacMD");
+var argRutaMacMD = myargs_getArgumento("rutaMacMD");
 // var argVistaDocumental = getArgumento("vistaDocumental");
 // var argRutaCompleta = getArgumento("rutaCompleta");
 console.log("Entradas: ")

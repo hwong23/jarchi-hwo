@@ -95,7 +95,7 @@ var DefaultInclusionSettings = {
 // Main Code
 var docGen = "";
 
-if (useDrivingView(getArgumento("vistaDocumental"))) {
+if (useDrivingView(myargs_getArgumento("vistaDocumental"))) {
     // Nombre de archivo por propiedad del modelo
     let r = __DIR__.split("\/");
     var exportFile = "/"+r[1]+"/"+r[2] + (drivingView.prop("rutaMac")? drivingView.prop("rutaMac"):'/Downloads/tmpr/pgnmd/') + drivingView_devdoc;

@@ -67,9 +67,9 @@ console.log("Export to Markdown");
 
 
 // Argumentos de entrada por CLI
-var argRutaMacMD = getArgumento("rutaMacMD");
-var argVistaDocumental = getArgumento("vistaDocumental");
-var argRutaCompleta = getArgumento("rutaCompleta");
+var argRutaMacMD = myargs_getArgumento("rutaMacMD");
+var argVistaDocumental = myargs_getArgumento("vistaDocumental");
+var argRutaCompleta = myargs_getArgumento("rutaCompleta");
 console.log("Entradas: ")
 debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
 debug? console.log("   vistaDocumental: "+argVistaDocumental):true;

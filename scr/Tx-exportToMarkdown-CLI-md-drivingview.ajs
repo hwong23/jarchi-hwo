@@ -391,7 +391,7 @@ function exportViews (k, viewList, settings)
     viewTitles = tplViewTitle({viewId: v.id, viewName: _.escape(vnombre)});
     viewDiagrams = (viewInclusionSettings.IncludeDiagram) ? 
         tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
-        viewNombre: nombrevista+'.png', viewAlto: '500px', viewAncho: ''}):
+        viewNombre: nombrevista+'.png', viewAlto: '', viewAncho: ''}):
         "";
     viewDocumentation += tplDocumentation (
         {

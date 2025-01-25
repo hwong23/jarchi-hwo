@@ -3,6 +3,7 @@
 # $1: ruta usuario repositorio git
 # $2: ruta y modelo arq
 # $3: ruta programa ajs
+# $4: alias vista documental
 
 
 /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app \

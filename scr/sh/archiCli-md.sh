@@ -27,7 +27,7 @@
  
 
 # include parse_yaml function
-./ parse_yaml.sh
+parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml config_)
 
 rutausr=$(varvalue config_ $4 _rutausr)

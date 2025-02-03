@@ -37,7 +37,7 @@ mdhtml:
 
 
 help:
-	head -2 Makefile
+	head -2 makefile
 
 all:
 	# make documento, tema, sitio, presentacion, reporte, borrador

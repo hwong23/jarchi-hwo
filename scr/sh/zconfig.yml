@@ -5,8 +5,8 @@ deploy:
   prgreporthtml: exportSingle-htmlCLI.ajs
   prgreportmd: exportSingle-md.ajs
   rutareport: /gh/devdocs/devocs-contd/contd/report
-# ccambio:
-#   gitorigen: /Users/hwo/gh/pgn/pgn-078
+ccambio:
+  gitorigen: /Users/hwo/gh/devdocs/devocs-contd
 # publish:
 #   gitorigen: /Users/hwo/gh/pgn/pgn-078 
 

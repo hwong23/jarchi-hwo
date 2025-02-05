@@ -36,7 +36,7 @@ load(__DIR__ + "lib/devdocslib.js");
 load(__DIR__ + "lib/mustachetemplate.js");
 
 
-var debug = false;
+var debug = true;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
@@ -47,7 +47,7 @@ var g_fileName = "";
 var g_drivingView_devdoc = "";    // documento automático asociado
 var g_theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
-var elements = '';
+var viewElements = '';
 var elementsCollection;
 var viewDocumentations = '';
 var viewTitles =  '';
@@ -95,6 +95,8 @@ if (theView) {
     (debug)?console.log('g_path: '+g_path):true;
 
 
+    var viewInclusionSettings = devdoc_getGroupInclusionSettings(theView, devdoc_DefaultInclusionSettings);
+
     // composición de theDocument, contenedor de la documentación de la vista
     g_theDocument+="# "+theView.name+"\n";
     theTOC=devdoc_toc(0,theView, 'ppt', theTOC);
@@ -127,7 +129,7 @@ if (theView) {
     nestedDocumentation_elements(0, theView);
     
     // interpolación de texto mediante plantilla
-    tplDocumentation = _.template( readFully(__DIR__ + 'templates/tex/' + 
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/ppt/' + 
         (theView.prop('plantilla')? 
         theView.prop('plantilla'):
         'documentation-md-tex') + '.tpl', 'UTF-8') ); 
@@ -138,18 +140,18 @@ if (theView) {
         
 
     // composición de viewDocumentations, contenedor de la documentación de la vista
-    viewDocumentations += tplDocumentation (
-        {
+    viewDocumentations += tplDocumentation ({
         viewId: 'id-'+theView.id,
         viewTitle: viewTitles,
-        viewNota: devdoc_obtNota (theView),
-        viewDiagram: "",    //viewDiagrams,
+        viewNota: (viewInclusionSettings.IncludeDocumentation) ? 
+            devdoc_obtNota (theView).replace(/\n/g, ' '): 
+            "",    //<br>,
+        viewDiagram: viewDiagrams,
         documentationText: _.escape(g_theDocument),
         // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
-        elements: elements,     // colección elements es alimentada por nestedDocumentation
-        relaciones: ""          // relaciones
-        }
-    );
+        elements: viewElements,     // colección elements es alimentada por nestedDocumentation
+        relaciones: ''              // relaciones
+    });
 
 
     // Crea el archivo de salida de documentación theView
@@ -185,13 +187,11 @@ else {
  Requiere: 
  */
  function nestedDocumentation_elements(d, element) {
-    debug? console.log('Elementos: '):true;
-
-    $(element).children().not("relationship").filter(function(child) {
-        var prop_destino = child.prop("destino");
-        return (prop_destino? (prop_destino.includes("ppt")? true:false): false)
-    }).each(function(e) {
-
+     $(element).children().not("relationship").filter(function(child) {
+         var prop_destino = child.prop("destino");
+         return (prop_destino? (prop_destino.includes("ppt")? true:false): false)
+        }).each(function(e) {
+            
         if (e.name) {
             var headerDepth ="##";      // nivel inicial jerarquía del título
             for (var i=0; i<d; i++) {
@@ -212,7 +212,7 @@ else {
                 linkNum = " "+bodyMap[theHash];
             }
 
-            elements += tplElement({
+            viewElements += tplElement({
                 viewsIds: '',
                 elementName: _.escape( e.prop('ide')? 
                     e.prop('ide'):
@@ -222,7 +222,7 @@ else {
                 elementDocumentationMarkdown: ''
             });
 
-            debug? console.log('   '+e.name+":"+e):true;
+            (debug)? console.log(devdoc_addSpace(d), e):true;
 
             if ($(e).children().length>0) {
                 d++;

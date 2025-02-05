@@ -138,8 +138,7 @@ if (theView) {
     
     
     // composición de viewDocumentations, contenedor de la documentación de la vista
-    viewDocumentations += tplDocumentation (
-        {
+    viewDocumentations += tplDocumentation ({
         viewId: 'id-'+theView.id,
         viewTitle: "",  //viewTitles,
         viewNota: devdoc_obtNota (theView),
@@ -148,8 +147,7 @@ if (theView) {
         // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
         elements: elements,     // colección elements es alimentada por nestedDocumentation
         relaciones: ""          // relaciones
-        }
-    );
+    });
 
 
     // Crea el archivo de salida de documentación theView

@@ -377,13 +377,13 @@ function exportViews (k, viewList, settings)
     // carga las relaciones de los elementos de la vista actual
     if (viewInclusionSettings.IncluyeRelaciones === true) {
         $(v).find('relationship').each(function(r) {
-        if(relacionesCollection) {
-        if(!relacionesCollection.contains(r.concept)) relacionesCollection.add($(r.concept));
-        } else {
-        relacionesCollection = $(r.concept);
-        }
-        g_viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
-    });
+            if(relacionesCollection) {
+            if(!relacionesCollection.contains(r.concept)) relacionesCollection.add($(r.concept));
+            } else {
+            relacionesCollection = $(r.concept);
+            }
+            g_viewsIdsByConceptId[r.concept.id] += ' id-'+v.id;
+        });
     }
 
 

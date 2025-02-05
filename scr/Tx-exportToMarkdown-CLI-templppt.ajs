@@ -136,12 +136,13 @@ if (theView) {
         (theView.labelExpression)? theView.labelExpression : theView.name)}
         );
         
-        
+    console.log ('titulo', theView.prop("titulo"));
+
     // composición de viewDocumentations, contenedor de la documentación de la vista
     viewDocumentations += tplDocumentation (
         {
         viewId: 'id-'+theView.id,
-        viewTitle: "",  //viewTitles,
+        viewTitle: viewTitles,
         viewNota: devdoc_obtNota (theView),
         viewDiagram: "",    //viewDiagrams,
         documentationText: _.escape(g_theDocument),

@@ -49,10 +49,11 @@ mdppt:
   rutamodelo: $HOME/gh/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
-  expportprg: exportSingle-htmlCLI.ajs
+  expportprg: Tx-exportToMarkdown-CLI-templppt.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
+  expportprg_solo: Tx-exportToMarkdown-CLI-templppt.ajs
+  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   rutaMacMD: /gh/devdocs/devocs-contd/contd/ppt
   rutaCompleta: no
 mdhtml:

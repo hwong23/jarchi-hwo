@@ -50,6 +50,8 @@ var theTOC = "* [Introducción](#Introducción)";
 var elements = '';
 var elementsCollection;
 var viewDocumentations = '';
+var viewTitles =  '';
+var viewDiagrams = '';
 
 
 // funciones con argumento plantillas
@@ -104,7 +106,9 @@ if (theView) {
         g_theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
     }
     else {
-        g_theDocument+="\n!["+theView.name+"]["+ imageReferencia +"]\n";
+        g_theDocument+="\n!["+theView.name+"]["+ argRutaCompleta == 'si' ? 
+            '\n!['+ imageReferencia+ '](' +relativeURL+ '){height=500 width=}':
+            '\n!['+ imageReferencia+ '](' +imageReferencia+'.png){height=500 width=}'+"\n";
     }
     theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
 
@@ -119,22 +123,27 @@ if (theView) {
         };
     })
     
-    
     // llena la colección de elementos elements
     nestedDocumentation_elements(0, theView);
-
+    
     // interpolación de texto mediante plantilla
-    tplDocumentation = _.template( readFully(__DIR__ + 'templates/' + 
+    tplDocumentation = _.template( readFully(__DIR__ + 'templates/tex/' + 
         (theView.prop('plantilla')? 
         theView.prop('plantilla'):
-        'ppt/documentation-md-ppt') + '.tpl', 'UTF-8') ); 
-    
+        'documentation-md-tex') + '.tpl', 'UTF-8') ); 
+    viewTitles = tplViewTitle({viewId: theView.id, viewName: _.escape(
+        (theView.prop("titulo")) ? theView.prop("titulo"): 
+        (theView.labelExpression)? theView.labelExpression : theView.name)}
+        );
+        
+        
+    // composición de viewDocumentations, contenedor de la documentación de la vista
     viewDocumentations += tplDocumentation (
         {
         viewId: 'id-'+theView.id,
-        viewTitle: "",      // viewTitles,
+        viewTitle: "",  //viewTitles,
         viewNota: devdoc_obtNota (theView),
-        viewDiagram: "",    // viewDiagrams,
+        viewDiagram: "",    //viewDiagrams,
         documentationText: _.escape(g_theDocument),
         // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
         elements: elements,     // colección elements es alimentada por nestedDocumentation
@@ -205,7 +214,9 @@ else {
 
             elements += tplElement({
                 viewsIds: '',
-                elementName: _.escape(e.name),
+                elementName: _.escape( e.prop('ide')? 
+                    e.prop('ide'):
+                    e.name.replaceAll(' ','-') ),
                 elementType: devdoc_properCase(e.type),
                 elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
                 elementDocumentationMarkdown: ''

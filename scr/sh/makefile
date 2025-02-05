@@ -28,7 +28,7 @@ mdtex:
 	$(alias) mdtex)
 
 mdppt:
-	(sh archiCli-md.sh . Tx-exportToMarkdown-CLI-templppt.ajs \
+	(sh archiCli-md.sh . $(tx) \
 	$(alias) mdppt)
 
 mdhtml:

@@ -76,43 +76,52 @@ debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
 debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
 
 // Selección de la vista indicada por el argumento entrada CLI
-var theView = devdoc_useDrivingView(argVistaDocumental);
+var g_drivingView = devdoc_useDrivingView(argVistaDocumental);
     // $(selection).filter("archimate-diagram-model").first();
 
 
-if (theView) {
+if (g_drivingView) {
     // Define ruta/nombre del archivo de salida de la documentación de la vista theView
     // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
     // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
     var r = __DIR__.split("\/");
-    g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
+    g_drivingView_devdoc = g_drivingView.prop("devdoc")?g_drivingView.prop("devdoc"):"02n.a1.contenido.md";
     g_path = argRutaMacMD ? 
         '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
-        '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
+        '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
     g_fileName = g_path+g_drivingView_devdoc;
 
     (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
     (debug)?console.log('g_path: '+g_path):true;
 
 
-    var viewInclusionSettings = devdoc_getGroupInclusionSettings(theView, devdoc_DefaultInclusionSettings);
+    // configuración de presentación de la vista seleccionada
+    var viewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
+
 
     // composición de theDocument, contenedor de la documentación de la vista
-    g_theDocument+="# "+theView.name+"\n";
-    theTOC=devdoc_toc(0,theView, 'ppt', theTOC);
+    g_theDocument+= g_drivingView.prop('titulo')?           // título
+        '# '+g_drivingView.prop('titulo')+'\n': 
+        "# "+g_drivingView.name+"\n";
+    theTOC=devdoc_toc(0,g_drivingView, 'ppt', theTOC);      // contenido
     g_theDocument+="\n"+theTOC+"\n";
-    g_theDocument+="\n## Introducción\n";
-    imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
-    if (embed==true) {
-        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-        g_theDocument+="\n!["+theView.name+"](data:image/png;base64,"+bytes+")\n";
+    g_theDocument+="\n## Introducción\n";                   // intro
+    imageReferencia =                                       // imagen
+        g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
+    if (drivingViewInclusionSettings.IncludeViewElements) {
+        if (embed==true) {
+            var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
+            g_theDocument+="\n!["+g_drivingView.name+"](data:image/png;base64,"+bytes+")\n";
+        }
+        else {
+            g_theDocument += (drivingViewInclusionSettings["IncludeDiagram"]===true) ? 
+            "\n!["+g_drivingView.name+"]("+ imageReferencia +".png){height=500px}\n":
+            "";
+        }
     }
-    else {
-        g_theDocument+="\n!["+theView.name+"]["+ argRutaCompleta == 'si' ? 
-            '\n!['+ imageReferencia+ '](' +relativeURL+ '){height=500 width=}':
-            '\n!['+ imageReferencia+ '](' +imageReferencia+'.png){height=500 width=}'+"\n";
-    }
-    theView.documentation!=""? g_theDocument+="\n"+theView.documentation+"\n":true;
+    g_drivingView.documentation != "" ?                     // documentación
+        g_theDocument+="\n"+g_drivingView.documentation+"\n":
+        true;
 
 
     // Notes with no relationships
@@ -125,27 +134,29 @@ if (theView) {
         };
     })
     
+
     // llena la colección de elementos elements
-    nestedDocumentation_elements(0, theView);
+    nestedDocumentation_elements(0, g_drivingView);
     
+
     // interpolación de texto mediante plantilla
     tplDocumentation = _.template( readFully(__DIR__ + 'templates/ppt/' + 
-        (theView.prop('plantilla')? 
-        theView.prop('plantilla'):
+        (g_drivingView.prop('plantilla')? 
+        g_drivingView.prop('plantilla'):
         'documentation-md-ppt') + '.tpl', 'UTF-8') ); 
-    viewTitles = tplViewTitle({viewId: theView.id, viewName: _.escape(
-        (theView.prop("titulo")) ? theView.prop("titulo"): 
-        (theView.labelExpression)? theView.labelExpression : theView.name)}
+    viewTitles = tplViewTitle({viewId: g_drivingView.id, viewName: _.escape(
+        (g_drivingView.prop("titulo")) ? g_drivingView.prop("titulo"): 
+        (g_drivingView.labelExpression)? g_drivingView.labelExpression : g_drivingView.name)}
         );
         
 
     // composición de viewDocumentations, contenedor de la documentación de la vista
     viewDocumentations += tplDocumentation ({
-        viewId: 'id-'+theView.id,
+        viewId: 'id-'+g_drivingView.id,
         viewTitle: viewTitles,
         viewNota: (viewInclusionSettings.IncludeDocumentation) ? 
-            devdoc_obtNota (theView).replace(/\n/g, ' '): 
-            "",    //<br>,
+            devdoc_obtNota (g_drivingView).replace(/\n/g, ' '): 
+            "",
         viewDiagram: viewDiagrams,
         documentationText: _.escape(g_theDocument),
         // documentationMarkdown: marked(_.escape(theView.documentation), mdOptions),
@@ -158,18 +169,19 @@ if (theView) {
     var exportFile = g_fileName;
 
     if(exportFile != null) {
-         if (!embed) {  // escribe archivo imagen exportFile
-             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
-             relativeURL = imageURL.split("\\");
-             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-             $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
-                '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
-         }
-         viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-         $.fs.writeFile(exportFile, viewDocumentations);
+        if (!embed) {  // escribe archivo imagen exportFile
+           imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
+           relativeURL = imageURL.split("\\");
+           var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
+           $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
+           //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
+           //     '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+        }
 
-         console.log("> Export done");
+        viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
+        $.fs.writeFile(exportFile, viewDocumentations);
+
+        console.log("> Export done");
      }
      else {
          console.log("> Export cancelled");
@@ -198,30 +210,34 @@ else {
                 headerDepth+="#";
             }
 
-            var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
-            if (bodyMap[theHash]==null) {
-                bodyMap[theHash]=1;
+            // var theHash = devdoc_generateLink(e.name +" ("+ devdoc_convertToText(e.type)+")");
+            // if (bodyMap[theHash]==null) {
+            //     bodyMap[theHash]=1;
+            // }
+            // else {
+            //     bodyMap[theHash]+=1;
+            // }
+
+            // var linkNum="";
+
+            // if (bodyMap[theHash]>1) {
+            //     linkNum = " "+bodyMap[theHash];
+            // }
+
+            if (e.documentation ||          // si elemento con documentación
+                                            // si elemento sin documentación permitido
+                (!e.documentation && inclusionsettings.IncluyeElementosSindoc) ||
+                $(e).children().length>0)   // si elemento es un grupo
+            {
+                viewElements += tplElement({
+                    viewsIds: '',
+                    elementName: "\n"+headerDepth +" "+ (e.name)+"\n",                        
+                    elementType: devdoc_properCase(e.type),
+                    elementDocumentationText: _.escape(e.documentation),    //.replace(/\n/g, '\n   '),
+                    elementDocumentationMarkdown: ''
+                });
             }
-            else {
-                bodyMap[theHash]+=1;
-            }
-
-            var linkNum="";
-
-            if (bodyMap[theHash]>1) {
-                linkNum = " "+bodyMap[theHash];
-            }
-
-            viewElements += tplElement({
-                viewsIds: '',
-                elementName: _.escape( e.prop('ide')? 
-                    e.prop('ide'):
-                    e.name.replaceAll(' ','-') ),
-                elementType: devdoc_properCase(e.type),
-                elementDocumentationText: _.escape(e.documentation).replace(/\n/g, '\n   '),
-                elementDocumentationMarkdown: ''
-            });
-
+            
             (debug)? console.log(devdoc_addSpace(d), e):true;
 
             if ($(e).children().length>0) {

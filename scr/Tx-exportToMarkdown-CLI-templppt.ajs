@@ -96,7 +96,7 @@ if (g_drivingView) {
 
 
     // configuración de presentación de la vista seleccionada
-    var viewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
+    var drivingViewInclusionSettings = devdoc_getGroupInclusionSettings(g_drivingView, devdoc_DefaultInclusionSettings);
 
 
     // composición de theDocument, contenedor de la documentación de la vista
@@ -154,7 +154,7 @@ if (g_drivingView) {
     viewDocumentations += tplDocumentation ({
         viewId: 'id-'+g_drivingView.id,
         viewTitle: viewTitles,
-        viewNota: (viewInclusionSettings.IncludeDocumentation) ? 
+        viewNota: (drivingViewInclusionSettings.IncludeDocumentation) ? 
             devdoc_obtNota (g_drivingView).replace(/\n/g, ' '): 
             "",
         viewDiagram: viewDiagrams,

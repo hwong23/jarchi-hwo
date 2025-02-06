@@ -36,7 +36,7 @@ load(__DIR__ + "lib/devdocslib.js");
 load(__DIR__ + "lib/mustachetemplate.js");
 
 
-var debug = true;
+var debug = false;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];

@@ -1,1 +1,1 @@
-## {{viewName}}
+# {{viewName}}

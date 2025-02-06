@@ -1,5 +1,5 @@
 ---
 
-## {{elementName}}
+{{elementName}}
 {{elementDocumentationText}}
 

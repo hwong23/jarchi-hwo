@@ -132,7 +132,7 @@ if (theView) {
     tplDocumentation = _.template( readFully(__DIR__ + 'templates/ppt/' + 
         (theView.prop('plantilla')? 
         theView.prop('plantilla'):
-        'documentation-md-tex') + '.tpl', 'UTF-8') ); 
+        'documentation-md-ppt') + '.tpl', 'UTF-8') ); 
     viewTitles = tplViewTitle({viewId: theView.id, viewName: _.escape(
         (theView.prop("titulo")) ? theView.prop("titulo"): 
         (theView.labelExpression)? theView.labelExpression : theView.name)}

@@ -103,7 +103,7 @@ if (g_drivingView) {
     // g_theDocument+= g_drivingView.prop('titulo')?           // título
     //     '# '+g_drivingView.prop('titulo')+'\n': 
     //     "# "+g_drivingView.name+"\n";
-    theTOC=devdoc_toc(0,g_drivingView, 'ppt', theTOC);      // contenido
+    theTOC=devdoc_toc(0, g_drivingView, 'ppt', theTOC, true, false);      // contenido
     g_theDocument+="\n"+theTOC+"\n";
     g_theDocument+="\n## Introducción\n";                   // intro
     imageReferencia =                                       // imagen
@@ -232,7 +232,7 @@ else {
                 viewElements += tplElement({
                     viewsIds: '',
                     elementName: headerDepth +" "+ (e.name),
-                    elementType: devdoc_properCase(e.type),
+                    elementType: '',                                        // devdoc_properCase(e.type),
                     elementDocumentationText: _.escape(e.documentation),    //.replace(/\n/g, '\n   '),
                     elementDocumentationMarkdown: ''
                 });

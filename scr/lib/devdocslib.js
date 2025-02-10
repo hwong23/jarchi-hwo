@@ -319,7 +319,7 @@ function devdoc_convertToText(type) {
     return theResult.trim();
 }
 
-function devdoc_toc(nivel, element, include, o_toc, incluyeElementosSindoc = true){
+function devdoc_toc(nivel, element, include, o_toc, incluyeElementosSindoc = true, incluyeTipo = true){
     $(element).children().not("relationship").filter(function(child) {
         // permite elementos sin documentación?
         var prop_destino = child.prop("destino");
@@ -345,7 +345,10 @@ function devdoc_toc(nivel, element, include, o_toc, incluyeElementosSindoc = tru
                 linkNum = "-"+tocMap[theHash];
             }
 
-            o_toc+="\n"+headerDepth +"* ["+ devdoc_escapeMD(e.name) +" ("+ devdoc_convertToText(e.type) +")"+linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
+            o_toc+="\n"+headerDepth +
+                "* ["+ devdoc_escapeMD(e.name) +
+                (incluyeTipo ? " ("+devdoc_convertToText(e.type)+")": '') +
+                linkNum.replace("-"," ")+"]("+theHash+linkNum+")";
             if ($(e).children().not("relationship").length>0) {
                 nivel++;
                 o_toc=devdoc_toc(nivel, e, 'doc', o_toc);

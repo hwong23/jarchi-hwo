@@ -243,7 +243,7 @@ function getViews(Level, Levelobj, settings) {
             }
 
             // escribe un md individual por cada vista
-            thisPath = g_path + myView.name;
+            thisPath = g_path + myView.name.replaceAll(" ", "");
             $.fs.writeFile(thisPath + ".md", outInfo_vista);
 
             // agregar vista actual al documento acumulado
@@ -437,7 +437,7 @@ function useDrivingView(alias) {
 
 // Main Code
 
-var docGen = "";
+var g_docGen = "";
 
 if (useDrivingView(myargs_getArgumento("vistaDocumental"))) {
     // Original: nombre de archivo por ventana
@@ -474,13 +474,13 @@ if (useDrivingView(myargs_getArgumento("vistaDocumental"))) {
             outInfo += salidaEncbzdo(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
         }
-        docGen = "# " + drivingView.name + "\n"
+        g_docGen = "# " + drivingView.name + "\n"
         // docGen += "\n ___ \n";
-        docGen += theToc + "\n";
-        docGen += outInfo;
-        docGen += "\n\n``Generated on: " + currentDate + "``";
+        g_docGen += theToc + "\n";
+        g_docGen += outInfo;
+        g_docGen += "\n\n``Generated on: " + currentDate + "``";
 
-        $.fs.writeFile(exportFile, docGen);
+        $.fs.writeFile(exportFile, g_docGen);
     }
 }
 

@@ -64,6 +64,7 @@ var nextOne = null;
 var theToc = "";
 var g_Sections = [];
 var g_outInfo = "";
+var g_docGen = "";    // contenido documento completo
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";          // nombre de documento dado por propiedad del modelo
@@ -102,8 +103,6 @@ console.log("Documentation Generation @", currentDate);
 
 
 // Main Code
-var docGen = "";    // contenido documento completo
-
 if (useDrivingView( argVistaDocumental ))
 {
     // nombre de documento dado por propiedad del modelo
@@ -137,6 +136,7 @@ if (useDrivingView( argVistaDocumental ))
                 (g_Sections[i].group.labelExpression)? g_Sections[i].group.labelExpression: 
                 g_Sections[i].group.name;
 
+            // acumula documentación en g_outInfo
             // crea tabla de contenido (en theToc)
             outputHdr(g_Sections[i].level, nombreitem, true, g_Sections[i].group.documentation);
             
@@ -145,16 +145,16 @@ if (useDrivingView( argVistaDocumental ))
             
         }
 
-        docGen = "# " + ( (g_drivingView.prop("titulo")) ? 
+        g_docGen = "# " + ( (g_drivingView.prop("titulo")) ? 
             g_drivingView.prop("titulo"): 
             g_drivingView.name ) + "\n";
         // docGen += "\n ___ \n";
-        docGen += theToc + "\n";
-        docGen += g_outInfo;
+        g_docGen += theToc + "\n";
+        g_docGen += g_outInfo;
         // docGen += "\n\n``Generated on: " + currentDate + "``";
 
         if (!g_drivingViewInclusionSettings.DocumentosIndividualesxVista) {
-            $.fs.writeFile(exportFile, docGen);
+            $.fs.writeFile(exportFile, g_docGen);
         }
     }
 }
@@ -610,8 +610,8 @@ function rutaTrabajo(vista, rutaMacMD = null) {
     var rutaTrabajo = {};
 
     var devdoc = vista.prop("devdoc")? 
-    vista.prop("devdoc"):
-        "02n.a1.contenido.md";
+        vista.prop("devdoc"):
+        vista.name.replaceAll(" ", "")+'.md';
 
     // (sobrescribe) nombre de archivo dado por argumento CLI
     var path = rutaMacMD? 

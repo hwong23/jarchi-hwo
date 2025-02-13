@@ -63,8 +63,8 @@ var Errors = [];
 var nextOne = null;
 var theToc = "";
 var g_Sections = [];
-var g_outInfo = "";
-var g_docGen = "";    // contenido documento completo
+var g_outInfo = "";     // colecciona documentación de las vistas
+var g_docGen = "";      // contenido documento completo
 var g_path = "";
 var g_fileName = "";
 var g_drivingView_devdoc = "";          // nombre de documento dado por propiedad del modelo
@@ -138,10 +138,10 @@ if (useDrivingView( argVistaDocumental ))
 
             // acumula documentación en g_outInfo
             // crea tabla de contenido (en theToc)
-            outputHdr(g_Sections[i].level, nombreitem, true, g_Sections[i].group.documentation);
+            var initTextoGrupo = outputHdr(g_Sections[i].level, nombreitem, true, g_Sections[i].group.documentation);
             
             // obtiene documentación de las vistas
-            getViews(g_Sections[i].level, g_Sections[i].group, g_Sections[i].settings);
+            getViews(g_Sections[i].level, g_Sections[i].group, g_Sections[i].settings, initTextoGrupo);
             
         }
 
@@ -221,7 +221,7 @@ function useDrivingView(alias) {
 
 
 // recorre los elementos del grupo de vistas Levelobj
-function getViews(Level, GroupObj, settings) {
+function getViews(Level, GroupObj, settings, textoGrupo = '') {
     var thisPath = "";
     var imageURL = "";
     var viewList = [];
@@ -268,7 +268,10 @@ function getViews(Level, GroupObj, settings) {
             
             if (settings.DocumentosIndividualesxVista) {
                 var archivovista = rutaTrabajo(viewList[k][1], argRutaMacMD);
-                $.fs.writeFile(archivovista.filename, docGenVista);
+                $.fs.writeFile(archivovista.filename, 
+                    (k == 0) ? // si es la primera vista...
+                    textoGrupo + docGenVista:
+                    docGenVista);
             }
         }
     }
@@ -370,7 +373,7 @@ function exportViews (k, viewList, settings)
             }
         });
         
-        // interpolación de texto meidante plantilla de elementos
+        // interpolación de texto mediante plantilla de elementos
         viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
     }
 
@@ -414,11 +417,12 @@ function exportViews (k, viewList, settings)
         viewDocumentation != "" ? g_outInfo += "\n" + viewDocumentation + "\n" : true;
     }
     
-    return "\n" + viewDocumentation + "\n";
+    return viewDocumentation + "\n";
 }
 
 function outputHdr(Level, Name, AddLink, Doc) {
 
+    // 1. TOC
     var indent = "";
     var tocIndent = "";
 
@@ -433,11 +437,20 @@ function outputHdr(Level, Name, AddLink, Doc) {
         console.log(devdoc_addSpace(Level - 1), Name);
     }
 
-    var outHdr = indent + " " + Name;
+    // Add a link to table of contents (TOC), if requested
+    if (AddLink) {
+        var thisLink = generateLink(Name);
+        // outInfo += "\n" + "[](" + thisLink + ")";
+        theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
+    }
+    
+
+    // 2. Título (header del grupo)
+    var outHdr;
 
     if (Level === 1) {
-        g_outInfo += '\n<div style="page-break-before: always;"></div>';
-        g_outInfo += "\n\\newpage\n";
+        outHdr = '\n<div style="page-break-before: always;"></div>';
+        outHdr += "\n\\newpage\n\n";
         // outInfo += "\n ___ \n"; // horiz line before level 1's
     }
 
@@ -448,19 +461,18 @@ function outputHdr(Level, Name, AddLink, Doc) {
     //     }
     // }
 
-    g_outInfo += "\n" + outHdr;
-
-    // Add a link to table of contents (TOC), if requested
-    if (AddLink) {
-        var thisLink = generateLink(Name);
-        // outInfo += "\n" + "[](" + thisLink + ")";
-        theToc += tocIndent + "* [" + Name + "](" + thisLink + ")\n";
-    }
+    outHdr += indent + " " + Name + '\n';
 
     // agregar documentación del grupo (level 1)
     if (Doc) {
-        g_outInfo += "\n\n" + Doc;
+        outHdr += "\n" + Doc;
     }
+
+    // agrega contenido del grupo/sección
+    g_outInfo += outHdr;
+
+
+    return outHdr;
 }
 
 // Finds the group's sub-group, if any

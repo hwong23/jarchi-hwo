@@ -365,16 +365,17 @@ function devdoc_obtNota (theView) {
     var notatexto = '';
     var c = $(theView).find().not("element").not("relationship").first();
 
-    // try {
+    try {
         if (c !== null) {
             if ($(c).rels().length==0) {
-                notatexto = notatexto + c.text + '\n\n';
+                notatexto = (c.text)? 
+                    notatexto + c.text + '\n\n': '\n\n';
             }
         };
-    // }
-    // catch(err) {
-    //     console.error(c.name);
-    // }
+    }
+    catch(err) {
+        console.error(c.name);
+    }
 
     return notatexto;
 }

@@ -18,6 +18,7 @@ mddocx:
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  expportprg_rept: exportSingle-md.ajs 
   expportprg_all: exportSingle-md.ajs 
   rutaMacMD: /git/devdocs/devocs-contd/contd/docx
   rutaCompleta: no

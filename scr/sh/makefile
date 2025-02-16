@@ -15,7 +15,7 @@
 
 
 mddocx:
-	(sh archiCli-md.sh . $(tx) \
+	(bash archiCli-md.sh . $(tx) \
 	$(alias) mddocx)
 
 mdpdf:
@@ -23,15 +23,15 @@ mdpdf:
 	$(alias) mdpdf)
 
 mdtex:
-	(sh archiCli-md.sh . $(tx) \
+	(bash archiCli-md.sh . $(tx) \
 	$(alias) mdtex)
 
 mdppt:
-	(sh archiCli-md.sh . $(tx) \
+	(bash archiCli-md.sh . $(tx) \
 	$(alias) mdppt)
 
 mdhtml:
-	(sh archiCli-md.sh . $(tx) \
+	(bash archiCli-md.sh . $(tx) \
 	$(alias) mdhtml)
 
 

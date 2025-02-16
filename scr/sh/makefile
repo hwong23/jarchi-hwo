@@ -4,7 +4,6 @@
 # param alias := nombre vista documental (archi.property alias)
 # tx := programa transformador (.ajs)
 
-# TODO clean
 # TODO import doc; read md file
 # documento
 # tema
@@ -20,7 +19,7 @@ mddocx:
 	$(alias) mddocx)
 
 mdpdf:
-	(sh archiCli-md.sh . $(tx) \
+	(bash archiCli-md.sh . $(tx) \
 	$(alias) mdpdf)
 
 mdtex:

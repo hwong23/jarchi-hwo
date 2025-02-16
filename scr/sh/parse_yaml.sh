@@ -1,6 +1,9 @@
-# version 0.2 - varcalue
-
 #!/bin/sh
+
+# version 0.2 - varcalue
+# version 0.3 - !/bin/sh
+
+
 parse_yaml() {
    local prefix=$2
    local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')

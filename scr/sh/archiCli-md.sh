@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Generación de documento MD basado en la vista documental marcada con 
 # un alias (propertie) del repositorio de contenidos de arquitectura.
 

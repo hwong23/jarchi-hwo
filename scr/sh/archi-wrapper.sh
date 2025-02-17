@@ -83,3 +83,5 @@ echo /Applications/Archi.app/Contents/MacOS/Archi \
 
 # /Applications/Archi.app/Contents/MacOS/Archi \
 #    -application com.archimatetool.commandline.app -consoleLog -nosplash $ARGS
+
+exit 0

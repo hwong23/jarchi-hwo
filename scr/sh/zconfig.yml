@@ -40,7 +40,7 @@ mdpdf:
 mdtex:
   rutausr: $HOME/gh
   # /github/workspace/model/modelocontenidos
-  rutamodelo: ./
+  rutamodelo: /github/workspace/model/modelocontenidos
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs

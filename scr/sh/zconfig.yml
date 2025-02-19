@@ -13,7 +13,7 @@ ccambio:
 mddocx:
   
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /home/runner/work/modelocontenidos/modelocontenidos/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
@@ -25,7 +25,7 @@ mddocx:
 mdpdf:
   
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /home/runner/work/modelocontenidos/modelocontenidos/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
@@ -36,7 +36,7 @@ mdpdf:
 mdtex:
   
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /home/runner/work/modelocontenidos/modelocontenidos/jarchi-hwo/scr
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
@@ -45,7 +45,7 @@ mdtex:
   rutaCompleta: no
 mdppt:
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /home/runner/work/modelocontenidos/modelocontenidos/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-templppt.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
@@ -55,7 +55,7 @@ mdppt:
   rutaCompleta: no
 mdhtml:
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /home/runner/work/modelocontenidos/modelocontenidos/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs

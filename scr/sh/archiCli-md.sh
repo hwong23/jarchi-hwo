@@ -59,7 +59,7 @@ echo '   rutaMacMD:   ' $rutaMacMD
 echo '   rutaCompleta:' $rutaCompleta
 
 # archi -> /Applications/Archi.app/Contents/MacOS/Archi
-archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
+Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
    --modelrepository.loadModel $rutamodelo \
    --script.runScript $rutaprg/$prg \
    -vistaDocumental $vistadoc \

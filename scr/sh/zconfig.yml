@@ -12,7 +12,8 @@ ccambio:
 
 mddocx:
   rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
+  # /github/workspace/model/modelocontenidos
+  rutamodelo: ./
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
@@ -25,7 +26,8 @@ mddocx:
   rutaCompleta: no
 mdpdf:
   rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
+  # /github/workspace/model/modelocontenidos
+  rutamodelo: ./
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
@@ -37,7 +39,8 @@ mdpdf:
   rutaCompleta: no
 mdtex:
   rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
+  # /github/workspace/model/modelocontenidos
+  rutamodelo: ./
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
@@ -48,7 +51,8 @@ mdtex:
   rutaCompleta: no
 mdppt:
   rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
+  # /github/workspace/model/modelocontenidos
+  rutamodelo: ./
   rutaprg: $HOME/gh/jarchi-hwo/scr
   rutaexpportprg: $HOME/gh/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-templppt.ajs
@@ -60,7 +64,8 @@ mdppt:
   rutaCompleta: no
 mdhtml:
   rutausr: $HOME/gh
-  rutamodelo: $HOME/gh/model/modelocontenidos
+  # /github/workspace/model/modelocontenidos
+  rutamodelo: ./
   rutaprg: $HOME/gh/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs

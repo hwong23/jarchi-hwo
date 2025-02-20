@@ -19,7 +19,7 @@ mddocx:
   expportprg_test: Tx-orderview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-md.ajs 
-  rutaMacMD: /github/workspace/devdocs/devocs-contd/contd/docx
+  rutaMacMD: /devdocs/devocs-contd/contd/docx
   rutaCompleta: no
 mdpdf:
   rutamodelo: /github/workspace

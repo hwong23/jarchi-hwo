@@ -1,61 +1,61 @@
 deploy:
   # origenmd: /Users/hwo/Downloads/tmpr/pgnmd
-  # destinomd: /Users/hw/github/workspace/pgn/pgn-078
+  # destinomd: /Users/hw/pgn/pgn-078
   # origenhtml: /Users/hwo/Downloads/tmpr/pgnarchidoc
   prgreporthtml: exportSingle-htmlCLI.ajs
   prgreportmd: exportSingle-md.ajs
-  rutareport:/github/workspace/devdocs/devocs-contd/contd/report
+  rutareport: /devdocs/devocs-contd/contd/report
 ccambio:
-  gitorigen: /Users/hw/github/workspace/devdocs/devocs-contd
+  gitorigen: /Users/hw/devdocs/devocs-contd
 # publish:
-#   gitorigen: /Users/hw/github/workspace/pgn/pgn-078 
+#   gitorigen: /Users/hw/pgn/pgn-078 
 
 mddocx:
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_test: Tx-orderview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-md.ajs 
-  rutaMacMD: /github/workspace/devdocs/devocs-contd/contd/docx
+  rutaMacMD: /devdocs/devocs-contd/contd/docx
   rutaCompleta: no
 mdpdf:
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
-  rutaMacMD: /github/workspace/devdocs/devocs-contd/contd/pdf
+  rutaMacMD: /devdocs/devocs-contd/contd/pdf
   rutaCompleta: no
 mdtex:
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /jarchi-hwo/scr
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
-  rutaMacMD: /github/workspace/devdocs/devocs-contd/contd/tex
+  rutaMacMD: /devdocs/devocs-contd/contd/tex
   rutaCompleta: no
 mdppt:
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-templppt.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-templppt.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  rutaMacMD: /github/workspace/devdocs/devocs-contd/contd/ppt
+  rutaMacMD: /devdocs/devocs-contd/contd/ppt
   rutaCompleta: no
 mdhtml:
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs 
-  rutaMacMD: /github/workspace/devdocs/devocs-contd/contd/sitio
+  rutaMacMD: /devdocs/devocs-contd/contd/sitio
   rutaCompleta: no

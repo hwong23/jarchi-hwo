@@ -471,7 +471,7 @@ if (useDrivingView(myargs_getArgumento("vistaDocumental"))) {
                 (Sections[i].group.prop("titulo"))? Sections[i].group.prop("titulo"):
                 (Sections[i].group.labelExpression)? Sections[i].group.labelExpression : Sections[i].group.name;
 
-            outInfo += salidaEncbzdo(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
+            outInfo += devdoc_salidaEncbzdo(Sections[i].level, nombreitem, true, Sections[i].group.documentation);
             getViews(Sections[i].level, Sections[i].group, Sections[i].settings);
         }
         g_docGen = "# " + drivingView.name + "\n"

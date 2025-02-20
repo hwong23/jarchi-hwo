@@ -62,7 +62,7 @@ function addPropsAsItalic(thisObj) {
     return propts;
 }
 
-function salidaEncbzdo(Level, Name, AddLink, Doc) {
+function devdoc_salidaEncbzdo(Level, Name, AddLink, Doc) {
 
     var outDoc = "";
     var indent = "";
@@ -90,7 +90,8 @@ function salidaEncbzdo(Level, Name, AddLink, Doc) {
     
     // put a fudge post processing to insert 'NEWPAGE' in for header levels listed in listofNewpageheaders
     if (hardNewpage) {
-        if (listofNewpageheaders.indexOf(Level) != -1) {
+        if (listofNewpageheaders.search(Level) != -1) {
+            // if (listofNewpageheaders.indexOf(Level) != -1) {
             outDoc += "\n\\newpage\n";
         }
     }

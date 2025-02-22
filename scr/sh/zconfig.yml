@@ -19,7 +19,7 @@ mddocx:
   expportprg_test: Tx-orderview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-md.ajs 
-  rutaMacMD: /contd/docx
+  rutaMacMD: $HOME/devocs-contd/contd/docx
   rutaCompleta: no
 mdpdf:
   rutamodelo: /github/workspace
@@ -29,7 +29,7 @@ mdpdf:
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
-  rutaMacMD: /contd/pdf
+  rutaMacMD: $HOME/devocs-contd/contd/pdf
   rutaCompleta: no
 mdtex:
   rutamodelo: /github/workspace
@@ -38,7 +38,7 @@ mdtex:
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
-  rutaMacMD: /contd/tex
+  rutaMacMD: $HOME/devocs-contd/contd/tex
   rutaCompleta: no
 mdppt:
   rutamodelo: /github/workspace
@@ -48,7 +48,7 @@ mdppt:
   expportprg_rept: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-templppt.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  rutaMacMD: /contd/ppt
+  rutaMacMD: $HOME/devocs-contd/contd/ppt
   rutaCompleta: no
 mdhtml:
   rutamodelo: /github/workspace
@@ -57,5 +57,5 @@ mdhtml:
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs 
-  rutaMacMD: /contd/sitio
+  rutaMacMD: $HOME/devocs-contd/contd/sitio
   rutaCompleta: no

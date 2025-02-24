@@ -35,9 +35,8 @@ rutamodelo=$(varvalue config_ $entradaextraccion _rutamodelo)
 rutaprg=$(varvalue config_ $entradaextraccion _rutaprg)
 prg=$(echo $(varvalue config_ $3 _expportprg_$2))
 # prg=$([ $2 == "-" ] && echo $(varvalue config_ $entradaextraccion _expportprg) || echo $2)
-# vistadoc=$3
 vistadoc=$(varvalue config_ $entradaextraccion _devdocalias)
-rutaMacMD=$(varvalue config_ $entradaextraccion _rutaMacMD)
+rutaMacMD=$(varvalue config_ $entradaextraccion _rutaMacMD)/$3
 rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $entradaextraccion _rutaCompleta) || echo $5)
 
 # Validacion argumentos vacíos
@@ -59,9 +58,15 @@ echo '   rutaCompleta:' $rutaCompleta
 
 # Purga contenidos
 echo "Purga contenidos $HOME$rutaMacMD"
-rm -Rf $HOME$rutaMacMD
+rm -Rf $HOME$rutaMacMD/
 
 # archi -> /Applications/Archi.app/Contents/MacOS/Archi
+# echo "Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
+#    --modelrepository.loadModel $rutamodelo \
+#    --script.runScript $rutaprg/$prg \
+#    -vistaDocumental $vistadoc \
+#    -rutaMacMD $rutaMacMD \
+#    -rutaCompleta $rutaCompleta"
 /opt/Archi/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
    --modelrepository.loadModel $rutamodelo \
    --script.runScript $rutaprg/$prg \

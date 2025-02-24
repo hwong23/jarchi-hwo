@@ -13,8 +13,8 @@ ccambio:
 mdextraer:
   rutamodelo: /github/workspace
   rutaprg: /github/workspace/jarchi-hwo/scr
-  rutaMacMD: /contd/mddocx
-  devdocalias: propuestabmm
+  rutaMacMD: /contd
+  devdocalias: bmmpropuesta
   rutaCompleta: no
 
 mddocx:
@@ -25,40 +25,24 @@ mddocx:
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-md.ajs
 mdpdf:
-  rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
-  rutaMacMD: /contd/mdpdf
-  rutaCompleta: no
 mdtex:
-  rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
-  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  expportprg_rept: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
-  rutaMacMD: /contd/mdtex
-  rutaCompleta: no
+  # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
+  expportprg_rept: exportSingle-htmlCLI.ajs
 mdppt:
-  rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-templppt.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  expportprg_rept: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-templppt.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  rutaMacMD: /contd/mdppt
-  rutaCompleta: no
+  expportprg_rept: exportSingle-htmlCLI.ajs
 mdhtml:
-  rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
   expportprg: exportSingle-htmlCLI.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs 
-  rutaMacMD: /contd/mdhtml
-  rutaCompleta: no

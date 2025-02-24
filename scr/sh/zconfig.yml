@@ -10,15 +10,20 @@ ccambio:
 # publish:
 #   gitorigen: /Users/hw/pgn/pgn-078 
 
-mddocx:
+mdextraer:
   rutamodelo: /github/workspace
   rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaMacMD: /contd/mddocx
+  devdocalias: propuestabmm
+  rutaCompleta: no
+
+mddocx:
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
+  expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
+  expportprg_test: Tx-orderview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  expportprg_all: exportSingle-md.ajs 
-  rutaMacMD: /contd/mddocx
-  rutaCompleta: no
+  expportprg_rept: exportSingle-md.ajs
 mdpdf:
   rutamodelo: /github/workspace
   rutaprg: /github/workspace/jarchi-hwo/scr

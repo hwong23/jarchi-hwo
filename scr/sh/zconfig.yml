@@ -11,15 +11,14 @@ ccambio:
 #   gitorigen: /Users/hw/pgn/pgn-078 
 
 mddocx:
-  rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutamodelo: $HOME/git/archigit/modelocontenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
+  rutaexpportprg: $HOME/git/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
-  expportprg_test: Tx-orderview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  expportprg_rept: exportSingle-md.ajs 
-  rutaMacMD: /contd/docx
+  expportprg_all: exportSingle-md.ajs 
+  rutaMacMD: /git/archigit/modelocontenidos/contd/mddocx
   rutaCompleta: no
 mdpdf:
   rutamodelo: /github/workspace
@@ -29,7 +28,7 @@ mdpdf:
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
-  rutaMacMD: /contd/pdf
+  rutaMacMD: /contd/mdpdf
   rutaCompleta: no
 mdtex:
   rutamodelo: /github/workspace
@@ -38,7 +37,7 @@ mdtex:
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
-  rutaMacMD: /contd/tex
+  rutaMacMD: /contd/mdtex
   rutaCompleta: no
 mdppt:
   rutamodelo: /github/workspace
@@ -48,7 +47,7 @@ mdppt:
   expportprg_rept: exportSingle-htmlCLI.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-templppt.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
-  rutaMacMD: /contd/ppt
+  rutaMacMD: /contd/mdppt
   rutaCompleta: no
 mdhtml:
   rutamodelo: /github/workspace
@@ -57,5 +56,5 @@ mdhtml:
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs 
-  rutaMacMD: /contd/sitio
+  rutaMacMD: /contd/mdhtml
   rutaCompleta: no

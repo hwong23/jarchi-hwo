@@ -11,14 +11,13 @@ ccambio:
 #   gitorigen: /Users/hw/pgn/pgn-078 
 
 mddocx:
-  rutamodelo: $HOME/git/archigit/modelocontenidos
-  rutaprg: $HOME/git/jarchi-hwo/scr
-  rutaexpportprg: $HOME/git/jarchi-hwo/scr
+  rutamodelo: /github/workspace
+  rutaprg: /github/workspace/jarchi-hwo/scr
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   # exportSingle-md.ajs | exportSingle-htmlCLI.ajs
   expportprg_all: exportSingle-md.ajs 
-  rutaMacMD: /git/archigit/modelocontenidos/contd/mddocx
+  rutaMacMD: /contd/mddocx
   rutaCompleta: no
 mdpdf:
   rutamodelo: /github/workspace

@@ -12,7 +12,7 @@ ccambio:
 
 mdextraer:
   rutamodelo: /github/workspace
-  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaprg: /tmp/jarchi-hwo/scr
   rutaMacMD: /contd
   devdocalias: bmmpropuesta
   rutaCompleta: no

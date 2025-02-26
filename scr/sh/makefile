@@ -38,10 +38,13 @@ all:
 	make mdtex mdpdf mddocx
 
 documento:
-	make all alias=$(alias) tx=dd
+# alias = zconfig.yml
+	make all tx=dd
 
 tema:
-	make all alias=$(alias) tx=solo
+# alias = zconfig.yml
+	make all tx=solo
 
 sitio:
-	make mdhtml alias=na tx=all
+# alias = zconfig.yml
+	make mdhtml tx=all

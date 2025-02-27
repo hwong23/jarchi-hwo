@@ -59,7 +59,7 @@ echo '   rutaCompleta:' $rutaCompleta
 # Purga contenidos
 echo "Purga contenidos ./contd/$rutaMacMD"
 ORIGEN=$rutamodelo$rutaMacM
-rm -Rf ./contd/$rutaMacMD
+rm -Rf .$rutaMacMD
 
 # archi -> /Applications/Archi.app/Contents/MacOS/Archi
 # echo "Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \

@@ -91,9 +91,9 @@ var argRutaMacMD = myargs_getArgumento("rutaMacMD");
 var argVistaDocumental = myargs_getArgumento("vistaDocumental");
 var argRutaCompleta = myargs_getArgumento("rutaCompleta");
 console.log("Entradas: ")
-debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
-debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
-debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
+console.log("   theRutaMacMD: "+argRutaMacMD):true;
+console.log("   vistaDocumental: "+argVistaDocumental):true;
+console.log("   rutaCompleta: "+argRutaCompleta):true;
 
 
 // Entorno de ejecución

@@ -59,7 +59,7 @@ echo '   rutaCompleta:' $rutaCompleta
 # Purga contenidos
 echo "Purga contenidos .$rutaMacMD"
 ORIGEN=$rutamodelo$rutaMacM
-rm -Rf .$rutaMacMD
+rm -Rf /github/workspace$rutaMacMD
 ls -l /github/workspace$rutaMacMD
 
 # archi -> /Applications/Archi.app/Contents/MacOS/Archi

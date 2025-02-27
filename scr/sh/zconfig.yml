@@ -14,7 +14,7 @@ mdextraer:
   rutamodelo: /github/workspace
   rutaprg: /github/workspace/jarchi-hwo/scr
   rutaMacMD: /contd
-  devdocalias: bmmpropuestaxxx
+  devdocalias: bmmpropuesta
   rutaCompleta: no
 
 mddocx:

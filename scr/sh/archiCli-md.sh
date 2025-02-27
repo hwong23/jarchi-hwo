@@ -57,7 +57,7 @@ echo '   rutaCompleta:' $rutaCompleta
 
 
 # Purga contenidos
-echo "Purga contenidos ./contd/$rutaMacMD"
+echo "Purga contenidos .$rutaMacMD"
 ORIGEN=$rutamodelo$rutaMacM
 rm -Rf .$rutaMacMD
 

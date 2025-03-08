@@ -621,13 +621,16 @@ function rutaTrabajo(vista, rutaMacMD = null) {
     var r = __DIR__.split("\/");
     var rutaTrabajo = {};
 
+    // nombre del archivo de trabajo (salida)
     var devdoc = vista.prop("devdoc")? 
         vista.prop("devdoc"):
         vista.name.replaceAll(" ", "")+'.md';
 
-    // (sobrescribe) nombre de archivo dado por argumento CLI
+    // (sobrescribe) ruta de trabajo dado por argumento CLI
     var path = rutaMacMD? 
-        '/'+r[1]+'/'+r[2]+rutaMacMD+'/':
+        // '/'+r[1]+'/'+r[2]+rutaMacMD+'/':
+        // '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+        rutaMacMD+'/':
         '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
     var fileName = path+devdoc;
 

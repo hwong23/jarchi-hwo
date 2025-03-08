@@ -57,10 +57,10 @@ echo '   rutaCompleta:' $rutaCompleta
 
 
 # Purga contenidos
-echo "Purga contenidos /github/workspace$rutaMacMD"
-ORIGEN=$rutamodelo$rutaMacM
-rm -Rf /github/workspace$rutaMacMD
-# ls -l /github/workspace$rutaMacMD
+RUTACONTD=$(eval echo $rutamodelo$rutaMacMD)
+echo "Purga contenidos $RUTACONTD"
+rm -Rf $RUTACONTD
+# ls $RUTACONTD
 
 # archi -> /Applications/Archi.app/Contents/MacOS/Archi
 # echo "Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
@@ -74,6 +74,6 @@ rm -Rf /github/workspace$rutaMacMD
    --modelrepository.loadModel $rutamodelo \
    --script.runScript $rutaprg/$prg \
    -vistaDocumental $vistadoc \
-   -rutaMacMD $rutaMacMD \
+   -rutaMacMD $RUTACONTD \
    -rutaCompleta $rutaCompleta
 

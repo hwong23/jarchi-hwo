@@ -57,7 +57,7 @@ echo '   rutaCompleta:' $rutaCompleta
 
 
 # Purga contenidos
-RUTACONTD=$(eval echo $rutamodelo$rutaMacMD)
+RUTACONTD=$(eval echo $rutaMacMD)
 echo "Purga contenidos $RUTACONTD"
 rm -Rf $RUTACONTD
 # ls $RUTACONTD

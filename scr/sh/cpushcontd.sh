@@ -19,7 +19,7 @@ entradaextraccion=mdextraer
 # include parse_yaml function
 . ./parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
-rutaContd=$2
+rutaContd=$2/contd
 ramaContd=#3
 echo '   rutaContd:' $rutaContd
 echo '   ramaContd:' $ramaContd

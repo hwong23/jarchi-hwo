@@ -7,11 +7,11 @@
 entradaextraccion=mdextraer
 
 # Validacion número de argumentos
- if [ $# -lt 3 ]; then
+ if [ $# -lt 4 ]; then
     echo "Error: requiere 2 argumentos"
     echo '$1': ruta archivo zconfig.yml
-    echo '$2: msj commit'
-    echo '$3': rama de contenidos
+    echo '$2': ruta de contenidos
+    echo '$4': rama de contenidos
 
     exit 1
   fi
@@ -20,8 +20,8 @@ entradaextraccion=mdextraer
 . ./parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
 
-echo '   rutaMacMD:' $config_mdextraer_rutaMacMD
-echo '   rutaDeployContd:' $config_mdextraer_rutaDeployContd
+echo '   rutaContd:' #2
+echo '   ramaContd:' $3
 
 
 git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd

@@ -28,10 +28,11 @@ git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
 cd $HOME/devocs-contd
 git checkout --progress --force -B 7-propuestabmm origin/7-propuestabmm
 
-ls -l $HOME/devocs-contd
 
  echo cp -R $config_mdextraer_rutaMacMD ./ 
 [ $config_mdextraer_rutaMacMD -eq 0 ] && cp -R $config_mdextraer_rutaMacMD ./ || echo "ERR"
+
+ls -l $HOME/devocs-contd/contd/mddocx
 
 # git add .
 # git commit -a -m "$2"

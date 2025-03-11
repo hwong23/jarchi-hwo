@@ -36,8 +36,7 @@ cp -R $rutaContd ./ || echo "ERR"
 
 ls -l $HOME/devocs-contd/contd/*
 
-# git add .
-# git commit -a -m "$2"
-# git push
+git add .
+git commit -a -m accion-contd
+git push
  
-# git checkout main

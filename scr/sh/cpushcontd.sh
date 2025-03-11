@@ -26,20 +26,12 @@ echo '   rutaDeployContd:' $config_mdextraer_rutaDeployContd
 
 git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
 cd $HOME/devocs-contd
-# git checkout -b ramatemporal $3
-# echo git checkout --progress --force -B 7-propuestabmm $3
 git checkout --progress --force -B 7-propuestabmm origin/7-propuestabmm
 
 ls -l $HOME/devocs-contd
 
-# cd $config_publish_gitorigen
-# cp webpage/index.html ..
- 
- 
-# git checkout arq
-# git pull --rebase
-
-# [ $? -eq 0 ] && cp -R ../index.html ./ || echo "ERR"
+ echo cp -R $config_mdextraer_rutaMacMD ./ 
+[ $config_mdextraer_rutaMacMD -eq 0 ] && cp -R $config_mdextraer_rutaMacMD ./ || echo "ERR"
 
 # git add .
 # git commit -a -m "$2"

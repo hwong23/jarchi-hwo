@@ -24,7 +24,7 @@ echo '   rutaMacMD:' $config_mdextraer_rutaMacMD
 echo '   rutaDeployContd:' $config_mdextraer_rutaDeployContd
 
 
-git clone https://github.com/hwong23/devocs-contd.git -b $3 $HOME/devocs-contd
+git clone https://github.com/hwong23/devocs-contd.git -b origin/7-propuestabmm $HOME/devocs-contd
 cd $HOME/devocs-contd
 # git checkout -b ramatemporal $3
 # echo git checkout --progress --force -B 7-propuestabmm $3

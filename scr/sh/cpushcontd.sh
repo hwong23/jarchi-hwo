@@ -21,6 +21,10 @@ eval $(parse_yaml $1/zconfig.yml "config_")
 echo '   rutaMacMD:' $config_mdextraer_rutaMacMD
 echo '   rutaDeployContd:' $config_mdextraer_rutaDeployContd
 
+cd $config_mdextraer_rutaDeployContd
+git clone https://github.com/hwong23/devocs-contd.git
+
+ls $config_mdextraer_rutaDeployContd
 
 # cd $config_publish_gitorigen
 # cp webpage/index.html ..

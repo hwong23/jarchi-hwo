@@ -1,8 +1,8 @@
 #!/bin/bash
 # Actualiza contenidos MD generado por Archi
 # $1: ruta archivo zconfig.yml
-# $2: rama
 # $3: msj commit
+# $3: rama de contenidos
 
 entradaextraccion=mdextraer
 
@@ -10,8 +10,8 @@ entradaextraccion=mdextraer
  if [ $# -lt 3 ]; then
     echo "Error: requiere 2 argumentos"
     echo '$1': ruta archivo zconfig.yml
-    echo '$2': rama de contenidos
-    echo '$3: msj commit'
+    echo '$2: msj commit'
+    echo '$3': rama de contenidos
 
     exit 1
   fi
@@ -26,8 +26,8 @@ echo '   rutaDeployContd:' $config_mdextraer_rutaDeployContd
 
 git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
 cd $HOME/devocs-contd
-git checkout -b ramatemporal $3
-
+# git checkout -b ramatemporal $3
+git checkout --progress --force -B ramatemporal $3
 
 ls -l $HOME/devocs-contd
 

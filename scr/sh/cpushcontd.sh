@@ -19,9 +19,10 @@ entradaextraccion=mdextraer
 # include parse_yaml function
 . ./parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
-
-echo '   rutaContd:' #2
-echo '   ramaContd:' $3
+rutaContd=$2
+ramaContd=#3
+echo '   rutaContd:' $rutaContd
+echo '   ramaContd:' $ramaContd
 
 
 git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
@@ -29,11 +30,11 @@ cd $HOME/devocs-contd
 git checkout --progress --force -B $3 origin/$3
 
 
-# echo cp -R $config_mdextraer_rutaMacMD ./ 
+echo cp -R $rutaContd ./ 
 # # [ $config_mdextraer_rutaMacMD -eq 0 ] && 
-# cp -R $config_mdextraer_rutaMacMD ./ || echo "ERR"
+cp -R $rutaContd ./ || echo "ERR"
 
-ls -l $HOME/devocs-contd/contd/mddocx
+ls -l $HOME/devocs-contd/contd/*
 
 # git add .
 # git commit -a -m "$2"

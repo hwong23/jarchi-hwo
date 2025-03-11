@@ -24,7 +24,7 @@ echo '   rutaDeployContd:' $config_mdextraer_rutaDeployContd
 cd $HOME
 git clone https://github.com/hwong23/devocs-contd.git
 
-ls $HOME/contd
+ls $HOME/devocs-contd
 
 # cd $config_publish_gitorigen
 # cp webpage/index.html ..

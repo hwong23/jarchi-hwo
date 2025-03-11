@@ -26,7 +26,7 @@ echo '   rutaDeployContd:' $config_mdextraer_rutaDeployContd
 
 git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
 cd $HOME/devocs-contd
-git checkout -b ramatemporal origin/$3
+git checkout -b ramatemporal $3
 
 
 ls -l $HOME/devocs-contd

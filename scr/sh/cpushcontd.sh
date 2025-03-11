@@ -36,9 +36,9 @@ echo cp -R $rutaContd ./
 # # [ $config_mdextraer_rutaMacMD -eq 0 ] && 
 cp -R $rutaContd ./ || echo "ERR"
 
-ls -l $HOME/devocs-contd/contd/*
+# ls -l $HOME/devocs-contd/contd/*
 
 git add .
 git commit -a -m accion-contd
-git push
- 
+# git push
+

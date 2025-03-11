@@ -7,8 +7,8 @@
 entradaextraccion=mdextraer
 
 # Validacion número de argumentos
- if [ $# -lt 4 ]; then
-    echo "Error: requiere 2 argumentos"
+ if [ $# -lt 3 ]; then
+    echo "Error: requiere 3 argumentos"
     echo '$1': ruta archivo zconfig.yml
     echo '$2': ruta de contenidos
     echo '$4': rama de contenidos

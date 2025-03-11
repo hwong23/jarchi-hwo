@@ -29,8 +29,9 @@ cd $HOME/devocs-contd
 git checkout --progress --force -B 7-propuestabmm origin/7-propuestabmm
 
 
- echo cp -R $config_mdextraer_rutaMacMD ./ 
-[ $config_mdextraer_rutaMacMD -eq 0 ] && cp -R $config_mdextraer_rutaMacMD ./ || echo "ERR"
+echo cp -R $config_mdextraer_rutaMacMD ./ 
+# [ $config_mdextraer_rutaMacMD -eq 0 ] && 
+cp -R $config_mdextraer_rutaMacMD ./ || echo "ERR"
 
 ls -l $HOME/devocs-contd/contd/mddocx
 

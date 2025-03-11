@@ -22,8 +22,8 @@ echo '   rutaMacMD:' $config_mdextraer_rutaMacMD
 echo '   rutaDeployContd:' $config_mdextraer_rutaDeployContd
 
 
-git clone https://github.com/hwong23/devocs-contd.git $HOME
-cd cd $HOME/devocs-contd
+git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
+cd $HOME/devocs-contd
 git checkout -b ${{github.ref}} origin/${{github.ref}}
 
 

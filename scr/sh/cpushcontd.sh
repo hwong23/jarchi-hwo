@@ -28,7 +28,7 @@ git clone https://github.com/hwong23/devocs-contd.git -b origin/7-propuestabmm $
 cd $HOME/devocs-contd
 # git checkout -b ramatemporal $3
 # echo git checkout --progress --force -B 7-propuestabmm $3
-# git checkout --progress --force -B 7-propuestabmm $3
+git checkout --progress --force -B 7-propuestabmm origin/7-propuestabmm
 
 ls -l $HOME/devocs-contd
 

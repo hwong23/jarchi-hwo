@@ -19,7 +19,9 @@ entradaextraccion=mdextraer
 eval $(parse_yaml $1/zconfig.yml "config_")
 
 rutaMacMD=$(varvalue config_ $entradaextraccion _rutaMacMD)
+rutaMacMD2=$config_mdextraer_rutaMacMD
 echo '   rutaMacMD:' $rutaMacMD
+echo '   rutaMacMD:' $rutaMacMD2
 
 # cd $config_publish_gitorigen
 # cp webpage/index.html ..

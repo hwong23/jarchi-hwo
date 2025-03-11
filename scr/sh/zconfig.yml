@@ -14,6 +14,7 @@ mdextraer:
   rutamodelo: /github/workspace
   rutaprg: /github/workspace/jarchi-hwo/scr
   rutaMacMD: /github/workspace/contd
+  rutaDeployContd: /home/contd
   devdocalias: bmmpropuesta
   rutaCompleta: no
 

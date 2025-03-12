@@ -1,28 +1,31 @@
 #!/bin/bash
 # Actualiza contenidos MD generado por Archi
 # $1: ruta archivo zconfig.yml
-# $3: msj commit
-# $3: rama de contenidos
+# $2: ruta de contenidos origen
+# $3: ruta contenidos destino
+# $4: rama de contenidos
 
 entradaextraccion=mdextraer
 
 # Validacion número de argumentos
 # if [ $# -lt 3 ]; then
-#     echo "Error: requiere 3 argumentos"
-#     echo '$1': ruta archivo zconfig.yml
-#     echo '$2': ruta de contenidos
-#     echo '$3': rama de contenidos
-
-#     exit 1
+#  echo "Error: requiere 3 argumentos"
+#  echo $1: ruta archivo zconfig.ym
+#  echo $2: ruta de contenidos orige
+#  echo $3: ruta contenidos destino
+#  echo $4: rama de contenidos
+#  exit 1
 # fi
 
 # include parse_yaml function
 . ./parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
-rutaContd=$2/main/contd
-ramaContd=$3
-echo '   rutaContd:' $rutaContd
-echo '   ramaContd:' $ramaContd
+rutaContdOrigen=$2
+rutaContdDest=$3
+# ramaContd=$4
+echo '   rutaContdO:' $rutaContdOrigen
+echo '   rutaContdD:' $rutaContdDest
+# echo '   ramaContd:' $ramaContd
 
 # Preperar espacio contenidos Git
 # git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
@@ -32,11 +35,12 @@ echo '   ramaContd:' $ramaContd
 # git checkout --progress --force -B $3 origin/$3
 
 # Modificar los contenidos
-echo cp -R $rutaContd ./ 
+cd $rutaContdDest
+echo cp -R $rutaContdOrigen ./
 # # [ $config_mdextraer_rutaMacMD -eq 0 ] && 
-cp -R $rutaContd ./devocs-contd || echo "ERR"
+cp -R $rutaContdOrigen ./ || echo "ERR"
 
-ls -l $HOME/devocs-contd
+ls -l .
 
 git add .
 git commit -a -m accion-contd

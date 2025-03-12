@@ -44,5 +44,5 @@ ls -l .
 
 git add .
 git commit -a -m accion-contd
-# git push
+git push
 

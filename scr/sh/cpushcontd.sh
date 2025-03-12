@@ -19,7 +19,7 @@ entradaextraccion=mdextraer
 # include parse_yaml function
 . ./parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
-rutaContd=$2/contd
+rutaContd=$2/main/contd
 ramaContd=$3
 echo '   rutaContd:' $rutaContd
 echo '   ramaContd:' $ramaContd
@@ -34,9 +34,9 @@ echo '   ramaContd:' $ramaContd
 # Modificar los contenidos
 echo cp -R $rutaContd ./ 
 # # [ $config_mdextraer_rutaMacMD -eq 0 ] && 
-cp -R $rutaContd ./ || echo "ERR"
+cp -R $rutaContd ./devocs-contd || echo "ERR"
 
-# ls -l $HOME/devocs-contd/contd/*
+ls -l $HOME/devocs-contd
 
 git add .
 git commit -a -m accion-contd

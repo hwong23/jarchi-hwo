@@ -11,9 +11,9 @@ ccambio:
 #   gitorigen: /Users/hw/pgn/pgn-078 
 
 mdextraer:
-  rutamodelo: /github/workspace
+  rutamodelo: /github/workspace/main
   rutaprg: /github/workspace/jarchi-hwo/scr
-  rutaMacMD: /github/workspace/contd
+  rutaMacMD: /github/workspace/main/contd
   devdocalias: bmmpropuesta
   rutaCompleta: no
 

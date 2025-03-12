@@ -20,18 +20,18 @@ entradaextraccion=mdextraer
 . ./parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
 rutaContd=$2/contd
-ramaContd=#3
+ramaContd=$3
 echo '   rutaContd:' $rutaContd
 echo '   ramaContd:' $ramaContd
 
+# Preperar espacio contenidos Git
+# git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
+# cd $HOME/devocs-contd
+# git config --global user.email "hwong23@gmail.comm"
+# git config --global user.name "hwong23@gmail.comm"
+# git checkout --progress --force -B $3 origin/$3
 
-git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
-cd $HOME/devocs-contd
-git config --global user.email "hwong23@gmail.comm"
-git config --global user.name "hwong23@gmail.comm"
-git checkout --progress --force -B $3 origin/$3
-
-
+# Modificar los contenidos
 echo cp -R $rutaContd ./ 
 # # [ $config_mdextraer_rutaMacMD -eq 0 ] && 
 cp -R $rutaContd ./ || echo "ERR"

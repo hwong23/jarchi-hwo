@@ -23,9 +23,6 @@ eval $(parse_yaml $1/zconfig.yml "config_")
 rutaContdOrigen=$2
 rutaContdDest=$3
 # ramaContd=$4
-echo '   rutaContdO:' $rutaContdOrigen
-echo '   rutaContdD:' $rutaContdDest
-# echo '   ramaContd:' $ramaContd
 
 # Preperar espacio contenidos Git
 # git clone https://github.com/hwong23/devocs-contd.git $HOME/devocs-contd
@@ -33,12 +30,17 @@ echo '   rutaContdD:' $rutaContdDest
 git config --global user.email "hwong23@gmail.comm"
 git config --global user.name "hwong23@gmail.comm"
 # git checkout --progress --force -B $3 origin/$3
+cd $rutaContdDest
+
+echo '   pwd: `pwd`'
+echo '   rutaContdO:' $rutaContdOrigen
+echo '   rutaContdD:' $rutaContdDest
+# echo '   ramaContd:' $ramaContd
 
 # Modificar los contenidos
-cd $rutaContdDest
-echo cp -R $rutaContdOrigen ./
+echo cp -R $rutaContdOrigen $rutaContdDest
 # # [ $config_mdextraer_rutaMacMD -eq 0 ] && 
-cp -R $rutaContdOrigen ./ || echo "ERR"
+cp -R $rutaContdOrigen $rutaContdDest || echo "ERR"
 
 ls -l .
 

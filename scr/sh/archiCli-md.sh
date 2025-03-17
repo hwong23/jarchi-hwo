@@ -58,9 +58,12 @@ echo '   rutaCompleta:' $rutaCompleta
 
 # Purga contenidos
 RUTACONTD=$(eval echo $rutaMacMD)
-echo "Purga contenidos $RUTACONTD"
 rm -Rf $RUTACONTD
-# ls $RUTACONTD
+if [ -z "$( ls -A '$RUTACONTD' )" ]; then
+   echo "OK. Purga de contenidos exitosa $RUTACONTD"
+else
+   echo "WARN. Purga fallida $RUTACONTD: carpeta de trabajo tiene contendos"
+fi
 
 # archi -> /Applications/Archi.app/Contents/MacOS/Archi
 # echo "Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
@@ -70,10 +73,10 @@ rm -Rf $RUTACONTD
 #    -rutaMacMD $rutaMacMD \
 #    -rutaCompleta $rutaCompleta"
 
-/opt/Archi/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
-   --modelrepository.loadModel $rutamodelo \
-   --script.runScript $rutaprg/$prg \
-   -vistaDocumental $vistadoc \
-   -rutaMacMD $RUTACONTD \
-   -rutaCompleta $rutaCompleta
+# /opt/Archi/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
+#    --modelrepository.loadModel $rutamodelo \
+#    --script.runScript $rutaprg/$prg \
+#    -vistaDocumental $vistadoc \
+#    -rutaMacMD $RUTACONTD \
+#    -rutaCompleta $rutaCompleta
 

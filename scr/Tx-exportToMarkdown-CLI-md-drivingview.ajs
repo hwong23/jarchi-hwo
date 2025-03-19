@@ -396,8 +396,7 @@ function exportViews (k, viewList, settings)
         tplViewDiagram({viewId: v.id, viewImage: exportaImagen(v, g_path), 
         viewNombre: nombrevista+'.png', viewAlto: '', viewAncho: myViewAncho}):
         "";
-    viewDocumentation += tplDocumentation (
-        {
+    viewDocumentation += tplDocumentation ({
         viewId: 'id-'+v.id,
         viewTitle: viewTitles,
         viewNota: (viewInclusionSettings.IncludeDocumentation) ? 
@@ -408,8 +407,7 @@ function exportViews (k, viewList, settings)
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
         elements: viewElements,
         relaciones: relaciones
-        }
-    );
+    });
 
     
     // suma al contenedor global outputHdr

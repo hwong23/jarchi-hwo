@@ -49,7 +49,7 @@ var g_theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 var elements = '';
 var elementsCollection;
-var viewDocumentations = '';
+var viewDocumentation = '';
 var viewTitles =  '';
 var viewDiagrams = '';
 
@@ -75,11 +75,10 @@ debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
 debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
 debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
 
+
 // Selección de la vista indicada por el argumento entrada CLI
+// $(selection).filter("archimate-diagram-model").first();
 var theView = devdoc_useDrivingView(argVistaDocumental);
-    // $(selection).filter("archimate-diagram-model").first();
-
-
 if (theView) {
     // Define ruta/nombre del archivo de salida de la documentación de la vista theView
     // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
@@ -138,7 +137,7 @@ if (theView) {
     
     
     // composición de viewDocumentations, contenedor de la documentación de la vista
-    viewDocumentations += tplDocumentation ({
+    viewDocumentation += tplDocumentation ({
         viewId: 'id-'+theView.id,
         viewTitle: "",  //viewTitles,
         viewNota: devdoc_obtNota (theView),
@@ -161,8 +160,8 @@ if (theView) {
              //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
              //     '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
-         viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
-         $.fs.writeFile(exportFile, viewDocumentations);
+         viewDocumentation+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
+         $.fs.writeFile(exportFile, viewDocumentation);
 
          console.log("> Export done");
      }
@@ -219,7 +218,7 @@ else {
                 elementDocumentationMarkdown: ''
             });
 
-                debug? console.log('   '+e.name+":"+e):true;
+            debug? console.log('   '+e.name+":"+e):true;
 
             if ($(e).children().length>0) {
                 d++;

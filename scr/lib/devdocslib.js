@@ -399,3 +399,16 @@ function devdoc_addSpace(numSpaces) {
   }
   return rtnText;
 }
+
+
+function devdoc_exportaImagen (vv, pth) {
+    var bytes = $.model.renderViewAsBase64(vv, "PNG", {
+      scale: 1,
+      margin: 10
+    });
+  
+    $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
+  
+    // return _.escape(vv.name);
+    return vv.name;
+}

@@ -26,6 +26,7 @@
  * Version 4.3.1: Funciones de librería devdoc
  * Version 4.4: Ajuste texto documental (\n---)
  * Version 4.4.1: nestedDocumentation_elements
+ * Version 4.4.2: Nueva exportar imagen/rutaTrabajo
  * 
  * (c) 2018 Steven Mileham, HWO
  *
@@ -83,15 +84,13 @@ if (theView) {
     // Define ruta/nombre del archivo de salida de la documentación de la vista theView
     // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
     // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-    var r = __DIR__.split("\/");
-    g_drivingView_devdoc = theView.prop("devdoc")?theView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = argRutaMacMD ? 
-        '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
-        '/'+r[1]+'/'+r[2]+theView.prop("rutaMacMD")+'/';
-    g_fileName = g_path+g_drivingView_devdoc;
-
-    (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
-    (debug)?console.log('g_path: '+g_path):true;
+    var archivoruta = rutaTrabajo(theView, argRutaMacMD);
+    g_drivingView_devdoc = archivoruta.devdoc;
+    g_fileName = archivoruta.filename;
+    g_path = archivoruta.path
+    console.log("path: ", g_path);
+    console.log("fileName: ", g_fileName);
+    (debug)?console.log('exportFile: '+exportFile):true;
 
 
     // composición de g_theDocument, contenedor de la documentación de la vista
@@ -155,6 +154,7 @@ if (theView) {
     if(exportFile != null) {
          if (!embed) {  // escribe archivo imagen exportFile
              imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
+             devdoc_exportaImagen (theView, g_path)
              var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
              $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
              //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
@@ -227,4 +227,32 @@ else {
             }
         }
     });
+}
+
+
+// Ruta de trabajo, nombre de archivo
+function rutaTrabajo(vista, rutaMacMD = null) {
+    // nombre de documento dado por propiedad del modelo
+    var r = __DIR__.split("\/");
+    var rutaTrabajo = {};
+
+    // nombre del archivo de trabajo (salida)
+    var devdoc = vista.prop("devdoc")? 
+        vista.prop("devdoc"):
+        vista.name.replaceAll(" ", "")+'.md';
+
+    // (sobrescribe) ruta de trabajo dado por argumento CLI
+    var path = rutaMacMD? 
+        // '/'+r[1]+'/'+r[2]+rutaMacMD+'/':
+        // '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+        rutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+    var fileName = path+devdoc;
+
+
+    return {
+        'filename' : fileName,
+        'path' : path,
+        'devdoc' : devdoc
+    };
 }

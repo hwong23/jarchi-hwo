@@ -153,10 +153,11 @@ if (theView) {
 
     if(exportFile != null) {
          if (!embed) {  // escribe archivo imagen exportFile
-             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
-             devdoc_exportaImagen (theView, g_path)
-             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-             $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
+            imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
+            devdoc_exportaImagen (theView, g_path);
+            
+             //  var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+            //  $.fs.writeFile( exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
              //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
              //     '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }

@@ -24,6 +24,7 @@
  * Version 4.3: Funciones de librería devdoc
  * Version 4.3.1: Funciones de librería devdoc extendida
  * Version 4.4.0: inclusionsettings para elementos sin documentación
+ * Version 4.4.2: Nueva exportar imagen/rutaTrabajo
  * 
  * (c) 2018 Steven Mileham, HWO
  *
@@ -40,8 +41,8 @@ var bodyMap = [];
 var proptable = false;            // escribe tabla de propiedades?
 var reltable = false;             // escribe tabla de relaciones?
 var g_path = "";
-var g_filePath = "";
-var g_drivingView_devdoc = "";    // documento automático asociado
+var g_fileName = "";              // ruta+archivo de salida
+var g_drivingView_devdoc = "";    // documento automático asociado a g_drivingView
 var g_theDocument = "";
 var theTOC = "* [Introducción](#Introducción)";
 
@@ -124,24 +125,23 @@ console.log("   theRutaMacMD: "+argRutaSalida);
 console.log("   vistaDocumental: "+argVistaDocumental);
 console.log("   rutaCompleta: "+argRutaCompleta);
 
+
 // Selección de la vista indicada por el argumento entrada CLI
+// $(selection).filter("archimate-diagram-model").first();
 var g_drivingView = devdoc_useDrivingView(argVistaDocumental);
-    // $(selection).filter("archimate-diagram-model").first();
 
 
 if (g_drivingView) {
     // Define ruta/nombre del archivo de salida de la documentación de la vista theView
-        // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
-        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-    var r = __DIR__.split("\/");
-    g_drivingView_devdoc = g_drivingView.prop("devdoc")? g_drivingView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = argRutaSalida? 
-        '/'+r[1]+'/'+r[2]+argRutaSalida+'/':
-        '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
-    g_filePath = g_path+g_drivingView_devdoc;
-
-    (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
-    (debug)?console.log('g_path: '+g_path):true;
+    // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+    // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+    var archivoruta = rutaTrabajo(g_drivingView, argRutaMacMD);
+    g_drivingView_devdoc = archivoruta.devdoc;
+    g_fileName = archivoruta.filename;
+    g_path = archivoruta.path
+    console.log("path: ", g_path);
+    console.log("fileName: ", g_fileName);
+    (debug)?console.log('exportFile: '+exportFile):true;
 
     
     // configuración de presentación de la vista seleccionada
@@ -189,7 +189,7 @@ if (g_drivingView) {
 
     
     // Crea el archivo de salida de documentación theView
-    var exportFile = g_filePath;
+    var exportFile = g_fileName;
 
     if(exportFile != null) {
        if (!embed) {  // escribe archivo imagen exportFile
@@ -207,7 +207,7 @@ if (g_drivingView) {
        
        console.log("Salidas:");
        console.log(devdoc_addSpace(1), "path: ", g_path);
-       console.log(devdoc_addSpace(1), "fileName: ", g_filePath);
+       console.log(devdoc_addSpace(1), "fileName: ", g_fileName);
        console.log("> Export done");
     }
     else {

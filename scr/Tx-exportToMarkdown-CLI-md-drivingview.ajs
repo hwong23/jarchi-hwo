@@ -83,6 +83,8 @@ var tplViewTitle = _.template(readFully(__DIR__ + 'templates/md-doctec/view-titl
 var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/md-doctec/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = function() {};
 var tplElementFila = function() {};
+var tplTEXElement = function() {};
+var tplTEXElementFila = function() {};
 var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));
 
 
@@ -284,6 +286,7 @@ function exportViews (k, viewList, settings)
     var viewDocumentation = '';     // documentación vista actual (suma al contenedor global outputHdr)
     var elemtPlantilla = "";
     var viewElements = "";
+    var viewTEXElements = "";
     var elemtPlantillaActual = '';
     var viewTitles =  '';
     var viewDiagrams = '';
@@ -362,19 +365,20 @@ function exportViews (k, viewList, settings)
             {    
                 // plantilla elemento
                 elements += tplElementFila({
-                viewsIds: g_viewsIdsByConceptId[e.id],
-                elementName: devdoc_escapeDOC(e.name),
-                elementType: devdoc_properCase(e.type),
-                elementDocumentationText: viewInclusionSettings.IncluyeSaltosLineaElementos?
-                    e.documentation:
-                    e.documentation.replace(/\n/g, ' '),    //<br>
-                elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
+                    viewsIds: g_viewsIdsByConceptId[e.id],
+                    elementName: devdoc_escapeDOC(e.name),
+                    elementType: devdoc_properCase(e.type),
+                    elementDocumentationText: viewInclusionSettings.IncluyeSaltosLineaElementos?
+                        e.documentation:
+                        e.documentation.replace(/\n/g, ' '),    //<br>
+                    elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)
                 });
             }
         });
         
         // interpolación de texto mediante plantilla de elementos
         viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
+        viewTEXElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
     }
 
     // carga las relaciones de los elementos de la vista actual
@@ -406,6 +410,7 @@ function exportViews (k, viewList, settings)
         documentationText: v.documentation,   // _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
         elements: viewElements,
+        texelements: viewElements,
         relaciones: relaciones
     });
 
@@ -639,3 +644,30 @@ function rutaTrabajo(vista, rutaMacMD = null) {
         'devdoc' : devdoc
     };
 }
+
+// Inheritance example
+class person {
+	constructor(name) {
+		this.name = name;
+	}
+	// method to return the string
+	toString() {
+		return (`Name of person: ${this.name}`);
+	}
+}
+class student extends person {
+	constructor(name, id) {
+		// super keyword for calling the above 
+		// class constructor
+		super(name);
+		this.id = id;
+	}
+	toString() {
+		return (`${super.toString()},
+		Student ID: ${this.id}`);
+	}
+}
+
+let student1 = new student('Mukul', 22);
+console.log(student1.toString());
+

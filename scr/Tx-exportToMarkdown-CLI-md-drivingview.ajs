@@ -32,6 +32,7 @@
     11-Nov-2024 - Cambio bucle de recorrido elementos: nestedDocumentation_elements
     18-Nov-2024 - Orden de elementos (left.x, right.x; top.y, bottom.y)
     20-Nov-2024 - Condición: emitir md individual, DocumentosIndividualesxVista
+    15-Feb-2025 - TEXElement
 
     TODO mejorar la titulación de los elementos según profundidad
 
@@ -378,7 +379,7 @@ function exportViews (k, viewList, settings)
         
         // interpolación de texto mediante plantilla de elementos
         viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
-        viewTEXElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
+        viewTEXElements = 'todo: aun no está lista';
     }
 
     // carga las relaciones de los elementos de la vista actual
@@ -410,7 +411,7 @@ function exportViews (k, viewList, settings)
         documentationText: v.documentation,   // _.escape(v.documentation),
         documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
         elements: viewElements,
-        texelements: viewElements,
+        texelements: viewTEXElements,
         relaciones: relaciones
     });
 
@@ -617,7 +618,6 @@ function nestedDocumentation_elements (d, view, eCollection) {
     return nueva_eCollection;
 }
 
-
 // Ruta de trabajo, nombre de archivo
 function rutaTrabajo(vista, rutaMacMD = null) {
     // nombre de documento dado por propiedad del modelo
@@ -644,30 +644,3 @@ function rutaTrabajo(vista, rutaMacMD = null) {
         'devdoc' : devdoc
     };
 }
-
-// Inheritance example
-class person {
-	constructor(name) {
-		this.name = name;
-	}
-	// method to return the string
-	toString() {
-		return (`Name of person: ${this.name}`);
-	}
-}
-class student extends person {
-	constructor(name, id) {
-		// super keyword for calling the above 
-		// class constructor
-		super(name);
-		this.id = id;
-	}
-	toString() {
-		return (`${super.toString()},
-		Student ID: ${this.id}`);
-	}
-}
-
-let student1 = new student('Mukul', 22);
-console.log(student1.toString());
-

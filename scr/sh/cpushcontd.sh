@@ -25,8 +25,8 @@ rutaContdDest=$3
 # ramaContd=$4
 
 # Preperar espacio contenidos Git
-git config --global user.email "hwong23@gmail.comm"
-git config --global user.name "hwong23@gmail.comm"
+git config --global user.email "gh_action_authr@github.comm"
+git config --global user.name "gh_action_authr"
 cd $rutaContdDest
 
 echo '   rutaContdO:' $rutaContdOrigen
@@ -37,6 +37,6 @@ echo cp -R $rutaContdOrigen $rutaContdDest
 cp -R $rutaContdOrigen $rutaContdDest || echo "ERR"
 
 git add .
-git commit -a -m accion-contd
+git commit -a -m accion-actualizacionContd --author='gh_action_cmmt'
 git push
 

@@ -37,6 +37,6 @@ echo cp -R $rutaContdOrigen $rutaContdDest
 cp -R $rutaContdOrigen $rutaContdDest || echo "ERR"
 
 git add .
-git commit -a -m accion-actualizacionContd --author='gh_action_cmmt'
+git commit -a -m accion-actualizacionContd 
 git push
 

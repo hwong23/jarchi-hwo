@@ -17,7 +17,7 @@ if [ $# -lt 3 ]; then
  exit 1
 fi
 
-# include parse_yaml function
+# Include parse_yaml function
 . ./parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml "config_")
 rutaContdOrigen=$2
@@ -34,6 +34,7 @@ echo '   rutaContdD:' $rutaContdDest
 
 # Modificar los contenidos
 echo cp -R $rutaContdOrigen $rutaContdDest
+rm -Rf $rutaContdDest
 cp -R $rutaContdOrigen $rutaContdDest || echo "ERR"
 
 git add .

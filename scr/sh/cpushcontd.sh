@@ -27,6 +27,7 @@ rutaContdDest=$3
 # Preperar espacio contenidos Git
 git config --global user.email "gh_action_authr@github.comm"
 git config --global user.name "gh_action_authr"
+rm -Rf $rutaContdDest/*
 cd $rutaContdDest
 
 echo '   rutaContdO:' $rutaContdOrigen
@@ -34,7 +35,6 @@ echo '   rutaContdD:' $rutaContdDest
 
 # Modificar los contenidos
 echo cp -R $rutaContdOrigen $rutaContdDest
-rm -Rf $rutaContdDest
 cp -R $rutaContdOrigen $rutaContdDest || echo "ERR"
 
 git add .

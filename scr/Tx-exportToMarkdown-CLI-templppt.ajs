@@ -36,7 +36,7 @@ load(__DIR__ + "lib/devdocslib.js");
 load(__DIR__ + "lib/mustachetemplate.js");
 
 
-var debug = false;
+var debug = true;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
@@ -70,7 +70,7 @@ console.log("Export to Markdown");
 var argRutaMacMD = myargs_getArgumento("rutaMacMD");
 var argVistaDocumental = myargs_getArgumento("vistaDocumental");
 var argRutaCompleta = myargs_getArgumento("rutaCompleta");
-console.log("Entradas: ")
+console.log("Tx-exportToMarkdown-CLI-templppt. Entradas: ")
 debug? console.log("   theRutaMacMD: "+argRutaMacMD):true;
 debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
 debug? console.log("   rutaCompleta: "+argRutaCompleta):true;
@@ -84,15 +84,13 @@ if (g_drivingView) {
     // Define ruta/nombre del archivo de salida de la documentación de la vista theView
     // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
     // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-    var r = __DIR__.split("\/");
-    g_drivingView_devdoc = g_drivingView.prop("devdoc")?g_drivingView.prop("devdoc"):"02n.a1.contenido.md";
-    g_path = argRutaMacMD ? 
-        '/'+r[1]+'/'+r[2]+argRutaMacMD+'/':
-        '/'+r[1]+'/'+r[2]+g_drivingView.prop("rutaMacMD")+'/';
-    g_fileName = g_path+g_drivingView_devdoc;
-
-    (debug)?console.log('g_drivingView_devdoc: '+g_drivingView_devdoc):true;
-    (debug)?console.log('g_path: '+g_path):true;
+    var archivoruta = rutaTrabajo(g_drivingView, argRutaMacMD);
+    g_drivingView_devdoc = archivoruta.devdoc;
+    g_fileName = archivoruta.filename;
+    g_path = archivoruta.path
+    console.log("path: ", g_path);
+    console.log("fileName: ", g_fileName);
+    (debug)?console.log('exportFile: '+exportFile):true;
 
 
     // configuración de presentación de la vista seleccionada
@@ -171,16 +169,21 @@ if (g_drivingView) {
     if(exportFile != null) {
         if (!embed) {  // escribe archivo imagen exportFile
            imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
-           relativeURL = imageURL.split("\\");
-           var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
-           $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-           //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
-           //     '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+           devdoc_exportaImagen (g_drivingView, g_path);
+           
+        //    relativeURL = imageURL.split("\\");
+        //    var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
+        //    $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
+        //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
+        //     '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
         }
 
         viewDocumentations+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
         $.fs.writeFile(exportFile, viewDocumentations);
 
+        console.log("Salidas:");
+        console.log(devdoc_addSpace(1), "path: ", g_path);
+        console.log(devdoc_addSpace(1), "fileName: ", g_fileName);
         console.log("> Export done");
      }
      else {
@@ -247,4 +250,32 @@ else {
             }
         }
     });
+}
+
+
+// Ruta de trabajo, nombre de archivo
+function rutaTrabajo(vista, rutaMacMD = null) {
+    // nombre de documento dado por propiedad del modelo
+    var r = __DIR__.split("\/");
+    var rutaTrabajo = {};
+
+    // nombre del archivo de trabajo (salida)
+    var devdoc = vista.prop("devdoc")? 
+        vista.prop("devdoc"):
+        vista.name.replaceAll(" ", "")+'.md';
+
+    // (sobrescribe) ruta de trabajo dado por argumento CLI
+    var path = rutaMacMD? 
+        // '/'+r[1]+'/'+r[2]+rutaMacMD+'/':
+        // '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+        rutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+    var fileName = path+devdoc;
+
+
+    return {
+        'filename' : fileName,
+        'path' : path,
+        'devdoc' : devdoc
+    };
 }

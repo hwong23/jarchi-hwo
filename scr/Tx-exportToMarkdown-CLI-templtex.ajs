@@ -158,10 +158,10 @@ if (g_drivingView) {
             imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
             devdoc_exportaImagen (g_drivingView, g_path);
             
-             //  var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+            //  var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
             //  $.fs.writeFile( exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
-             //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
-             //     '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
+            //  viewDocumentations+=argRutaCompleta == 'si'? '\n['+ imageReferencia+ ']: ' +relativeURL:
+            //     '\n['+ imageReferencia+ ']: ' +imageReferencia+'.png';
          }
          viewDocumentation+="\n[^1]: Generated: "+ new Date().toLocaleString()+"\n";
          $.fs.writeFile(exportFile, viewDocumentation);

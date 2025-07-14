@@ -103,7 +103,7 @@ if (g_drivingView) {
     //     "# "+g_drivingView.name+"\n";
     // theTOC=devdoc_toc(0, g_drivingView, 'ppt', theTOC, true, false);      // contenido
     g_theDocument+="# "+g_drivingView.name+"\n";
-    theTOC=devdoc_toc(0,g_drivingView, 'tex', theTOC);
+    theTOC=devdoc_toc(0,g_drivingView, 'ppt', theTOC);
     g_theDocument+="\n"+theTOC+"\n";
     // g_theDocument+="\n## Introducción\n";
     imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
@@ -114,7 +114,8 @@ if (g_drivingView) {
     else {
         g_theDocument+="\n!["+g_drivingView.name+"]["+ argRutaCompleta == 'si' ? 
             '\n!['+ imageReferencia+ '](' +relativeURL+ '){height=500 width=}':
-            '\n!['+ imageReferencia+ '](' +imageReferencia+'.png){height=500 width=}'+"\n";
+            // '\n!['+ imageReferencia+ '](' +imageReferencia+'.png){height=500 width=}'+"\n";
+            '\n!['+ imageReferencia+ '](' +'images/'+g_drivingView.name.replaceAll(" ", "")+'.png){height=500 width=}'+"\n";
     }
     g_drivingView.documentation!=""? g_theDocument+="\n"+g_drivingView.documentation+"\n":true;
 

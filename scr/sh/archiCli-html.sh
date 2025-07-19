@@ -6,18 +6,18 @@
 
 # $1: ruta archivo zconfig.yml
 # $2: transformador Tx-MD
-# $3: vista fuente, modelo de contenidos 
-# $4: entrada de configuración
+# $3: entrada de configuración
+# $?: vista fuente, modelo de contenidos 
 
 entradaextraccion=mdextraer
 
 # Validacion número de argumentos
- if [ $# -lt 4 ]; then
-    echo "Error: requiere 4 argumentos"
+ if [ $# -lt 3 ]; then
+    echo "Error: requiere 3 argumentos"
     echo '$1': ruta archivo zconfig.yml
     echo '$2': transformador Tx-MD
-    echo '$3': vista fuente del modelo de contenidos 
-    echo '$4': entrada de configuración
+    echo '$3': entrada de configuración
+    # echo '$3': vista fuente del modelo de contenidos 
 
     exit 1
   fi 
@@ -29,7 +29,7 @@ eval $(parse_yaml $1/zconfig.yml config_)
 rutamodelo=$(varvalue config_ $entradaextraccion _rutamodelo)
 rutaprg=$(varvalue config_ $entradaextraccion _rutaprg)
 # prgreport=$([ -z "$5"  ] && echo $config_deploy_prgreporthtml || echo $5)
-rutareport=$config_ $entradaextraccion _rutareport
+rutareport=$(varvalue config_ $entradaextraccion _rutareport)
 
 
 # Validacion argumentos vacíos
@@ -48,14 +48,13 @@ echo '   rutareport': $rutareport
 
 status=$?
 
+
 # Purga contenidos
 # ...
 
 
-[ $status -eq 0 ] && /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app \
--consoleLog -nosplash \
+[ $status -eq 0 ] && /opt/Archi/Archi -application com.archimatetool.commandline.app -consoleLog -nosplash \
    --modelrepository.loadModel $rutamodelo \
-   --script.runScript $rutaprg/$prgreport \
-   -rutaMacMD $rutareport \
+   --html.createReport $rutareport \
   || echo "ERR"
 

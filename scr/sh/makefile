@@ -30,7 +30,7 @@ mdhtml:
 	(bash archiCli-md.sh . $(tx) mdhtml)
 
 reporthtml:
-	(bash archiCli-html.sh . $(tx) mdtex)
+	(bash archiCli-html.sh . $(tx) report)
 
 
 help:

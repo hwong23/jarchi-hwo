@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Generación de documento MD basado en la vista documental marcada con 
 # el alias propertie del repositorio de contenidos de arquitectura.
 
@@ -7,6 +9,7 @@
 # $3: vista fuente, modelo de contenidos 
 # $4: entrada de configuración
 
+entradaextraccion=mdextraer
 
 # Validacion número de argumentos
  if [ $# -lt 4 ]; then
@@ -17,33 +20,37 @@
     echo '$4': entrada de configuración
 
     exit 1
-  fi
-
-# Validacion argumentos vacíos
-# if [ -z "$1" ||  -z "$2"]; then
-#    echo "Error: Argument is empty!"
-#    exit 1
-#  fi
- 
+  fi 
 
 # include parse_yaml function
 . parse_yaml.sh
 eval $(parse_yaml $1/zconfig.yml config_)
 
-rutamodelo=$(varvalue config_ $4 _rutamodelo)
-rutaprg=$(varvalue config_ $4 _rutaprg)
-prgreport=$([ -z "$5"  ] && echo $config_deploy_prgreporthtml || echo $5)
-rutareport=$config_deploy_rutareport
+rutamodelo=$(varvalue config_ $entradaextraccion _rutamodelo)
+rutaprg=$(varvalue config_ $entradaextraccion _rutaprg)
+# prgreport=$([ -z "$5"  ] && echo $config_deploy_prgreporthtml || echo $5)
+rutareport=$config_ $entradaextraccion _rutareport
+
+
+# Validacion argumentos vacíos
+if [ -z $rutareport]; then
+   echo "Error: La ruta del reporte html no pude ser vacío."
+   exit 1
+ fi
 
 
 echo Configuracion: 
 echo '   rutamodelo:' $rutamodelo
 echo '   rutaprg' $rutaprg
 echo '   prgexporthtml': $prgreport
-echo '   rutaprgexporthtml': $rutareport
+echo '   rutareport': $rutareport
 
 
 status=$?
+
+# Purga contenidos
+# ...
+
 
 [ $status -eq 0 ] && /Applications/Archi.app/Contents/MacOS/Archi -application com.archimatetool.commandline.app \
 -consoleLog -nosplash \

@@ -41,10 +41,9 @@ rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $entradaextraccion _rutaC
 
 # Validacion argumentos vacíos
 if [ -z $prg ]; then
-   echo "Error: El transformadorTx $tx no existe"
+   echo "Error: El transformadorTx $tx no existe."
    exit 1
  fi
-
 
 
 echo Configuracion: 

@@ -29,22 +29,30 @@ mdppt:
 mdhtml:
 	(bash archiCli-md.sh . $(tx) mdhtml)
 
+reporthtml:
+	(bash archiCli-html.sh . $(tx) mdtex)
+
 
 help:
 	head -2 makefile
 
-all:
-	# make documento, tema, sitio, presentacion, reporte, borrador
-	make mdtex mdpdf mddocx
-
 documento:
 # alias = zconfig.yml
-	make all tx=dd
+	make mdtex mdpdf mddocx
 
-tema:
-# alias = zconfig.yml
-	make all tx=solo
+# tema:
+# # alias = zconfig.yml
+# 	make all tx=solo
 
 sitio:
 # alias = zconfig.yml
 	make mdhtml tx=all
+
+reporte:
+	make reporthtml tx=all
+
+
+all:
+	# make documento, tema, sitio, presentacion, reporte, borrador
+	make mdtex mdpdf mddocx reporte
+

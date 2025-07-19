@@ -14,6 +14,7 @@ mdextraer:
   rutamodelo: /github/workspace/main
   rutaprg: /github/workspace/jarchi-hwo/scr
   rutaMacMD: /github/workspace/main/contd
+  rutareport: /github/workspace/contd/report
   devdocalias: doctecnico
   rutaCompleta: no
 

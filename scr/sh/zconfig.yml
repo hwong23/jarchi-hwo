@@ -1,20 +1,15 @@
 deploy:
-  # origenmd: /Users/hwo/Downloads/tmpr/pgnmd
-  # destinomd: /Users/hw/pgn/pgn-078
-  # origenhtml: /Users/hwo/Downloads/tmpr/pgnarchidoc
   prgreporthtml: exportSingle-htmlCLI.ajs
   prgreportmd: exportSingle-md.ajs
   rutareport: /github/workspace/contd/report
 ccambio:
   gitorigen: /Users/hw/devdocs/devocs-contd
-# publish:
-#   gitorigen: /Users/hw/pgn/pgn-078 
 
 mdextraer:
   rutamodelo: /github/workspace/main
   rutaprg: /github/workspace/jarchi-hwo/scr
   rutaMacMD: /github/workspace/main/contd
-  rutareport: /github/workspace/contd/report
+  rutareport: /github/workspace/main/contd/report
   devdocalias: doctecnico
   rutaCompleta: no
 

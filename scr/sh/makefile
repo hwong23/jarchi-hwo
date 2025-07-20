@@ -38,7 +38,7 @@ help:
 
 documento:
 # alias = zconfig.yml
-	make mdtex mdpdf mddocx
+	make mdtex mdpdf mddocx tx=dd
 
 # tema:
 # # alias = zconfig.yml

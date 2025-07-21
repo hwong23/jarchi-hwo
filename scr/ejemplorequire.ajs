@@ -1,0 +1,2 @@
+const ms = require ('./modulo.ajs');
+module.exports=generateMarkdown;

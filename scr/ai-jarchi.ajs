@@ -1,0 +1,68 @@
+/*
+ * Generate AI Analysis (Requires AI-Gemini.js and Export To Markdown.ajs)
+ * 
+ * Requires:
+ *   * jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ *   * AI-Gemini.js - 
+ *   * Export to Markdown.ajs - https://gist.github.com/smileham/578bbbb88dc0ed5a1403f3b98711ec25
+ * 
+ * Version 1: Gemini API
+ * 
+ * (c) 2025 Steven Mileham
+ *
+*/
+
+console.show();
+console.clear();
+console.log("Generate AI Summary");
+
+const library = true;
+
+const promptTemplate = "As a friendly Enterprise Architect trained in TOGAF and ArchiMate, using language which can be understood by the business in British English, analyse the following component. Do not greet the user, the summary will be stored against the component for future users, summarise the analysis in no more than two paragraphs";
+
+const md = require('./exportToMarkdown2025.ajs');
+const ai = require('./ai/ai-rest.js');
+
+const theComponents = $(selection);
+
+function buttonDialog(message,options) {
+    var dialog = new org.eclipse.jface.dialogs.MessageDialog(shell,"Archi",null,message,3,options.concat(["Cancel"]),0);
+    
+    var result=dialog.open();
+    return result==options.length?null:(result+1).toString();
+}
+
+const theView = theComponents.parents("archimate-diagram-model")
+console.log(theView);
+
+let markdownContent = md(theView, false,false, false);
+
+theComponents.forEach(theComponent => {
+    console.log(`Generating Summary for component:${theComponent.name}`);
+
+    summary = generateAnalysis (theComponent,markdownContent);
+
+    var updateDocumentation = buttonDialog(`Component:${theComponent.name}\nAnalysis:\n${summary}`, ["Replace Documentation", "Append to Documentation", "Create Assessment"]);
+    if (updateDocumentation=="3") {
+        let theAnalysis = model.createElement("assessment", `Analysis for ${theComponent.name}`);
+        theAnalysis.documentation = summary;
+        let theRelationship = model.createRelationship("association-relationship", "", theComponent.concept, theAnalysis);
+    }
+    else if (updateDocumentation=="2") {
+        theComponent.documentation += `\n${summary}`;
+    } 
+    else if (updateDocumentation=="1") {
+        theComponent.documentation = summary;
+    }
+});
+
+
+function generateAnalysis (theComponent,theContext) {
+    
+    let componentPrompt = `Component Name: \"${theComponent.name}\", Component Type: \"${theComponent.type}\"${(theComponent.specialization!=null?", Component Specialisation: \""+theComponent.specialization+"\"":"")}${(theComponent.documentation!=""&&theComponent.documentation!=null)?", Current Documentation: \""+theComponent.documentation+"\"":""}`
+    theComponent.prop().forEach(function (prop) {
+        componentPrompt+=` Property: "${prop}" = "${theComponent.prop(prop)}",`;
+    })
+    return ai(`${promptTemplate}, analyse ${componentPrompt} in the context of:\n ${theContext}`);
+    
+}

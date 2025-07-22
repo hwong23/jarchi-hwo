@@ -59,10 +59,10 @@ theComponents.forEach(theComponent => {
 
 function generateAnalysis (theComponent,theContext) {
     
-    let componentPrompt = `Component Name: \"${theComponent.name}\", Component Type: \"${theComponent.type}\"${(theComponent.specialization!=null?", Component Specialisation: \""+theComponent.specialization+"\"":"")}${(theComponent.documentation!=""&&theComponent.documentation!=null)?", Current Documentation: \""+theComponent.documentation+"\"":""}`
+    let componentPrompt = `Nombre Componente: \"${theComponent.name}\", Tipo Componente: \"${theComponent.type}\"${(theComponent.specialization!=null?", Especialización del Componente: \""+theComponent.specialization+"\"":"")}${(theComponent.documentation!=""&&theComponent.documentation!=null)?", Documentación: \""+theComponent.documentation+"\"":""}`
     theComponent.prop().forEach(function (prop) {
         componentPrompt+=` Property: "${prop}" = "${theComponent.prop(prop)}",`;
     })
-    return ai(`${promptTemplate}, analyse ${componentPrompt} in the context of:\n ${theContext}`);
+    return ai(`${promptTemplate}, analiza ${componentPrompt} en el contexte de:\n ${theContext}`);
     
 }

@@ -304,9 +304,6 @@ function exportViews (k, viewList, settings)
     var cambioPlnt = true;
 
 
-    console.log(devdoc_addSpace(1), 'exportViews', viewItem.name);
-    
-
     // configuraciones de la vista:
     // 1. plantillas
     var docplantilla = (v.prop('plantilla')? 
@@ -324,6 +321,8 @@ function exportViews (k, viewList, settings)
     }
     (debug)? console.log(devdoc_addSpace(1), 'exportViews.', 'plantilla', docplantilla): true;
     (debug)? console.log(devdoc_addSpace(1), 'exportViews.', 'Elemento plantilla', elemtPlantilla): true;
+
+    console.log(devdoc_addSpace(1), 'exportViews', viewItem.name, 'Plantilla ', elemtPlantilla);
 
     // 2. opciones de presentación inclusionSettings
     var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
@@ -369,7 +368,7 @@ function exportViews (k, viewList, settings)
                     viewsIds: g_viewsIdsByConceptId[e.id],
                     elementName: devdoc_escapeDOC(e.name),
                     elementType: devdoc_properCase(e.type),
-                    elementDocumentationText: viewInclusionSettings.IncluyeSaltosLineaElementos?
+                    elementDocumentationText: viewInclusionSettings.IncluyeSaltosLineaElementos ?
                         e.documentation:
                         e.documentation.replace(/\n/g, ' '),    //<br>
                     elementDocumentationMarkdown: ''  //marked((e.documentation), mdOptions)

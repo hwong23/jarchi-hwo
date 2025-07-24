@@ -1,2 +1,2 @@
-**{{elementName}}**\n
+**{{elementName}}**\n\n
 {{elementDocumentationText}}

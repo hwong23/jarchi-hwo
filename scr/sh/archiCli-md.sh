@@ -57,7 +57,7 @@ echo '   rutaCompleta:' $rutaCompleta
 
 # Purga contenidos
 RUTACONTD=$(eval echo $rutaMacMD)
-ls -l $pwd
+ls /github/workspace/*
 rm -Rf $RUTACONTD
 if [ -z "$( ls -A $RUTACONTD )" ]; then
    echo "OK. Purga de contenidos exitosa $RUTACONTD"

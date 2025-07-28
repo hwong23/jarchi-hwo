@@ -57,11 +57,12 @@ echo '   rutaCompleta:' $rutaCompleta
 
 # Purga contenidos
 RUTACONTD=$(eval echo $rutaMacMD)
+ls $RUTACONTD
 rm -Rf $RUTACONTD
 if [ -z "$( ls -A $RUTACONTD )" ]; then
    echo "OK. Purga de contenidos exitosa $RUTACONTD"
 else
-   echo "WARN. Purga fallida $RUTACONTD: carpeta de trabajo tiene contendos"
+   echo "WARN. Purga fallida $RUTACONTD: carpeta de trabajo tiene contenidos"
 fi
 
 # archi -> /Applications/Archi.app/Contents/MacOS/Archi

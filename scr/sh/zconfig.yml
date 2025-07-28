@@ -4,7 +4,7 @@ deploy:
   rutareport: /github/workspace/contd/report
 
 mdextraer:
-  rutamodelo: $HOME/git/model-repository/modelocontd-ae
+  rutamodelo: $HOME/Documents/Archi/model-repository/modelocontd-ae
   rutaprg: $HOME/git/jarchi-hwo/scr
   rutaMacMD: $HOME/git/devdocs/devocs-contd/contd
   rutareport: $HOME/git/devdocs/devocs-contd/contd/report

@@ -2,13 +2,15 @@ deploy:
   prgreporthtml: exportSingle-htmlCLI.ajs
   prgreportmd: exportSingle-md.ajs
   rutareport: /github/workspace/contd/report
+# ccambio:
+#   gitorigen: /Users/hw/devdocs/devocs-contd
 
 mdextraer:
-  rutamodelo: $HOME/Documents/Archi/model-repository/modelocontd-ae
-  rutaprg: $HOME/git/jarchi-hwo/scr
-  rutaMacMD: $HOME/git/devdocs/devocs-contd/contd
-  rutareport: $HOME/git/devdocs/devocs-contd/contd/report
-  devdocalias: 123estrategia
+  rutamodelo: /github/workspace/main
+  rutaprg: /github/workspace/jarchi-hwo/scr
+  rutaMacMD: /github/workspace/main/contd
+  rutareport: /github/workspace/main/contd/report
+  devdocalias: conjunto.aplicaciones
   rutaCompleta: no
 
 mddocx:
@@ -24,7 +26,7 @@ mdpdf:
   expportprg_rept: exportSingle-htmlCLI.ajs
 mdtex:
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
-  expportprg_solo: Tx-exportToMarkdown-CLI-templtex.ajs
+  expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_rept: exportSingle-htmlCLI.ajs
 mdppt:
   expportprg: Tx-exportToMarkdown-CLI-templppt.ajs

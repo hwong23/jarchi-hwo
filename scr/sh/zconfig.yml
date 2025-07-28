@@ -8,7 +8,7 @@ deploy:
 mdextraer:
   rutamodelo: /github/workspace/main
   rutaprg: /github/workspace/jarchi-hwo/scr
-  rutaMacMD: /github/workspace/main/contd
+  rutaMacMD: /github/workspace/main/devocs-contd/contd
   rutareport: /github/workspace/main/contd/report
   devdocalias: conjunto.aplicaciones
   rutaCompleta: no

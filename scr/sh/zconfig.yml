@@ -2,15 +2,15 @@ deploy:
   prgreporthtml: exportSingle-htmlCLI.ajs
   prgreportmd: exportSingle-md.ajs
   rutareport: /github/workspace/contd/report
-# ccambio:
-#   gitorigen: /Users/hw/devdocs/devocs-contd
+ccambio:
+  gitorigen: /Users/hw/devdocs/devocs-contd
 
 mdextraer:
   rutamodelo: /github/workspace/main
   rutaprg: /github/workspace/jarchi-hwo/scr
   rutaMacMD: /github/workspace/main/contd
   rutareport: /github/workspace/main/contd/report
-  devdocalias: conjunto.aplicaciones
+  devdocalias: entregables-f1
   rutaCompleta: no
 
 mddocx:

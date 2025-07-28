@@ -90,11 +90,11 @@ var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl
 
 
 // Argumentos de entrada por CLI
-var argRutaMacMD = myargs_getArgumento("rutaMacMD");
+var argRutaSalida = myargs_getArgumento("rutaMacMD");
 var argVistaDocumental = myargs_getArgumento("vistaDocumental");
 var argRutaCompleta = myargs_getArgumento("rutaCompleta");
 console.log("Entradas: ")
-console.log("   theRutaMacMD: "+argRutaMacMD);
+console.log("   theRutaMacMD: "+argRutaSalida);
 console.log("   vistaDocumental: "+argVistaDocumental);
 console.log("   rutaCompleta: "+argRutaCompleta);
 
@@ -109,7 +109,7 @@ console.log("Documentation Generation @", currentDate);
 if (useDrivingView( argVistaDocumental ))
 {
     // nombre de documento dado por propiedad del modelo
-    var archivoruta = rutaTrabajo(g_drivingView, argRutaMacMD);
+    var archivoruta = rutaTrabajo(g_drivingView, argRutaSalida);
     g_drivingView_devdoc = archivoruta.devdoc;
     g_fileName = archivoruta.filename;
     g_path = archivoruta.path
@@ -270,7 +270,7 @@ function getViews(Level, GroupObj, settings, textoGrupo = '') {
             var docGenVista = exportViews (k, viewList, settings);
             
             if (settings.DocumentosIndividualesxVista) {
-                var archivovista = rutaTrabajo(viewList[k][1], argRutaMacMD);
+                var archivovista = rutaTrabajo(viewList[k][1], argRutaSalida);
                 $.fs.writeFile(archivovista.filename, 
                     (k == 0) ? // si es la primera vista...
                     textoGrupo + docGenVista:

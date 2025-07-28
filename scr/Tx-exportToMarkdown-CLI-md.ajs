@@ -135,7 +135,7 @@ if (g_drivingView) {
     // Define ruta/nombre del archivo de salida de la documentación de la vista theView
     // var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
     // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
-    var archivoruta = rutaTrabajo(g_drivingView, argRutaMacMD);
+    var archivoruta = rutaTrabajo(g_drivingView, argRutaSalida);
     g_drivingView_devdoc = archivoruta.devdoc;
     g_fileName = archivoruta.filename;
     g_path = archivoruta.path
@@ -217,4 +217,32 @@ if (g_drivingView) {
 else {
     console.log("> Please Select a View");
 }
+
+// Ruta de trabajo, nombre de archivo
+function rutaTrabajo(vista, rutaMacMD = null) {
+    // nombre de documento dado por propiedad del modelo
+    var r = __DIR__.split("\/");
+    var rutaTrabajo = {};
+
+    // nombre del archivo de trabajo (salida)
+    var devdoc = vista.prop("devdoc")? 
+        vista.prop("devdoc"):
+        vista.name.replaceAll(" ", "")+'.md';
+
+    // (sobrescribe) ruta de trabajo dado por argumento CLI
+    var path = rutaMacMD? 
+        // '/'+r[1]+'/'+r[2]+rutaMacMD+'/':
+        // '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+        rutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+    var fileName = path+devdoc;
+
+
+    return {
+        'filename' : fileName,
+        'path' : path,
+        'devdoc' : devdoc
+    };
+}
+
 

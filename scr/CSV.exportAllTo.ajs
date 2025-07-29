@@ -24,7 +24,7 @@ console.show();
 console.clear();
 console.log("> Starting CSV Export");
 
-load(__DIR__ + "lib/papaparse.min.js");
+const Papa = require(__DIR__ + "lib/papaparse.min.js");
 
 var propertiesList = [];
 

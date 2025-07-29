@@ -18,7 +18,7 @@ console.show();
 console.clear();
 console.log("> Import CSV From CLI");
 
-load(__DIR__ + "lib/papaparse.min.js");
+const Papa = require(__DIR__ + "lib/papaparse.min.js");
 load(__DIR__ + "lib/myargs.js");
 
 
@@ -26,7 +26,7 @@ load(__DIR__ + "lib/myargs.js");
 var argRutaLectura = myargs_getArgumento("rutaLectura");
 // var argVistaDocumental = myargs_getArgumento("vistaDocumental");
 console.log("Entradas: ")
-debug? console.log("   rutaSalida: "+argRutaLectura):true;
+debug? console.log("   rutaLectura: "+argRutaLectura):true;
 // debug? console.log("   vistaDocumental: "+argVistaDocumental):true;
 
 

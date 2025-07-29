@@ -18,7 +18,7 @@
  */
 
 var debug = false;
-var userPath = "/Users/hwong23/Downloads/modelexport";
+var userPath = "$(HOME)/Downloads/modelexport";
 // Show output in the console
 console.show();
 console.clear();
@@ -169,7 +169,7 @@ $('view').each(function(theView) {
             // codificacion de caracteres UTF-8: Unicode variable. Preferido para Web. https://es.wikipedia.org/wiki/UTF-8
             $.fs.writeFile(exportFile, theCSV, "UTF-8");
             $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", theRelationshipsCSV, "UTF-8");
-            console.log("> Export done");
+            console.log("> Export done", exportFile);
         }
         else {
             console.log("> Export cancelled");

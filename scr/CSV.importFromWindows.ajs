@@ -17,7 +17,7 @@ console.show();
 console.clear();
 console.log("> Import CSV");
 
-load(__DIR__ + "lib/papaparse.min.js");
+const Papa = require(__DIR__ + "lib/papaparse.min.js");
 
 console.log("> Loaded Papa Parse");
 

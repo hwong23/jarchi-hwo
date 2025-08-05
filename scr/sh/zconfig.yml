@@ -8,7 +8,7 @@ mdextraer:
   rutaprg: /github/workspace/jarchi-hwo/scr
   rutaMacMD: /github/workspace/main/contd
   rutareport: /github/workspace/main/contd/report
-  devdocalias: conjunto.app
+  devdocalias:  entregables-app
   rutaCompleta: no
 
 mddocx:

@@ -12,13 +12,13 @@
  * Version 2.1: Added error check for View
  * Version 2.2: exportFile = userPath + "/" + defaultFileName
  * Version 2.2.1: $('view').each(function(theView)
+ * Version 2.2.2: Variables de configuración
  *
  * (c) 2018 Steven Mileham
  *
  */
 
 var debug = false;
-var userPath = "$(HOME)/Downloads/modelexport";
 // Show output in the console
 console.show();
 console.clear();
@@ -67,6 +67,10 @@ var current_row = 1;
 var theData = new Array();
 var theRelationshipData = new Array();
 
+// variables de configuracion
+var inclyePropiedades = false;
+var userPath = "/Users/hwo/Documents/work/INGEN/modelexport";
+
 $('view').each(function(theView) {
     debug? console.log(theView):true;
 
@@ -95,7 +99,7 @@ $('view').each(function(theView) {
                             }
                             if (!found) {
                                 propertiesList.push(theProperties[i]);
-                                conceptHeaders.push(theProperties[i]);
+                                (inclyePropiedades) ? conceptHeaders.push(theProperties[i]): false;
                             }
                         }
 
@@ -106,9 +110,11 @@ $('view').each(function(theView) {
                         theObject["Type"]=theConcept.type;
 
                         // Valores de las propiedades (prop)
-                        for (var i=0; i<propertiesList.length; i++){
-                            if (theConcept.prop(propertiesList[i])) {
-                                theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);
+                        if (inclyePropiedades) {
+                            for (var i=0; i<propertiesList.length; i++) {
+                                if (theConcept.prop(propertiesList[i])) {
+                                    theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);
+                                }
                             }
                         }
                         

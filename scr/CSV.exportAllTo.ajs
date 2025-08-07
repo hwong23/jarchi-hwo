@@ -64,15 +64,16 @@ var typeMappings = {
 
 var current_row = 1;
 
-var theData = new Array();
-var theRelationshipData = new Array();
 
 // variables de configuracion
 var inclyePropiedades = false;
-var userPath = "/Users/hwo/Documents/work/INGEN/modelexport";
+var userPath = "/Users/hwong23/Documents/work/INGEN/modelexport";
 
 $('view').each(function(theView) {
     debug? console.log(theView):true;
+    
+    var theData = new Array();
+    var theRelationshipData = new Array();
 
     if (theView) {
 
@@ -154,9 +155,9 @@ $('view').each(function(theView) {
         });
 
         // Open a dialog to let the user choose where to save the generated file
+        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
         var defaultFileName = model.name ? model.name + "-" + theView.name + ".csv" : "Exported Model.csv"; // Default file name
         var exportFile = userPath + "/" + defaultFileName;
-        // var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
 
 
         debug? console.log("> conceptHeaders"+conceptHeaders):true;
@@ -181,7 +182,7 @@ $('view').each(function(theView) {
             console.log("> Export cancelled");
         }
     }
-    else {
+    else { //if (theView) {
         console.log("> Please Select a View");
     }
 });

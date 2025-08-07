@@ -18,12 +18,12 @@
  *
  */
 
-var debug = false;
 // Show output in the console
 console.show();
 console.clear();
 console.log("> Starting CSV Export");
 
+load(__DIR__ + "lib/CSV.exportAllTo-cfg.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
 
 var propertiesList = [];
@@ -66,11 +66,13 @@ var current_row = 1;
 
 
 // variables de configuracion
-var inclyePropiedades = false;
-var userPath = "/Users/hwong23/Documents/work/INGEN/modelexport";
+var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
+var userPath = cfg_mdOptions.userPath
+var debug = cfg_mdOptions.debug;
+
 
 $('view').each(function(theView) {
-    debug? console.log(theView):true;
+    debug? console.log('debug', theView):true;
     
     var theData = new Array();
     var theRelationshipData = new Array();
@@ -100,7 +102,7 @@ $('view').each(function(theView) {
                             }
                             if (!found) {
                                 propertiesList.push(theProperties[i]);
-                                (inclyePropiedades) ? conceptHeaders.push(theProperties[i]): false;
+                                (incluyePropiedades) ? conceptHeaders.push(theProperties[i]): false;
                             }
                         }
 
@@ -111,7 +113,7 @@ $('view').each(function(theView) {
                         theObject["Type"]=theConcept.type;
 
                         // Valores de las propiedades (prop)
-                        if (inclyePropiedades) {
+                        if (incluyePropiedades) {
                             for (var i=0; i<propertiesList.length; i++) {
                                 if (theConcept.prop(propertiesList[i])) {
                                     theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);

@@ -51,7 +51,7 @@ var relationshipHeaders = [
     "Relationship Documentation"
 ];
 
-var typeMappings = {
+var typeMappingsRelaciones = {
     "access-relationship":"Accesses",
     "composition-relationship":"Comprises",
     "flow-relationship":"Flows",
@@ -59,7 +59,32 @@ var typeMappings = {
     "assignment-relationship":"Assigned",
     "serving-relationship":"Serves/Used",
     "association-relationship":"Associated",
-    "aggregation-relationship":"Aggregates"
+    "aggregation-relationship":"Aggregates",
+    "influence-relationship":"Influence",
+    "specialization-relationship":"Specialize"
+}
+
+var typeMappingsElementos = {
+    "application-component":"SIS",
+    "application-interface":"API",
+    "application-service":"SVC",
+    "assessment":"Eval",
+    "business-actor":"Actor",
+    "business-collaboration":"Colab",
+    "business-function":"Unidad",
+    "business-object":"Dato",
+    "business-process":"PROC",
+    "business-role":"Rol",
+    "business-service":"Servicio",
+    "capability":"Cap",
+    "constraint":"Restric",
+    "course-of-action":"Iniciativa",
+    "data-object":"Dato",
+    "plateau":"EST",
+    "stakeholder":"Interesado",
+    "value-stream":"Valor",
+    "work-package":"TRAB",
+    
 }
 
 var current_row = 1;
@@ -87,7 +112,7 @@ $('view').each(function(theView) {
 
                 if (e.name!="") {
 
-                    if (!conceptHashMap[theConcept.id]) {
+                    if (cfg_mdOptions.repeticion || !conceptHashMap[theConcept.id]) {
                         conceptHashMap[theConcept.id]=true;
 
                         var theProperties = theConcept.prop();
@@ -110,7 +135,8 @@ $('view').each(function(theView) {
                         theObject["Name"]=theConcept.name;
                         theObject["Documentation"]=theConcept.documentation;
                         theObject["UID"]=theConcept.id;
-                        theObject["Type"]=theConcept.type;
+                        theObject["Type"]=!typeMappingsElementos[theConcept.type]? theConcept.type: typeMappingsElementos[theConcept.type];
+                        
 
                         // Valores de las propiedades (prop)
                         if (incluyePropiedades) {
@@ -133,11 +159,11 @@ $('view').each(function(theView) {
                             theRelationshipRow["Relationship ID"]=r.id;
                             theRelationshipRow["From ID"]=r.source.id;
                             theRelationshipRow["From Name"]=r.source.name;
-                            theRelationshipRow["From Type"]=r.source.type;
-                            theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
+                            theRelationshipRow["From Type"]=!typeMappingsElementos[r.source.type]? r.source.type: typeMappingsElementos[r.source.type];
+                            theRelationshipRow["Relationship Type"]=!typeMappingsRelaciones[r.type]?r.type:typeMappingsRelaciones[r.type];
                             theRelationshipRow["To ID"]=r.target.id;
                             theRelationshipRow["To Name"]=r.target.name;
-                            theRelationshipRow["To Type"]=r.target.type;
+                            theRelationshipRow["To Type"]=!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type];
                             theRelationshipRow["Relationship Name"]=r.name;
                             theRelationshipRow["Relationship Documentation"]=r.documentation;
 

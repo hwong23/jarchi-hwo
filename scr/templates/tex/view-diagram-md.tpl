@@ -1,5 +1,5 @@
 ![{{viewImage}}](images/{{viewNombre}}){#fig:{{viewId}} width={{viewAncho}}}
 
-_Fuente: Repositorio arquitectura Integración JEP (2024)_
+_Elaboración propia con información del equipo servicios tecnológicos de la OTIC_
 
 <br>

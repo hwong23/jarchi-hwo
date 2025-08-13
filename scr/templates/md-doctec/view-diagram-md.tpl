@@ -1,1 +1,1 @@
-![{{viewImage}}. _Fuente: Propuesta servicios de ingeniería y evaluación de arquitectura $APP $CLIENTE (2025)_](images/{{viewNombre}}){#fig:{{viewId}} width={{viewAncho}} height={{viewAlto}}}
+![{{viewImage}}. _Fuente: Proyecto arquitectura empresarial. $APP $CLIENTE (2025)_](images/{{viewNombre}}){#fig:{{viewId}} width={{viewAncho}} height={{viewAlto}}}

@@ -2,12 +2,15 @@
  * Derive an interaction matrix between two object types from an archimate model
  *  Save to an excel sheet
  *  2018, Michel Bénard
+ * 
+ * Version 2.2.2: Variables de configuración
 */
 
 // Load MyExcel and JSZip JS file
 // these are provided with the jarchi samples scripts
 load(__DIR__ + "lib/jszip-101.js");
 load(__DIR__ + "lib/myexcel.js");
+load(__DIR__ + "lib/mb-matrixfrommodel.js.LOCAL");
 
 
 // example
@@ -18,8 +21,13 @@ load(__DIR__ + "lib/myexcel.js");
 //  save the sheet in an excel file
 
  sheet = prepareSheet();
- fillSheet(sheet,"application-component","application-service","apps-functions","/");
- outputFilename=("/Users/hwong23/git/jarchi-hwo/archimate_matrices.xlsx");
+ fillSheet(sheet, 
+    cfg_mdOptions.columnType,
+    cfg_mdOptions.rowType,
+    cfg_mdOptions.tabName,
+    cfg_mdOptions.cellSeparator
+ );
+ outputFilename=( cfg_mdOptions.userPath +"/archimate_matrices.xlsx");
  saveSheet(sheet,outputFilename);
 
 
@@ -95,7 +103,6 @@ function fillRows(sheet,headers,rowType,cellSeparator)
         cellText = "";
         for (var j = 0;j< relations.length;j++)
         {
-
             if( ( (relations[j].source.id == e.id) &&  (relations[j].target.id == headers[i].id))
 
                 )

@@ -549,6 +549,12 @@ if (theView) {
 		const date = new Date();
 		const timeISOString = date.toISOString();
 		
+		
+		var FileOutputStream_local = Java.type("java.io.FileOutputStream");
+		var fileName_fos = fileName;
+		var fos_local = new FileOutputStream_local (fileName_fos);
+		
+		
 		var fw = new FileWriter(fileName,false);
 		const header = 
 `<?xml version="1.0" encoding="UTF-8"?>

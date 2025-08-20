@@ -42,7 +42,8 @@ if (g_filePath) {
 
     theData = theDataFile.data;
 
-    theDataHeaders = theData[0];
+    var theDataHeaders = theData[0];
+    console.log ("theData:", theData[0]);
 
     var commonProperties = ["UID","Name", "Documentation","Type"];
 

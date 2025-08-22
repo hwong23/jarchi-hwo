@@ -10,19 +10,19 @@
  * Version 1.2: Fix missing properties
  * Version 2: Updated to export Relationships to additional CSV
  * Version 2.1: Added error check for View.
+ * Version 2.2: Variables de configuración
  *
  * (c) 2018 Steven Mileham
  *
  */
 
-var debug = false;
-var userPath = "/Users/HWO.work/Documents";
+
 // Show output in the console
 console.show();
 console.clear();
 console.log("> Starting CSV Export");
 
-// load(__DIR__ + "lib/papaparse.min.js");
+load(__DIR__ + "lib/CSV.exportAllTo-cfg.js.LOCAL");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
 
 var propertiesList = [];
@@ -61,6 +61,11 @@ var typeMappings = {
     "aggregation-relationship":"Aggregates"
 }
 
+// variables de configuración
+var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
+var userPath = cfg_mdOptions.userPath
+var debug = cfg_mdOptions.debug;
+
 var current_row = 1;
 
 var theData = new Array();
@@ -94,7 +99,7 @@ if (theView) {
                         }
                         if (!found) {
                             propertiesList.push(theProperties[i]);
-                            conceptHeaders.push(theProperties[i]);
+                            (incluyePropiedades) ? conceptHeaders.push(theProperties[i]): false;
                         }
                     }
 
@@ -105,9 +110,11 @@ if (theView) {
                     theObject["Type"]=theConcept.type;
 
                     // Valores de las propiedades (prop)
-                    for (var i=0; i<propertiesList.length; i++){
-                        if (theConcept.prop(propertiesList[i])) {
-                            theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);
+                    if (incluyePropiedades) {
+                        for (var i=0; i<propertiesList.length; i++) {
+                            if (theConcept.prop(propertiesList[i])) {
+                                theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);
+                            }
                         }
                     }
                     

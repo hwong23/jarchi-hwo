@@ -90,7 +90,7 @@ var typeMappingsElementos = {
 var current_row = 1;
 
 
-// variables de configuracion
+// variables de configuración
 var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
 var userPath = cfg_mdOptions.userPath
 var debug = cfg_mdOptions.debug;

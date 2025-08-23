@@ -13,6 +13,7 @@
  * Version 2.2: exportFile = userPath + "/" + defaultFileName
  * Version 2.2.1: $('view').each(function(theView)
  * Version 2.2.2: Variables de configuración
+ * Version 2.2.3: typeMappingsElementos
  *
  * (c) 2018 Steven Mileham
  *
@@ -83,8 +84,7 @@ var typeMappingsElementos = {
     "plateau":"EST",
     "stakeholder":"Interesado",
     "value-stream":"Valor",
-    "work-package":"TRAB",
-    
+    "work-package":"TRAB"    
 }
 
 var current_row = 1;

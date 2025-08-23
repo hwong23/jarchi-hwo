@@ -11,6 +11,7 @@
  * Version 2: Updated to export Relationships to additional CSV
  * Version 2.1: Added error check for View.
  * Version 2.2: Variables de configuración
+ * Version 2.3: typeMappingsElementos
  *
  * (c) 2018 Steven Mileham
  *
@@ -62,6 +63,28 @@ var typeMappings = {
     "aggregation-relationship":"Aggregates"
 }
 
+var typeMappingsElementos = {
+    "application-component":"SIS",
+    "application-interface":"API",
+    "application-service":"SVC",
+    "assessment":"Eval",
+    "business-actor":"Actor",
+    "business-collaboration":"Colab",
+    "business-function":"Unidad",
+    "business-object":"Dato",
+    "business-process":"PROC",
+    "business-role":"Rol",
+    "business-service":"Servicio",
+    "capability":"Cap",
+    "constraint":"Restric",
+    "course-of-action":"Iniciativa",
+    "data-object":"Dato",
+    "plateau":"EST",
+    "stakeholder":"Interesado",
+    "value-stream":"Valor",
+    "work-package":"TRAB"    
+}
+
 // variables de configuración
 var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
 var userPath = cfg_mdOptions.userPath
@@ -109,7 +132,7 @@ if (theView) {
                     theObject["Name"]=theConcept.name;
                     theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
                     theObject["UID"]=theConcept.id;
-                    theObject["Type"]=theConcept.type;
+                    theObject["Type"]=!typeMappingsElementos[theConcept.type]? theConcept.type: typeMappingsElementos[theConcept.type];
 
                     // Valores de las propiedades (prop)
                     if (incluyePropiedades) {
@@ -132,11 +155,11 @@ if (theView) {
                         theRelationshipRow["Relationship ID"]=r.id;
                         theRelationshipRow["From ID"]=r.source.id;
                         theRelationshipRow["From Name"]=r.source.name;
-                        theRelationshipRow["From Type"]=r.source.type;
+                        theRelationshipRow["From Type"]=!typeMappingsElementos[r.source.type]? r.source.type: typeMappingsElementos[r.source.type];
                         theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
                         theRelationshipRow["To ID"]=r.target.id;
                         theRelationshipRow["To Name"]=r.target.name;
-                        theRelationshipRow["To Type"]=r.target.type;
+                        theRelationshipRow["To Type"]=!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type];
                         theRelationshipRow["Relationship Name"]=r.name;
                         theRelationshipRow["Relationship Documentation"]=r.documentation;
 

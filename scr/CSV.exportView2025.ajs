@@ -147,6 +147,7 @@ else {
                         theRelationshipRow["Relationship Name"]=r.name;
                         theRelationshipRow["Relationship Documentation"]=r.documentation;
 
+                        // Propiedades de las relaciones
                         const theRelationshipProperties = r.prop();  
 
                         for (var i=0; i<theRelationshipProperties.length; i++){

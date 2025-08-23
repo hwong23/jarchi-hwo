@@ -82,7 +82,7 @@ if (theView) {
     $(theView).find().not("relationship").each(function(e) {
 
         var theConcept = e.concept;
-        // try {
+        try {
 
             if (e.name!="") {
 
@@ -107,7 +107,7 @@ if (theView) {
 
                     var theObject = new Object;
                     theObject["Name"]=theConcept.name;
-                    theObject["Documentation"]= devdoc_escapeDOC(theConcept.documentation, false);
+                    theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
                     theObject["UID"]=theConcept.id;
                     theObject["Type"]=theConcept.type;
 
@@ -149,10 +149,10 @@ if (theView) {
                     console.log("Duplicate Concept: ",theConcept.name);
                 }
             }
-        // }
-        // catch (error) {
-        //     console.log("> Ignoring: "+e);
-        // }
+        }
+        catch (error) {
+            console.log("> Ignoring: "+e);
+        }
     });
 
     // Open a dialog to let the user choose where to save the generated file

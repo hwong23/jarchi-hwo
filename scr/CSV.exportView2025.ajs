@@ -13,18 +13,20 @@
  * Version 2.2: Added support for Specialization
  * Version 2.3: Added UTF-8 BOM to (hopefully) fix Excel export
  * Version 2.4: Added support for relationship properties export (by @isalew)
+ * Version 2.4.1: Variables de configuración
  *
  * (c) 2018 Steven Mileham
  *
  */
 
-const debug = false;
 
 // Show output in the console
 console.show();
 console.clear();
 console.log("> Starting CSV Export");
 
+load(__DIR__ + "lib/CSV.exportAllTo-cfg.js.LOCAL");
+load(__DIR__ + "lib/devdocslib.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
 
 let propertiesList = [];
@@ -64,6 +66,14 @@ const typeMappings = {
     "aggregation-relationship":"Aggregates"
 }
 
+
+// variables de configuración
+var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
+var userPath = cfg_mdOptions.userPath
+var debug = cfg_mdOptions.debug;
+var noEnter = cfg_mdOptions.noEnter;
+
+
 let current_row = 1;
 
 let theData = new Array();
@@ -98,22 +108,26 @@ else {
                         }
                         if (!found) {
                             propertiesList.push(theProperties[i]);
-                            conceptHeaders.push(theProperties[i]);
+                            (incluyePropiedades) ? conceptHeaders.push(theProperties[i]): false;
                         }
                     }
 
                     let theObject = new Object;
                     theObject["Name"]=theConcept.name;
-                    theObject["Documentation"]=theConcept.documentation;
+                    theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
                     theObject["UID"]=theConcept.id;
                     theObject["Type"]=theConcept.type;
                     theObject["Specialization"]=theConcept.specialization;
 
-                    for (var i=0; i<propertiesList.length; i++){
-                        if (theConcept.prop(propertiesList[i])) {
-                            theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);
+                    // Valores de las propiedades (prop)
+                    if (incluyePropiedades) {
+                            for (var i=0; i<propertiesList.length; i++){
+                            if (theConcept.prop(propertiesList[i])) {
+                                theObject[propertiesList[i]]=""+theConcept.prop(propertiesList[i]);
+                            }
                         }
                     }
+                    
                     debug? console.log("> theObject"):true;
                     debug? console.log(theObject):true;
 
@@ -173,7 +187,8 @@ else {
 
     // Open a dialog to let the user choose where to save the generated file
     const defaultFileName = model.name ? model.name + "-" + theView.name + ".csv" : "Exported Model.csv"; // Default file name
-    const exportFile = window.promptSaveFile({ title: "Export to CSV", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
+    const exportFile = userPath + "/" + defaultFileName;
+    // const exportFile = window.promptSaveFile({ title: "Export to CSV", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
 
     debug? console.log("> conceptHeaders"+conceptHeaders):true;
 

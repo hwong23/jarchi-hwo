@@ -14,6 +14,7 @@
  * Version 2.2.1: $('view').each(function(theView)
  * Version 2.2.2: Variables de configuración
  * Version 2.2.3: typeMappingsElementos
+ * Version 2.2.4: noEnter
  *
  * (c) 2018 Steven Mileham
  *
@@ -25,6 +26,7 @@ console.clear();
 console.log("> Starting CSV Export");
 
 load(__DIR__ + "lib/CSV.exportAllTo-cfg.js.LOCAL");
+load(__DIR__ + "lib/devdocslib.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
 
 var propertiesList = [];
@@ -94,6 +96,7 @@ var current_row = 1;
 var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
 var userPath = cfg_mdOptions.userPath
 var debug = cfg_mdOptions.debug;
+var noEnter = cfg_mdOptions.noEnter;
 
 
 $('view').each(function(theView) {
@@ -108,8 +111,8 @@ $('view').each(function(theView) {
         $(theView).find().not("relationship").each(function(e) {
 
             var theConcept = e.concept;
-            try {
 
+            try {
                 if (e.name!="") {
 
                     if (cfg_mdOptions.repeticion || !conceptHashMap[theConcept.id]) {
@@ -133,7 +136,7 @@ $('view').each(function(theView) {
 
                         var theObject = new Object;
                         theObject["Name"]=theConcept.name;
-                        theObject["Documentation"]=theConcept.documentation;
+                        theObject["Documentation"]=(noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
                         theObject["UID"]=theConcept.id;
                         theObject["Type"]=!typeMappingsElementos[theConcept.type]? theConcept.type: typeMappingsElementos[theConcept.type];
                         

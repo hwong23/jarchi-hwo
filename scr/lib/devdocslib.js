@@ -40,9 +40,9 @@ var devdoc_DefaultInclusionSettings = {
 };
 
 
-function replaceNL(strIn) {
+function devdoc_replaceNL(strIn, sustituto = "<br>") {
     if (null === strIn || "string" !== typeof strIn) return "";
-    var newStr = strIn.replace(/[\r\n]+/gm, "<br>");
+    var newStr = strIn.replace(/[\r\n]+/gm, sustituto);
     return newStr;
 }
 
@@ -295,10 +295,13 @@ function devdoc_escapeMD(theString){
     return newString.substring(0,1)+newString.substring(1).replaceAll(">","&gt;").replaceAll("~QUOTE~",">");
 }
 
-function devdoc_escapeDOC(theString){
+function devdoc_escapeDOC(theString, nuevaLinea = true){
     var newString = theString.replaceAll("<<","(");
-    return newString.substring(0,1) +
-           newString.substring(1).replaceAll(">>",")");
+    var newString2 = newString.substring(0,1) + newString.substring(1).replaceAll(">>",")");
+    // mantiene los quiebres de línea?
+    var newString3 = (nuevaLinea) ? newString2: devdoc_replaceNL(newString2, ". ");
+    
+    return newString3;
 }
 
 function devdoc_generateLink(theString) {

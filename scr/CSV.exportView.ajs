@@ -65,6 +65,7 @@ var typeMappings = {
 var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
 var userPath = cfg_mdOptions.userPath
 var debug = cfg_mdOptions.debug;
+var noEnter = cfg_mdOptions.noEnter;
 
 var current_row = 1;
 

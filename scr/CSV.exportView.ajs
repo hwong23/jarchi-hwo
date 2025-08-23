@@ -106,7 +106,7 @@ if (theView) {
 
                     var theObject = new Object;
                     theObject["Name"]=theConcept.name;
-                    theObject["Documentation"]=theConcept.documentation;
+                    theObject["Documentation"]= devdoc_escapeDOC(theConcept.documentation, false);
                     theObject["UID"]=theConcept.id;
                     theObject["Type"]=theConcept.type;
 

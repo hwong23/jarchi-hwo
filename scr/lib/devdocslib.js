@@ -299,7 +299,7 @@ function devdoc_escapeDOC(theString, nuevaLinea = true){
     var newString = theString.replaceAll("<<","(");
     var newString2 = newString.substring(0,1) + newString.substring(1).replaceAll(">>",")");
     // mantiene los quiebres de línea?
-    var newString3 = (nuevaLinea) ? newString2: devdoc_replaceNL(newString2, ". ");
+    var newString3 = (nuevaLinea) ? newString2: devdoc_replaceNL(newString2, " ");
     
     return newString3;
 }

@@ -23,6 +23,7 @@ console.clear();
 console.log("> Starting CSV Export");
 
 load(__DIR__ + "lib/CSV.exportAllTo-cfg.js.LOCAL");
+load(__DIR__ + "lib/devdocslib.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
 
 var propertiesList = [];
@@ -81,7 +82,7 @@ if (theView) {
     $(theView).find().not("relationship").each(function(e) {
 
         var theConcept = e.concept;
-        try {
+        // try {
 
             if (e.name!="") {
 
@@ -148,10 +149,10 @@ if (theView) {
                     console.log("Duplicate Concept: ",theConcept.name);
                 }
             }
-        }
-        catch (error) {
-            console.log("> Ignoring: "+e);
-        }
+        // }
+        // catch (error) {
+        //     console.log("> Ignoring: "+e);
+        // }
     });
 
     // Open a dialog to let the user choose where to save the generated file

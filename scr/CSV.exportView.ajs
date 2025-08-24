@@ -68,12 +68,13 @@ var typeMappingsElementos = {
     "application-component":"SIS",
     "application-interface":"API",
     "application-service":"SVC",
+    "application-function":"SVC",
     "assessment":"Eval",
     "business-actor":"Actor",
     "business-collaboration":"Colab",
     "business-function":"Unidad",
     "business-object":"Dato",
-    "business-process":"PROC",
+    "business-process":"Proc",
     "business-role":"Rol",
     "business-service":"Servicio",
     "capability":"Cap",
@@ -83,7 +84,7 @@ var typeMappingsElementos = {
     "plateau":"EST",
     "stakeholder":"Interesado",
     "value-stream":"Valor",
-    "work-package":"TRAB"    
+    "work-package":"Trabj"    
 }
 
 // variables de configuración

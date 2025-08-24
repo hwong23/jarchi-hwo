@@ -14,6 +14,7 @@
  * Version 2.3: Added UTF-8 BOM to (hopefully) fix Excel export
  * Version 2.4: Added support for relationship properties export (by @isalew)
  * Version 2.4.1: Variables de configuración
+ * Version 2.4.2: typeMappingsElementos
  *
  * (c) 2018 Steven Mileham
  *
@@ -66,6 +67,28 @@ const typeMappings = {
     "aggregation-relationship":"Aggregates"
 }
 
+var typeMappingsElementos = {
+    "application-component":"SIS",
+    "application-interface":"API",
+    "application-service":"SVC",
+    "application-function":"SVC",
+    "assessment":"Eval",
+    "business-actor":"Actor",
+    "business-collaboration":"Colab",
+    "business-function":"Unidad",
+    "business-object":"Dato",
+    "business-process":"Proc",
+    "business-role":"Rol",
+    "business-service":"Servicio",
+    "capability":"Cap",
+    "constraint":"Restric",
+    "course-of-action":"Iniciativa",
+    "data-object":"Dato",
+    "plateau":"EST",
+    "stakeholder":"Interesado",
+    "value-stream":"Valor",
+    "work-package":"Trabj"    
+}
 
 // variables de configuración
 var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
@@ -116,7 +139,7 @@ else {
                     theObject["Name"]=theConcept.name;
                     theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
                     theObject["UID"]=theConcept.id;
-                    theObject["Type"]=theConcept.type;
+                    theObject["Type"]=!typeMappingsElementos[theConcept.type]? theConcept.type: typeMappingsElementos[theConcept.type];
                     theObject["Specialization"]=theConcept.specialization;
 
                     // Valores de las propiedades (prop)
@@ -139,11 +162,11 @@ else {
                         let theRelationshipRow = new Object;
                         theRelationshipRow["Relationship ID"]=r.id;
                         theRelationshipRow["From Name"]=r.source.name;
-                        theRelationshipRow["From Type"]=r.source.type;
+                        theRelationshipRow["From Type"]=!typeMappingsElementos[r.source.type]? r.source.type: typeMappingsElementos[r.source.type];
                         theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
                         theRelationshipRow["Specialization"]=r.specialization;
                         theRelationshipRow["To Name"]=r.target.name;
-                        theRelationshipRow["To Type"]=r.target.type;
+                        theRelationshipRow["To Type"]=!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type];
                         theRelationshipRow["Relationship Name"]=r.name;
                         theRelationshipRow["Relationship Documentation"]=r.documentation;
 

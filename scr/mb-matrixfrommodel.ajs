@@ -122,7 +122,7 @@ function fillRows(sheet,headers,rowType,cellSeparator)
         for (var j = 0;j< relations.length;j++)
         {
             if ( 
-              ( (relations[j].source.id == e.id) &&  (relations[j].target.id == headers[i].id)) ) 
+              ( (relations[j].source.id == e.id) && (relations[j].target.id == headers[i].id)) ) 
             {
                 cellText = 
                   !typeMappingsRelaciones[relations[j].type]? relations[j].type: typeMappingsRelaciones[relations[j].type] +

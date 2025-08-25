@@ -93,7 +93,11 @@ function fillColumns(sheet,columnType,rowType)
     var legend = {name:rowType + "/" + columnType};
     var headers = [legend];
 
-    $(columnType).forEach(function(e) {
+    var theView = $(selection).filter("archimate-diagram-model").first();
+    debug? console.log(theView):true;
+
+    $(theView).find(columnType).forEach(function(e) {
+    // $(columnType).forEach(function(e) {
         headers.push(e);
         });
 
@@ -111,10 +115,15 @@ function fillRows(sheet,headers,rowType,cellSeparator)
 // cellSeparator: characters used to separate relationships in cell
 {
   var current_row = 1;
-  $(rowType).forEach(function(e)
-  {
 
+  var theView = $(selection).filter("archimate-diagram-model").first();
+  debug? console.log(theView):true;
+
+  $(theView).find(rowType).forEach(function(e)
+  // $(rowType).forEach(function(e)
+  {
       sheet.set(0, 0, current_row, e.name);
+
       relations = $(e).rels();
       for(var i = 1; i < headers.length; i++)
       {

@@ -58,7 +58,8 @@ var typeMappingsRelaciones = {
 function saveSheet(sheet,outputFilename)
 {
 // TODO add error checking
-console.clear;
+console.show();
+console.clear();
 console.log ("save the sheet in an excel file "+outputFilename);
 sheet.generate(outputFilename);
 }

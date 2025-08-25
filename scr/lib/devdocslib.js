@@ -1,28 +1,64 @@
 // HWO
 /*
-   Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
+  Sourced: https://gist.github.com/rich-biker/9a3c86c5a576ce0d8639856f3ee81651
 
-   Script: Documentation Generation
-   Purpose: To generate output based on a driving view
+  Script: Documentation Generation
+  Purpose: To generate output based on a driving view
 
-   Author: Richard Heward - Tame Blue Lion Ltd
+  Author: Richard Heward - Tame Blue Lion Ltd
 
-   This generates a markdown file with the embedded images and text based upon a driving view in Archi of groups that trigger each other and embedded views. 	See my blog for a more detailed explaination. https://www.tamebluelion.co.uk/blog/archi-documentation
+  This generates a markdown file with the embedded images and text based upon a driving view in Archi of groups that trigger each other and embedded views. 	See my blog for a more detailed explaination. https://www.tamebluelion.co.uk/blog/archi-documentation
 
-   Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
-   Setting
-   Note - markdown can be converted to PDF / Word Docs or anything. I've used pandoc command line to do this.
+  Setting embed to false will have the images saved to file and references placed in the document. It's then up to your markdown engine. This isn't that well tested.
+  Setting
+  Note - markdown can be converted to PDF / Word Docs or anything. I've used pandoc command line to do this.
 
    
-*  Version 4.3: Funciones de librería devdoc
- *
- *  (c) 2018 Steven Mileham, HWO
- *
+* Version 4.3: Funciones de librería devdoc
+* Version 4.4: typeMappingsElementos
+* (c) 2018 Steven Mileham, HWO
+*
  
 */
 
 var devdoc_debug = false;
 
+// documentación de Archimate
+var devdoc_typeMappingsRelaciones = {
+    "access-relationship":"Accesses",
+    "composition-relationship":"Comprises",
+    "flow-relationship":"Flows",
+    "realization-relationship":"Realises",
+    "assignment-relationship":"Assigned",
+    "serving-relationship":"Serves/Used",
+    "association-relationship":"Associated",
+    "aggregation-relationship":"Aggregates",
+    "influence-relationship":"Influence",
+    "specialization-relationship":"Specialize"
+}
+
+var devdoc_typeMappingsElementos = {
+    "application-component":"SIS",
+    "application-interface":"API",
+    "application-service":"SVC",
+    "application-function":"SVC",
+    "assessment":"Eval",
+    "business-actor":"Actor",
+    "business-collaboration":"Colab",
+    "business-function":"Unidad",
+    "business-object":"Dato",
+    "business-process":"Proc",
+    "business-role":"Rol",
+    "business-service":"Servicio",
+    "capability":"Cap",
+    "constraint":"Restric",
+    "course-of-action":"Iniciativa",
+    "data-object":"Dato",
+    "plateau":"EST",
+    "stakeholder":"Interesado",
+    "value-stream":"Valor",
+    "work-package":"Trabj"    
+}
 
 // Below is a hashtable of settings which define what to include in each section of the document (group). If not overridden by a group, these settings will apply to the entire document generated from a driving view.
 // A property of the same name of the settings below on the driving view or a group, will override this value for anything nested under that section of the document, unless overridden again.

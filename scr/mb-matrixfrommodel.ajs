@@ -11,6 +11,22 @@
 load(__DIR__ + "lib/jszip-101.js");
 load(__DIR__ + "lib/myexcel.js");
 load(__DIR__ + "lib/mb-matrixfrommodel.js.LOCAL");
+load(__DIR__ + "lib/devdocslib.js");
+
+debug = false;
+
+var typeMappingsRelaciones = {
+  "access-relationship":"AC",
+  "composition-relationship":"CO",
+  "flow-relationship":"F",
+  "realization-relationship":"R",
+  "assignment-relationship":"AG",
+  "serving-relationship":"SV",
+  "association-relationship":"AS",
+  "aggregation-relationship":"AG",
+  "influence-relationship":"I",
+  "specialization-relationship":"S"
+}
 
 
 // example
@@ -42,6 +58,7 @@ load(__DIR__ + "lib/mb-matrixfrommodel.js.LOCAL");
 function saveSheet(sheet,outputFilename)
 {
 // TODO add error checking
+console.clear;
 console.log ("save the sheet in an excel file "+outputFilename);
 sheet.generate(outputFilename);
 }
@@ -103,11 +120,14 @@ function fillRows(sheet,headers,rowType,cellSeparator)
         cellText = "";
         for (var j = 0;j< relations.length;j++)
         {
-            if( ( (relations[j].source.id == e.id) &&  (relations[j].target.id == headers[i].id))
-
-                )
+            if ( 
+              ( (relations[j].source.id == e.id) &&  (relations[j].target.id == headers[i].id)) ) 
             {
-                cellText = relations[j].type + cellSeparator + cellText
+                cellText = 
+                  !typeMappingsRelaciones[relations[j].type]? relations[j].type: typeMappingsRelaciones[relations[j].type] +
+                  cellSeparator + cellText;
+
+                (debug)? console.log ("rel: ", relations[j].type, typeMappingsRelaciones[relations[j].type]):true;
             }
         }
         sheet.set(0,i,current_row,cellText);

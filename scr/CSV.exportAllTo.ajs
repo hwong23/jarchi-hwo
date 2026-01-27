@@ -98,16 +98,17 @@ var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
 var userPath = cfg_mdOptions.userPath
 var debug = cfg_mdOptions.debug;
 var noEnter = cfg_mdOptions.noEnter;
-
+var estad = 0
 
 $('view').each(function(theView) {
     debug? console.log('debug', theView):true;
     
     var theData = new Array();
     var theRelationshipData = new Array();
-
+    
     if (theView) {
-
+        estad++;
+        
         // Loop through all elements and set cells to elememt info
         $(theView).find().not("relationship").each(function(e) {
 
@@ -213,8 +214,10 @@ $('view').each(function(theView) {
         else {
             console.log("> Export cancelled");
         }
-    }
+    } // the view
     else { //if (theView) {
         console.log("> Please Select a View");
     }
 });
+
+console.log ("> Processed Views: "+estad);

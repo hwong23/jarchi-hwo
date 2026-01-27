@@ -4,11 +4,11 @@ deploy:
   rutareport: /github/workspace/contd/report
 
 mdextraer:
-  rutamodelo: /github/workspace/main
-  rutaprg: /github/workspace/jarchi-hwo/scr
-  rutaMacMD: /github/workspace/main/contd
-  rutareport: /github/workspace/main/contd/report
-  devdocalias:  si-situacionactual
+  rutamodelo: $HOME/git/model-repository/fna-contenidos
+  rutaprg: $HOME/git/jarchi-hwo/scr
+  rutaMacMD: $HOME/git/devdocs/devocs-contd/contd
+  rutareport: $HOME/git/devdocs/devocs-contd/contd/report
+  devdocalias: conctec
   rutaCompleta: no
 
 mddocx:

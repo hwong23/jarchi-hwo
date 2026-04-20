@@ -37,7 +37,7 @@ load(__DIR__ + "lib/devdocslib.js");
 load(__DIR__ + "lib/mustachetemplate.js");
 
 
-var debug = false;
+var debug = true;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
@@ -224,7 +224,7 @@ else {
                 elementDocumentationMarkdown: ''
             });
 
-            debug? console.log('   '+e.name+":"+e):true;
+            debug? console.log('   '+e.name):true;
 
             if ($(e).children().length>0) {
                 d++;

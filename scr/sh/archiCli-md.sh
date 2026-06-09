@@ -5,7 +5,7 @@
 
 
 # $1: ruta archivo zconfig.yml
-# $2: transformador Tx-MD
+# $2: transformador Tx-MD [dd | solo]
 # $3: entrada de configuración
 
 entradaextraccion=mdextraer

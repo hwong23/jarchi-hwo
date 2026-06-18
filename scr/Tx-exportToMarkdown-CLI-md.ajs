@@ -34,7 +34,7 @@ load(__DIR__ + "lib/myargs.js");
 load(__DIR__ + "lib/devdocslib.js");
 
 
-var debug = false;
+var debug = true;
 var embed = false;
 var tocMap = [];
 var bodyMap = [];
@@ -59,8 +59,9 @@ devdoc::documentación de los elementos de una vista
  Requiere: 
  */
 function nestedDocumentation_elements(d, view, inclusionsettings = null) {
-    debug? console.log('Elementos: '):true;
+    debug? console.log('IncludeViewElements:', drivingViewInclusionSettings["(IncludeViewElements"]):true;
 
+    // (drivingViewInclusionSettings["(IncludeViewElements"]===true) && 
     $(view).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes("doc")? true:false): false)
@@ -101,9 +102,10 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null) {
                 if (r.text) {
                     g_theDocument+="\n> "+devdoc_escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
                 }
+                debug? console.log('Relc: ', r.text):true;
             });
         
-            debug? console.log('   '+e.name+":"+e):true;
+            debug? console.log('   ', e.name+":"+e):true;
             
             // el elemento es contenedor
             if ($(e).children().length>0) {
@@ -141,7 +143,8 @@ if (g_drivingView) {
     g_path = archivoruta.path
     console.log("path: ", g_path);
     console.log("fileName: ", g_fileName);
-    (debug)?console.log('exportFile: '+exportFile):true;
+    debug?console.log('fileName: ', g_path, g_fileName):true;
+
 
     
     // configuración de presentación de la vista seleccionada
@@ -157,7 +160,7 @@ if (g_drivingView) {
     g_theDocument+="\n## Introducción\n";                   // intro
     imageReferencia =                                       // imagen
         g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
-    if (drivingViewInclusionSettings.IncludeViewElements) {
+    if (drivingViewInclusionSettings.IncludeDiagram) {
         if (embed==true){
             var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
             g_theDocument+="\n!["+g_drivingView.name+"](data:image/png;base64,"+bytes+")\n";
@@ -184,7 +187,7 @@ if (g_drivingView) {
     })
     
 
-    // llena la colección de elemntos elements[]
+    // llena la colección de elemntos: elements[]
     nestedDocumentation_elements(0, g_drivingView, drivingViewInclusionSettings);
 
     

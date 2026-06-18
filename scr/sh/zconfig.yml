@@ -4,11 +4,11 @@ deploy:
   rutareport: /github/workspace/contd/report
 
 mdextraer:
-  rutamodelo: /github/workspace/main
-  rutaprg: /github/workspace/jarchi-hwo/scr
-  rutaMacMD: /github/workspace/main/contd
-  rutareport: /github/workspace/main/contd/report
-  devdocalias:  si-situacionactual
+  rutamodelo: $HOME/gh//models/icetex-ae
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaMacMD: $HOME/gh/devdocs/devocs-contd/contd
+  rutareport: $HOME/gh/devdocs/devocs-contd/contd/report
+  devdocalias: orcl.implementacion
   rutaCompleta: no
 
 mddocx:

@@ -7,6 +7,8 @@
 # $1: ruta archivo zconfig.yml
 # $2: transformador Tx-MD [dd | solo]
 # $3: entrada de configuración
+# $4: alias de la vista documental (opcional). Si es "alias" o no se provee, se usa el valor desde zconfig.yml
+
 
 entradaextraccion=mdextraer
 
@@ -16,6 +18,7 @@ entradaextraccion=mdextraer
     echo '$1': ruta archivo zconfig.yml
     echo '$2': transformador Tx-MD
     echo '$3': entrada de configuración
+    echo '$4': alias de la vista documental *opcional*
 
     exit 1
   fi
@@ -35,7 +38,10 @@ rutamodelo=$(varvalue config_ $entradaextraccion _rutamodelo)
 rutaprg=$(varvalue config_ $entradaextraccion _rutaprg)
 prg=$(echo $(varvalue config_ $3 _expportprg_$2))
 # prg=$([ $2 == "-" ] && echo $(varvalue config_ $entradaextraccion _expportprg) || echo $2)
-vistadoc=$(varvalue config_ $entradaextraccion _devdocalias)
+# vistadoc=$(varvalue config_ $entradaextraccion _devdocalias)
+# Nuevo: aliasParam toma $4 o "alias" por defecto
+aliasParam=${4:-alias}
+vistadoc=$([ "$aliasParam" != "alias" ] && echo "$aliasParam" || echo $(varvalue config_ $entradaextraccion _devdocalias))
 rutaMacMD=$(varvalue config_ $entradaextraccion _rutaMacMD)/$3
 rutaCompleta=$([ -z "$5"  ] && echo $(varvalue config_ $entradaextraccion _rutaCompleta) || echo $5)
 
@@ -78,4 +84,5 @@ fi
    -vistaDocumental $vistadoc \
    -rutaMacMD $RUTACONTD \
    -rutaCompleta $rutaCompleta
+
 

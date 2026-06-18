@@ -1,8 +1,9 @@
 .PHONY: help mddocx mdpdf mdtex mdppt
 .DEFAULT_GOAL := help
 
-# param alias := nombre vista documental (archi.property alias)
-# tx := programa transformador (.ajs)
+# Versiones:
+#    tx := programa transformador (.ajs)
+#    Parámetro `alias` pasado por línea de comandos. Valor por defecto "alias".
 
 # TODO import doc; read md file
 # documento
@@ -13,24 +14,28 @@
 # borrador
 
 
+# Parámetro `alias` pasado por línea de comandos
+alias ?= alias
+
+
 
 mddocx:
-	(bash archiCli-md.sh . $(tx) mddocx)
+	(bash archiCli-md.sh . $(tx) mddocx $(alias))
 
 mdpdf:
-	(bash archiCli-md.sh . $(tx) mdpdf)
+	(bash archiCli-md.sh . $(tx) mdpdf $(alias))
 
 mdtex:
-	(bash archiCli-md.sh . $(tx) mdtex)
+	(bash archiCli-md.sh . $(tx) mdtex $(alias))
 
 mdppt:
-	(bash archiCli-md.sh . $(tx) mdppt)
+	(bash archiCli-md.sh . $(tx) mdppt $(alias))
 
 mdhtml:
-	(bash archiCli-md.sh . $(tx) mdhtml)
+	(bash archiCli-md.sh . $(tx) mdhtml $(alias))
 
 reporthtml:
-	(bash archiCli-html.sh . $(tx) report)
+	(bash archiCli-html.sh . $(tx) report $(alias))
 
 
 help:

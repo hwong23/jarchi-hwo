@@ -451,3 +451,31 @@ function devdoc_exportaImagen (vv, pth) {
     // return _.escape(vv.name);
     return vv.name;
 }
+
+// Ruta de trabajo, nombre de archivo
+function devdoc_rutaTrabajo(vista, rutaMacMD = null) {
+    // nombre de documento dado por propiedad del modelo
+    var r = __DIR__.split("\/");
+    var rutaTrabajo = {};
+
+    // nombre del archivo de trabajo (salida)
+    var devdoc = vista.prop("devdoc")? 
+        vista.prop("devdoc"):
+        vista.name.replaceAll(" ", "")+'.md';
+
+    // (sobrescribe) ruta de trabajo dado por argumento CLI
+    var path = rutaMacMD? 
+        // '/'+r[1]+'/'+r[2]+rutaMacMD+'/':
+        // '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+        rutaMacMD+'/':
+        '/'+r[1]+'/'+r[2]+vista.prop("rutaMacMD")+'/';
+    var fileName = path+devdoc;
+
+
+    return {
+        'filename' : fileName,
+        'path' : path,
+        'devdoc' : devdoc
+    };
+}
+

@@ -103,7 +103,19 @@ var nonViewFolders = allFolders.not(viewsFolder).not(viewFolders);
 
 var folders = selection.filter("folder").not(nonViewFolders);
 
-var gDebug = true;
+var debug = true;
+
+
+// Argumentos de entrada por CLI (reemplazo centralizado)
+var argRutaSalida = myargs_getArgumento("rutaMacMD");
+var argVistaDocumental = myargs_getArgumento("vistaDocumental");
+var argRutaCompleta = myargs_getArgumento("rutaCompleta");
+
+console.log("Entradas: ");
+console.log("   theRutaMacMD: " + argRutaSalida);
+console.log("   vistaDocumental: " + argVistaDocumental);
+console.log("   rutaCompleta: " + argRutaCompleta);
+
 
 
 // 1. selección de carpeta de vistas
@@ -112,21 +124,20 @@ if(! folders.size()) {
   console.log("All views have been selected.");
 }
 
+
+var g_drivingView = devdoc_useDrivingView(argVistaDocumental);
+
+
 // var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
 // 2. ruta+nombre archivo con base en propiedad del modelo
-var r = __DIR__.split("\/");
-var g_path = argRutaMacMD ? '/'+r[1]+'/'+r[2]+argRutaMacMD+'/': 
-   model.prop("rutaMacMD") ? model.prop("rutaMacMD"):
-   '/Downloads/tmpr/prymd/';
-var g_filePath = g_path + 
-  (model.prop("devdoc")? model.prop("devdoc"):
-  model.name + ".md");
-console.log ("Exportado a: " + g_filePath)
+var archivoruta = devdoc_rutaTrabajo(g_drivingView, argRutaSalida);
+g_drivingView_devdoc = archivoruta.devdoc;
+g_fileName = archivoruta.filename;
+g_path = archivoruta.path
+console.log("path: ", g_path);
+console.log("fileName: ", g_fileName);
+debug?console.log('fileName: ', g_path, g_fileName):true;
 
-if(!g_filePath) {
-  console.log('User cancelled.');
-  exit();
-}
 
 // 3. recorre las vistas dentro de la carpeta
 _.chain(folders).sortBy(function(f) { return f.name; }).each(function(f) {
@@ -170,12 +181,13 @@ function exportViews(folder) {
       readFully(__DIR__ + 'templates/' + (v.prop('plantilla') ? v.prop('plantilla'):'documentation-md-dv') + '.tpl', 'UTF-8'));
     elemtPlantillaActual = v.prop('plantillaElm') ? v.prop('plantillaElm'):'elementtabla-md,element-md';
     cambioPlnt = !(elemtPlantillaActual === elemtPlantilla);
-    var inclusionSettings = devdoc_getGroupInclusionSettings(v, DefaultInclusionSettings);
+    // Get inclusion settings; fall back to DefaultInclusionSettings if the helper returns null
+    var inclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings) || DefaultInclusionSettings;
     
     if (cambioPlnt) {
       elemtPlantilla = elemtPlantillaActual;
-      (gDebug) ? console.log ('elemtPlantilla: ' + __DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl'):0;
-      (gDebug) ? console.log ('elemtPlantilla: ' + __DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl'):0;
+      (debug) ? console.log ('elemtPlantilla: ' + __DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl'):0;
+      (debug) ? console.log ('elemtPlantilla: ' + __DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl'):0;
       tplElement = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[0] + '.tpl', 'UTF-8'));
       tplElementFila = _.template(readFully(__DIR__ + 'templates/' + elemtPlantilla.split(',')[1] + '.tpl','UTF-8'));
     }
@@ -245,7 +257,7 @@ function exportViews(folder) {
       relaciones: relaciones
     });
 
-    (gDebug) ? console.log ('nombrevista: ' + nombrevista):0;
+    (debug) ? console.log ('nombrevista: ' + nombrevista):0;
   }); // chain
 }
 
@@ -277,7 +289,14 @@ var mainReport = tplMainReport({
 	treeMargin: '1.3em'
 });
 
-(gDebug) ? console.log('Export iniciado.'):0;
-$.fs.writeFile(g_filePath, mainReport, 'UTF-8');
+(debug) ? console.log('Export iniciado.'):0;
+$.fs.writeFile(g_filename, mainReport, 'UTF-8');
 
 console.log('Export terminated.');
+
+// // Export/Exponer para que otros scripts puedan acceder mediante load()
+// var exportSingleArgs = {
+//     rutaSalida: argRutaSalida,
+//     vistaDocumental: argVistaDocumental,
+//     rutaCompleta: argRutaCompleta
+// };

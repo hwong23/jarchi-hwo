@@ -143,8 +143,6 @@ if (g_drivingView) {
     g_path = archivoruta.path
     console.log("path: ", g_path);
     console.log("fileName: ", g_fileName);
-    debug?console.log('fileName: ', g_path, g_fileName):true;
-
 
     
     // configuración de presentación de la vista seleccionada

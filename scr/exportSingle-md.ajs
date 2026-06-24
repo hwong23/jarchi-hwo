@@ -42,10 +42,10 @@
 //           2) subcarpeta interna 'images'
 
 
-load(__DIR__ + 'libs/nashorn-polyfills.js');
-load(__DIR__ + 'libs/underscore-min.js');
-load(__DIR__ + 'libs/marked.min.js');
-load(__DIR__ + 'lib/devdocslib.js');
+load(__DIR__ + "lib/myargs.js");
+load(__DIR__ + "lib/devdocslib.js");
+load(__DIR__ + "lib/mustachetemplate.js");
+
 
 console.show();
 console.clear();
@@ -79,9 +79,9 @@ var icon = readFully(__DIR__ + 'resources/icon.css', 'UTF-8');
 var picnic = readFully(__DIR__ + 'resources/picnic-custom.css', 'UTF-8');
 
 var tplDocumentation;
-var tplMainReport = _.template(readFully(__DIR__ + 'templates/singled/newmain-report-md.tpl', 'UTF-8'));
-var tplViewTitle = _.template(readFully(__DIR__ + 'templates/singled/view-title-md.tpl', 'UTF-8'));
-var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/singled/view-diagram-md.tpl', 'UTF-8'));
+var tplMainReport = _.template(readFully(__DIR__ + 'templates/singlemd/newmain-report-md.tpl', 'UTF-8'));
+var tplViewTitle = _.template(readFully(__DIR__ + 'templates/singlemd/view-title-md.tpl', 'UTF-8'));
+var tplViewDiagram = _.template(readFully(__DIR__ + 'templates/singlemd/view-diagram-md.tpl', 'UTF-8'));
 var tplElement = function() {};
 var tplElementFila = function() {};
 var tplRelationship = _.template(readFully(__DIR__ + 'templates/relationship.tpl', 'UTF-8'));

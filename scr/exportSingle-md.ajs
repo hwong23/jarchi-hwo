@@ -105,6 +105,18 @@ var folders = selection.filter("folder").not(nonViewFolders);
 
 var debug = true;
 
+var g_Sections = [];
+var g_outInfo = "";     // colecciona documentación de las vistas
+var g_docGen = "";      // contenido documento completo
+var g_path = "";
+var g_fileName = "";
+var g_drivingView_devdoc = "";          // nombre de documento dado por propiedad del modelo
+var g_drivingView = null;               // will be set to the selected view that has all the groups and view references on
+
+var g_viewsIdsByConceptId = {};
+var g_drivingViewInclusionSettings;     // configuración de la vista documental (dd)
+
+
 
 // Argumentos de entrada por CLI (reemplazo centralizado)
 var argRutaSalida = myargs_getArgumento("rutaMacMD");
@@ -128,15 +140,14 @@ if(! folders.size()) {
 var g_drivingView = devdoc_useDrivingView(argVistaDocumental);
 
 
-// var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
 // 2. ruta+nombre archivo con base en propiedad del modelo
+// var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
 var archivoruta = devdoc_rutaTrabajo(g_drivingView, argRutaSalida);
 g_drivingView_devdoc = archivoruta.devdoc;
 g_fileName = archivoruta.filename;
 g_path = archivoruta.path
 console.log("path: ", g_path);
 console.log("fileName: ", g_fileName);
-debug?console.log('fileName: ', g_path, g_fileName):true;
 
 
 // 3. recorre las vistas dentro de la carpeta
@@ -155,6 +166,46 @@ function exportaImagen (vv, pth) {
   // return _.escape(vv.name);
   return vv.name;
 }
+
+// 4. escribe documento MD
+var mainReport = tplMainReport({
+  roboto: roboto,
+  icon: icon,
+  picnic: picnic,
+  modelTitle: _.escape(model.name),
+  visibilityRulesBold: visibilityRulesBold,
+  visibilityRulesReveal: visibilityRulesReveal,
+  inputCheckbox: inputCheckbox,
+  treeContent: treeContent,
+  viewTitles: viewTitles,
+  viewDiagrams: viewDiagrams,
+  modelPurposeText: _.escape(model.purpose).replace(/\n/g, '<br>'),
+  modelPurposeMarkdown: marked(_.escape(model.purpose), mdOptions),
+  viewDocumentations: viewDocumentations,
+	headerHeight: '60px',
+	headerBgColor: '#0074D9',
+	headerColor: '#fff',
+	mainBgColor: '#fff',
+	mainColor: '#000',
+	mainMargin: '20px',
+	mainHeaderMargin: '35px',
+	mainHeaderBgColor: '#eceff1',
+	mainHeaderColor: '#546e7a',
+	treeMargin: '1.3em'
+});
+
+(debug) ? console.log('Export iniciado.'):0;
+$.fs.writeFile(g_fileName, mainReport, 'UTF-8');
+
+console.log('Export terminated.');
+
+// // Export/Exponer para que otros scripts puedan acceder mediante load()
+// var exportSingleArgs = {
+//     rutaSalida: argRutaSalida,
+//     vistaDocumental: argVistaDocumental,
+//     rutaCompleta: argRutaCompleta
+// };
+
 
 function exportViews(folder) {
   console.log('Exporting folder ', folder.name);
@@ -263,49 +314,10 @@ function exportViews(folder) {
       documentationText: _.escape(v.documentation),  //.replace(/\n/g, '<br>'),
       documentationMarkdown: marked(_.escape(v.documentation), mdOptions),
       elements: viewElements,
-      relaciones: relaciones
+      relaciones: relaciones,
+      texelements: "",
     });
 
     (debug) ? console.log ('nombrevista: ' + nombrevista):0;
   }); // chain
 }
-
-
-// 4. escribe documento MD
-var mainReport = tplMainReport({
-  roboto: roboto,
-  icon: icon,
-  picnic: picnic,
-  modelTitle: _.escape(model.name),
-  visibilityRulesBold: visibilityRulesBold,
-  visibilityRulesReveal: visibilityRulesReveal,
-  inputCheckbox: inputCheckbox,
-  treeContent: treeContent,
-  viewTitles: viewTitles,
-  viewDiagrams: viewDiagrams,
-  modelPurposeText: _.escape(model.purpose).replace(/\n/g, '<br>'),
-  modelPurposeMarkdown: marked(_.escape(model.purpose), mdOptions),
-  viewDocumentations: viewDocumentations,
-	headerHeight: '60px',
-	headerBgColor: '#0074D9',
-	headerColor: '#fff',
-	mainBgColor: '#fff',
-	mainColor: '#000',
-	mainMargin: '20px',
-	mainHeaderMargin: '35px',
-	mainHeaderBgColor: '#eceff1',
-	mainHeaderColor: '#546e7a',
-	treeMargin: '1.3em'
-});
-
-(debug) ? console.log('Export iniciado.'):0;
-$.fs.writeFile(g_filename, mainReport, 'UTF-8');
-
-console.log('Export terminated.');
-
-// // Export/Exponer para que otros scripts puedan acceder mediante load()
-// var exportSingleArgs = {
-//     rutaSalida: argRutaSalida,
-//     vistaDocumental: argVistaDocumental,
-//     rutaCompleta: argRutaCompleta
-// };

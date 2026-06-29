@@ -1,9 +1,43 @@
 /*
+ExportToVisJs.ajs
  * View export as Vis.js 
  * Author: Nicolas Figay 2021
  * Version: 0.1
  * This script creates a vis.js graph
+
+
+Descripción:
+  Exporta una vista seleccionada de Archi como un reporte visual en formato HTML
+  potenciado por la librería vis.js. 
+  
+  Para la vista seleccionada realiza las siguientes acciones:
+  - Procesa y genera (renderiza --representa y exporta) la vista como PNG y ofrece guardarla en disco.
+  - Genera un archivo HTML que incluye la imagen de la vista y dos redes vis.js.
+  - Crea nodos para los elementos de la vista (entidades, relaciones y la propia vista),
+    y crea aristas que representan las relaciones entre elementos, además de nodos/roles
+    intermedios para modelar relaciones.
+  - Añade metadatos a nodos y aristas (tipo EH4I_Type, títulos, labels) y configura
+    vistas filtradas (DataView) y clustering en vis.Network.
+
+  Propósito:
+  Facilitar la visualización y exploración interactiva de un diagrama Archi fuera de la
+  aplicación, permitiendo inspeccionar elementos y relaciones mediante un HTML autónomo
+  que combina la imagen del diagrama con una representación en grafo (vis.js).
+
+  Cómo usarlo:
+  1. Abrir Archi y seleccionar una o varias vistas (diagramas) en el modelo.
+  2. Ejecutar este script .ajs.
+  3. Elegir la ubicación para guardar:
+     - un archivo .png con la imagen de la vista
+     - un archivo .html con el reporte interactivo
+
+  Ejemplo de entrada:
+  - Selección en Archi: una vista llamada "Application Overview"
+  - Resultado esperado:
+    - Application Overview.png
+    - Application Overview.html
 */
+
 
 var ArchiMateRelationArcs =
 ["arrows:{to:    {enabled:false,type:'arrow'},\

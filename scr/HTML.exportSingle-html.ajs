@@ -34,6 +34,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 load(__DIR__ + 'libs/nashorn-polyfills.js');
+load(__DIR__ + "lib/mustachetemplate.js");
 load(__DIR__ + 'libs/underscore-min.js');
 load(__DIR__ + 'libs/marked.min.js');
 

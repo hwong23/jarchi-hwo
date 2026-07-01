@@ -169,6 +169,8 @@ var theTOC = "* [Introduction](#introduction)";
 
 var theView = $(selection).filter("archimate-diagram-model").first();
 
+
+// Rutina principal
 if (theView) {
 
     theDocument+="# "+theView.name+"\n";

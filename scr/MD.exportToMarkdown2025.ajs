@@ -24,6 +24,11 @@
  * Version 4: Added support to include "hidden" relationships
  * Version 5: Added support for "Layering"
  * Version 6: Added support for external Gemini AI script - https://gist.github.com/smileham/8cbb3116db7f0ee80bcab4f1a57d14a8
+ * Version 6.1: Include "Used in Views" as option, Replaced Options Screen, Enable multiple exports.
+ * Version 6.2: Fix for "Junction" components
+ * Version 6.2.1: Include "UID" against components.
+ * Version 6.2.2: Include "UID" for relationships.
+ * Verison 6.3: Added option to make TOC optional.
  * 
  * (c) 2025 Steven Mileham
  *
@@ -43,17 +48,48 @@ const applicationLayer = {"label":"Application", "components":["application-comp
 const technologyLayer = {"label":"Technology", "components":["node","device", "system-software", "technology-collaboration", "technology-interface","path", "communication-network", "technology-function", "technology-process", "technology-interaction", "technology-event", "technology-service", "equipment", "facility","location", "distribution-network", "material"]};
 const layers = [migrationLayer,strategyLayer,motivationLayer,businessLayer,dataLayer, applicationLayer, technologyLayer];
 
+function listSelection(title, choices) {
+    var ListSelectionDialog = Java.type("org.eclipse.ui.dialogs.ListSelectionDialog");
+    var LabelProvider = Java.type('org.eclipse.jface.viewers.LabelProvider');
+    var ArrayContentProvider = Java.type('org.eclipse.jface.viewers.ArrayContentProvider');
+    var dialog = new ListSelectionDialog(shell, choices, ArrayContentProvider.getInstance(),
+        new LabelProvider(), title);
+
+    dialog.open();
+    result = dialog.getResult();
+    return result ? new String(result) : null;
+}
+
 function executeMarkdownScript() {
-    const embed = window.confirm("Do you want to embed the view image directly in the Markdown file?\n\n(Click 'OK' for Yes, 'Cancel' for No to link it as a separate file)");
-    const includeHiddenRelationships = window.confirm("Do you want to include relationships that are hidden on the diagram?\n\n(Click 'OK' for Yes, 'Cancel' for No)");
-    const layered = window.confirm("Do you want to generate a Layered Architecture Document?\n\n(Click 'OK' for Yes, 'Cancel' for No)");
+    let theOptions =["Include TOC","Embed Image in Markdown", "Generate Layered Document", "Include Hidden Relationships", "Include Component View List", "Include UID for Components"];
+
     const theViews = $(selection).filter("archimate-diagram-model");
+    
 
     if (!theViews || theViews.length==0) {
         console.log("> Please Select a View");
+        exit();
     }
 
     const multiMode = theViews.length>1;
+    if (multiMode) {
+        theOptions.push("Generate a Single Document from the selected views");
+    }
+
+    const options = listSelection("Options", theOptions);
+    if (options == null) {
+        console.log("Options dialog cancelled. Exiting.");
+        exit();
+    }
+
+    const embed = options.includes("Embed");
+    const layered = options.includes("Layered");
+    const includeHiddenRelationships = options.includes("Hidden");
+    const showViews = options.includes("View");
+    const singleDoc = options.includes("Single");
+    const inclObjUID = options.includes("UID for Components");
+    const inclTOC = options.includes("TOC");
+    let megaDoc = "";
 
     const theIndexMap = new Map();
 
@@ -63,20 +99,49 @@ function executeMarkdownScript() {
 
         theDocument = "";
     
-        let markdownContent = generateMarkdown(theView, includeHiddenRelationships, layered,embed);
-        let theFilename = saveMarkdownToFile(theView, markdownContent,embed);
-
-        if (multiMode) {
-            theIndexMap.set(theView.name,theFilename);
+        let markdownContent = generateMarkdown(theView, includeHiddenRelationships, layered,embed, showViews, inclObjUID, inclTOC);
+        if (!singleDoc) {
+            let theFilename = saveMarkdownToFile(theView, markdownContent,embed);
+            if (multiMode) {
+                theIndexMap.set(theView.name,theFilename);
+            }
         }
+        else {
+            megaDoc += `${markdownContent}\n---\n`;
+        }
+
     });
 
     if (multiMode) {
-        const theIndex = generateIndex(theIndexMap);
-        saveIndexToFile(theIndex);
+        if (singleDoc) {
+            saveIndexToFile(megaDoc);
+        }
+        else {
+            const theIndex = generateIndex(theIndexMap);
+            saveIndexToFile(theIndex);
+        }
     }
 }
 
+function _getPath(theComponent) {
+    var theParent = $(theComponent).parent()[0];
+    if (theParent && theParent.name) {
+        return `${_getPath(theParent)}\\${theComponent.name}`;
+    }
+    else {
+        return theComponent.name;
+    }
+}
+
+function _usedInViews(element) {
+    let viewContent = "**Used In Views**\n\n"
+    let theViews = $(element.concept).viewRefs();
+
+    theViews.each(function (theView) {
+        viewContent += `* ${_getPath(theView)}/${theView.name}\n`;
+    });
+    return viewContent;
+}
 function generateIndex(theIndexMap) {
     theIndexMarkdown = `# ${model.name} Export[^1]\n`;
     theIndexMap.forEach(function (value, key, map) {
@@ -109,7 +174,8 @@ function generateIndexLink(str) {
 }
 
 function generateToc(element, depth, tocMap, tocContentWrapper) {
-    $(element).children().not("relationship").each(function (e) {
+    let theComponents = _sortComponents($(element).children().not("relationship"));
+    theComponents.each(function (e) {
         if (e.name) {
             let headerDepth = "  ".repeat(depth);
             const conceptText = convertToText(`${e.type}`);
@@ -130,12 +196,17 @@ function generateLayeredToc (layers, tocContentWrapper) {
     });
 }
 
-function generatePropertiesTable(element) {
+function generatePropertiesTable(element, inclObjUID) {
     const props = element.prop();
     const sortedProperties = [...props].sort();
 
     let header = "|", line = "|", body = "|";
 
+    if (inclObjUID) {
+        header += "UID|";
+        line += "---|";
+        body += `${element.concept !=null? element.concept.id:element.id}|`;
+    }
     if (element.specialization) {
         header += "Specialization|";
         line += "---|";
@@ -159,7 +230,7 @@ function _contains(element, collection) {
     return response
 }
 
-function _relationshipTable(element, includeHidden, viewRels){
+function _relationshipRow(element, includeHidden, viewRels, inclObjUID){
     let table ="";
     if (includeHidden) {
         hiddenElement = !_contains(element,viewRels);
@@ -169,10 +240,11 @@ function _relationshipTable(element, includeHidden, viewRels){
     }
     if ((includeHidden && hiddenElement) || !hiddenElement) {
         if (element.type !== "diagram-model-connection") {
-            let row = `|${element.source.name}|${convertToText(element.type)}`;
+            let row = `|${element.source.name} (${convertToText(element.source.type)})|${convertToText(element.type)}`;
+            if (inclObjUID) row = `|${element.concept !=null? element.concept.id:element.id}${row}`;           
             if (element.concept.accessType) row += ` (${element.concept.accessType})`;
             if (element.concept.influenceStrength) row += ` (${element.concept.influenceStrength})`;
-            if (element.concept.specialization) row += ` (${element.concept.specialization})`;
+            if (element.concept.specialization) row += ` «${element.concept.specialization}»`;
             row += `${hiddenElement?" (Hidden)":""}|[${_escapeMD(element.target.name)} (${convertToText(element.target.type)})](${generateLink(`${element.target.name} (${convertToText(element.target.type)})`)})|${element.labelValue ? element.labelValue.replaceAll("\\n", " ").replaceAll("\\r", " ") : element.name}|${element.documentation.replaceAll("\n", " ").replaceAll("\r", " ")}|\n`;
             table += row;
         }
@@ -180,8 +252,18 @@ function _relationshipTable(element, includeHidden, viewRels){
     return table
 }
 
-function generateRelationshipsTable(element, includeHidden) {
-    let table = "|From|Relationship|To|Name/Label|Description|\n|---|---|---|---|---|\n";
+function generateRelationshipsTable(element, includeHidden, inclObjUID) {
+    let header = "|From|Relationship|To|Name/Label|Description|";
+    let line = "|---|---|---|---|---|";
+    
+
+    if (inclObjUID) {
+        header = `|UID${header}`;
+        line += "---|";
+    }
+
+    let table = `${header}\n${line}\n`;
+
     if (includeHidden) {
         viewRelationships = $(element).rels();
         allRelationships = $(element.concept).rels();
@@ -190,22 +272,25 @@ function generateRelationshipsTable(element, includeHidden) {
         allRelationships = $(element).rels();
         viewRelationships = allRelationships;
     }
+    //console.log(allRelationships);
     allRelationships.each(function (r) {
-       table+= _relationshipTable(r, includeHidden, viewRelationships);
+       table+= _relationshipRow(r, includeHidden, viewRelationships, inclObjUID);
     });
 
 
     return `**Relationships**\n\n${table}`;
 }
 
-function generateNestedDocumentation(element, depth, bodyMap, documentContentWrapper, includeHiddenRelationships) {
+function generateNestedDocumentation(element, depth, bodyMap, documentContentWrapper, includeHiddenRelationships, showViews, inclObjUID) {
     // console.log(`${element}`);
-    $(element).children("diagram-model-note").each(function (e) {
+    let theNotes = _sortComponents($(element).children("diagram-model-note"));
+    theNotes.each(function (e) {
          if ($(e).rels().length === 0) {
             documentContentWrapper.str += `\n> ${_escapeMD(e.text).replaceAll("\n", "\n> ")}\n`;
          }
     });
-    $(element).children().not("relationship").each(function (e) {
+    let theComponents = _sortComponents($(element).children().not("relationship"));
+    theComponents.each(function (e) {
         // console.log(`CHILD: ${e}`);
         if (e.name) {
             const headerDepth = "#".repeat(depth + 2);
@@ -219,11 +304,15 @@ function generateNestedDocumentation(element, depth, bodyMap, documentContentWra
                 documentContentWrapper.str += `\n${_escapeMD(e.documentation)}\n`;
             }
 
-            if (e.prop().length > 0 || e.specialization) {
-                documentContentWrapper.str += `\n${_escapeMD(generatePropertiesTable(e))}`;
+            if (e.type=='junction') {
+                documentContentWrapper.str += `\nType: ${e.concept.getJunctionType()}\n`;
             }
-            if ($(e).outRels().length > 0) {
-                documentContentWrapper.str += `\n${_escapeMD(generateRelationshipsTable(e, includeHiddenRelationships))}`;
+
+            if (e.prop().length > 0 || e.specialization || inclObjUID) {
+                documentContentWrapper.str += `\n${_escapeMD(generatePropertiesTable(e, inclObjUID))}`;
+            }
+            if ($(e).outRels().length > 0 || ($(e.concept).rels().length > 0 && includeHiddenRelationships) ) {
+                documentContentWrapper.str += `\n${_escapeMD(generateRelationshipsTable(e, includeHiddenRelationships, inclObjUID))}`;
             }
            
             $(e).rels().ends().each(function (r) {
@@ -231,9 +320,12 @@ function generateNestedDocumentation(element, depth, bodyMap, documentContentWra
                     documentContentWrapper.str += `\n> ${_escapeMD(r.text).replaceAll("\n", "\n> ")}\n`;
                 }
             });
+            if (showViews) {
+                documentContentWrapper.str += `\n${_usedInViews(e)}`;
+            }
 
             if ($(e).children().length > 0) {
-                generateNestedDocumentation(e, depth + 1, bodyMap, documentContentWrapper, includeHiddenRelationships);
+                generateNestedDocumentation(e, depth + 1, bodyMap, documentContentWrapper, includeHiddenRelationships,showViews, inclObjUID);
             }
         }
     });
@@ -243,7 +335,7 @@ function generateIntroduction(view) {
     let theIntroduction = "";
     // Notes with no relationships
     $(view).find("diagram-model-note").each(function (note){
-        if ($(note).rels().length==0  && note.text.length()>3){
+        if ($(note).rels().length==0  && note.text.length()>3 && $(note).parent.type=="archimate-diagram-model"){
             theIntroduction += `\n> ${_escapeMD(note.text).replaceAll("\n", "\n> ")}\n`;
         }
     });
@@ -251,9 +343,9 @@ function generateIntroduction(view) {
     return theIntroduction;
 }
 
-const generateMarkdown = (view, includeHiddenRelationships, layered, embed) => {
+const generateMarkdown = (view, includeHiddenRelationships, layered, embed, showViews, inclObjUID, inclTOC) => {
     let bodyMap = {};
-    let documentContentWrapper = {str: `# ${view.name}[^1]\n`};
+    let documentContentWrapper = {str: `# ${view.name}[^1]\nFolder: ${_getPath(view)}\n`};
 
     // Javascript will pass an object reference!
     let tocContentWrapper = {str:"* [Introduction](#introduction)"};
@@ -261,14 +353,20 @@ const generateMarkdown = (view, includeHiddenRelationships, layered, embed) => {
     //toc(0,theView);
 
     let tocMap = {};
-    if (!layered) {
-        generateToc(view,0,tocMap,tocContentWrapper);
+    if (inclTOC) {
+        if (!layered) {
+            generateToc(view,0,tocMap,tocContentWrapper);
+        }
+        else {
+            generateLayeredToc(layers, tocContentWrapper);
+        }
+        documentContentWrapper.str += `\n## Table of Contents\n${tocContentWrapper.str}\n\n## Introduction\n`;
     }
-    else {
-        generateLayeredToc(layers, tocContentWrapper);
+    else
+    {
+        documentContentWrapper.str += `\n## Introduction\n`;
     }
-
-    documentContentWrapper.str += `\n## Table of Contents\n${tocContentWrapper.str}\n\n## Introduction\n`;
+    
 
     if (embed) {
         const bytes = $.model.renderViewAsBase64(view, "PNG", { scale: 2, margin: 10 });
@@ -288,7 +386,7 @@ const generateMarkdown = (view, includeHiddenRelationships, layered, embed) => {
     documentContentWrapper.str+= generateIntroduction(view);
 
     if (!layered) {
-        generateNestedDocumentation(view, 0, bodyMap, documentContentWrapper, includeHiddenRelationships);
+        generateNestedDocumentation(view, 0, bodyMap, documentContentWrapper, includeHiddenRelationships,showViews, inclObjUID);
     }
     else {
         generateLayeredDocumentation(view, documentContentWrapper);
@@ -344,7 +442,7 @@ function generateComponentTable(layer, view) {
                 notes+=note.text+"\n";
                 includesNotes=true;
             })
-            theTable += `|${_escapeMD(e.name)}|${convertToText(e.type)}${e.specialization!=null?" ("+e.specialization+")":""}|${_escapeCR(_escapeMD(e.documentation))}|${notes!=""?_escapeCR(_escapeMD(notes))+"|":""}\n`;
+            theTable += `|${_escapeMD(e.name)}|${convertToText(e.type)}${e.specialization!=null?" «"+e.specialization+"»":""}|${_escapeCR(_escapeMD(e.documentation))}|${notes!=""?_escapeCR(_escapeMD(notes))+"|":""}\n`;
         });
     });
     if (theTable!="") {
@@ -383,7 +481,7 @@ function saveMarkdownToFile(view, markdownContent,embed) {
 }
 
 function saveIndexToFile(markdownContent) {
-    const defaultFileName = "index.md";
+    const defaultFileName = `${model.name}.md`;
     const exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: ["*.md"], fileName: defaultFileName });
 
     if(exportFile) {

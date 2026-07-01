@@ -4,18 +4,18 @@ deploy:
   rutareport: /github/workspace/contd/report
 
 mdextraer:
-  rutamodelo: /github/workspace/main
-  rutaprg: /github/workspace/jarchi-hwo/scr
-  rutaMacMD: /github/workspace/main/contd
-  rutareport: /github/workspace/main/contd/report
-  devdocalias: orcl.implementacion
+  rutamodelo: $HOME/gh/models/icetex-ae
+  rutaprg: $HOME/gh/jarchi-hwo/scr
+  rutaMacMD: $HOME/gh/devdocs/devocs-contd/contd
+  rutareport: $HOME/gh/devdocs/devocs-contd/contd/report
+  devdocalias: 123estrategia
   rutaCompleta: no
 
 mddocx:
   expportprg: Tx-exportToMarkdown-CLI-md.ajs
   expportprg_dd: Tx-exportToMarkdown-CLI-md-drivingview.ajs
   expportprg_solo: Tx-exportToMarkdown-CLI-md.ajs
-  expportprg_test: Tx-orderview.ajs
+  expportprg_test: MD.Export-markdown.ajs
   expportprg_rept: exportSingle-md.ajs
 mdpdf:
   expportprg: Tx-exportToMarkdown-CLI-md-drivingview.ajs

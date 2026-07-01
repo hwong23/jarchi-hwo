@@ -503,11 +503,9 @@ catch (e){
     executeMarkdownScript();
 };
 
-module.exports=generateMarkdown;
-
 function useDrivingView(alias) {
     if (!alias) return null;
-    // busca vistas tipo archimate-diagram-model, sketch-model o canvas-model por la propiedad alias
+    // busca vistas tipo archimate-diagram-model, sketch-model o canvas-model con la propiedad alias
     var views = $('archimate-diagram-model');
     views.add($('sketch-model'));
     views.add($('canvas-model'));
@@ -517,3 +515,5 @@ function useDrivingView(alias) {
     });
     return (found && found.length > 0) ? found : null;
 }
+
+module.exports=generateMarkdown;

@@ -45,14 +45,12 @@ console.log("Export to Markdown");
 // Argumentos CLI
 const argRutaSalida = myargs_getArgumento("rutaMacMD");
 const argVistaDocumental = myargs_getArgumento("vistaDocumental");
-const argRutaCompleta = myargs_getArgumento("rutaCompleta");
 const argDebug = myargs_getArgumento("depuracion");
     var debug = String(argDebug).toLowerCase() === "true";
 
 console.log("Entradas:");
 console.log("   rutaMacMD: " + argRutaSalida);
 console.log("   vistaDocumental: " + argVistaDocumental);
-console.log("   rutaCompleta: " + argRutaCompleta);
 console.log("   debug: " + debug);
 
 const strategyLayer = {"label":"Strategy", "components":["resource","capability","course-of-action","value-stream"]};
@@ -103,7 +101,7 @@ function executeMarkdownScript() {
     const inclObjUID = false;
     const inclTOC = true;
 
-    const exportBase = argRutaCompleta || argRutaSalida;
+    const exportBase = argRutaSalida;
 
     const theIndexMap = new Map();
     let megaDoc = "";

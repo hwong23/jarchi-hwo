@@ -509,16 +509,18 @@ catch (e){
 };
 
 function useDrivingView(alias) {
-    (debug) ? console.log("> Using driving view: " + alias) : null;
+    (debug) ? console.log("> Using driving view: ", alias) : null;
 
     if (!alias) return null;
-    // busca vistas tipo archimate-diagram-model, sketch-model o canvas-model con la propiedad alias
+    
+    // busca vistas tipo archimate-diagram-model, sketch-model o canvas-model con la propiedad alias = arg alias
     var views = $('archimate-diagram-model');
     views.add($('sketch-model'));
     views.add($('canvas-model'));
     
     var found = views.filter(function (v) {
         var dd_alias = v.prop("alias") ? v.prop("alias") : "";
+        (debug) ? console.log("> Checking view: ", v.name, " alias: ", dd_alias) : null;
         return dd_alias === alias;
     });
     

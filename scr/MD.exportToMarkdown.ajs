@@ -36,20 +36,24 @@
  */
 
 
+load(__DIR__ + "lib/myargs.js");
+
 console.show();
 console.clear();
 console.log("Export to Markdown");
-load(__DIR__ + "lib/myargs.js");
 
 // Argumentos CLI
 const argRutaSalida = myargs_getArgumento("rutaMacMD");
 const argVistaDocumental = myargs_getArgumento("vistaDocumental");
 const argRutaCompleta = myargs_getArgumento("rutaCompleta");
+const argDebug = myargs_getArgumento("depuracion");
+    var debug = String(argDebug).toLowerCase() === "true";
 
 console.log("Entradas:");
 console.log("   rutaMacMD: " + argRutaSalida);
 console.log("   vistaDocumental: " + argVistaDocumental);
 console.log("   rutaCompleta: " + argRutaCompleta);
+console.log("   debug: " + debug);
 
 const strategyLayer = {"label":"Strategy", "components":["resource","capability","course-of-action","value-stream"]};
 const motivationLayer = {"label":"Motivation","components":["stakeholder","driver","assessment","goal","outcome","principle","requirement","constraint","meaning","value"]};
@@ -73,7 +77,8 @@ function listSelection(title, choices) {
 }
 
 function executeMarkdownScript() {
-    let theOptions = ["Include TOC","Embed Image in Markdown", "Generate Layered Document", "Include Hidden Relationships", "Include Component View List", "Include UID for Components"];
+    let theOptions = ["Include TOC","Embed Image in Markdown", "Generate Layered Document", "Include Hidden Relationships", 
+        "Include Component View List", "Include UID for Components"];
 
     // Prioridad: CLI > selección manual
     let theViews = null;
@@ -504,15 +509,19 @@ catch (e){
 };
 
 function useDrivingView(alias) {
+    (debug) ? console.log("> Using driving view: " + alias) : null;
+
     if (!alias) return null;
     // busca vistas tipo archimate-diagram-model, sketch-model o canvas-model con la propiedad alias
     var views = $('archimate-diagram-model');
     views.add($('sketch-model'));
     views.add($('canvas-model'));
+    
     var found = views.filter(function (v) {
         var dd_alias = v.prop("alias") ? v.prop("alias") : "";
         return dd_alias === alias;
     });
+    
     return (found && found.length > 0) ? found : null;
 }
 

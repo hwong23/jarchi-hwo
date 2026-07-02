@@ -108,7 +108,7 @@ console.log("Documentation Generation @", currentDate);
 // Main Code
 if (useDrivingView( argVistaDocumental ))
 {
-    // nombre de documento dado por propiedad del modelo
+    // nombre de documento dado por propiedad del modelo / vista documental
     var archivoruta = devdoc_rutaTrabajo(g_drivingView, argRutaSalida);
     g_drivingView_devdoc = archivoruta.devdoc;
     g_fileName = archivoruta.filename;

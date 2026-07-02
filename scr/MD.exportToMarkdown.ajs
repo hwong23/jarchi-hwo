@@ -46,7 +46,7 @@ console.log("Export to Markdown");
 const argRutaSalida = myargs_getArgumento("rutaMacMD");
 const argVistaDocumental = myargs_getArgumento("vistaDocumental");
 const argDebug = myargs_getArgumento("depuracion");
-    var debug = String(argDebug).toLowerCase() === "true";
+var debug = String(argDebug).toLowerCase() === "true";
 
 console.log("Entradas:");
 console.log("   rutaMacMD: " + argRutaSalida);
@@ -70,48 +70,68 @@ function listSelection(title, choices) {
         new LabelProvider(), title);
 
     dialog.open();
-    result = dialog.getResult();
+    var result = dialog.getResult();
     return result ? new String(result) : null;
 }
 
 function executeMarkdownScript() {
-    let theOptions = ["Include TOC","Embed Image in Markdown", "Generate Layered Document", "Include Hidden Relationships", 
-        "Include Component View List", "Include UID for Components"];
-
-    // Prioridad: CLI > selección manual
-    let theViews = null;
-
-    if (argVistaDocumental) {
-        theViews = useDrivingView(argVistaDocumental);
-    } else {
-        theViews = $(selection).filter("archimate-diagram-model");
-    }
+    const theViews = argVistaDocumental ? useDrivingView(argVistaDocumental)
+                                        : $(selection).filter("archimate-diagram-model");
 
     if (!theViews || theViews.length == 0) {
         console.log("> Please select a View or provide vistaDocumental");
         exit();
     }
 
-    // Si hay CLI, evitar diálogo y usar valores fijos o predeterminados
-    const embed = true; // o calcula desde CLI/propiedad si quieres
-    const layered = false;
-    const includeHiddenRelationships = false;
-    const showViews = false;
-    const singleDoc = theViews.length == 1;
-    const inclObjUID = false;
-    const inclTOC = true;
+    const cliMode = !!argVistaDocumental || !!argRutaSalida;
+
+    // Opciones interactivas solo si no hay CLI
+    let embed = false;
+    let layered = true;
+    let includeHiddenRelationships = false;
+    let showViews = false;
+    let singleDoc = false;
+    let inclObjUID = false;
+    let inclTOC = true;
+
+    if (!cliMode) {
+        let theOptions = [
+            "Include TOC","Embed Image in Markdown","Generate Layered Document",
+            "Include Hidden Relationships","Include Component View List","Include UID for Components"
+        ];
+
+        if (theViews.length > 1) {
+            theOptions.push("Generate a Single Document from the selected views");
+        }
+
+        const options = listSelection("Options", theOptions);
+        if (options == null) {
+            console.log("Options dialog cancelled. Exiting.");
+            exit();
+        }
+
+        embed = options.includes("Embed");
+        layered = options.includes("Layered");
+        includeHiddenRelationships = options.includes("Hidden");
+        showViews = options.includes("View");
+        singleDoc = options.includes("Single");
+        inclObjUID = options.includes("UID for Components");
+        inclTOC = options.includes("TOC");
+    }
 
     const exportBase = argRutaSalida;
-
-    const theIndexMap = new Map();
     let megaDoc = "";
+    const theIndexMap = new Map();
+    const multiMode = theViews.length > 1;
 
-    theViews.each(function(theView){
-        let markdownContent = generateMarkdown(theView, includeHiddenRelationships, layered, embed, showViews, inclObjUID, inclTOC);
+    theViews.each(function(theView) {
+        console.log("Exporting View: " + theView);
+
+        let markdownContent = generateMarkdown(theView,includeHiddenRelationships,layered,embed,showViews,inclObjUID,inclTOC);
 
         if (!singleDoc) {
             let theFilename = saveMarkdownToFile(theView, markdownContent, embed, exportBase);
-            if (theFilename) {
+            if (multiMode) {
                 theIndexMap.set(theView.name, theFilename);
             }
         } else {
@@ -119,11 +139,12 @@ function executeMarkdownScript() {
         }
     });
 
-    if (!singleDoc) {
-        const theIndex = generateIndex(theIndexMap);
-        saveIndexToFile(theIndex, exportBase);
-    } else {
-        saveIndexToFile(megaDoc, exportBase);
+    if (multiMode) {
+        if (singleDoc) {
+            saveIndexToFile(megaDoc, exportBase);
+        } else {
+            saveIndexToFile(generateIndex(theIndexMap), exportBase);
+        }
     }
 }
 

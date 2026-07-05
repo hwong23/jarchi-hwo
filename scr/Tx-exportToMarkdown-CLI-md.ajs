@@ -90,11 +90,13 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null) {
                 $(e).children().length>0)   // si elemento es un grupo
             {    
                 g_theDocument+="\n"+headerDepth +" "+ (e.name) /*+"("+ convertToText(e.type) +")"*/ + /*linkNum*/ "\n";
+                // tabla de propiedades
                 (e.prop().length > 0 && proptable) ? g_theDocument+="\n" +(devdoc_propertiesTable(e)):true;
+                // tabla de relaciones
                 ($(e).outRels().length>0 && reltable) ? g_theDocument+="\n"+(devdoc_documentRelationships(e)):true;
                 e.documentation ? g_theDocument+="\n"+/*escapeMD*/(e.documentation)+"\n":true;
             }
-            // tabla de relaciones
+            
             $(e).rels().ends().each(function(r) {
                 if (r.text) {
                     g_theDocument+="\n> "+devdoc_escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
@@ -105,7 +107,7 @@ function nestedDocumentation_elements(d, view, inclusionsettings = null) {
             debug? console.log('   ', e.name+":"+e):true;
             
             // el elemento es contenedor
-            if ($(e).children().length>0) {
+            if ($(e).children().length > 0) {
                 d++;
                 nestedDocumentation_elements(d, e, inclusionsettings);
                 d--;

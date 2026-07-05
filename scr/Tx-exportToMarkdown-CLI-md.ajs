@@ -59,9 +59,6 @@ devdoc::documentación de los elementos de una vista
  Requiere: 
  */
 function nestedDocumentation_elements(d, view, inclusionsettings = null) {
-    debug? console.log('IncludeViewElements:', drivingViewInclusionSettings["(IncludeViewElements"]):true;
-
-    // (drivingViewInclusionSettings["(IncludeViewElements"]===true) && 
     $(view).children().not("relationship").filter(function(child) {
         var prop_destino = child.prop("destino");
         return (prop_destino? (prop_destino.includes("doc")? true:false): false)
@@ -185,7 +182,7 @@ if (g_drivingView) {
     })
     
 
-    // llena la colección de elemntos: elements[]
+    // llena la colección de elementos: elements[]
     nestedDocumentation_elements(0, g_drivingView, drivingViewInclusionSettings);
 
     

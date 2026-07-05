@@ -325,7 +325,7 @@ function exportViews (k, viewList, settings)
     console.log(devdoc_addSpace(1), 'exportViews', viewItem.name, 'Plantilla ', elemtPlantilla);
 
     // 2. opciones de presentación inclusionSettings
-    var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, devdoc_DefaultInclusionSettings);
+    var viewInclusionSettings = devdoc_getGroupInclusionSettings(v, settings);
 
     // 3. nombre físico y etiqueta
     var vnombre = (v.prop("titulo"))? 
@@ -416,7 +416,7 @@ function exportViews (k, viewList, settings)
 
     
     // suma al contenedor global outputHdr
-    if (settings.IncludeDocumentation === true) {
+    if (viewInclusionSettings.IncludeDocumentation === true) {
         viewDocumentation != "" ? g_outInfo += "\n" + viewDocumentation + "\n" : true;
     }
     

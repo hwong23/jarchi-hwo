@@ -169,7 +169,7 @@ function devdoc_shallowClone(obj) {
 // settingsElement: reference to the driving view or a group which may have overriding settings
 // defaultSettings: settings object to use as default (required)
 function devdoc_getGroupInclusionSettings(settingsElement, parentSettings) {
-    // Check default settings
+    // Check default / parent settings
     if (parentSettings === null ||
         typeof parentSettings !== "object" ||
         parentSettings["IncludeDiagram"] === null ||

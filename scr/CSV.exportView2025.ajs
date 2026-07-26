@@ -26,7 +26,7 @@ console.show();
 console.clear();
 console.log("> Starting CSV Export");
 
-load(__DIR__ + "lib/CSV.exportAllTo-cfg.js.LOCAL");
+load(__DIR__ + "lib/CSV.exportAllTo-cfg.js");
 load(__DIR__ + "lib/devdocslib.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
 
@@ -95,6 +95,7 @@ var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
 var userPath = cfg_mdOptions.userPath
 var debug = cfg_mdOptions.debug;
 var noEnter = cfg_mdOptions.noEnter;
+var mapeotipos = cfg_mdOptions.mapeotipos;
 
 
 let current_row = 1;
@@ -139,7 +140,9 @@ else {
                     theObject["Name"]=theConcept.name;
                     theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
                     theObject["UID"]=theConcept.id;
-                    theObject["Type"]=!typeMappingsElementos[theConcept.type]? theConcept.type: typeMappingsElementos[theConcept.type];
+                    theObject["Type"]=mapeotipos
+                        ? (!typeMappingsElementos[theConcept.type] ? theConcept.type : typeMappingsElementos[theConcept.type])
+                        : theConcept.type;
                     theObject["Specialization"]=theConcept.specialization;
 
                     // Valores de las propiedades (prop)
@@ -162,11 +165,17 @@ else {
                         let theRelationshipRow = new Object;
                         theRelationshipRow["Relationship ID"]=r.id;
                         theRelationshipRow["From Name"]=r.source.name;
-                        theRelationshipRow["From Type"]=!typeMappingsElementos[r.source.type]? r.source.type: typeMappingsElementos[r.source.type];
-                        theRelationshipRow["Relationship Type"]=!typeMappings[r.type]?r.type:typeMappings[r.type];
+                        theRelationshipRow["From Type"]=mapeotipos
+                            ? (!typeMappingsElementos[r.source.type] ? r.source.type : typeMappingsElementos[r.source.type])
+                            : r.source.type;
+                        theRelationshipRow["Relationship Type"]=mapeotipos
+                            ? (!typeMappings[r.type] ? r.type : typeMappings[r.type])
+                            : r.type;
                         theRelationshipRow["Specialization"]=r.specialization;
                         theRelationshipRow["To Name"]=r.target.name;
-                        theRelationshipRow["To Type"]=!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type];
+                        theRelationshipRow["To Type"]=mapeotipos
+                            ? (!typeMappingsElementos[r.target.type] ? r.target.type : typeMappingsElementos[r.target.type])
+                            : r.target.type;
                         theRelationshipRow["Relationship Name"]=r.name;
                         theRelationshipRow["Relationship Documentation"]=r.documentation;
 

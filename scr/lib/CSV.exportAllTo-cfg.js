@@ -8,5 +8,6 @@ const cfg_mdOptions = {
     userPath : "/Users/hwo/Documents/work/INGEN/modelexport",
     inclyePropiedades : false,
     repeticion : true,
-    noEnter : true
+    noEnter : true,
+    mapeotipos : false
 };

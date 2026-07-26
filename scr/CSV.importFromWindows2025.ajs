@@ -11,6 +11,7 @@
  * Version 2.1: Fix for "empty" rows
  * Version 2.2: Fix for BOM
  * Version 2.3: Enhanced error detection
+ * Version 2.3.1: Nueva propiedad "importado" para marcar la fecha/hora/fuente de importación
  *
  * (c) 2025 Steven Mileham
  *
@@ -87,6 +88,7 @@ if (filePath) {
             let uidGroupRow=1;
 
             const theDate = new Date();
+            const importInfo = "Import from:" + filePath + " on " + theDate.toString();
 
             let theView = model.createArchimateView("CSVImport-"+theDate.toString());
 
@@ -96,7 +98,7 @@ if (filePath) {
             templateObject.delete();
 
             let titleNote = theView.createObject("note", 12, 12, maxPerRow*templateWidth, 24);
-            titleNote.text = "Import from:"+filePath+" on "+theDate.toString();
+            titleNote.text = importInfo;
             let newGroup = theView.createObject("diagram-model-group", 12, newGroupStart, maxPerRow*templateWidth, templateWidth);
             newGroup.name = "New Elements";
             let nameGroup = theView.createObject("diagram-model-group", 12, nameGroupStart, maxPerRow*templateWidth, templateWidth);
@@ -132,6 +134,10 @@ if (filePath) {
                     theConcept.name=theObject.Name;
                     theConcept.documentation=theObject.Documentation;
                     theConcept.type=theObject.Type;
+
+                    // Marca de importación (fecha/hora/fuente)
+                    theConcept.prop("importado", importInfo);
+
                     if (theObject.Specialization!="")
                     {
                         theSpecializations = model.specializations;

@@ -1,0 +1,47 @@
+/*
+ * Set the name prefix for selected elements
+ * 
+ * Requires jArchi - https://www.archimatetool.com
+ * 
+ * This script adds given text + collon before the object name.
+ * If prefix with collon already existed it is replace by new one.
+ * In case of wrong selection effect can be reversed with crt-z (command-z on Mac)
+ *
+ * Script will prompt you: for the text
+ * 
+ * 
+ * Version 1: Set the name prefix for selected elements
+ * 
+ *     2020 by tkazimie@me.com
+ * 
+ */
+
+
+var debug = false;
+
+console.clear();
+console.log("New NameReplace Script");
+
+var txt = window.prompt("Please enter new prefix", "DB");
+txt = (txt || "").trim();
+debug? console.log("entered:"+txt):true;
+
+if (!txt) {
+    console.log("Cancelled or empty prefix. No changes applied.");
+}
+else {
+    $(selection).each(function(theConcept) {
+        debug? console.log("Elem name:"+theConcept.name+" type:"+theConcept.type):true;
+        if (theConcept.type != "archimate-diagram-model") {
+          var nm = theConcept.name;
+          if (nm.search(":") != -1) {
+            nm = nm.split(":")[1];      
+          } 
+          debug? console.log("Name to replace:"+nm):true;
+          theConcept.name = txt + ":" + nm;
+          debug? console.log("Name replaced:"+theConcept.name):true;
+        }
+    });
+}
+
+console.log("End nameReplace Script");

@@ -214,7 +214,27 @@ else {
             }
         }
         catch (error) {
-            console.log("> Ignoring: "+e);
+            console.log("> Ignoring: ", e, error);
+        }
+    });
+
+    let theIntroduction = "";
+    // Notes with no relationships
+    $(theView).find("diagram-model-note").each(function (note) {
+        if ($(note).rels().length==0 && note.text.length()>3) {
+            // $(note).parent.type=="archimate-diagram-model") 
+    
+            let theObject = new Object;
+            theObject["Name"]=null;
+            theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(note.text, false): note.text;
+            theObject["UID"]=note.id;
+            theObject["Type"]=mapeotipos
+                ? (!typeMappingsElementos[note.type] ? note.type : typeMappingsElementos[note.type])
+                : note.type;
+            theObject["Specialization"]=null;
+
+            theData.push(theObject);
+
         }
     });
 

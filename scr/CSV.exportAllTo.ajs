@@ -1,31 +1,56 @@
 /*
  * Export To CSV
+ * @description
+ * Exporta todos los elementos y relaciones de cada vista del modelo Archi 
+ * a archivos CSV.
  *
  * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
  * Requires PapaParse - https://www.papaparse.com/
  * Works with Import from CSV script - https://gist.github.com/smileham/1e57a5946235e780dee5a824f664aa3d
  *
- * Version 1: Export to CSV
- * Version 1.1: Avoid duplicate concepts exported from diagram
- * Version 1.2: Fix missing properties
- * Version 2: Updated to export Relationships to additional CSV
- * Version 2.1: Added error check for View
- * Version 2.2: exportFile = userPath + "/" + defaultFileName
- * Version 2.2.1: $('view').each(function(theView)
- * Version 2.2.2: Variables de configuración
- * Version 2.2.3: typeMappingsElementos
- * Version 2.2.4: noEnter
- *
  * (c) 2018 Steven Mileham
+ 
  *
+ * FUNCIONAMIENTO:
+ * - Itera sobre todas las vistas (`$('view')`) del modelo activo.
+ * - Por cada vista, extrae los elementos (no relaciones) y sus propiedades personalizadas.
+ * - Extrae también las relaciones de salida de cada elemento.
+ * - Genera dos archivos CSV por vista:
+ *     1. `<ModelName>-<ViewName>.csv`          → Elementos con sus propiedades.
+ *     2. `<ModelName>-<ViewName>-relationship.csv` → Relaciones entre elementos.
+ *
+ * PARÁMETROS DE CONFIGURACIÓN (cfg_mdOptions en CSV.exportAllTo-cfg.js.LOCAL):
+ * - `userPath`          {string}  Ruta destino donde se guardan los archivos exportados.
+ * - `incluyePropiedades`{boolean} Si es true, incluye las propiedades personalizadas de cada elemento.
+ * - `repeticion`        {boolean} Si es true, permite exportar el mismo concepto más de una vez (en distintas vistas).
+ * - `noEnter`           {boolean} Si es true, elimina saltos de línea en el campo Documentation.
+ * - `debug`             {boolean} Si es true, imprime trazas detalladas en la consola.
+ *
+ * ARCHIVOS GENERADOS:
+ * - Elementos CSV:
+ *     Columnas fijas: Name, Documentation, UID, Type
+ *     Columnas dinámicas: propiedades personalizadas (si incluyePropiedades=true)
+ * - Relaciones CSV:
+ *     Columnas: Relationship ID, From ID, From Name, From Type, Relationship Type,
+ *               To ID, To Name, To Type, Relationship Name, Relationship Documentation
+ *
+ * DEPENDENCIAS:
+ * - lib/CSV.exportAllTo-cfg.js.LOCAL  → Configuración
+ * - lib/devdocslib.js                 → Función devdoc_escapeDOC() para limpiar documentación
+ * - lib/papaparse.min.js              → Librería PapaParse para serializar a CSV
+ *
+ * MAPEOS:
+ * - typeMappingsElementos: Traduce tipos ArchiMate a etiquetas cortas (ej. "application-component" → "SIS").
+ * - typeMappingsRelaciones: Traduce tipos de relación a etiquetas legibles (ej. "flow-relationship" → "Flows").
  */
+
 
 // Show output in the console
 console.show();
 console.clear();
 console.log("> Starting CSV Export");
 
-load(__DIR__ + "lib/CSV.exportAllTo-cfg.js.LOCAL");
+load(__DIR__ + "lib/CSV.exportAllTo-cfg.js");
 load(__DIR__ + "lib/devdocslib.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
 

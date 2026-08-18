@@ -5,7 +5,7 @@ const cfg_mdOptions = {
     smartLists: true,
     smartypants: true,
     debug : false,
-    userPath : "/Users/hwo/Documents/work/INGEN/modelexport",
+    userPath : "/Users/hwo/Documents/work/PERSN/modelexport",
     inclyePropiedades : false,
     repeticion : true,
     noEnter : true,

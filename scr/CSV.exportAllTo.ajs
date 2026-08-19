@@ -123,6 +123,7 @@ var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
 var userPath = cfg_mdOptions.userPath
 var debug = cfg_mdOptions.debug;
 var noEnter = cfg_mdOptions.noEnter;
+var mapeotipos = cfg_mdOptions.mapeotipos;
 var estad = 0
 
 $('view').each(function(theView) {
@@ -165,8 +166,9 @@ $('view').each(function(theView) {
                         theObject["Name"]=theConcept.name;
                         theObject["Documentation"]=(noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
                         theObject["UID"]=theConcept.id;
-                        theObject["Type"]=!typeMappingsElementos[theConcept.type]? theConcept.type: typeMappingsElementos[theConcept.type];
-                        
+                        theObject["Type"]=mapeotipos
+                            ? (!typeMappingsElementos[theConcept.type] ? theConcept.type : typeMappingsElementos[theConcept.type])
+                            : theConcept.type;
 
                         // Valores de las propiedades (prop)
                         if (incluyePropiedades) {

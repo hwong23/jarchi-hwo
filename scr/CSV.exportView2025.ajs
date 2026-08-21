@@ -138,7 +138,7 @@ else {
 
                     let theObject = new Object;
                     theObject["Name"]=theConcept.name;
-                    theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
+                    theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(theConcept.documentation, true): theConcept.documentation;
                     theObject["UID"]=theConcept.id;
                     theObject["Type"]=mapeotipos
                         ? (!typeMappingsElementos[theConcept.type] ? theConcept.type : typeMappingsElementos[theConcept.type])
@@ -226,7 +226,7 @@ else {
     
             let theObject = new Object;
             theObject["Name"]=null;
-            theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(note.text, false): note.text;
+            theObject["Documentation"]= (noEnter) ? devdoc_escapeDOC(note.text, true): note.text;
             theObject["UID"]=note.id;
             theObject["Type"]=mapeotipos
                 ? (!typeMappingsElementos[note.type] ? note.type : typeMappingsElementos[note.type])

@@ -124,6 +124,7 @@ var userPath = cfg_mdOptions.userPath
 var debug = cfg_mdOptions.debug;
 var noEnter = cfg_mdOptions.noEnter;
 var mapeotipos = cfg_mdOptions.mapeotipos;
+var relaciones = cfg_mdOptions.relaciones;
 var estad = 0
 
 $('view').each(function(theView) {
@@ -164,7 +165,7 @@ $('view').each(function(theView) {
 
                         var theObject = new Object;
                         theObject["Name"]=theConcept.name;
-                        theObject["Documentation"]=(noEnter) ? devdoc_escapeDOC(theConcept.documentation, false): theConcept.documentation;
+                        theObject["Documentation"]=(noEnter) ? devdoc_escapeDOC(theConcept.documentation, true): theConcept.documentation;
                         theObject["UID"]=theConcept.id;
                         theObject["Type"]=mapeotipos
                             ? (!typeMappingsElementos[theConcept.type] ? theConcept.type : typeMappingsElementos[theConcept.type])
@@ -184,23 +185,24 @@ $('view').each(function(theView) {
 
                         theData.push(theObject);
 
-                        // Get Relationships
+                        // Get Relationships only when enabled in config
+                        if (relaciones) {
+                            $(e).outRels().each(function (r) {
+                                var theRelationshipRow = new Object;
+                                theRelationshipRow["Relationship ID"]=r.id;
+                                theRelationshipRow["From ID"]=r.source.id;
+                                theRelationshipRow["From Name"]=r.source.name;
+                                theRelationshipRow["From Type"]=!typeMappingsElementos[r.source.type]? r.source.type: typeMappingsElementos[r.source.type];
+                                theRelationshipRow["Relationship Type"]=!typeMappingsRelaciones[r.type]?r.type:typeMappingsRelaciones[r.type];
+                                theRelationshipRow["To ID"]=r.target.id;
+                                theRelationshipRow["To Name"]=r.target.name;
+                                theRelationshipRow["To Type"]=!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type];
+                                theRelationshipRow["Relationship Name"]=r.name;
+                                theRelationshipRow["Relationship Documentation"]=r.documentation;
 
-                        $(e).outRels().each(function (r) {
-                            var theRelationshipRow = new Object;
-                            theRelationshipRow["Relationship ID"]=r.id;
-                            theRelationshipRow["From ID"]=r.source.id;
-                            theRelationshipRow["From Name"]=r.source.name;
-                            theRelationshipRow["From Type"]=!typeMappingsElementos[r.source.type]? r.source.type: typeMappingsElementos[r.source.type];
-                            theRelationshipRow["Relationship Type"]=!typeMappingsRelaciones[r.type]?r.type:typeMappingsRelaciones[r.type];
-                            theRelationshipRow["To ID"]=r.target.id;
-                            theRelationshipRow["To Name"]=r.target.name;
-                            theRelationshipRow["To Type"]=!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type];
-                            theRelationshipRow["Relationship Name"]=r.name;
-                            theRelationshipRow["Relationship Documentation"]=r.documentation;
-
-                            theRelationshipData.push(theRelationshipRow);
-                        });
+                                theRelationshipData.push(theRelationshipRow);
+                            });
+                        }
 
                         current_row++;
                     }
@@ -226,7 +228,9 @@ $('view').each(function(theView) {
         debug? console.log(theRelationshipData):true;
 
         var theCSV = Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: ","});
-        var theRelationshipsCSV = Papa.unparse({fields:relationshipHeaders, data:theRelationshipData});
+        var theRelationshipsCSV = relaciones
+            ? Papa.unparse({fields:relationshipHeaders, data:theRelationshipData})
+            : null;
 
         if(exportFile != null) {
             debug? console.log("> TheCSV"):true;
@@ -235,7 +239,9 @@ $('view').each(function(theView) {
             // codificacion de caracteres ISO-8859-1: alfabeto latino. Preferido para aplicaciones (ej. Excel). https://es.wikipedia.org/wiki/ISO/IEC_8859-1
             // codificacion de caracteres UTF-8: Unicode variable. Preferido para Web. https://es.wikipedia.org/wiki/UTF-8
             $.fs.writeFile(exportFile, theCSV, "UTF-8");
-            $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", theRelationshipsCSV, "UTF-8");
+            if (relaciones) {
+                $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", theRelationshipsCSV, "UTF-8");
+            }
             console.log("> Export done", exportFile);
         }
         else {

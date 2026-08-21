@@ -5,9 +5,10 @@ const cfg_mdOptions = {
     smartLists: true,
     smartypants: true,
     debug : false,
-    userPath : "/Users/hwo/Documents/work/PERSN/modelexport",
+    userPath : "/Users/hwo/Documents/work/AND/OneDrive - Technology Factory/Documentos/PERSNR/modelexport",
     inclyePropiedades : false,
     repeticion : true,
     noEnter : true,
-    mapeotipos : false
+    mapeotipos : false,
+    relaciones : false
 };

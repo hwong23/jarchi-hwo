@@ -239,7 +239,7 @@ else {
     });
 
     // Open a dialog to let the user choose where to save the generated file
-    const defaultFileName = model.name ? model.name + "-" + theView.name + ".csv" : "Exported Model.csv"; // Default file name
+    const defaultFileName = model.name ? model.name + "-" + devdoc_normalizeFileName(theView.name) + ".csv" : "Exported Model.csv"; // Default file name
     const exportFile = userPath + "/" + defaultFileName;
     // const exportFile = window.promptSaveFile({ title: "Export to CSV", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
 

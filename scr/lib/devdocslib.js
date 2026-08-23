@@ -82,6 +82,19 @@ function devdoc_replaceNL(strIn, sustituto = "<br>") {
     return newStr;
 }
 
+// Returns a file-system-safe name by replacing accented/international chars with ASCII equivalents
+function devdoc_normalizeFileName(viewName) {
+    if (null === viewName || "string" !== typeof viewName) return "";
+    return viewName
+        .replace(/[áàäâã]/gi, function(c) { return c === c.toUpperCase() ? "A" : "a"; })
+        .replace(/[éèëê]/gi,  function(c) { return c === c.toUpperCase() ? "E" : "e"; })
+        .replace(/[íìïî]/gi,  function(c) { return c === c.toUpperCase() ? "I" : "i"; })
+        .replace(/[óòöôõ]/gi, function(c) { return c === c.toUpperCase() ? "O" : "o"; })
+        .replace(/[úùüû]/gi,  function(c) { return c === c.toUpperCase() ? "U" : "u"; })
+        .replace(/[ñ]/g, "n")
+        .replace(/[Ñ]/g, "N");
+}
+
 function addPropsAsItalic(thisObj) {
     var propts = '';
 

@@ -6,7 +6,7 @@ const cfg_mdOptions = {
     smartypants: true,
     debug : false,
     userPath : "/Users/hwo/Library/CloudStorage/OneDrive-TechnologyFactory/Documentos/PERSNR/modelexport",
-    inclyePropiedades : false,
+    incluyePropiedades : true,
     repeticion : true,
     noEnter : true,
     mapeotipos : false,

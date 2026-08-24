@@ -17,6 +17,30 @@
  */
 
 
+/**
+ * Prefijo para nombres de elementos seleccionados.
+ *
+ * Requiere jArchi - https://www.archimatetool.com
+ *
+ * Entradas:
+ *   - Selección actual del modelo en Archi.
+ *   - Texto introducido por el usuario con el prefijo a aplicar.
+ *
+ * Salidas:
+ *   - Modifica el nombre de cada elemento seleccionado.
+ *   - Añade el prefijo con formato "texto:nombre".
+ *   - Si el nombre ya tenía un prefijo anterior con ":", se reemplaza.
+ *
+ * Proceso principal:
+ *   1. Solicita al usuario el prefijo.
+ *   2. Comprueba que la entrada no esté vacía.
+ *   3. Recorre la selección actual.
+ *   4. Ignora los diagramas del tipo "archimate-diagram-model".
+ *   5. Elimina cualquier prefijo previo y asigna el nuevo nombre.
+ *
+ * Nota:
+ *   Si se aplica un prefijo incorrecto, puede revertirse con Ctrl+Z / Cmd+Z desde Archi.
+ */
 var debug = false;
 
 console.clear();

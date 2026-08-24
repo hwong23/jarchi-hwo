@@ -50,7 +50,8 @@ var relationshipHeaders = [
     "To Name",
     "To Type",
     "Relationship Name",
-    "Relationship Documentation"
+    "Relationship Documentation",
+    "Tipo de Acceso"
 ];
 
 var typeMappings = {
@@ -164,6 +165,7 @@ if (theView) {
                         theRelationshipRow["To Type"]=!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type];
                         theRelationshipRow["Relationship Name"]=r.name;
                         theRelationshipRow["Relationship Documentation"]=r.documentation;
+                        theRelationshipRow["Tipo de Acceso"]=r.concept.accessType;
 
                         theRelationshipData.push(theRelationshipRow);
                     });

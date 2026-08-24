@@ -92,7 +92,8 @@ function devdoc_normalizeFileName(viewName) {
         .replace(/[óòöôõ]/gi, function(c) { return c === c.toUpperCase() ? "O" : "o"; })
         .replace(/[úùüû]/gi,  function(c) { return c === c.toUpperCase() ? "U" : "u"; })
         .replace(/[ñ]/g, "n")
-        .replace(/[Ñ]/g, "N");
+        .replace(/[Ñ]/g, "N")
+        .replace(/[:]/g, "-");
 }
 
 function addPropsAsItalic(thisObj) {

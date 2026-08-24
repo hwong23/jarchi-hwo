@@ -53,7 +53,8 @@ const relationshipHeaders = [
     "To Name",
     "To Type",
     "Relationship Name",
-    "Relationship Documentation"
+    "Relationship Documentation",
+    "Tipo de Acceso"
 ];
 
 const typeMappings = {
@@ -178,7 +179,9 @@ else {
                             : r.target.type;
                         theRelationshipRow["Relationship Name"]=r.name;
                         theRelationshipRow["Relationship Documentation"]=r.documentation;
+                        theRelationshipRow["Tipo de Acceso"]=r.concept.accessType;
 
+                        
                         // Propiedades de las relaciones
                         const theRelationshipProperties = r.prop();  
 

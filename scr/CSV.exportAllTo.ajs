@@ -118,7 +118,6 @@ var typeMappingsElementos = {
 
 var current_row = 1;
 
-
 // variables de configuración
 var incluyePropiedades = cfg_mdOptions.incluyePropiedades;
 var userPath = cfg_mdOptions.userPath
@@ -129,6 +128,10 @@ var relaciones = cfg_mdOptions.relaciones;
 var estad = 0
 
 $('view').each(function(theView) {
+    if (!devdoc_isViewExportEnabled(theView)) {
+        console.log("> Skipping view export: property 'export' != true for view: ", theView && theView.name ? theView.name : theView);
+        return;
+    }
     debug? console.log('debug', theView):true;
     
     var theData = new Array();

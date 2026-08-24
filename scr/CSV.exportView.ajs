@@ -100,9 +100,14 @@ var theData = new Array();
 var theRelationshipData = new Array();
 
 var theView = $(selection).filter("archimate-diagram-model").first();
+
 debug? console.log(theView):true;
 
 if (theView) {
+    if (!devdoc_isViewExportEnabled(theView)) {
+        console.log("> Skipping view export: property 'export' != true for view: ", theView.name);
+    }
+    else {
 
     // Loop through all elements and set cells to elememt info
     $(theView).find().not("relationship").each(function(e) {
@@ -208,6 +213,7 @@ if (theView) {
     }
     else {
         console.log("> Export cancelled");
+    }
     }
 }
 else {

@@ -493,3 +493,11 @@ function devdoc_rutaTrabajo(vista, rutaMacMD = null) {
     };
 }
 
+var devdoc_isViewExportEnabled = function(view) {
+    if (!view || !view.prop) {
+        return false;
+    }
+    var value = (view.prop("exportar") == undefined) ? true : view.prop("exportar");
+    return value === true || value === "true" || value === "True" || value === "TRUE" || value === 1 || value === "1";
+};
+

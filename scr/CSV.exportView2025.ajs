@@ -105,10 +105,20 @@ let theData = new Array();
 let theRelationshipData = new Array();
 
 const theView = $(selection).filter("archimate-diagram-model").first();
+const isViewExportEnabled = function(view) {
+    if (!view || !view.prop) {
+        return false;
+    }
+    const value = view.prop("export");
+    return value === true || value === "true" || value === "True" || value === "TRUE" || value === 1 || value === "1";
+};
 debug? console.log(theView):true;
 
 if (!theView) {
     console.log("> Please Select a View");
+}
+else if (!isViewExportEnabled(theView)) {
+    console.log("> Skipping view export: property 'export' != true for view: ", theView.name);
 }
 else {
     // Loop through all elements and set cells to elememt info

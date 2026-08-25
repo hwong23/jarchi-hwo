@@ -15,6 +15,7 @@
  * Version 2.4: Added support for relationship properties export (by @isalew)
  * Version 2.4.1: Variables de configuración
  * Version 2.4.2: typeMappingsElementos
+ * Version 2.4.3: Corrección caracteres internacionales en nombres de archivos exportados
  * Version 2.5: Vista exportable (propiedad exportar)
  *
  * (c) 2018 Steven Mileham

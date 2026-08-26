@@ -91,8 +91,8 @@ function devdoc_normalizeFileName(viewName) {
         .replace(/[íìïî]/gi,  function(c) { return c === c.toUpperCase() ? "I" : "i"; })
         .replace(/[óòöôõ]/gi, function(c) { return c === c.toUpperCase() ? "O" : "o"; })
         .replace(/[úùüû]/gi,  function(c) { return c === c.toUpperCase() ? "U" : "u"; })
-        .replace(/[ñ]/g, "n")
-        .replace(/[Ñ]/g, "N")
+        .replace(/[ñ]/gi, "n")
+        .replace(/\s/g, '')
         .replace(/[:]/g, "-");
 }
 

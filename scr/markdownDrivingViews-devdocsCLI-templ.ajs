@@ -163,7 +163,7 @@ function exportaImagen (vv, pth) {
       margin: 10
     });
   
-    $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
+    $.fs.writeFile(pth + "/images/" + devdoc_normalizeFileName(vv.name) + ".png", bytes, "BASE64");
   
     // return _.escape(vv.name);
     return vv.name;
@@ -402,12 +402,12 @@ function exportViews_1 (k, Level, viewList, settings) {
         if (embed) {
             g_outInfo += "\n![" + myView.name + "](data:image/png;base64," + bytes + ")\n";
         } else {
-            thisPath = g_path + "images/" + myView.name.replaceAll(" ", "");
+            var nombreImagen = devdoc_normalizeFileName(myView.name);
+            thisPath = g_path + "images/" + nombreImagen;
             (debug)?console.log('imagePath: '+thisPath):true;
 
             $.fs.writeFile(thisPath + ".png", bytes, "BASE64");
 
-            var nombreImagen = myView.name.replaceAll(" ", "");
             imageURL = imageFolder + nombreImagen;
 
             g_outInfo += "\n![Vista. " + myView.name + "](" + imageURL + 

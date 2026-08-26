@@ -485,7 +485,7 @@ function generateComponentTable(layer, view) {
 
 
 function saveMarkdownToFile(view, markdownContent, embed, exportBase) {
-    const defaultFileName = view.name ? `${model.name}-${view.name}.md` : "Exported View.md";
+    const defaultFileName = view.name ? `${devdoc_normalizeFileName(model.name)}-${devdoc_normalizeFileName(view.name)}.md` : "Exported View.md";
     const exportFile = exportBase
         ? (exportBase.endsWith(".md") ? exportBase : `${exportBase}/${defaultFileName}`)
         : window.promptSaveFile({ title: "Export to Markdown", filterExtensions: ["*.md"], fileName: defaultFileName });
@@ -525,7 +525,7 @@ function useDrivingView(alias) {
 }
 
 function saveIndexToFile(markdownContent, exportBase) {
-    const defaultFileName = `${model.name}.md`;
+    const defaultFileName = `${devdoc_normalizeFileName(model.name)}.md`;
     const exportFile = exportBase
         ? (exportBase.endsWith(".md") ? exportBase : `${exportBase}/${defaultFileName}`)
         : window.promptSaveFile({ title: "Export to Markdown", filterExtensions: ["*.md"], fileName: defaultFileName });

@@ -66,7 +66,7 @@ $("element").each( function(e) {
 });
 
 // Open a dialog to let the user choose where to save the generated file
-var defaultFileName = model.name ? model.name + ".xlsx" : "Exported Model.xlsx"; // Default file name
+var defaultFileName = model.name ? devdoc_normalizeFileName(model.name) + ".xlsx" : "Exported Model.xlsx"; // Default file name
 var exportFile = window.promptSaveFile({ title: "Export to Excel", filterExtensions: [ "*.xlsx" ], fileName: defaultFileName } );
 
 if(exportFile != null) {

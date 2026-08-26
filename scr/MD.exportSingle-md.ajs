@@ -161,7 +161,7 @@ function exportaImagen (vv, pth) {
     margin: 10
   });
 
-  $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
+  $.fs.writeFile(pth + "/images/" + devdoc_normalizeFileName(vv.name) + ".png", bytes, "BASE64");
 
   // return _.escape(vv.name);
   return vv.name;

@@ -5,7 +5,7 @@ const cfg_mdOptions = {
     smartLists: true,
     smartypants: true,
     debug : false,
-    userPath : "/Users/hwo/Library/CloudStorage/OneDrive-TechnologyFactory/Documentos/PERSNR/modelexport",
+    userPath : "/Users/hwo/Library/CloudStorage/OneDrive-SharedLibraries-TechnologyFactory/Proyectos-Arquitectura - arqPERSNR/modelexport",
     incluyePropiedades : true,
     repeticion : true,
     noEnter : true,

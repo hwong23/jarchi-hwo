@@ -96,7 +96,7 @@ if(! folders.size()) {
   console.log("All views have been selected.");
 }
 
-var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : model.name + ".html" });
+var filePath = window.promptSaveFile({ title: "Save as HTML file", filterExtensions : [ "*.html" , "*.*"], fileName : devdoc_normalizeFileName(model.name) + ".html" });
 
 if(!filePath) {
   console.log('User cancelled.');

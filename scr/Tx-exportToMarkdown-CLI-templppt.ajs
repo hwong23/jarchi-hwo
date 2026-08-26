@@ -106,16 +106,15 @@ if (g_drivingView) {
     theTOC=devdoc_toc(0,g_drivingView, 'ppt', theTOC);
     g_theDocument+="\n"+theTOC+"\n";
     // g_theDocument+="\n## Introducción\n";
-    imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
+        imageReferencia = devdoc_normalizeFileName(g_drivingView_devdoc).substring(0,g_drivingView_devdoc.length-3);
     if (embed==true) {
         var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
         g_theDocument+="\n!["+g_drivingView.name+"](data:image/png;base64,"+bytes+")\n";
     }
     else {
-        g_theDocument+="\n!["+g_drivingView.name+"]["+ argRutaCompleta == 'si' ? 
-            '\n!['+ imageReferencia+ '](' +relativeURL+ '){height=500 width=}':
-            // '\n!['+ imageReferencia+ '](' +imageReferencia+'.png){height=500 width=}'+"\n";
-            '\n!['+ imageReferencia+ '](' +'images/'+g_drivingView.name.replaceAll(" ", "")+'.png){height=500 width=}'+"\n";
+            g_theDocument+="\n!["+g_drivingView.name+"]["+ argRutaCompleta == 'si' ? 
+                '\n!['+ imageReferencia+ '](' +relativeURL+ '){height=500 width=}':
+                '\n!['+ imageReferencia+ '](' +'images/'+devdoc_normalizeFileName(g_drivingView.name)+'.png){height=500 width=}'+"\n";
     }
     g_drivingView.documentation!=""? g_theDocument+="\n"+g_drivingView.documentation+"\n":true;
 
@@ -261,7 +260,7 @@ function rutaTrabajo(vista, rutaMacMD = null) {
     // nombre del archivo de trabajo (salida)
     var devdoc = vista.prop("devdoc")? 
         vista.prop("devdoc"):
-        vista.name.replaceAll(" ", "")+'.md';
+        devdoc_normalizeFileName(vista.name)+'.md';
 
     // (sobrescribe) ruta de trabajo dado por argumento CLI
     var path = rutaMacMD? 

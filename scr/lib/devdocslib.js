@@ -455,15 +455,15 @@ function devdoc_addSpace(numSpaces) {
 
 
 function devdoc_exportaImagen (vv, pth) {
-    var bytes = $.model.renderViewAsBase64(vv, "PNG", {
-      scale: 1,
-      margin: 10
-    });
-  
-    $.fs.writeFile(pth + "/images/" + vv.name.replaceAll(" ", "") + ".png", bytes, "BASE64");
-  
-    // return _.escape(vv.name);
-    return vv.name;
+        var bytes = $.model.renderViewAsBase64(vv, "PNG", {
+            scale: 1,
+            margin: 10
+        });
+
+        var fileName = devdoc_normalizeFileName(vv.name) + ".png";
+        $.fs.writeFile(pth + "/images/" + fileName, bytes, "BASE64");
+
+        return fileName;
 }
 
 // Ruta de trabajo, nombre de archivo
@@ -475,7 +475,7 @@ function devdoc_rutaTrabajo(vista, rutaMacMD = null) {
     // nombre del archivo de trabajo (salida)
     var devdoc = vista.prop("devdoc")? 
         vista.prop("devdoc"):
-        vista.name.replaceAll(" ", "")+'.md';
+        devdoc_normalizeFileName(vista.name)+'.md';
 
     // (sobrescribe) ruta de trabajo dado por argumento CLI
     var path = rutaMacMD? 

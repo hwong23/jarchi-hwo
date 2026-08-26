@@ -100,7 +100,7 @@ if (g_drivingView) {
     theTOC=devdoc_toc(0,g_drivingView, 'tex', theTOC);
     g_theDocument+="\n"+theTOC+"\n";
     g_theDocument+="\n## Introducción\n";
-    imageReferencia = g_drivingView_devdoc.replaceAll(" ","").substring(0,g_drivingView_devdoc.length-3);
+    imageReferencia = devdoc_normalizeFileName(g_drivingView_devdoc).substring(0,g_drivingView_devdoc.length-3);
     if (embed==true) {
         var bytes = $.model.renderViewAsBase64(g_drivingView, "PNG", {scale: 2, margin: 10});
         g_theDocument+="\n!["+g_drivingView.name+"](data:image/png;base64,"+bytes+")\n";
@@ -245,7 +245,7 @@ function rutaTrabajo(vista, rutaMacMD = null) {
     // nombre del archivo de trabajo (salida)
     var devdoc = vista.prop("devdoc")? 
         vista.prop("devdoc"):
-        vista.name.replaceAll(" ", "")+'.md';
+        devdoc_normalizeFileName(vista.name)+'.md';
 
     // (sobrescribe) ruta de trabajo dado por argumento CLI
     var path = rutaMacMD? 

@@ -13,13 +13,15 @@ Thomas Rischbeck, rischbeck@itmc.ch, (C) ITMC 2021
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+const bom = '\uFEFF';
+
 var headerInput = [];
 headerInput.push("Name");
 headerInput.push("Documentation");
 headerInput.push("UID");
 headerInput.push("Type");
 
-var fileOutString = '';
+var fileOutString = bom;
 var g_delimitador=',';
 
 console.show();

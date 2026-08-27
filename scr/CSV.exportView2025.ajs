@@ -31,6 +31,7 @@ console.log("> Starting CSV Export");
 load(__DIR__ + "lib/CSV.exportAllTo-cfg.js");
 load(__DIR__ + "lib/devdocslib.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
+const bom = '\uFEFF';
 
 let propertiesList = [];
 let relationPropertiesList = [];
@@ -262,15 +263,15 @@ else {
 
     debug? console.log(theRelationshipData):true;
 
-    const theCSV = Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: separadorCSV});
-    const theRelationshipsCSV = Papa.unparse({fields:relationshipHeaders, data:theRelationshipData}, {delimiter: separadorCSV});
+    const theCSV = bom + Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: separadorCSV});
+    const theRelationshipsCSV = bom + Papa.unparse({fields:relationshipHeaders, data:theRelationshipData}, {delimiter: separadorCSV});
 
     if(exportFile != null) {
         debug? console.log("> TheCSV"):true;
         debug? console.log(theCSV):true;
 
-        $.fs.writeFile(exportFile, "\ufeff"+theCSV);
-        $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", "\ufeff"+theRelationshipsCSV);
+        $.fs.writeFile(exportFile, theCSV);
+        $.fs.writeFile(exportFile.substring(0,exportFile.length-4) +"-relationship.csv", theRelationshipsCSV);
         console.log("> Export done");
     }
     else {

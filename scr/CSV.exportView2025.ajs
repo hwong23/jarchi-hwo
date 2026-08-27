@@ -99,6 +99,7 @@ var userPath = cfg_mdOptions.userPath
 var debug = cfg_mdOptions.debug;
 var noEnter = cfg_mdOptions.noEnter;
 var mapeotipos = cfg_mdOptions.mapeotipos;
+var separadorCSV = cfg_mdOptions.separador || ";";
 
 
 let current_row = 1;
@@ -261,8 +262,8 @@ else {
 
     debug? console.log(theRelationshipData):true;
 
-    const theCSV = Papa.unparse({fields:conceptHeaders, data:theData});
-    const theRelationshipsCSV = Papa.unparse({fields:relationshipHeaders, data:theRelationshipData});
+    const theCSV = Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: separadorCSV});
+    const theRelationshipsCSV = Papa.unparse({fields:relationshipHeaders, data:theRelationshipData}, {delimiter: separadorCSV});
 
     if(exportFile != null) {
         debug? console.log("> TheCSV"):true;

@@ -53,6 +53,7 @@ console.log("> Starting CSV Export");
 load(__DIR__ + "lib/CSV.exportAllTo-cfg.js");
 load(__DIR__ + "lib/devdocslib.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
+const bom = '\uFEFF';
 
 var propertiesList = [];
 
@@ -125,6 +126,7 @@ var debug = cfg_mdOptions.debug;
 var noEnter = cfg_mdOptions.noEnter;
 var mapeotipos = cfg_mdOptions.mapeotipos;
 var relaciones = cfg_mdOptions.relaciones;
+var separadorCSV = cfg_mdOptions.separador || ";";
 var estad = 0
 
 $('view').each(function(theView) {
@@ -232,9 +234,10 @@ $('view').each(function(theView) {
         debug? console.log(theData):true;
         debug? console.log(theRelationshipData):true;
 
-        var theCSV = Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: ","});
+        
+        var theCSV = bom + Papa.unparse({fields:conceptHeaders, data:theData}, {delimiter: separadorCSV});
         var theRelationshipsCSV = relaciones
-            ? Papa.unparse({fields:relationshipHeaders, data:theRelationshipData})
+            ? bom + Papa.unparse({fields:relationshipHeaders, data:theRelationshipData}, {delimiter: separadorCSV})
             : null;
 
         if(exportFile != null) {

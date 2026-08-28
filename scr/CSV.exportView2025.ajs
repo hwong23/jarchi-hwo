@@ -43,22 +43,28 @@ const conceptHeaders = [
     "Name",
     "Documentation",
     "UID",
-    "Type",
-    "Specialization"
+    "Type"
 ];
+
+if (especializacion) {
+    conceptHeaders.push("Specialization");
+}
 
 const relationshipHeaders = [
     "Relationship ID",
     "From Name",
     "From Type",
     "Relationship Type",
-    "Specialization",
     "To Name",
     "To Type",
     "Relationship Name",
     "Relationship Documentation",
     "Tipo de Acceso"
 ];
+
+if (especializacion) {
+    relationshipHeaders.splice(4, 0, "Specialization");
+}
 
 const typeMappings = {
     "access-relationship":"Accesses",
@@ -101,6 +107,7 @@ var debug = cfg_mdOptions.debug;
 var noEnter = cfg_mdOptions.noEnter;
 var mapeotipos = cfg_mdOptions.mapeotipos;
 var separadorCSV = cfg_mdOptions.separador || ";";
+var especializacion = cfg_mdOptions.especializacion === true;
 
 
 let current_row = 1;
@@ -154,7 +161,9 @@ else {
                     theObject["Type"]=mapeotipos
                         ? (!typeMappingsElementos[theConcept.type] ? theConcept.type : typeMappingsElementos[theConcept.type])
                         : theConcept.type;
-                    theObject["Specialization"]=theConcept.specialization;
+                    if (especializacion) {
+                        theObject["Specialization"]=theConcept.specialization;
+                    }
 
                     // Valores de las propiedades (prop)
                     if (incluyePropiedades) {
@@ -182,7 +191,9 @@ else {
                         theRelationshipRow["Relationship Type"]=mapeotipos
                             ? (!typeMappings[r.type] ? r.type : typeMappings[r.type])
                             : r.type;
-                        theRelationshipRow["Specialization"]=r.specialization;
+                        if (especializacion) {
+                            theRelationshipRow["Specialization"]=r.specialization;
+                        }
                         theRelationshipRow["To Name"]=r.target.name;
                         theRelationshipRow["To Type"]=mapeotipos
                             ? (!typeMappingsElementos[r.target.type] ? r.target.type : typeMappingsElementos[r.target.type])

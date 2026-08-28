@@ -11,5 +11,6 @@ const cfg_mdOptions = {
     noEnter : true,
     mapeotipos : false,
     relaciones : false,
-    separador : ';'
+    separador : ';',
+    especializacion : false
 };

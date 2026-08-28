@@ -38,14 +38,19 @@ function parseCSV(filePath) {
     theCSVFile.close();
 
     console.log("> File Loaded");
-    return Papa.parse(theCSV);
+    return Papa.parse(theCSV, { delimiter: separadorCSV });
 }
-
-var debug = false;
 
 console.show();
 console.clear();
 console.log("> Import CSV");
+
+load(__DIR__ + "lib/CSV.exportAllTo-cfg.js");
+
+// variables de configuracion compartidas con el script de exportacion
+var debug = cfg_mdOptions.debug;
+var separadorCSV = cfg_mdOptions.separador || ";";
+var especializacion = cfg_mdOptions.especializacion === true;
 
 const filePath = window.promptOpenFile({ title: "Open CSV", filterExtensions: ["*.CSV"], fileName: "default.csv" });
 if (filePath) {
@@ -64,7 +69,10 @@ if (filePath) {
 
         theDataHeaders = theData[0];
 
-        const commonProperties = ["UID","Name", "Documentation","Type","Specialization"];
+        const commonProperties = ["UID","Name", "Documentation","Type"];
+        if (especializacion) {
+            commonProperties.push("Specialization");
+        }
         
         let missingColumns = commonProperties.filter(col => !theDataHeaders.includes(col));
 
@@ -106,8 +114,6 @@ if (filePath) {
             let uidGroup = theView.createObject("diagram-model-group", 12, uidGroupStart, maxPerRow*templateWidth, templateWidth);
             uidGroup.name = "Matched by UID";
 
-            const commonProperties = ["UID","Name", "Documentation","Type","Specialization"];
-
             for (let i=1; i<theData.length; i++) {
                 let matchType = 3;
                 let theConcept = null;
@@ -138,7 +144,7 @@ if (filePath) {
                     // Marca de importación (fecha/hora/fuente)
                     theConcept.prop("importado", importInfo);
 
-                    if (theObject.Specialization!="")
+                    if (especializacion && theObject.Specialization!="")
                     {
                         theSpecializations = model.specializations;
                         for (let j=0; j<theSpecializations.length; j++) {
@@ -160,7 +166,11 @@ if (filePath) {
                     }
 
                     for (let j=0; j<theDataHeaders.length; j++) {
-                        switch (theDataHeaders[j]) {
+                        const headerName = theDataHeaders[j];
+                        if (!especializacion && headerName === "Specialization") {
+                            continue;
+                        }
+                        switch (headerName) {
                             case "UID":
                             case "Name":
                             case "Documentation":
@@ -168,11 +178,11 @@ if (filePath) {
                             case "Specialization":
                                 break;
                             default:
-                                if (theObject[theDataHeaders[j]]) {
-                                    theConcept.prop(theDataHeaders[j],theObject[theDataHeaders[j]]);
+                                if (theObject[headerName]) {
+                                    theConcept.prop(headerName,theObject[headerName]);
                                 }
                                 else {
-                                    theConcept.removeProp(theDataHeaders[j]);
+                                    theConcept.removeProp(headerName);
                                 }
                         }
                     }

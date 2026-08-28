@@ -11,13 +11,16 @@
  *
  */
 
-var debug = true;
-
 console.show();
 console.clear();
 console.log("> Import CSV");
 
+load(__DIR__ + "lib/CSV.exportAllTo-cfg.js");
 const Papa = require(__DIR__ + "lib/papaparse.min.js");
+
+// variables de configuracion compartidas con el script de exportacion
+var debug = cfg_mdOptions.debug;
+var separadorCSV = cfg_mdOptions.separador || ";";
 
 console.log("> Loaded Papa Parse");
 
@@ -38,7 +41,7 @@ if (g_filePath) {
     theCSVFile.close();
 
     console.log("> File Loaded");
-    theDataFile = Papa.parse(theCSV);
+    theDataFile = Papa.parse(theCSV, { delimiter: separadorCSV });
 
     theData = theDataFile.data;
 

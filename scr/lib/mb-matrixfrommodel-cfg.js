@@ -6,8 +6,8 @@ const cfg_mdOptions = {
     smartypants: true,
     debug : false,
     userPath : "/Users/hwo/Downloads",
-    columnType: "business-process",
+    columnType: "business-objects",
     rowType: "application-component",
-    tabName: "app-procesos",
+    tabName: "data-cat",
     cellSeparator: "/"
 };

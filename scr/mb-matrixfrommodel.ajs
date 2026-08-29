@@ -10,7 +10,7 @@
 // these are provided with the jarchi samples scripts
 load(__DIR__ + "lib/jszip-101.js");
 load(__DIR__ + "lib/myexcel.js");
-load(__DIR__ + "lib/mb-matrixfrommodel.js.LOCAL");
+load(__DIR__ + "lib/mb-matrixfrommodel-cfg.js");
 load(__DIR__ + "lib/devdocslib.js");
 
 debug = false;

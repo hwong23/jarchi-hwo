@@ -6,7 +6,7 @@ const cfg_mdOptions = {
     smartypants: true,
     debug : false,
     userPath : "/Users/hwo/Downloads",
-    columnType: "business-objects",
+    columnType: "business-object",
     rowType: "application-component",
     tabName: "data-cat",
     cellSeparator: "/"

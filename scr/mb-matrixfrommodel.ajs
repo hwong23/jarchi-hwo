@@ -96,8 +96,8 @@ function fillColumns(sheet,columnType,rowType)
     var theView = $(selection).filter("archimate-diagram-model").first();
     debug? console.log(theView):true;
 
-    $(theView).find(columnType).forEach(function(e) {
-    // $(columnType).forEach(function(e) {
+    // $(theView).find(columnType).forEach(function(e) {
+    $(columnType).forEach(function(e) {
         headers.push(e);
         });
 
@@ -119,8 +119,8 @@ function fillRows(sheet,headers,rowType,cellSeparator)
   var theView = $(selection).filter("archimate-diagram-model").first();
   debug? console.log(theView):true;
 
-  $(theView).find(rowType).forEach(function(e)
-  // $(rowType).forEach(function(e)
+  // $(theView).find(rowType).forEach(function(e)
+  $(rowType).forEach(function(e)
   {
       sheet.set(0, 0, current_row, e.name);
 

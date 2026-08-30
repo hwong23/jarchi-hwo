@@ -1,58 +1,69 @@
 /*
- * Derive an interaction matrix between two object types from an archimate model
- *  Save to an excel sheet
- *  2018, Michel Bénard
- * 
- * Version 2.2.2: Variables de configuración
-*/
+ * Derive an interaction matrix between two object types from an ArchiMate view
+ * Save to an Excel sheet or Markdown table according to configuration
+ * 2018, Michel Benard
+ *
+ * Version 2.3.0: Configurable output format (xlsx|md)
+ */
 
-// Load MyExcel and JSZip JS file
-// these are provided with the jarchi samples scripts
-load(__DIR__ + "lib/jszip-101.js");
-load(__DIR__ + "lib/myexcel.js");
 load(__DIR__ + "lib/mb-matrixfrommodel-cfg.js");
 load(__DIR__ + "lib/devdocslib.js");
 
-debug = false;
+debug = cfg_mdOptions.debug;
+
+var outputFormat = normalizeOutputFormat(cfg_mdOptions.outputFormat);
+
+if (outputFormat === "xlsx") {
+  // Required only for xlsx generation
+  load(__DIR__ + "lib/jszip-101.js");
+  load(__DIR__ + "lib/myexcel.js");
+}
 
 var typeMappingsRelaciones = {
-  "access-relationship":"AC",
-  "composition-relationship":"CO",
-  "flow-relationship":"F",
-  "realization-relationship":"R",
-  "assignment-relationship":"AG",
-  "serving-relationship":"SV",
-  "association-relationship":"AS",
-  "aggregation-relationship":"AG",
-  "influence-relationship":"I",
-  "specialization-relationship":"S"
+  "access-relationship": "AC",
+  "composition-relationship": "CO",
+  "flow-relationship": "F",
+  "realization-relationship": "R",
+  "assignment-relationship": "AG",
+  "serving-relationship": "SV",
+  "association-relationship": "AS",
+  "aggregation-relationship": "AG",
+  "influence-relationship": "I",
+  "specialization-relationship": "S"
+};
+
+
+var matrix = buildMatrix(
+  cfg_mdOptions.columnType,
+  cfg_mdOptions.rowType,
+  cfg_mdOptions.cellSeparator
+);
+
+var baseOutputName = cfg_mdOptions.userPath + "/archimate_matrices-" + formatShortTimestamp();
+
+if (outputFormat === "md") {
+  var markdown = matrixToMarkdown(matrix.headers, matrix.rows);
+  saveMarkdown(markdown, baseOutputName + ".md");
+} else {
+  var sheet = prepareSheet();
+  writeMatrixToSheet(sheet, matrix.headers, matrix.rows, cfg_mdOptions.tabName);
+  saveSheet(sheet, baseOutputName + ".xlsx");
 }
 
 
-// example
-// Create a matrix 'sheet' where
-//  columns are business functions
-//  rows are applications
-//  sheet(i,j) = all relationships linking application(i) to business function(j)
-//  save the sheet in an excel file
-
- sheet = prepareSheet();
- fillSheet(sheet, 
-    cfg_mdOptions.columnType,
-    cfg_mdOptions.rowType,
-    cfg_mdOptions.tabName,
-    cfg_mdOptions.cellSeparator
- );
- outputFilename=( cfg_mdOptions.userPath +"/archimate_matrices-" + formatShortTimestamp() + ".xlsx");
- saveSheet(sheet,outputFilename);
-
+//----------------------------------------------------
+function normalizeOutputFormat(format)
+{
+  var value = String(format || "xlsx").toLowerCase();
+  return value === "md" ? "md" : "xlsx";
+}
 
 //----------------------------------------------------
- function prepareSheet()
- {
-   var spreadsheet = $JExcel.new("Calibri 12 #333333");
-   return spreadsheet;
- }
+function prepareSheet()
+{
+  var spreadsheet = $JExcel.new("Calibri 12 #333333");
+  return spreadsheet;
+}
 
 //----------------------------------------------------
 function saveSheet(sheet,outputFilename)
@@ -60,8 +71,17 @@ function saveSheet(sheet,outputFilename)
 // TODO add error checking
 console.show();
 console.clear();
-console.log ("save the sheet in an excel file "+outputFilename);
+console.log("XLSX matrix saved to: " + outputFilename);
 sheet.generate(outputFilename);
+}
+
+//----------------------------------------------------
+function saveMarkdown(content, outputFilename)
+{
+  $.fs.writeFile(outputFilename, content, "UTF-8");
+  console.show();
+  console.clear();
+  console.log("Markdown matrix saved to: " + outputFilename);
 }
 
 //----------------------------------------------------
@@ -99,94 +119,121 @@ function parseElementTypes(elementTypes)
 }
 
 //----------------------------------------------------
-function fillSheet(sheet,columnType,rowType,tabName,cellSeparator)
-// sheet : excel object
+function buildMatrix(columnType,rowType,cellSeparator)
 // columntype : archimate object type used as column
-// rowttype : archimate object type used as row
-// tabName : excel sheet tabname
-// cellSeparator: characters used to separate relationships in cell
- {
-     sheet.set( { sheet:0, value:tabName } );
-     headers = fillColumns(sheet,columnType,rowType);
-     fillRows(sheet,headers,rowType,cellSeparator);
- }
-//----------------------------------------------------
-function fillColumns(sheet,columnType,rowType)
-// sheet : excel object
-// columntype : archimate object type used as column
-// rowttype : archimate object type used as row
-// return a list of archimate objects whose name will be used as column headers
-{
-
-  // Fill columns
-    var formatHeader = sheet.addStyle ({
-        fill: "#dddddd",
-        border: "thin, thin, thin, thin #555555",
-        font: "Calibri 12 #000000 B",
-    });
-
-    var rowTypes = parseElementTypes(rowType);
-    var columnTypes = parseElementTypes(columnType);
-    var legend = {name:rowTypes.join(", ") + " / " + columnTypes.join(", ")};
-    var headers = [legend];
-
-    var theView = $(selection).filter("archimate-diagram-model").first();
-    debug? console.log(theView):true;
-
-    columnTypes.forEach(function(currentColumnType) {
-      $(theView).find(currentColumnType).forEach(function(e) {
-      // $(columnType).forEach(function(e) {
-        headers.push(e);
-        });
-    });
-
-        for(var i = 0; i < headers.length; i++) {
-            sheet.set(0, i, 0, headers[i].name, formatHeader);
-            sheet.set(0, i, undefined, "auto"); // column width is auto
-        }
-  return headers;
-}
-//----------------------------------------------------
-function fillRows(sheet,headers,rowType,cellSeparator)
-// sheet : excel object
-// columntype : archimate object type used as column
-// rowttype : archimate object type used as row
+// rowtype : archimate object type used as row
 // cellSeparator: characters used to separate relationships in cell
 {
-  var current_row = 1;
+  var rowTypes = parseElementTypes(rowType);
+  var columnTypes = parseElementTypes(columnType);
+  var legend = {name: rowTypes.join(", ") + " / " + columnTypes.join(", ")};
+  var headers = [legend];
 
   var theView = $(selection).filter("archimate-diagram-model").first();
-  debug? console.log(theView):true;
+  if (!theView) {
+    throw "Please select one ArchiMate view before running this script";
+  }
+  debug ? console.log(theView) : true;
 
-  var rowTypes = parseElementTypes(rowType);
+  columnTypes.forEach(function(currentColumnType) {
+    $(theView).find(currentColumnType).forEach(function(e) {
+      headers.push(e);
+    });
+  });
+
+  var rows = [];
 
   rowTypes.forEach(function(currentRowType)
   {
     $(theView).find(currentRowType).forEach(function(e)
-    // $(rowType).forEach(function(e)
     {
-        sheet.set(0, 0, current_row, e.name);
+      var rowCells = [e.name];
+      var relations = $(e).rels();
 
-        relations = $(e).rels();
-        for(var i = 1; i < headers.length; i++)
-        {
-          cellText = "";
-          for (var j = 0;j< relations.length;j++)
-          {
-              if ( 
-                ( (relations[j].source.id == e.id) && (relations[j].target.id == headers[i].id)) ) 
-              {
-                  cellText = 
-                    !typeMappingsRelaciones[relations[j].type]? relations[j].type: typeMappingsRelaciones[relations[j].type] +
-                    cellSeparator + cellText;
-
-                  (debug)? console.log ("rel: ", relations[j].type, typeMappingsRelaciones[relations[j].type]):true;
-              }
+      for (var i = 1; i < headers.length; i++) {
+        var cellText = "";
+        for (var j = 0; j < relations.length; j++) {
+          var rel = relations[j];
+          if ((rel.source.id == e.id) && (rel.target.id == headers[i].id)) {
+            var relText = typeMappingsRelaciones[rel.type] || rel.type;
+            cellText = cellText.length === 0 ? relText : relText + cellSeparator + cellText;
+            debug ? console.log("rel:", rel.type, typeMappingsRelaciones[rel.type]) : true;
           }
-          sheet.set(0,i,current_row,cellText);
         }
-        current_row++;
-    }
-    );
+        rowCells.push(cellText);
+      }
+
+      rows.push(rowCells);
+    });
   });
+
+  return {
+    headers: headers,
+    rows: rows
+  };
+}
+//----------------------------------------------------
+function writeMatrixToSheet(sheet,headers,rows,tabName)
+// sheet : excel object
+// headers : matrix headers including top-left legend cell
+// rows : matrix rows where first cell is row header name
+// tabName : excel sheet tab name
+{
+  sheet.set({ sheet: 0, value: tabName });
+
+  var formatHeader = sheet.addStyle({
+    fill: "#dddddd",
+    border: "thin, thin, thin, thin #555555",
+    font: "Calibri 12 #000000 B"
+  });
+
+  for (var i = 0; i < headers.length; i++) {
+    sheet.set(0, i, 0, headers[i].name, formatHeader);
+    sheet.set(0, i, undefined, "auto");
+  }
+
+  for (var r = 0; r < rows.length; r++) {
+    for (var c = 0; c < rows[r].length; c++) {
+      sheet.set(0, c, r + 1, rows[r][c]);
+    }
+  }
+}
+//----------------------------------------------------
+function matrixToMarkdown(headers, rows)
+{
+  var lines = [];
+
+  var headerRow = "|";
+  for (var i = 0; i < headers.length; i++) {
+    headerRow += " " + escapeMarkdownCell(headers[i].name) + " |";
+  }
+  lines.push(headerRow);
+
+  var divider = "|";
+  for (var j = 0; j < headers.length; j++) {
+    divider += " --- |";
+  }
+  lines.push(divider);
+
+  for (var r = 0; r < rows.length; r++) {
+    var rowLine = "|";
+    for (var c = 0; c < rows[r].length; c++) {
+      rowLine += " " + escapeMarkdownCell(rows[r][c]) + " |";
+    }
+    lines.push(rowLine);
+  }
+
+  return lines.join("\n") + "\n";
+}
+
+//----------------------------------------------------
+function escapeMarkdownCell(value)
+{
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value)
+    .replace(/\|/g, "\\|")
+    .replace(/\r\n|\n|\r/g, "<br>");
 }

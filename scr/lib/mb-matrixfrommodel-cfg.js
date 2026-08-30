@@ -7,7 +7,7 @@ const cfg_mdOptions = {
     debug : false,
     userPath : "/Users/hwo/Downloads",
     columnType: "business-object",
-    rowType: "application-component",
+    rowType: "application-component,application-function,application-interaction,application-service",
     tabName: "data-cat",
     cellSeparator: "/"
 };

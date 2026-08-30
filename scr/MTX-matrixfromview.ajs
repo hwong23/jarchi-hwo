@@ -63,6 +63,24 @@ console.clear();
 console.log ("save the sheet in an excel file "+outputFilename);
 sheet.generate(outputFilename);
 }
+
+//----------------------------------------------------
+function parseElementTypes(elementTypes)
+{
+  if (Array.isArray(elementTypes)) {
+    return elementTypes;
+  }
+
+  return String(elementTypes)
+    .split(",")
+    .map(function(typeName) {
+      return typeName.trim();
+    })
+    .filter(function(typeName) {
+      return typeName.length > 0;
+    });
+}
+
 //----------------------------------------------------
 function fillSheet(sheet,columnType,rowType,tabName,cellSeparator)
 // sheet : excel object
@@ -90,7 +108,8 @@ function fillColumns(sheet,columnType,rowType)
         font: "Calibri 12 #000000 B",
     });
 
-    var legend = {name:rowType + "/" + columnType};
+    var rowTypes = parseElementTypes(rowType);
+    var legend = {name:rowTypes.join(", ") + " / " + columnType};
     var headers = [legend];
 
     var theView = $(selection).filter("archimate-diagram-model").first();
@@ -119,30 +138,35 @@ function fillRows(sheet,headers,rowType,cellSeparator)
   var theView = $(selection).filter("archimate-diagram-model").first();
   debug? console.log(theView):true;
 
-  $(theView).find(rowType).forEach(function(e)
-  // $(rowType).forEach(function(e)
+  var rowTypes = parseElementTypes(rowType);
+
+  rowTypes.forEach(function(currentRowType)
   {
-      sheet.set(0, 0, current_row, e.name);
+    $(theView).find(currentRowType).forEach(function(e)
+    // $(rowType).forEach(function(e)
+    {
+        sheet.set(0, 0, current_row, e.name);
 
-      relations = $(e).rels();
-      for(var i = 1; i < headers.length; i++)
-      {
-        cellText = "";
-        for (var j = 0;j< relations.length;j++)
+        relations = $(e).rels();
+        for(var i = 1; i < headers.length; i++)
         {
-            if ( 
-              ( (relations[j].source.id == e.id) && (relations[j].target.id == headers[i].id)) ) 
-            {
-                cellText = 
-                  !typeMappingsRelaciones[relations[j].type]? relations[j].type: typeMappingsRelaciones[relations[j].type] +
-                  cellSeparator + cellText;
+          cellText = "";
+          for (var j = 0;j< relations.length;j++)
+          {
+              if ( 
+                ( (relations[j].source.id == e.id) && (relations[j].target.id == headers[i].id)) ) 
+              {
+                  cellText = 
+                    !typeMappingsRelaciones[relations[j].type]? relations[j].type: typeMappingsRelaciones[relations[j].type] +
+                    cellSeparator + cellText;
 
-                (debug)? console.log ("rel: ", relations[j].type, typeMappingsRelaciones[relations[j].type]):true;
-            }
+                  (debug)? console.log ("rel: ", relations[j].type, typeMappingsRelaciones[relations[j].type]):true;
+              }
+          }
+          sheet.set(0,i,current_row,cellText);
         }
-        sheet.set(0,i,current_row,cellText);
-      }
-      current_row++;
-  }
-  );
+        current_row++;
+    }
+    );
+  });
 }

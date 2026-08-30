@@ -42,7 +42,7 @@ var typeMappingsRelaciones = {
    cfg_mdOptions.tabName,
    cfg_mdOptions.cellSeparator
  );
- outputFilename=( cfg_mdOptions.userPath +"/archimate_matrices.xlsx");
+ outputFilename=( cfg_mdOptions.userPath +"/archimate_matrices-" + formatShortTimestamp() + ".xlsx");
  saveSheet(sheet,outputFilename);
 
 
@@ -58,6 +58,23 @@ function saveSheet(sheet,outputFilename)
 {
 // TODO add error checking
 sheet.generate(outputFilename);
+}
+
+//----------------------------------------------------
+function formatShortTimestamp()
+{
+  var now = new Date();
+
+  function pad(value)
+  {
+    return (value < 10 ? "0" : "") + value;
+  }
+
+  return String(now.getFullYear()).substring(2) +
+    pad(now.getMonth() + 1) +
+    pad(now.getDate()) + "-" +
+    pad(now.getHours()) +
+    pad(now.getMinutes());
 }
 
 //----------------------------------------------------
@@ -105,12 +122,16 @@ function fillColumns(sheet,columnType,rowType)
     });
 
     var rowTypes = parseElementTypes(rowType);
-    var legend = {name:rowTypes.join(", ") + "/" + columnType};
+    var columnTypes = parseElementTypes(columnType);
+    var legend = {name:rowTypes.join(", ") + "/" + columnTypes.join(", ")};
     var headers = [legend];
 
-    $(columnType).forEach(function(e) {
+    columnTypes.forEach(function(currentColumnType)
+    {
+      $(currentColumnType).forEach(function(e) {
         headers.push(e);
         });
+    });
 
         for(var i = 0; i < headers.length; i++) {
             sheet.set(0, i, 0, headers[i].name, formatHeader);

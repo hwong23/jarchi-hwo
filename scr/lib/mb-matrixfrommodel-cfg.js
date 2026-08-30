@@ -5,6 +5,7 @@ const cfg_mdOptions = {
     smartLists: true,
     smartypants: true,
     debug : false,
+    outputFormat: "md",
     userPath : "/Users/hwo/Downloads",
     columnType: "business-object,data-object",
     rowType: "application-component,application-function,application-interaction,application-service",

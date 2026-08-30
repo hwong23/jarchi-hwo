@@ -1,22 +1,12 @@
 /*
  * Derive an interaction matrix between two object types from an ArchiMate model
- * Save to an Excel sheet or Markdown table according to configuration
- * 2018, Michel Benard
- *
- * Version 2.3.0: Configurable output format (xlsx|md)
+ * Save to a Markdown table file
+ * Based on MTX-matrixfrommodel.ajs
  */
 
 load(__DIR__ + "lib/mb-matrixfrommodel-cfg.js");
 
 debug = cfg_mdOptions.debug;
-
-var outputFormat = normalizeOutputFormat(cfg_mdOptions.outputFormat);
-
-if (outputFormat === "xlsx") {
-  // Required only for xlsx generation
-  load(__DIR__ + "lib/jszip-101.js");
-  load(__DIR__ + "lib/myexcel.js");
-}
 
 var typeMappingsRelaciones = {
   "access-relationship": "AC",
@@ -31,46 +21,15 @@ var typeMappingsRelaciones = {
   "specialization-relationship": "S"
 };
 
-
 var matrix = buildMatrix(
   cfg_mdOptions.columnType,
   cfg_mdOptions.rowType,
   cfg_mdOptions.cellSeparator
 );
 
-var baseOutputName = cfg_mdOptions.userPath + "/archimate_matrices-" + formatShortTimestamp();
-
-if (outputFormat === "md") {
-  var markdown = matrixToMarkdown(matrix.headers, matrix.rows);
-  saveMarkdown(markdown, baseOutputName + ".md");
-} else {
-  var sheet = prepareSheet();
-  writeMatrixToSheet(sheet, matrix.headers, matrix.rows, cfg_mdOptions.tabName);
-  saveSheet(sheet, baseOutputName + ".xlsx");
-}
-
-
-//----------------------------------------------------
-function normalizeOutputFormat(format)
-{
-  var value = String(format || "xlsx").toLowerCase();
-  return value === "md" ? "md" : "xlsx";
-}
-
-//----------------------------------------------------
-function prepareSheet()
-{
-  var spreadsheet = $JExcel.new("Calibri 12 #333333");
-  return spreadsheet;
-}
-
-//----------------------------------------------------
-function saveSheet(sheet,outputFilename)
-{
-// TODO add error checking
-sheet.generate(outputFilename);
-console.log("XLSX matrix saved to: " + outputFilename);
-}
+var markdown = matrixToMarkdown(matrix.headers, matrix.rows);
+var outputFilename = cfg_mdOptions.userPath + "/archimate_matrices-" + formatShortTimestamp() + ".md";
+saveMarkdown(markdown, outputFilename);
 
 //----------------------------------------------------
 function saveMarkdown(content, outputFilename)
@@ -114,19 +73,17 @@ function parseElementTypes(elementTypes)
 }
 
 //----------------------------------------------------
-function buildMatrix(columnType,rowType,cellSeparator)
-// columntype : archimate object type used as column
-// rowtype : archimate object type used as row
-// cellSeparator: characters used to separate relationships in cell
+function buildMatrix(columnType, rowType, cellSeparator)
 {
   var rowTypes = parseElementTypes(rowType);
   var columnTypes = parseElementTypes(columnType);
-  var legend = {name: rowTypes.join(", ") + "/" + columnTypes.join(", ")};
+  var legend = { name: rowTypes.join(", ") + "/" + columnTypes.join(", ") };
   var headers = [legend];
 
   columnTypes.forEach(function(currentColumnType)
   {
-    $(currentColumnType).forEach(function(e) {
+    $(currentColumnType).forEach(function(e)
+    {
       headers.push(e);
     });
   });
@@ -142,13 +99,15 @@ function buildMatrix(columnType,rowType,cellSeparator)
 
       for (var i = 1; i < headers.length; i++) {
         var cellText = "";
+
         for (var j = 0; j < relations.length; j++) {
           var rel = relations[j];
-          if ((rel.source.id == e.id) && (rel.target.id == headers[i].id)) {
+          if (rel.source.id == e.id && rel.target.id == headers[i].id) {
             var relText = typeMappingsRelaciones[rel.type] || rel.type;
             cellText = cellText.length === 0 ? relText : relText + cellSeparator + cellText;
           }
         }
+
         rowCells.push(cellText);
       }
 
@@ -161,32 +120,7 @@ function buildMatrix(columnType,rowType,cellSeparator)
     rows: rows
   };
 }
-//----------------------------------------------------
-function writeMatrixToSheet(sheet,headers,rows,tabName)
-// sheet : excel object
-// headers : matrix headers including top-left legend cell
-// rows : matrix rows where first cell is row header name
-// tabName : excel sheet tab name
-{
-  sheet.set({ sheet: 0, value: tabName });
 
-  var formatHeader = sheet.addStyle({
-    fill: "#dddddd",
-    border: "thin, thin, thin, thin #555555",
-    font: "Calibri 12 #000000 B"
-  });
-
-  for (var i = 0; i < headers.length; i++) {
-    sheet.set(0, i, 0, headers[i].name, formatHeader);
-    sheet.set(0, i, undefined, "auto");
-  }
-
-  for (var r = 0; r < rows.length; r++) {
-    for (var c = 0; c < rows[r].length; c++) {
-      sheet.set(0, c, r + 1, rows[r][c]);
-    }
-  }
-}
 //----------------------------------------------------
 function matrixToMarkdown(headers, rows)
 {

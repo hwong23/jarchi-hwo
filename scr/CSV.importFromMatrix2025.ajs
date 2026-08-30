@@ -1,0 +1,329 @@
+/*
+ * Import elements and relationships from a CSV matrix
+ *
+ * Supported matrix layouts:
+ * - Rich matrix export with legend in the first header cell: "rowTypes / columnTypes"
+ * - Simple matrix export with only element names in rows and columns
+ *
+ * Relationship cells may contain one or more tokens separated by /, |, or ,.
+ */
+
+function readCSVFile(filePath) {
+    const Papa = require(__DIR__ + "lib/papaparse.min.js");
+    let FileReader = Java.type("java.io.FileReader");
+    const Types = Java.type("java.nio.charset.StandardCharsets");
+    let theCSVFile = new FileReader(filePath, Types.UTF_8);
+
+    let theCSV = "";
+    let data = theCSVFile.read();
+
+    while (data != -1) {
+        if (data != 65279) {
+            theCSV += String.fromCharCode(data);
+        }
+        data = theCSVFile.read();
+    }
+
+    theCSVFile.close();
+    return Papa.parse(theCSV, {
+        delimiter: separadorCSV,
+        skipEmptyLines: "greedy"
+    });
+}
+
+function parseTypeList(value) {
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+    return String(value || "")
+        .split(",")
+        .map(function(typeName) {
+            return typeName.trim();
+        })
+        .filter(function(typeName) {
+            return typeName.length > 0;
+        });
+}
+
+function parseLegendTypes(cellValue) {
+    var legendText = String(cellValue || "").trim();
+    if (legendText.length === 0 || legendText.indexOf("/") === -1) {
+        return null;
+    }
+
+    var parts = legendText.split(/\s*\/\s*/);
+    if (parts.length < 2) {
+        return null;
+    }
+
+    return {
+        rowTypes: parseTypeList(parts[0]),
+        columnTypes: parseTypeList(parts.slice(1).join(","))
+    };
+}
+
+function normalizeCellTokens(cellValue) {
+    return String(cellValue || "")
+        .trim()
+        .split(/[\/|,]+/)
+        .map(function(token) {
+            return token.trim();
+        })
+        .filter(function(token) {
+            return token.length > 0;
+        });
+}
+
+function findElementByName(name, typeNames) {
+    var matches = [];
+
+    typeNames.forEach(function(typeName) {
+        $(typeName).filter(function(e) {
+            return e.name === name;
+        }).each(function(e) {
+            matches.push(e);
+        });
+    });
+
+    if (matches.length === 1) {
+        return matches[0];
+    }
+
+    if (matches.length > 1) {
+        console.log("> Ambiguous element name: " + name + " matched " + matches.length + " elements; using the first match.");
+        return matches[0];
+    }
+
+    var fallbackMatches = $("element").filter(function(e) {
+        return e.name === name;
+    });
+
+    if (fallbackMatches.length === 1) {
+        return fallbackMatches.first();
+    }
+
+    if (fallbackMatches.length > 1) {
+        console.log("> Ambiguous fallback name: " + name + " matched " + fallbackMatches.length + " elements; using the first match.");
+        return fallbackMatches.first();
+    }
+
+    return null;
+}
+
+function createElementForTypeList(name, typeNames) {
+    if (typeNames.length === 0) {
+        return null;
+    }
+
+    return model.createElement(typeNames[0], name);
+}
+
+function ensureElement(name, preferredTypes) {
+    var existing = findElementByName(name, preferredTypes);
+    if (existing) {
+        return existing;
+    }
+
+    if (!cfg_mtxImportOptions.createMissing) {
+        return null;
+    }
+
+    var created = createElementForTypeList(name, preferredTypes);
+    if (!created) {
+        return null;
+    }
+
+    console.log("> Created element: " + name + " as " + created.type);
+    return created;
+}
+
+function relationshipSpecFromToken(token) {
+    var normalized = String(token || "").trim();
+    var lower = normalized.toLowerCase();
+    var upper = normalized.toUpperCase();
+
+    var map = {
+        "AC": { type: "access-relationship" },
+        "CO": { type: "composition-relationship" },
+        "F": { type: "flow-relationship" },
+        "R": { type: "realization-relationship" },
+        "AG": { type: cfg_mtxImportOptions.defaultAmbiguousRelationshipType || "aggregation-relationship", ambiguous: true },
+        "SV": { type: "serving-relationship" },
+        "AS": { type: "association-relationship" },
+        "I": { type: "influence-relationship" },
+        "S": { type: "specialization-relationship" },
+        "access-relationship": { type: "access-relationship" },
+        "access-relationship_read": { type: "access-relationship", accessType: "read" },
+        "access-relationship_write": { type: "access-relationship", accessType: "write" },
+        "access-relationship_readwrite": { type: "access-relationship", accessType: "readwrite" },
+        "composition-relationship": { type: "composition-relationship" },
+        "flow-relationship": { type: "flow-relationship" },
+        "realization-relationship": { type: "realization-relationship" },
+        "assignment-relationship": { type: "assignment-relationship" },
+        "serving-relationship": { type: "serving-relationship" },
+        "association-relationship": { type: "association-relationship" },
+        "aggregation-relationship": { type: "aggregation-relationship" },
+        "influence-relationship": { type: "influence-relationship" },
+        "specialization-relationship": { type: "specialization-relationship" }
+    };
+
+    return map[normalized] || map[lower] || map[upper] || null;
+}
+
+function relationshipAlreadyExists(sourceConcept, targetConcept, relationshipSpec) {
+    var existing = $(sourceConcept).outRels().filter(function(rel) {
+        if (rel.target.id !== targetConcept.id) {
+            return false;
+        }
+
+        if (rel.type !== relationshipSpec.type) {
+            return false;
+        }
+
+        if (relationshipSpec.type === "access-relationship") {
+            if (!relationshipSpec.accessType) {
+                return true;
+            }
+
+            return rel.concept && rel.concept.accessType === relationshipSpec.accessType;
+        }
+
+        return true;
+    });
+
+    return existing.length > 0;
+}
+
+function createRelationshipFromToken(sourceConcept, targetConcept, token) {
+    var relationshipSpec = relationshipSpecFromToken(token);
+    if (!relationshipSpec) {
+        console.log("> Ignoring unknown relationship token: " + token);
+        return;
+    }
+
+    if (relationshipAlreadyExists(sourceConcept, targetConcept, relationshipSpec)) {
+        if (cfg_mtxImportOptions.debug) {
+            console.log("> Relationship already exists: " + sourceConcept.name + " -> " + targetConcept.name + " (" + relationshipSpec.type + ")");
+        }
+        return;
+    }
+
+    var relationship = model.createRelationship(relationshipSpec.type, "", sourceConcept, targetConcept);
+
+    if (relationshipSpec.accessType && relationship && relationship.concept) {
+        relationship.concept.accessType = relationshipSpec.accessType;
+    }
+
+    if (relationshipSpec.ambiguous) {
+        console.log("> Token AG is ambiguous in matrix exports; imported as " + relationshipSpec.type);
+    }
+}
+
+console.show();
+console.clear();
+console.log("> Import matrix CSV");
+
+load(__DIR__ + "lib/CSV.exportAllTo-cfg.js");
+load(__DIR__ + "lib/MTX.importFromCSV-cfg.js");
+
+var debug = cfg_mtxImportOptions.debug || cfg_mdOptions.debug;
+var separadorCSV = cfg_mdOptions.separador || ";";
+
+var filePath = window.promptOpenFile({
+    title: "Open matrix CSV",
+    filterExtensions: ["*.csv"],
+    fileName: "matrix.csv"
+});
+
+if (!filePath) {
+    console.log("> Cancelled");
+    exit();
+}
+
+var parsed = readCSVFile(filePath);
+if (parsed.errors && parsed.errors.length > 0) {
+    parsed.errors.forEach(function(error) {
+        console.error("> CSV parse error at row " + error.row + ": " + error.message);
+    });
+    exit();
+}
+
+var matrix = parsed.data;
+if (!matrix || matrix.length < 2) {
+    console.log("> Empty or invalid matrix CSV");
+    exit();
+}
+
+var headerRow = matrix[0];
+var legendTypes = parseLegendTypes(headerRow[0]);
+var rowTypes = legendTypes ? legendTypes.rowTypes : parseTypeList(cfg_mtxImportOptions.rowType);
+var columnTypes = legendTypes ? legendTypes.columnTypes : parseTypeList(cfg_mtxImportOptions.columnType);
+
+if (rowTypes.length === 0 || columnTypes.length === 0) {
+    console.log("> Matrix type information is missing.");
+    console.log("> Add a legend in the first cell (rowTypes / columnTypes) or configure rowType and columnType in lib/MTX.importFromCSV-cfg.js");
+    exit();
+}
+
+var columnElements = [];
+for (var c = 1; c < headerRow.length; c++) {
+    var columnName = String(headerRow[c] || "").trim();
+    if (columnName.length === 0) {
+        columnElements[c] = null;
+        continue;
+    }
+
+    columnElements[c] = ensureElement(columnName, columnTypes);
+    if (!columnElements[c]) {
+        console.log("> Unable to resolve column element: " + columnName);
+    }
+}
+
+var createdRelationships = 0;
+
+for (var r = 1; r < matrix.length; r++) {
+    var row = matrix[r];
+    if (!row || row.length === 0) {
+        continue;
+    }
+
+    var rowName = String(row[0] || "").trim();
+    if (rowName.length === 0) {
+        continue;
+    }
+
+    var rowElement = ensureElement(rowName, rowTypes);
+    if (!rowElement) {
+        console.log("> Unable to resolve row element: " + rowName);
+        continue;
+    }
+
+    for (var c2 = 1; c2 < headerRow.length; c2++) {
+        var targetElement = columnElements[c2];
+        if (!targetElement) {
+            continue;
+        }
+
+        var cellValue = row[c2];
+        if (cellValue === null || cellValue === undefined) {
+            continue;
+        }
+
+        var tokens = normalizeCellTokens(cellValue);
+        if (tokens.length === 0) {
+            continue;
+        }
+
+        for (var t = 0; t < tokens.length; t++) {
+            var beforeCount = $(rowElement).outRels().length;
+            createRelationshipFromToken(rowElement, targetElement, tokens[t]);
+            if ($(rowElement).outRels().length > beforeCount) {
+                createdRelationships++;
+            }
+        }
+    }
+}
+
+console.log("> Import complete");
+console.log("> Relationships created: " + createdRelationships);

@@ -10,7 +10,7 @@ const cfg_mdOptions = {
     repeticion : true,
     noEnter : true,
     mapeotipos : false,
-    relaciones : false,
+    relaciones : true,
     separador : ';',
     especializacion : false
 };

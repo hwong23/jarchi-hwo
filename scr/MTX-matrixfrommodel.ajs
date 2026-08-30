@@ -1,9 +1,9 @@
 /*
  * Derive an interaction matrix between two object types from an ArchiMate model
- * Save to an Excel sheet or Markdown table according to configuration
+ * Save to an Excel sheet, Markdown table, or CSV file according to configuration
  * 2018, Michel Benard
  *
- * Version 2.3.0: Configurable output format (xlsx|md)
+ * Version 2.3.1: Configurable output format (xlsx|md|csv)
  */
 
 load(__DIR__ + "lib/mb-matrixfrommodel-cfg.js");
@@ -13,7 +13,6 @@ debug = cfg_mdOptions.debug;
 var outputFormat = normalizeOutputFormat(cfg_mdOptions.outputFormat);
 
 if (outputFormat === "xlsx") {
-  // Required only for xlsx generation
   load(__DIR__ + "lib/jszip-101.js");
   load(__DIR__ + "lib/myexcel.js");
 }
@@ -31,7 +30,6 @@ var typeMappingsRelaciones = {
   "specialization-relationship": "S"
 };
 
-
 var matrix = buildMatrix(
   cfg_mdOptions.columnType,
   cfg_mdOptions.rowType,
@@ -41,20 +39,28 @@ var matrix = buildMatrix(
 var baseOutputName = cfg_mdOptions.userPath + "/archimate_matrices-" + formatShortTimestamp();
 
 if (outputFormat === "md") {
-  var markdown = matrixToMarkdown(matrix.headers, matrix.rows);
-  saveMarkdown(markdown, baseOutputName + ".md");
+  saveMarkdown(matrixToMarkdown(matrix.headers, matrix.rows), baseOutputName + ".md");
+} else if (outputFormat === "csv") {
+  saveCsv(
+    matrixToCSV(
+      matrix.headers,
+      matrix.rows,
+      cfg_mdOptions.csvDelimiter || ",",
+      cfg_mdOptions.csvLineBreak || "\r\n"
+    ),
+    baseOutputName + ".csv"
+  );
 } else {
   var sheet = prepareSheet();
   writeMatrixToSheet(sheet, matrix.headers, matrix.rows, cfg_mdOptions.tabName);
   saveSheet(sheet, baseOutputName + ".xlsx");
 }
 
-
 //----------------------------------------------------
 function normalizeOutputFormat(format)
 {
   var value = String(format || "xlsx").toLowerCase();
-  return value === "md" ? "md" : "xlsx";
+  return (value === "md" || value === "csv") ? value : "xlsx";
 }
 
 //----------------------------------------------------
@@ -67,9 +73,8 @@ function prepareSheet()
 //----------------------------------------------------
 function saveSheet(sheet,outputFilename)
 {
-// TODO add error checking
-sheet.generate(outputFilename);
-console.log("XLSX matrix saved to: " + outputFilename);
+  sheet.generate(outputFilename);
+  console.log("XLSX matrix saved to: " + outputFilename);
 }
 
 //----------------------------------------------------
@@ -77,6 +82,14 @@ function saveMarkdown(content, outputFilename)
 {
   $.fs.writeFile(outputFilename, content, "UTF-8");
   console.log("Markdown matrix saved to: " + outputFilename);
+}
+
+//----------------------------------------------------
+function saveCsv(content, outputFilename)
+{
+  var bom = "\uFEFF";
+  $.fs.writeFile(outputFilename, bom + content, "UTF-8");
+  console.log("CSV matrix saved to: " + outputFilename);
 }
 
 //----------------------------------------------------
@@ -115,9 +128,6 @@ function parseElementTypes(elementTypes)
 
 //----------------------------------------------------
 function buildMatrix(columnType,rowType,cellSeparator)
-// columntype : archimate object type used as column
-// rowtype : archimate object type used as row
-// cellSeparator: characters used to separate relationships in cell
 {
   var rowTypes = parseElementTypes(rowType);
   var columnTypes = parseElementTypes(columnType);
@@ -161,12 +171,9 @@ function buildMatrix(columnType,rowType,cellSeparator)
     rows: rows
   };
 }
+
 //----------------------------------------------------
 function writeMatrixToSheet(sheet,headers,rows,tabName)
-// sheet : excel object
-// headers : matrix headers including top-left legend cell
-// rows : matrix rows where first cell is row header name
-// tabName : excel sheet tab name
 {
   sheet.set({ sheet: 0, value: tabName });
 
@@ -187,6 +194,7 @@ function writeMatrixToSheet(sheet,headers,rows,tabName)
     }
   }
 }
+
 //----------------------------------------------------
 function matrixToMarkdown(headers, rows)
 {
@@ -216,6 +224,24 @@ function matrixToMarkdown(headers, rows)
 }
 
 //----------------------------------------------------
+function matrixToCSV(headers, rows, delimiter, lineBreak)
+{
+  var lines = [];
+
+  lines.push(headers.map(function(header) {
+    return escapeCSVCell(header.name, delimiter);
+  }).join(delimiter));
+
+  for (var r = 0; r < rows.length; r++) {
+    lines.push(rows[r].map(function(cell) {
+      return escapeCSVCell(cell, delimiter);
+    }).join(delimiter));
+  }
+
+  return lines.join(lineBreak) + lineBreak;
+}
+
+//----------------------------------------------------
 function escapeMarkdownCell(value)
 {
   if (value === null || value === undefined) {
@@ -225,4 +251,23 @@ function escapeMarkdownCell(value)
   return String(value)
     .replace(/\|/g, "\\|")
     .replace(/\r\n|\n|\r/g, "<br>");
+}
+
+//----------------------------------------------------
+function escapeCSVCell(value, delimiter)
+{
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  var text = String(value)
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/"/g, '""');
+
+  if (text.indexOf(delimiter) !== -1 || text.indexOf("\n") !== -1 || text.indexOf('"') !== -1) {
+    return '"' + text + '"';
+  }
+
+  return text;
 }

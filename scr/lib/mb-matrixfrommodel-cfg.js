@@ -5,9 +5,11 @@ const cfg_mdOptions = {
     smartLists: true,
     smartypants: true,
     debug : false,
-    outputFormat: "xlsx",
+    outputFormat: "csv",
+    csvDelimiter: ";",
+    csvLineBreak: "\r\n",
     userPath : "/Users/hwo/Downloads",
-    columnType: "business-object,data-object",
+    columnType: "application-component,application-function,application-interaction,application-service",
     rowType: "application-component,application-function,application-interaction,application-service",
     tabName: "data-cat",
     cellSeparator: "/"

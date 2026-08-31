@@ -93,15 +93,14 @@ $("element").each(function(element) {
 
  // Open a dialog to let the user choose where to save the generated file
  var defaultFileName = "Export_Model_" + modelName + ".csv" ; 
- //var defaultFileName = "Export_Model.csv" ; 
  var exportFile = window.promptSaveFile({ title: "Export to CSV", filterExtensions: [ "*.csv" ], fileName: defaultFileName } );
 
- // replace the UTF-16 BOM 
+// replace the UTF-16 BOM 
 // res = res.replace(/^\uFEFF/gm, "");
 
- //replace this with utf-16 or utf-16le
- //with CH-DE locale and Excel2016 I got good results with latin encoding
- $.fs.writeFile(exportFile, fileOutString, 'latin1');
+ // Excel-compatible Unicode CSV: UTF-8 + BOM keeps international characters intact
+ var bom = "\uFEFF";
+ $.fs.writeFile(exportFile, bom + fileOutString, "UTF-8");
 
  console.log(">>> export done to file " + exportFile);
  

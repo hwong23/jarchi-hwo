@@ -5,7 +5,7 @@ const cfg_mdOptions = {
     smartLists: true,
     smartypants: true,
     debug : false,
-    outputFormat: "md",
+    outputFormat: "csv",
     csvDelimiter: ";",
     csvLineBreak: "\r\n",
     userPath : "/Users/hwo/Downloads",

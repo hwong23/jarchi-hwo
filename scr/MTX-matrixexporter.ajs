@@ -41,7 +41,7 @@ var matrix = buildMatrix(
   cfg_mdOptions.cellSeparator
 );
 
-var baseOutputName = cfg_mdOptions.userPath + "/archimate_matrices-" + formatShortTimestamp();
+var baseOutputName = cfg_mdOptions.userPath + "/matrices_reporter-" + formatShortTimestamp();
 
 if (outputFormat === "md") {
   saveText(matrixToMarkdown(matrix.headers, matrix.rows), baseOutputName + ".md", "Markdown");

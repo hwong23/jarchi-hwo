@@ -220,6 +220,86 @@ function createRelationshipFromToken(sourceConcept, targetConcept, token) {
     }
 }
 
+function createImportReportView(importInfo) {
+    var theView = model.createArchimateView("MTXImport-" + new Date().toString());
+
+    var templateObject = theView.createObject("note", 0, 0, -1, -1);
+    var templateHeight = templateObject.bounds.height;
+    var templateWidth = templateObject.bounds.width;
+    templateObject.delete();
+
+    var newGroupStart = 48;
+    var nameGroupStart = 180;
+    var uidGroupStart = 312;
+    var maxPerRow = 10;
+
+    var titleNote = theView.createObject("note", 12, 12, maxPerRow * templateWidth, 24);
+    titleNote.text = importInfo;
+
+    var newGroup = theView.createObject("diagram-model-group", 12, newGroupStart, maxPerRow * templateWidth, templateWidth);
+    newGroup.name = "New Elements";
+    var nameGroup = theView.createObject("diagram-model-group", 12, nameGroupStart, maxPerRow * templateWidth, templateWidth);
+    nameGroup.name = "Matched by Name";
+    var uidGroup = theView.createObject("diagram-model-group", 12, uidGroupStart, maxPerRow * templateWidth, templateWidth);
+    uidGroup.name = "Matched by UID";
+
+    return {
+        view: theView,
+        groups: {
+            1: newGroup,
+            2: nameGroup,
+            3: uidGroup
+        },
+        counts: { 1: 0, 2: 0, 3: 0 },
+        rows: { 1: 1, 2: 1, 3: 1 },
+        addedConcepts: {},
+        maxPerRow: maxPerRow,
+        templateHeight: templateHeight,
+        templateWidth: templateWidth
+    };
+}
+
+function registerImportedConcept(reportState, concept, matchType) {
+    if (!reportState || !concept || !reportState.groups[matchType]) {
+        return;
+    }
+
+    if (reportState.addedConcepts[concept.id]) {
+        return;
+    }
+
+    reportState.addedConcepts[concept.id] = true;
+
+    var count = reportState.counts[matchType] + 1;
+    var row = reportState.rows[matchType];
+
+    if (count > reportState.maxPerRow) {
+        row++;
+        count = 1;
+    }
+
+    reportState.counts[matchType] = count;
+    reportState.rows[matchType] = row;
+
+    var group1 = reportState.groups[1];
+    var group2 = reportState.groups[2];
+    var group3 = reportState.groups[3];
+
+    group1.bounds = { x: group1.bounds.x, y: group1.bounds.y, width: reportState.maxPerRow * reportState.templateWidth, height: (reportState.templateHeight + 12) * reportState.rows[1] + 24 };
+    group2.bounds = { x: group2.bounds.x, y: group1.bounds.y + group1.bounds.height + 12, width: reportState.maxPerRow * reportState.templateWidth, height: (reportState.templateHeight + 12) * reportState.rows[2] + 24 };
+    group3.bounds = { x: group3.bounds.x, y: group2.bounds.y + group2.bounds.height + 12, width: reportState.maxPerRow * reportState.templateWidth, height: (reportState.templateHeight + 12) * reportState.rows[3] + 24 };
+
+    var group = reportState.groups[matchType];
+    var groupStart = group.bounds.y;
+    var groupCount = reportState.counts[matchType];
+    var groupRow = reportState.rows[matchType];
+
+    var x = (groupCount * reportState.templateWidth) - (reportState.templateWidth - 12) + (groupCount * 12);
+    var y = groupStart + 12 + ((groupRow - 1) * reportState.templateHeight) + (groupRow * 12);
+
+    reportState.view.add(concept, x, y, -1, -1, true);
+}
+
 console.show();
 console.clear();
 console.log("> Import matrix CSV");
@@ -266,6 +346,9 @@ if (rowTypes.length === 0 || columnTypes.length === 0) {
     exit();
 }
 
+var importInfo = "Import from:" + filePath + " on " + new Date().toString();
+var reportState = createImportReportView(importInfo);
+
 var columnElements = [];
 for (var c = 1; c < headerRow.length; c++) {
     var columnName = String(headerRow[c] || "").trim();
@@ -274,10 +357,14 @@ for (var c = 1; c < headerRow.length; c++) {
         continue;
     }
 
+    var columnWasExisting = !!findElementByName(columnName, columnTypes);
     columnElements[c] = ensureElement(columnName, columnTypes);
     if (!columnElements[c]) {
         console.log("> Unable to resolve column element: " + columnName);
+        continue;
     }
+
+    registerImportedConcept(reportState, columnElements[c], columnWasExisting ? 2 : 1);
 }
 
 var createdRelationships = 0;
@@ -293,11 +380,14 @@ for (var r = 1; r < matrix.length; r++) {
         continue;
     }
 
+    var rowWasExisting = !!findElementByName(rowName, rowTypes);
     var rowElement = ensureElement(rowName, rowTypes);
     if (!rowElement) {
         console.log("> Unable to resolve row element: " + rowName);
         continue;
     }
+
+    registerImportedConcept(reportState, rowElement, rowWasExisting ? 2 : 1);
 
     for (var c2 = 1; c2 < headerRow.length; c2++) {
         var targetElement = columnElements[c2];

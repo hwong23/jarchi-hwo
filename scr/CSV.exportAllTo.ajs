@@ -198,13 +198,15 @@ $('view').each(function(theView) {
                                 theRelationshipRow["Relationship ID"]=r.id;
                                 theRelationshipRow["From ID"]=r.source.id;
                                 theRelationshipRow["From Name"]=r.source.name;
-                                theRelationshipRow["From Type"]=!typeMappingsElementos[r.source.type]? r.source.type: typeMappingsElementos[r.source.type];
+                                theRelationshipRow["From Type"]=mapeotipos 
+                                    ? (!typeMappingsElementos[r.source.type]? r.source.type: typeMappingsElementos[r.source.type]) : r.source.type;
                                 theRelationshipRow["Relationship Type"]=!typeMappingsRelaciones[r.type]?r.type:typeMappingsRelaciones[r.type];
                                 theRelationshipRow["To ID"]=r.target.id;
                                 theRelationshipRow["To Name"]=r.target.name;
-                                theRelationshipRow["To Type"]=!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type];
+                                theRelationshipRow["To Type"]=mapeotipos 
+                                    ? (!typeMappingsElementos[r.target.type]? r.target.type: typeMappingsElementos[r.target.type]) : r.target.type;
                                 theRelationshipRow["Relationship Name"]=r.name;
-                                theRelationshipRow["Relationship Documentation"]=r.documentation;
+                                theRelationshipRow["Relationship Documentation"]=(noEnter) ? devdoc_escapeDOC(r.documentation, true) : r.documentation;
                                 theRelationshipRow["Tipo de Acceso"]=r.concept.accessType;
 
                                 theRelationshipData.push(theRelationshipRow);

@@ -1,79 +1,262 @@
-/**
- * jArchi - Custom Relationship Matrix Exporter
- * Formats: Source Elements (Rows) vs Target Elements (Columns)
+/*
+ * jArchi - Exportador de Matriz de Relaciones
+ *
+ * Propósito:
+ * Generar una matriz de relaciones entre dos tipos de elementos ArchiMate.
+ * La salida se controla mediante lib/mb-matrixfrommodel-cfg.js y puede ser
+ * CSV, Markdown o XLSX.
  */
+
+load(__DIR__ + "lib/mb-matrixfrommodel-cfg.js");
+
+debug = cfg_mdOptions.debug;
+
+var outputFormat = normalizeOutputFormat(cfg_mdOptions.outputFormat);
+
+if (outputFormat === "xlsx") {
+  load(__DIR__ + "lib/jszip-101.js");
+  load(__DIR__ + "lib/myexcel.js");
+}
+
+var typeMappingsRelaciones = {
+  "access-relationship": "AC",
+  "composition-relationship": "CO",
+  "flow-relationship": "F",
+  "realization-relationship": "R",
+  "assignment-relationship": "AG",
+  "serving-relationship": "SV",
+  "association-relationship": "AS",
+  "aggregation-relationship": "AG",
+  "influence-relationship": "I",
+  "specialization-relationship": "S"
+};
 
 console.show();
 console.clear();
+console.log("Generating matrix: " + cfg_mdOptions.rowType + " vs " + cfg_mdOptions.columnType + " -> " + outputFormat);
 
-// --- CONFIGURATION ---
-// Change these selectors to the ArchiMate types you want to map
-var ROW_ELEMENT_TYPE = "business-object";     // e.g., "business-process", "capability"
-var COL_ELEMENT_TYPE = "application-component"; // e.g., "application-component", "business-role"
-var CSV_DELIMITER = ";"; // Set to ";" or "|" if needed
-var CSV_LINE_BREAK = "\r\n"; // Use CRLF for better Excel compatibility
-var BOM = "\uFEFF"; // UTF-8 BOM to help Excel detect Unicode correctly
-var MATRIX_FILE_PATH = "/Users/hwo/Downloads/archi_matrix.csv"; // Change to your preferred file path
+var matrix = buildMatrix(
+  cfg_mdOptions.columnType,
+  cfg_mdOptions.rowType,
+  cfg_mdOptions.cellSeparator
+);
 
-console.log("Generating Matrix: " + ROW_ELEMENT_TYPE + " vs " + COL_ELEMENT_TYPE);
+var baseOutputName = cfg_mdOptions.userPath + "/archimate_matrices-" + formatShortTimestamp();
 
-// 1. Fetch elements from the model
-var rows = $(ROW_ELEMENT_TYPE);
-var cols = $(COL_ELEMENT_TYPE);
-
-if(rows.size() === 0 || cols.size() === 0) {
-    console.log("Error: No elements found for the selected types. Check your configuration.");
-    exit();
+if (outputFormat === "md") {
+  saveText(matrixToMarkdown(matrix.headers, matrix.rows), baseOutputName + ".md", "Markdown");
+} else if (outputFormat === "csv") {
+  saveText(
+    matrixToCSV(
+      matrix.headers,
+      matrix.rows,
+      cfg_mdOptions.csvDelimiter || ";",
+      cfg_mdOptions.csvLineBreak || "\r\n"
+    ),
+    baseOutputName + ".csv",
+    "CSV"
+  );
+} else {
+  var sheet = prepareSheet();
+  writeMatrixToSheet(sheet, matrix.headers, matrix.rows, cfg_mdOptions.tabName);
+  saveSheet(sheet, baseOutputName + ".xlsx");
 }
 
-// 2. Build the CSV Header (Top Row)
-var csvContent = "Source / Target";
-cols.each(function(colElement) {
-    csvContent += CSV_DELIMITER + sanitizeCSV(colElement.name);
-});
-csvContent += CSV_LINE_BREAK;
+//----------------------------------------------------
+function normalizeOutputFormat(format)
+{
+  var value = String(format || "csv").toLowerCase();
+  return (value === "csv" || value === "md" || value === "xlsx") ? value : "csv";
+}
 
-// 3. Build the Matrix Rows
-rows.each(function(rowElement) {
-    var line = sanitizeCSV(rowElement.name);
-    
-    cols.each(function(colElement) {
-        // Find relationships originating from rowElement and ending at colElement
-        var rels = $(rowElement).rels().filter(function(rel) {
-            return rel.target.id === colElement.id || rel.source.id === colElement.id;
-        });
-        
-        if(rels.size() > 0) {
-            // If connected, put the relationship type(s) in the cell
-            var relTypes = [];
-            rels.each(function(r) {
-                relTypes.push(r.type);
-            });
-            line += CSV_DELIMITER + sanitizeCSV(relTypes.join("|"));
-        } else {
-            // Empty cell if no relationship exists
-            line += CSV_DELIMITER;
-        }
+//----------------------------------------------------
+function parseElementTypes(elementTypes)
+{
+  if (Array.isArray(elementTypes)) {
+    return elementTypes;
+  }
+
+  return String(elementTypes)
+    .split(",")
+    .map(function(typeName) {
+      return typeName.trim();
+    })
+    .filter(function(typeName) {
+      return typeName.length > 0;
     });
-    
-    csvContent += line + CSV_LINE_BREAK;
-});
-
-// 4. Save to File
-try {
-    $.fs.writeFile(MATRIX_FILE_PATH, BOM + csvContent, "UTF-8");
-    console.log("Success! Matrix exported to: " + MATRIX_FILE_PATH);
-} catch(err) {
-    console.log("Could not write file. Outputting raw CSV to console instead:\n\n");
-    console.log(csvContent);
 }
 
-// Helper to escape delimiter, newlines and quotes in names
-function sanitizeCSV(text) {
-    if (!text) return "";
-    var sanitized = String(text).replace(/\r\n/g, "\n").replace(/\r/g, "\n").replace(/"/g, '""');
-    if (sanitized.indexOf(CSV_DELIMITER) !== -1 || sanitized.indexOf("\n") !== -1 || sanitized.indexOf('"') !== -1) {
-        sanitized = '"' + sanitized + '"';
+//----------------------------------------------------
+function formatShortTimestamp()
+{
+  var now = new Date();
+
+  function pad(value)
+  {
+    return (value < 10 ? "0" : "") + value;
+  }
+
+  return String(now.getFullYear()).substring(2) +
+    pad(now.getMonth() + 1) +
+    pad(now.getDate()) + "-" +
+    pad(now.getHours()) +
+    pad(now.getMinutes());
+}
+
+//----------------------------------------------------
+function prepareSheet()
+{
+  return $JExcel.new("Calibri 12 #333333");
+}
+
+//----------------------------------------------------
+function saveSheet(sheet, outputFilename)
+{
+  sheet.generate(outputFilename);
+  console.log("XLSX matrix saved to: " + outputFilename);
+}
+
+//----------------------------------------------------
+function saveText(content, outputFilename, label)
+{
+  var bom = outputFilename.toLowerCase().indexOf(".csv") !== -1 ? "\uFEFF" : "";
+  $.fs.writeFile(outputFilename, bom + content, "UTF-8");
+  console.log(label + " matrix saved to: " + outputFilename);
+}
+
+//----------------------------------------------------
+function buildMatrix(columnType, rowType, cellSeparator)
+{
+  var rowTypes = parseElementTypes(rowType);
+  var columnTypes = parseElementTypes(columnType);
+  var legend = { name: rowTypes.join(", ") + "/" + columnTypes.join(", ") };
+  var headers = [legend];
+
+  columnTypes.forEach(function(currentColumnType) {
+    $(currentColumnType).forEach(function(element) {
+      headers.push(element);
+    });
+  });
+
+  var rows = [];
+
+  rowTypes.forEach(function(currentRowType) {
+    $(currentRowType).forEach(function(element) {
+      var rowCells = [element.name];
+      var relations = $(element).rels();
+
+      for (var i = 1; i < headers.length; i++) {
+        var cellText = "";
+        for (var j = 0; j < relations.length; j++) {
+          var rel = relations[j];
+          if ((rel.source.id == element.id) && (rel.target.id == headers[i].id)) {
+            var relText = typeMappingsRelaciones[rel.type] || rel.type;
+            cellText = cellText.length === 0 ? relText : relText + cellSeparator + cellText;
+          }
+        }
+        rowCells.push(cellText);
+      }
+
+      rows.push(rowCells);
+    });
+  });
+
+  return {
+    headers: headers,
+    rows: rows
+  };
+}
+
+//----------------------------------------------------
+function writeMatrixToSheet(sheet, headers, rows, tabName)
+{
+  sheet.set({ sheet: 0, value: tabName });
+
+  var formatHeader = sheet.addStyle({
+    fill: "#dddddd",
+    border: "thin, thin, thin, thin #555555",
+    font: "Calibri 12 #000000 B"
+  });
+
+  for (var i = 0; i < headers.length; i++) {
+    sheet.set(0, i, 0, headers[i].name, formatHeader);
+    sheet.set(0, i, undefined, "auto");
+  }
+
+  for (var r = 0; r < rows.length; r++) {
+    for (var c = 0; c < rows[r].length; c++) {
+      sheet.set(0, c, r + 1, rows[r][c]);
     }
-    return sanitized;
+  }
+}
+
+//----------------------------------------------------
+function matrixToMarkdown(headers, rows)
+{
+  var lines = [];
+
+  lines.push(headers.map(function(header) {
+    return "| " + escapeMarkdownCell(header.name) + " ";
+  }).join("") + "|");
+
+  lines.push(headers.map(function() {
+    return "| --- ";
+  }).join("") + "|");
+
+  for (var r = 0; r < rows.length; r++) {
+    lines.push(rows[r].map(function(cell) {
+      return "| " + escapeMarkdownCell(cell) + " ";
+    }).join("") + "|");
+  }
+
+  return lines.join("\n") + "\n";
+}
+
+//----------------------------------------------------
+function matrixToCSV(headers, rows, delimiter, lineBreak)
+{
+  var lines = [];
+
+  lines.push(headers.map(function(header) {
+    return escapeCSVCell(header.name, delimiter);
+  }).join(delimiter));
+
+  for (var r = 0; r < rows.length; r++) {
+    lines.push(rows[r].map(function(cell) {
+      return escapeCSVCell(cell, delimiter);
+    }).join(delimiter));
+  }
+
+  return lines.join(lineBreak) + lineBreak;
+}
+
+//----------------------------------------------------
+function escapeMarkdownCell(value)
+{
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value)
+    .replace(/\|/g, "\\|")
+    .replace(/\r\n|\n|\r/g, "<br>");
+}
+
+//----------------------------------------------------
+function escapeCSVCell(value, delimiter)
+{
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  var text = String(value)
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/"/g, '""');
+
+  if (text.indexOf(delimiter) !== -1 || text.indexOf("\n") !== -1 || text.indexOf('"') !== -1) {
+    return '"' + text + '"';
+  }
+
+  return text;
 }

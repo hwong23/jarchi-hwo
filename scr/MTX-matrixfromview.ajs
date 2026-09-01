@@ -1,9 +1,37 @@
 /*
- * Derive an interaction matrix between two object types from an ArchiMate view
- * Save to an Excel sheet, Markdown table, or CSV file according to configuration
- * 2018, Michel Benard
+ * MTX-matrixfromview - Generador de Matriz desde Vista ArchiMate
  *
- * Version 2.3.1: Configurable output format (xlsx|md|csv)
+ * Proposito:
+ * Derivar una matriz de interacciones entre tipos de elementos (filas y columnas)
+ * a partir de una vista ArchiMate seleccionada, y exportarla en XLSX, Markdown o CSV.
+ *
+ * Rutina principal:
+ * 1) Carga configuracion y librerias auxiliares.
+ * 2) Normaliza el formato de salida (xlsx|md|csv).
+ * 3) Construye la matriz leyendo elementos y relaciones desde la vista seleccionada.
+ * 4) Genera nombre base de salida con timestamp.
+ * 5) Exporta segun formato: hoja Excel, tabla Markdown o archivo CSV.
+ *
+ * Entradas:
+ * - Vista ArchiMate seleccionada en el modelo (selection).
+ * - cfg_mdOptions.columnType: tipo(s) de elemento para columnas.
+ * - cfg_mdOptions.rowType: tipo(s) de elemento para filas.
+ * - cfg_mdOptions.cellSeparator: separador interno cuando hay varias relaciones.
+ * - cfg_mdOptions.outputFormat: formato de salida (xlsx, md o csv).
+ * - cfg_mdOptions.userPath: ruta base para guardar archivos.
+ * - cfg_mdOptions.tabName: nombre de hoja para XLSX.
+ * - cfg_mdOptions.csvDelimiter y cfg_mdOptions.csvLineBreak: parametros CSV.
+ *
+ * Salidas:
+ * - Archivo de matriz en la carpeta indicada por userPath:
+ *   - XLSX: archimate_matrices-<timestamp>.xlsx
+ *   - MD:   archimate_matrices-<timestamp>.md
+ *   - CSV:  archimate_matrices-<timestamp>.csv
+ * - Mensajes de estado en consola.
+ *
+ * Notas:
+ * - Si no hay una vista ArchiMate seleccionada, el script lanza error y se detiene.
+ * - Los tipos de relacion pueden mapearse a codigos cortos (ej. AG, SV, R).
  */
 
 load(__DIR__ + "lib/mb-matrixfrommodel-cfg.js");

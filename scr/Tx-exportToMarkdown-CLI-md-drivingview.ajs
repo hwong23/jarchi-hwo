@@ -378,7 +378,7 @@ function exportViews (k, viewList, settings)
         
         // interpolación de texto mediante plantilla de elementos
         viewElements = tplElement({viewNombre: nombrevista, filasTabla: elements});
-        viewTEXElements = 'todo: aun no está lista';
+        viewTEXElements = 'todo: tex';
     }
 
     // carga las relaciones de los elementos de la vista actual

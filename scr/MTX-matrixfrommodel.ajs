@@ -51,19 +51,6 @@ if (outputFormat === "xlsx") {
   load(__DIR__ + "lib/myexcel.js");
 }
 
-var typeMappingsRelaciones = {
-  "access-relationship": "AC",
-  "composition-relationship": "CO",
-  "flow-relationship": "F",
-  "realization-relationship": "R",
-  "assignment-relationship": "AG",
-  "serving-relationship": "SV",
-  "association-relationship": "AS",
-  "aggregation-relationship": "AG",
-  "influence-relationship": "I",
-  "specialization-relationship": "S"
-};
-
 var matrix = buildMatrix(
   cfg_mdOptions.columnType,
   cfg_mdOptions.rowType,
@@ -189,7 +176,7 @@ function buildMatrix(columnType,rowType,cellSeparator)
         for (var j = 0; j < relations.length; j++) {
           var rel = relations[j];
           if ((rel.source.id == e.id) && (rel.target.id == headers[i].id)) {
-            var relText = typeMappingsRelaciones[rel.type] || rel.type;
+            var relText = devdoc_typeMappingsRelacionesCorta[rel.type] || rel.type;
             cellText = cellText.length === 0 ? relText : relText + cellSeparator + cellText;
           }
         }

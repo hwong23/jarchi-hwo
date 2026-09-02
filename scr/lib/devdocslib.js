@@ -34,7 +34,26 @@ var devdoc_typeMappingsRelaciones = {
     "association-relationship":"Associated",
     "aggregation-relationship":"Aggregates",
     "influence-relationship":"Influence",
-    "specialization-relationship":"Specialize"
+    "specialization-relationship":"Specialize",
+    "triggering-relationship":"Triggers",
+    "junction-relationship":"Junction",
+    "grouping-relationship":"Groups"
+}
+
+var devdoc_typeMappingsRelacionesCorta = {
+  "access-relationship": "AC",
+  "composition-relationship": "CO",
+  "flow-relationship": "F",
+  "realization-relationship": "R",
+  "assignment-relationship": "AG",
+  "serving-relationship": "SV",
+  "association-relationship": "AS",
+  "aggregation-relationship": "AG",
+  "influence-relationship": "I",
+  "specialization-relationship": "S",
+  "triggering-relationship": "T",
+  "junction-relationship": "J",
+  "grouping-relationship": "G"
 }
 
 var devdoc_typeMappingsElementos = {
